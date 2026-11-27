@@ -52,7 +52,8 @@ typedef _WordIndex = ({
   Map<String, String> normalized,
 });
 
-class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
+class _TextReaderState extends State<TextReader>
+    with WidgetsBindingObserver, TickerProviderStateMixin {
   Services get _s => widget.services;
   late final _store = ReadingStore(_s.storage(ReadingStore.space));
   late final _audio = ReadingAudio(_s.course);
@@ -63,6 +64,16 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
 
   late ReaderSettings _settings;
   late final ValueNotifier<ReaderSettings> _settingsNotifier;
+  late final AnimationController _paletteController = AnimationController(
+    vsync: this,
+    value: 1.0,
+  );
+  late ReaderPalette _fromPalette;
+  late ReaderPalette _toPalette;
+  late final AnimationController _aaController = AnimationController(
+    vsync: this,
+    value: 0.0,
+  );
   bool _settingsOpen = false;
   ReaderDocument? _doc;
   List<ReaderPage> _pages = const [];
@@ -90,12 +101,20 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
   Future<void> _settingsWrites = Future.value();
   StreamSubscription<void>? _changes;
 
+  ReaderPalette _currentPalette(NocheMotionData motion) {
+    final curve = motion.reduced ? motion.enter : motion.travel;
+    final t = curve.transform(_paletteController.value);
+    return ReaderPalette.lerp(_fromPalette, _toPalette, t);
+  }
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _settings =
         widget.initialSettings ?? ReaderSettings.loadFrom(_settingsStore);
+    _fromPalette = _settings.palette;
+    _toPalette = _settings.palette;
     _settingsNotifier = ValueNotifier<ReaderSettings>(_settings);
     _changes = _s.progress.changes.listen((_) {
       if (mounted) setState(() {});
@@ -194,6 +213,8 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _playback++;
+    _paletteController.dispose();
+    _aaController.dispose();
     _settingsNotifier.dispose();
     unawaited(_changes?.cancel());
     _changes = null;
@@ -316,6 +337,13 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
 
   void _updateSettings(ReaderSettings next) {
     if (!mounted || next == _settings) return;
+    if (next.page != _settings.page) {
+      final motion = NocheMotion.of(context);
+      _fromPalette = _currentPalette(motion);
+      _toPalette = next.palette;
+      _paletteController.duration = motion.move;
+      _paletteController.forward(from: 0.0);
+    }
     setState(() {
       _settings = next;
       _selectedWord = null;
@@ -816,22 +844,22 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
 
   Future<void> _openSettings() async {
     if (_settingsOpen) return;
+    final motion = NocheMotion.of(context);
     setState(() {
       _settingsOpen = true;
       _selectedWord = null;
     });
+    unawaited(
+      _aaController.animateTo(1.0, duration: motion.quick, curve: motion.enter),
+    );
     try {
       if (widget.onOpenSettings != null) {
         await widget.onOpenSettings!(_settings, _updateSettings);
         return;
       }
       final lang = _s.course.language;
-      await showNocheSheet<void>(
+      await showReaderSettingsSheet<void>(
         context,
-        title: NocheA11y.label(
-          NocheA11y.textAndPage,
-          courseWords: lang.a11yWords,
-        ),
         closeLabel: NocheA11y.label(
           NocheA11y.closeTextAndPage,
           courseWords: lang.a11yWords,
@@ -847,7 +875,15 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
       );
     } finally {
       if (mounted) {
+        final closeMotion = NocheMotion.of(context);
         setState(() => _settingsOpen = false);
+        unawaited(
+          _aaController.animateTo(
+            0.0,
+            duration: closeMotion.quick,
+            curve: closeMotion.enter,
+          ),
+        );
       }
     }
   }
@@ -905,269 +941,302 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
         ? TextDirection.rtl
         : TextDirection.ltr;
     final locale = Locale(lang.code);
-    final palette = _settings.palette;
 
-    final backButton = Tooltip(
-      message: ReaderTexts.close,
-      child: Pressable(
-        key: const Key('reader-close-button'),
-        disc: true,
-        onPressed: _close,
-        semanticLabel: NocheA11y.label(
-          NocheA11y.back,
-          courseWords: lang.a11yWords,
-        ),
-        builder: (context, _) => SizedBox(
-          width: NocheSize.touch,
-          height: NocheSize.touch,
-          child: Center(
-            child: NocheIcon(
-              NocheIcons.back,
-              size: 24,
-              strokeWidth: 2.2,
-              color: palette.chromeIcon,
+    return AnimatedBuilder(
+      animation: _paletteController,
+      builder: (context, _) {
+        final motion = NocheMotion.of(context);
+        final palette = _currentPalette(motion);
+
+        final backButton = Tooltip(
+          message: ReaderTexts.close,
+          child: Pressable(
+            key: const Key('reader-close-button'),
+            disc: true,
+            onPressed: _close,
+            semanticLabel: NocheA11y.label(
+              NocheA11y.back,
+              courseWords: lang.a11yWords,
             ),
-          ),
-        ),
-      ),
-    );
-
-    if (_missing) {
-      return Directionality(
-        textDirection: textDirection,
-        child: Material(
-          color: palette.ground,
-          child: SafeArea(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 56,
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.symmetric(
-                      horizontal: 4,
-                    ),
-                    child: Row(children: [backButton]),
-                  ),
-                ),
-                Expanded(
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsetsDirectional.symmetric(
-                        horizontal: 28,
-                      ),
-                      child: Text(
-                        ReaderTexts.textUnavailable,
-                        textAlign: TextAlign.center,
-                        style: NocheType.body.copyWith(color: palette.label),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    }
-
-    if (_loading || _doc == null) {
-      return Directionality(
-        textDirection: textDirection,
-        child: Material(color: palette.ground, child: const SizedBox.expand()),
-      );
-    }
-
-    final doc = _doc!;
-    final earIndex = ReaderEarIndex(
-      _s.progress.words,
-      lang,
-      stageMax: widget.stageMax,
-    );
-
-    return Directionality(
-      textDirection: textDirection,
-      child: Material(
-        color: palette.ground,
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(
-                height: 56,
-                child: Padding(
-                  padding: const EdgeInsetsDirectional.symmetric(horizontal: 4),
-                  child: Row(
-                    children: [
-                      backButton,
-                      Expanded(
-                        child: Text(
-                          doc.title.toUpperCase(),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                          locale: locale,
-                          style:
-                              NocheType.forScript(
-                                NocheType.label,
-                                lang.script,
-                              ).copyWith(
-                                color: palette.label,
-                                letterSpacing: lang.script == 'Latn' ? 1.2 : 0,
-                              ),
-                        ),
-                      ),
-                      Pressable(
-                        disc: true,
-                        onPressed: _openSettings,
-                        semanticLabel: NocheA11y.label(
-                          NocheA11y.textAndPage,
-                          courseWords: lang.a11yWords,
-                        ),
-                        selected: _settingsOpen ? true : null,
-                        builder: (context, _) => Container(
-                          width: NocheSize.touch,
-                          height: NocheSize.touch,
-                          alignment: AlignmentDirectional.center,
-                          decoration: _settingsOpen
-                              ? BoxDecoration(
-                                  color: palette.chromeIcon,
-                                  shape: BoxShape.circle,
-                                )
-                              : null,
-                          child: Text(
-                            'Aa',
-                            style: NocheType.bookTitle.copyWith(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 20,
-                              height: 1,
-                              color: _settingsOpen
-                                  ? palette.ground
-                                  : palette.chromeIcon,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Pressable(
-                        disc: true,
-                        onPressed: _openChapters,
-                        semanticLabel: NocheA11y.label(
-                          NocheA11y.chapters,
-                          courseWords: lang.a11yWords,
-                        ),
-                        builder: (context, _) => SizedBox(
-                          width: NocheSize.touch,
-                          height: NocheSize.touch,
-                          child: Center(
-                            child: NocheIcon(
-                              NocheIcons.chapters,
-                              size: 24,
-                              strokeWidth: 2.2,
-                              color: palette.chromeIcon,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+            builder: (context, _) => SizedBox(
+              width: NocheSize.touch,
+              height: NocheSize.touch,
+              child: Center(
+                child: NocheIcon(
+                  NocheIcons.back,
+                  size: 24,
+                  strokeWidth: 2.2,
+                  color: palette.chromeIcon,
                 ),
               ),
-              Expanded(
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    final textScaler = MediaQuery.textScalerOf(context);
-                    _ensurePaginated(
-                      constraints.maxWidth,
-                      constraints.maxHeight,
-                      textScaler,
-                    );
-                    if (_pages.isEmpty) {
-                      return const SizedBox.shrink();
-                    }
-                    final currentPage = _pages[_pageIndex];
-                    final viewportSize = Size(
-                      constraints.maxWidth,
-                      constraints.maxHeight,
-                    );
-                    final isLastPage = _pageIndex >= _pages.length - 1;
-                    return Semantics(
-                      container: true,
-                      onIncrease: _turnForward,
-                      onDecrease: _pageIndex > 0 ? _turnBackward : null,
-                      customSemanticsActions: {
-                        if (_pageIndex > 0)
-                          const CustomSemanticsAction(
-                            label: ReaderTexts.previousPage,
-                          ): _turnBackward,
-                        CustomSemanticsAction(
-                          label: isLastPage
-                              ? ReaderTexts.finishBook
-                              : ReaderTexts.nextPage,
-                        ): _turnForward,
-                      },
-                      child: GestureDetector(
-                        key: _viewportKey,
-                        behavior: HitTestBehavior.opaque,
-                        onTapUp: (details) => _handleBodyTapUp(
-                          details,
-                          constraints.maxWidth,
-                          textDirection,
+            ),
+          ),
+        );
+
+        if (_missing) {
+          return Directionality(
+            textDirection: textDirection,
+            child: Material(
+              color: palette.ground,
+              child: SafeArea(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 56,
+                      child: Padding(
+                        padding: const EdgeInsetsDirectional.symmetric(
+                          horizontal: 4,
                         ),
-                        onHorizontalDragEnd: (details) =>
-                            _handleHorizontalDragEnd(details, textDirection),
-                        child: Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            Positioned.fill(
-                              child: NocheFollow(
-                                key: const Key('reader-page-follow'),
-                                contentKey: _pageTurnId,
-                                side: _pageTurnSide,
-                                distance: NocheMotion.page,
-                                child: SizedBox.expand(
-                                  child: ReaderPageView(
-                                    document: doc,
-                                    page: currentPage,
-                                    settings: _settings,
-                                    language: lang,
-                                    earIndex: earIndex,
-                                    activeSentenceId: _activeSentenceId,
-                                    selectedWord: _selectedWord,
-                                    viewportKey: _viewportKey,
-                                    onWordTap: (c, p, offset, tok, rect) =>
-                                        unawaited(
-                                          _handleWordTap(
-                                            c,
-                                            p,
-                                            offset,
-                                            tok,
-                                            rect,
-                                          ),
-                                        ),
+                        child: Row(children: [backButton]),
+                      ),
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.symmetric(
+                            horizontal: 28,
+                          ),
+                          child: Text(
+                            ReaderTexts.textUnavailable,
+                            textAlign: TextAlign.center,
+                            style: NocheType.body.copyWith(
+                              color: palette.label,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+
+        if (_loading || _doc == null) {
+          return Directionality(
+            textDirection: textDirection,
+            child: Material(
+              color: palette.ground,
+              child: const SizedBox.expand(),
+            ),
+          );
+        }
+
+        final doc = _doc!;
+        final earIndex = ReaderEarIndex(
+          _s.progress.words,
+          lang,
+          stageMax: widget.stageMax,
+        );
+
+        return Directionality(
+          textDirection: textDirection,
+          child: Material(
+            color: palette.ground,
+            child: SafeArea(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(
+                    height: 56,
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.symmetric(
+                        horizontal: 4,
+                      ),
+                      child: Row(
+                        children: [
+                          backButton,
+                          Expanded(
+                            child: Text(
+                              doc.title.toUpperCase(),
+                              key: const Key('reader-book-title'),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                              locale: locale,
+                              style:
+                                  NocheType.forScript(
+                                    NocheType.label,
+                                    lang.script,
+                                  ).copyWith(
+                                    color: palette.label,
+                                    letterSpacing: lang.script == 'Latn'
+                                        ? 1.2
+                                        : 0,
                                   ),
+                            ),
+                          ),
+                          Pressable(
+                            key: const Key('reader-aa-button'),
+                            disc: true,
+                            onPressed: _openSettings,
+                            semanticLabel: NocheA11y.label(
+                              NocheA11y.textAndPage,
+                              courseWords: lang.a11yWords,
+                            ),
+                            selected: _settingsOpen ? true : null,
+                            builder: (context, _) => AnimatedBuilder(
+                              animation: _aaController,
+                              builder: (context, _) {
+                                final openT = _aaController.value;
+                                return Container(
+                                  key: const Key('reader-aa-button-surface'),
+                                  width: NocheSize.touch,
+                                  height: NocheSize.touch,
+                                  alignment: AlignmentDirectional.center,
+                                  decoration: BoxDecoration(
+                                    color: palette.chromeIcon.withValues(
+                                      alpha: palette.chromeIcon.a * openT,
+                                    ),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Text(
+                                    'Aa',
+                                    key: const Key('reader-aa-button-label'),
+                                    style: NocheType.bookTitle.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 20,
+                                      height: 1,
+                                      color: Color.lerp(
+                                        palette.chromeIcon,
+                                        palette.ground,
+                                        openT,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          Pressable(
+                            disc: true,
+                            onPressed: _openChapters,
+                            semanticLabel: NocheA11y.label(
+                              NocheA11y.chapters,
+                              courseWords: lang.a11yWords,
+                            ),
+                            builder: (context, _) => SizedBox(
+                              width: NocheSize.touch,
+                              height: NocheSize.touch,
+                              child: Center(
+                                child: NocheIcon(
+                                  NocheIcons.chapters,
+                                  size: 24,
+                                  strokeWidth: 2.2,
+                                  color: palette.chromeIcon,
                                 ),
                               ),
                             ),
-                            ReaderWordBubbleOverlay(
-                              selected: _selectedWord,
-                              viewportSize: viewportSize,
-                              settings: _settings,
-                              language: lang,
-                              stageMax: widget.stageMax,
-                              onReplay: (selected) =>
-                                  unawaited(_replaySelectedWord(selected)),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  ),
+                  Expanded(
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        final textScaler = MediaQuery.textScalerOf(context);
+                        _ensurePaginated(
+                          constraints.maxWidth,
+                          constraints.maxHeight,
+                          textScaler,
+                        );
+                        if (_pages.isEmpty) {
+                          return const SizedBox.shrink();
+                        }
+                        final currentPage = _pages[_pageIndex];
+                        final viewportSize = Size(
+                          constraints.maxWidth,
+                          constraints.maxHeight,
+                        );
+                        final isLastPage = _pageIndex >= _pages.length - 1;
+                        return Semantics(
+                          container: true,
+                          onIncrease: _turnForward,
+                          onDecrease: _pageIndex > 0 ? _turnBackward : null,
+                          customSemanticsActions: {
+                            if (_pageIndex > 0)
+                              const CustomSemanticsAction(
+                                label: ReaderTexts.previousPage,
+                              ): _turnBackward,
+                            CustomSemanticsAction(
+                              label: isLastPage
+                                  ? ReaderTexts.finishBook
+                                  : ReaderTexts.nextPage,
+                            ): _turnForward,
+                          },
+                          child: GestureDetector(
+                            key: _viewportKey,
+                            behavior: HitTestBehavior.opaque,
+                            onTapUp: (details) => _handleBodyTapUp(
+                              details,
+                              constraints.maxWidth,
+                              textDirection,
+                            ),
+                            onHorizontalDragEnd: (details) =>
+                                _handleHorizontalDragEnd(
+                                  details,
+                                  textDirection,
+                                ),
+                            child: Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                Positioned.fill(
+                                  child: NocheFollow(
+                                    key: const Key('reader-page-follow'),
+                                    contentKey: _pageTurnId,
+                                    side: _pageTurnSide,
+                                    distance: NocheMotion.page,
+                                    child: SizedBox.expand(
+                                      child: ReaderPageView(
+                                        document: doc,
+                                        page: currentPage,
+                                        settings: _settings,
+                                        palette: palette,
+                                        language: lang,
+                                        earIndex: earIndex,
+                                        activeSentenceId: _activeSentenceId,
+                                        selectedWord: _selectedWord,
+                                        viewportKey: _viewportKey,
+                                        onWordTap: (c, p, offset, tok, rect) =>
+                                            unawaited(
+                                              _handleWordTap(
+                                                c,
+                                                p,
+                                                offset,
+                                                tok,
+                                                rect,
+                                              ),
+                                            ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                ReaderWordBubbleOverlay(
+                                  selected: _selectedWord,
+                                  viewportSize: viewportSize,
+                                  settings: _settings,
+                                  palette: palette,
+                                  language: lang,
+                                  stageMax: widget.stageMax,
+                                  onReplay: (selected) =>
+                                      unawaited(_replaySelectedWord(selected)),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  _buildFooter(context, doc, lang, palette),
+                ],
               ),
-              _buildFooter(context, doc, lang, palette),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 

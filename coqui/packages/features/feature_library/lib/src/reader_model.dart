@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui' as ui show lerpDouble;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
@@ -102,6 +103,67 @@ class ReaderPalette {
     ReaderPageTheme.sepia => sepia,
     ReaderPageTheme.day => day,
   };
+
+  static ReaderPalette lerp(ReaderPalette a, ReaderPalette b, double t) =>
+      ReaderPalette(
+        ground: Color.lerp(a.ground, b.ground, t)!,
+        body: Color.lerp(a.body, b.body, t)!,
+        heading: Color.lerp(a.heading, b.heading, t)!,
+        label: Color.lerp(a.label, b.label, t)!,
+        rule: Color.lerp(a.rule, b.rule, t)!,
+        lit: Color.lerp(a.lit, b.lit, t)!,
+        litText: Color.lerp(a.litText, b.litText, t)!,
+        track: Color.lerp(a.track, b.track, t)!,
+        chromeIcon: Color.lerp(a.chromeIcon, b.chromeIcon, t)!,
+        bubbleFill: Color.lerp(a.bubbleFill, b.bubbleFill, t)!,
+        bubbleText: Color.lerp(a.bubbleText, b.bubbleText, t)!,
+        bubbleShadowColor: Color.lerp(
+          a.bubbleShadowColor,
+          b.bubbleShadowColor,
+          t,
+        )!,
+        bubbleShadowAlpha: ui.lerpDouble(
+          a.bubbleShadowAlpha,
+          b.bubbleShadowAlpha,
+          t,
+        )!,
+      );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ReaderPalette &&
+          other.ground == ground &&
+          other.body == body &&
+          other.heading == heading &&
+          other.label == label &&
+          other.rule == rule &&
+          other.lit == lit &&
+          other.litText == litText &&
+          other.track == track &&
+          other.chromeIcon == chromeIcon &&
+          other.bubbleFill == bubbleFill &&
+          other.bubbleText == bubbleText &&
+          other.bubbleShadowColor == bubbleShadowColor &&
+          other.bubbleShadowAlpha == bubbleShadowAlpha;
+
+  @override
+  int get hashCode => Object.hash(
+    ReaderPalette,
+    ground,
+    body,
+    heading,
+    label,
+    rule,
+    lit,
+    litText,
+    track,
+    chromeIcon,
+    bubbleFill,
+    bubbleText,
+    bubbleShadowColor,
+    bubbleShadowAlpha,
+  );
 }
 
 class ReaderSettings {

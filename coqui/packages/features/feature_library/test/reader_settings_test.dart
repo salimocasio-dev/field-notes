@@ -120,6 +120,16 @@ Color _readerPageBackground(WidgetTester tester) {
   return material.color!;
 }
 
+Color _sizeDashColor(WidgetTester tester, int index) {
+  final container = tester.widget<Container>(
+    find.descendant(
+      of: find.byKey(ValueKey('reader-size-dash-$index')),
+      matching: find.byType(Container),
+    ),
+  );
+  return (container.decoration! as BoxDecoration).color!;
+}
+
 Future<void> _openSettingsSheet(WidgetTester tester) async {
   await tester.tap(
     find.bySemanticsLabel(NocheA11y.label(NocheA11y.textAndPage)),
@@ -262,16 +272,18 @@ void main() {
 
         expect(find.text('TEXT SIZE'), findsOneWidget);
         expect(find.text('Step 4 of 7'), findsOneWidget);
-        final dashes = tester.widget<NocheDashes>(find.byType(NocheDashes));
-        expect(dashes.states, [
-          NocheDashState.done,
-          NocheDashState.done,
-          NocheDashState.done,
-          NocheDashState.done,
-          NocheDashState.notYet,
-          NocheDashState.notYet,
-          NocheDashState.notYet,
-        ]);
+        expect(
+          [for (var i = 0; i < 7; i++) _sizeDashColor(tester, i)],
+          [
+            NocheColors.text,
+            NocheColors.text,
+            NocheColors.text,
+            NocheColors.text,
+            NocheColors.line,
+            NocheColors.line,
+            NocheColors.line,
+          ],
+        );
 
         // Tap Larger A three times: 4 -> 5 -> 6 -> 7, then extra tap clamps at 7.
         final larger = find.bySemanticsLabel(
@@ -552,19 +564,19 @@ void main() {
           expect(tester.getSize(pill).height, 48);
         }
 
-        // Switch to Sepia -> page behind scrim turns Sepia immediately.
+        // Switch to Sepia -> page behind sheet transitions to Sepia in move.
         await tester.tap(
           find.bySemanticsLabel(NocheA11y.label(NocheA11y.pageSepia)),
         );
-        await settle(tester);
+        await tester.pumpAndSettle();
         expect(_readerPageBackground(tester), NocheColors.sepiaPage);
         expect(_firstBodyTextStyle(tester).color, NocheColors.sepiaText);
 
-        // Switch to Day -> page behind scrim turns Day immediately.
+        // Switch to Day -> page behind sheet transitions to Day in move.
         await tester.tap(
           find.bySemanticsLabel(NocheA11y.label(NocheA11y.pageDay)),
         );
-        await settle(tester);
+        await tester.pumpAndSettle();
         expect(_readerPageBackground(tester), NocheColors.dayPage);
         expect(_firstBodyTextStyle(tester).color, NocheColors.dayText);
 
@@ -586,7 +598,7 @@ void main() {
     );
 
     testWidgets(
-      'underline switch hides both solid and dotted underlines immediately and survives restart',
+      'underline switch hides both solid and dotted underlines in quick and survives restart',
       (tester) async {
         tester.view.devicePixelRatio = 1;
         tester.view.physicalSize = const Size(390, 844);
@@ -643,9 +655,9 @@ void main() {
 
         await _openSettingsSheet(tester);
         await tester.tap(find.text("Underline words I'm still learning"));
-        await settle(tester);
+        await tester.pumpAndSettle();
 
-        // Both underline kinds disappear immediately.
+        // Both underline kinds fade away cleanly.
         final after = _paintPageDecorations(tester);
         expect(after.lines, isEmpty);
         expect(after.rects, isEmpty);
@@ -981,6 +993,858 @@ void main() {
         );
         await tester.pumpAndSettle();
         expect(find.textContaining('1 / '), findsNothing);
+      },
+    );
+  });
+
+  group('Text and page motion (N8.14)', () {
+    Color aaSurfaceColor(WidgetTester tester) {
+      final box = tester.widget<Container>(
+        find.byKey(const Key('reader-aa-button-surface')),
+      );
+      return (box.decoration! as BoxDecoration).color!;
+    }
+
+    Color aaLabelColor(WidgetTester tester) => tester
+        .widget<Text>(find.byKey(const Key('reader-aa-button-label')))
+        .style!
+        .color!;
+
+    Color textColorByKey(WidgetTester tester, Key key) =>
+        tester.widget<Text>(find.byKey(key)).style!.color!;
+
+    Color containerColorByKey(WidgetTester tester, Key key) =>
+        tester.widget<Container>(find.byKey(key)).color!;
+
+    double argbAlpha(int argb) => ((argb >> 24) & 0xff) / 255.0;
+
+    void expectIntermediateColor(Color actual, Color start, Color end) {
+      expect(actual, isNot(start));
+      expect(actual, isNot(end));
+    }
+
+    Future<void> pumpSampleReader(
+      WidgetTester tester, {
+      Services? services,
+      bool disableAnimations = false,
+      TextDirection? appDirection,
+    }) async {
+      tester.view.devicePixelRatio = 1;
+      tester.view.physicalSize = const Size(390, 844);
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
+
+      final svc = services ?? fakeServices();
+      final store = ReadingStore(svc.storage(ReadingStore.space));
+      final book = await _addSampleBook(store);
+
+      Widget app = MaterialApp(
+        builder: appDirection == null
+            ? null
+            : (context, child) =>
+                  Directionality(textDirection: appDirection, child: child!),
+        home: TextReader(services: svc, id: book.id),
+      );
+      if (disableAnimations) {
+        app = MediaQuery(
+          data: const MediaQueryData(
+            size: Size(390, 844),
+            disableAnimations: true,
+          ),
+          child: app,
+        );
+      }
+
+      await tester.pumpWidget(app);
+      await settle(tester);
+    }
+
+    testWidgets(
+      'scrimless sheet slides in pageIn/pageOut, closes on tap above, and Aa button fills/unfills in quick',
+      (tester) async {
+        await pumpSampleReader(tester);
+
+        // Closed state: Aa button is transparent with nightText label.
+        expect(aaSurfaceColor(tester).a, closeTo(0.0, 1e-6));
+        expect(aaLabelColor(tester), NocheColors.nightText);
+
+        // Tap Aa to open.
+        await tester.tap(find.byKey(const Key('reader-aa-button')));
+        await tester.pump();
+
+        // No scrim barrier or NocheColors.scrim overlay anywhere in the tree.
+        expect(find.byKey(const ValueKey('noche_sheet_scrim')), findsNothing);
+        expect(
+          find.byWidgetPredicate(
+            (w) =>
+                (w is ModalBarrier && w.color == NocheColors.scrim) ||
+                (w is ColoredBox && w.color == NocheColors.scrim),
+          ),
+          findsNothing,
+        );
+
+        // Frame 0: sheet starts off bottom (dy == 1.0), Aa starts at 0.
+        final surfaceFinder = find.byKey(
+          const ValueKey('reader_settings_sheet_surface'),
+        );
+        expect(surfaceFinder, findsOneWidget);
+        expect(
+          tester.widget<FractionalTranslation>(surfaceFinder).translation.dy,
+          closeTo(1.0, 1e-6),
+        );
+        expect(aaSurfaceColor(tester).a, closeTo(0.0, 1e-6));
+
+        // Midpoint of quick: Aa surface and label are mid-transition.
+        await tester.pump(NocheMotion.quick ~/ 2);
+        expect(aaSurfaceColor(tester).a, greaterThan(0.0));
+        expect(aaSurfaceColor(tester).a, lessThan(1.0));
+        expectIntermediateColor(
+          aaLabelColor(tester),
+          NocheColors.nightText,
+          NocheColors.lessonGround,
+        );
+
+        // End of quick: Aa fill is complete while sheet is still rising.
+        await tester.pump(NocheMotion.quick - (NocheMotion.quick ~/ 2));
+        expect(aaSurfaceColor(tester), NocheColors.nightText);
+        expect(aaLabelColor(tester), NocheColors.lessonGround);
+
+        // Midpoint of pageIn: sheet is strictly partway up following enter curve.
+        final toPageInMid = (NocheMotion.pageIn ~/ 2) - NocheMotion.quick;
+        if (toPageInMid > Duration.zero) {
+          await tester.pump(toPageInMid);
+        }
+        final midInDy = tester
+            .widget<FractionalTranslation>(surfaceFinder)
+            .translation
+            .dy;
+        expect(midInDy, greaterThan(0.0));
+        expect(midInDy, lessThan(1.0));
+        expect(midInDy, closeTo(1.0 - NocheMotion.enter.transform(0.5), 0.08));
+
+        // End of pageIn: sheet rests at dy == 0.0.
+        await tester.pump(
+          NocheMotion.pageIn -
+              (toPageInMid > Duration.zero
+                  ? NocheMotion.pageIn ~/ 2
+                  : NocheMotion.quick),
+        );
+        expect(
+          tester.widget<FractionalTranslation>(surfaceFinder).translation.dy,
+          closeTo(0.0, 1e-6),
+        );
+
+        // Tap above the sheet to dismiss.
+        await tester.tap(find.byKey(const Key('reader-settings-closer')));
+        await tester.pump();
+
+        // Midpoint of quick during close: Aa unfills partway; sheet begins exiting.
+        await tester.pump(NocheMotion.quick ~/ 2);
+        expect(aaSurfaceColor(tester).a, greaterThan(0.0));
+        expect(aaSurfaceColor(tester).a, lessThan(1.0));
+        expectIntermediateColor(
+          aaLabelColor(tester),
+          NocheColors.lessonGround,
+          NocheColors.nightText,
+        );
+
+        // Midpoint of pageOut: sheet slides down along exit curve.
+        final toPageOutMid =
+            (NocheMotion.pageOut ~/ 2) - (NocheMotion.quick ~/ 2);
+        await tester.pump(toPageOutMid);
+        final midOutDy = tester
+            .widget<FractionalTranslation>(surfaceFinder)
+            .translation
+            .dy;
+        expect(midOutDy, greaterThan(0.0));
+        expect(midOutDy, lessThan(1.0));
+        expect(midOutDy, closeTo(NocheMotion.exit.transform(0.5), 0.08));
+
+        // End of quick: Aa is back to unfilled.
+        final toQuickEnd = NocheMotion.quick - (NocheMotion.pageOut ~/ 2);
+        if (toQuickEnd > Duration.zero) {
+          await tester.pump(toQuickEnd);
+        }
+        expect(aaSurfaceColor(tester).a, closeTo(0.0, 1e-6));
+        expect(aaLabelColor(tester), NocheColors.nightText);
+
+        // End of pageOut: sheet is dismissed.
+        await tester.pump(NocheMotion.pageOut);
+        await tester.pump();
+        expect(find.byType(ReaderSettingsSheet), findsNothing);
+      },
+    );
+
+    testWidgets(
+      'text size dashes fill and empty in quick while page body fontSize updates immediately',
+      (tester) async {
+        await pumpSampleReader(tester);
+        await _openSettingsSheet(tester);
+
+        final larger = find.bySemanticsLabel(
+          NocheA11y.label(NocheA11y.largerText),
+        );
+        final smaller = find.bySemanticsLabel(
+          NocheA11y.label(NocheA11y.smallerText),
+        );
+
+        expect(_firstBodyTextStyle(tester).fontSize, 19);
+        expect(_sizeDashColor(tester, 4), NocheColors.line);
+
+        // Step up 4 -> 5: body fontSize changes on frame 0; dash 4 fills in quick.
+        await tester.tap(larger);
+        await tester.pump();
+        expect(_firstBodyTextStyle(tester).fontSize, 21);
+        expect(_sizeDashColor(tester, 4), NocheColors.line);
+
+        await tester.pump(NocheMotion.quick ~/ 2);
+        expectIntermediateColor(
+          _sizeDashColor(tester, 4),
+          NocheColors.line,
+          NocheColors.text,
+        );
+
+        await tester.pump(NocheMotion.quick - (NocheMotion.quick ~/ 2));
+        expect(_sizeDashColor(tester, 4), NocheColors.text);
+
+        // Step down 5 -> 4: body fontSize changes on frame 0; dash 4 empties in quick.
+        await tester.tap(smaller);
+        await tester.pump();
+        expect(_firstBodyTextStyle(tester).fontSize, 19);
+        expect(_sizeDashColor(tester, 4), NocheColors.text);
+
+        await tester.pump(NocheMotion.quick ~/ 2);
+        expectIntermediateColor(
+          _sizeDashColor(tester, 4),
+          NocheColors.text,
+          NocheColors.line,
+        );
+
+        await tester.pump(NocheMotion.quick - (NocheMotion.quick ~/ 2));
+        expect(_sizeDashColor(tester, 4), NocheColors.line);
+      },
+    );
+
+    testWidgets(
+      'font outline mark slides horizontally in move on travel while page body fontFamily updates immediately',
+      (tester) async {
+        await pumpSampleReader(tester);
+        await _openSettingsSheet(tester);
+
+        final markFinder = find.byKey(
+          const ValueKey('noche_outline_group_mark'),
+        );
+        final literataFinder = find.bySemanticsLabel('Literata');
+        final atkinsonFinder = find.bySemanticsLabel('Atkinson');
+
+        final startX = tester.getTopLeft(markFinder).dx;
+        final targetX = tester.getTopLeft(atkinsonFinder).dx;
+        expect(startX, closeTo(tester.getTopLeft(literataFinder).dx, 0.5));
+        expect(targetX, greaterThan(startX));
+
+        await tester.tap(atkinsonFinder);
+        await tester.pump();
+
+        // Body fontFamily updates on frame 0; outline mark begins at startX.
+        expect(
+          _firstBodyTextStyle(tester).fontFamily,
+          NocheType.body.fontFamily,
+        );
+        expect(tester.getTopLeft(markFinder).dx, closeTo(startX, 0.5));
+
+        // Midpoint of move: mark travels along NocheMotion.travel.
+        await tester.pump(NocheMotion.move ~/ 2);
+        final midX = tester.getTopLeft(markFinder).dx;
+        expect(midX, greaterThan(startX));
+        expect(midX, lessThan(targetX));
+        expect(
+          midX,
+          closeTo(
+            ui.lerpDouble(startX, targetX, NocheMotion.travel.transform(0.5))!,
+            2.0,
+          ),
+        );
+
+        // End of move: mark lands on Atkinson tile.
+        await tester.pump(NocheMotion.move - (NocheMotion.move ~/ 2));
+        expect(tester.getTopLeft(markFinder).dx, closeTo(targetX, 0.5));
+      },
+    );
+
+    testWidgets(
+      'line spacing thumb slides in move on travel while page line height updates immediately',
+      (tester) async {
+        await pumpSampleReader(tester);
+        await _openSettingsSheet(tester);
+
+        double renderedLineHeight() {
+          final style = _firstBodyTextStyle(tester);
+          return style.fontSize! * style.height!;
+        }
+
+        final thumbFinder = find.byKey(
+          const ValueKey('reader-line-spacing-thumb'),
+        );
+        final normalFinder = find.bySemanticsLabel(
+          NocheA11y.label(NocheA11y.lineSpacingNormal),
+        );
+        final looseFinder = find.bySemanticsLabel(
+          NocheA11y.label(NocheA11y.lineSpacingLoose),
+        );
+
+        final startX = tester.getTopLeft(thumbFinder).dx;
+        final targetX = tester.getTopLeft(looseFinder).dx;
+        expect(startX, closeTo(tester.getTopLeft(normalFinder).dx, 0.5));
+        expect(targetX, greaterThan(startX));
+
+        await tester.tap(looseFinder);
+        await tester.pump();
+
+        // Line height updates immediately on frame 0; thumb starts at startX.
+        expect(renderedLineHeight(), closeTo(31.0 * 1.15, 0.01));
+        expect(tester.getTopLeft(thumbFinder).dx, closeTo(startX, 0.5));
+
+        // Midpoint of move: thumb travels along NocheMotion.travel.
+        await tester.pump(NocheMotion.move ~/ 2);
+        final midX = tester.getTopLeft(thumbFinder).dx;
+        expect(midX, greaterThan(startX));
+        expect(midX, lessThan(targetX));
+        expect(
+          midX,
+          closeTo(
+            ui.lerpDouble(startX, targetX, NocheMotion.travel.transform(0.5))!,
+            2.0,
+          ),
+        );
+
+        // End of move: thumb lands on Loose option.
+        await tester.pump(NocheMotion.move - (NocheMotion.move ~/ 2));
+        expect(tester.getTopLeft(thumbFinder).dx, closeTo(targetX, 0.5));
+      },
+    );
+
+    testWidgets(
+      'page colour ring slides and page ground, text, labels, and rule all transition together in move on travel',
+      (tester) async {
+        await pumpSampleReader(tester);
+        await _openSettingsSheet(tester);
+
+        final ringFinder = find.byKey(const ValueKey('reader-page-color-ring'));
+        final nightFinder = find.bySemanticsLabel(
+          NocheA11y.label(NocheA11y.pageNight),
+        );
+        final sepiaFinder = find.bySemanticsLabel(
+          NocheA11y.label(NocheA11y.pageSepia),
+        );
+
+        final startX = tester.getTopLeft(ringFinder).dx;
+        final targetX = tester.getTopLeft(sepiaFinder).dx;
+        expect(startX, closeTo(tester.getTopLeft(nightFinder).dx, 0.5));
+        expect(targetX, greaterThan(startX));
+
+        // Initial Night colors.
+        expect(_readerPageBackground(tester), NocheColors.lessonGround);
+        expect(_firstBodyTextStyle(tester).color, NocheColors.nightText);
+        expect(
+          textColorByKey(tester, const Key('reader-book-title')),
+          NocheColors.lessonLabel,
+        );
+        expect(
+          textColorByKey(tester, const Key('reader-chapter-label')),
+          NocheColors.lessonLabel,
+        );
+        expect(
+          textColorByKey(tester, const Key('reader-chapter-title')),
+          NocheColors.text,
+        );
+        expect(
+          containerColorByKey(tester, const Key('reader-chapter-rule')),
+          NocheColors.lessonBorder,
+        );
+
+        // Tap Sepia.
+        await tester.tap(sepiaFinder);
+        await tester.pump();
+
+        // Frame 0: ring and colors start at Night.
+        expect(tester.getTopLeft(ringFinder).dx, closeTo(startX, 0.5));
+        expect(_readerPageBackground(tester), NocheColors.lessonGround);
+
+        // Midpoint of move: ring AND all page colors are strictly intermediate.
+        await tester.pump(NocheMotion.move ~/ 2);
+        final midX = tester.getTopLeft(ringFinder).dx;
+        expect(midX, greaterThan(startX));
+        expect(midX, lessThan(targetX));
+        expect(
+          midX,
+          closeTo(
+            ui.lerpDouble(startX, targetX, NocheMotion.travel.transform(0.5))!,
+            2.0,
+          ),
+        );
+
+        expectIntermediateColor(
+          _readerPageBackground(tester),
+          NocheColors.lessonGround,
+          NocheColors.sepiaPage,
+        );
+        expectIntermediateColor(
+          _firstBodyTextStyle(tester).color!,
+          NocheColors.nightText,
+          NocheColors.sepiaText,
+        );
+        expectIntermediateColor(
+          textColorByKey(tester, const Key('reader-book-title')),
+          NocheColors.lessonLabel,
+          NocheColors.sepiaLabel,
+        );
+        expectIntermediateColor(
+          textColorByKey(tester, const Key('reader-chapter-label')),
+          NocheColors.lessonLabel,
+          NocheColors.sepiaLabel,
+        );
+        expectIntermediateColor(
+          textColorByKey(tester, const Key('reader-chapter-title')),
+          NocheColors.text,
+          NocheColors.sepiaText,
+        );
+        expectIntermediateColor(
+          containerColorByKey(tester, const Key('reader-chapter-rule')),
+          NocheColors.lessonBorder,
+          NocheColors.sepiaRule,
+        );
+
+        // End of move: ring lands on Sepia and all colors reach exact Sepia palette.
+        await tester.pump(NocheMotion.move - (NocheMotion.move ~/ 2));
+        expect(tester.getTopLeft(ringFinder).dx, closeTo(targetX, 0.5));
+        expect(_readerPageBackground(tester), NocheColors.sepiaPage);
+        expect(_firstBodyTextStyle(tester).color, NocheColors.sepiaText);
+        expect(
+          textColorByKey(tester, const Key('reader-book-title')),
+          NocheColors.sepiaLabel,
+        );
+        expect(
+          textColorByKey(tester, const Key('reader-chapter-label')),
+          NocheColors.sepiaLabel,
+        );
+        expect(
+          textColorByKey(tester, const Key('reader-chapter-title')),
+          NocheColors.sepiaText,
+        );
+        expect(
+          containerColorByKey(tester, const Key('reader-chapter-rule')),
+          NocheColors.sepiaRule,
+        );
+      },
+    );
+
+    testWidgets(
+      'underline switch knob travels in move while solid and dotted underlines fade out/in in quick',
+      (tester) async {
+        tester.view.devicePixelRatio = 1;
+        tester.view.physicalSize = const Size(390, 844);
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        final progress = FakeProgressStore();
+        progress.import(
+          jsonEncode({
+            ...progress.raw,
+            'palabras': {
+              'casa': _earWord('casa', 4).toJson(),
+              'encendida': _earWord('encendida', 2).toJson(),
+            },
+          }),
+        );
+        final services = fakeServices(progress: progress);
+        final store = ReadingStore(services.storage(ReadingStore.space));
+        final book = await store.add(
+          now: 1,
+          title: 'Prueba',
+          body: 'Casa encendida sofrito.',
+          generated: false,
+        );
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: TextReader(services: services, id: book.id),
+          ),
+        );
+        await settle(tester);
+        await _openSettingsSheet(tester);
+
+        final switchFinder = find.byKey(const Key('reader-switch-underline'));
+        final knobFinder = find.descendant(
+          of: switchFinder,
+          matching: find.byKey(const ValueKey('noche_switch_knob')),
+        );
+        final onKnobX = tester.getTopLeft(knobFinder).dx;
+
+        // Toggle OFF.
+        await tester.tap(switchFinder);
+        await tester.pump();
+
+        // Midpoint of quick: both underline kinds fade partway and knob is moving.
+        await tester.pump(NocheMotion.quick ~/ 2);
+        final midOff = _paintPageDecorations(tester);
+        expect(midOff.lines, isNotEmpty);
+        expect(midOff.rects, isNotEmpty);
+        expect(argbAlpha(midOff.lines.first.argb), greaterThan(0.0));
+        expect(argbAlpha(midOff.lines.first.argb), lessThan(1.0));
+        expect(argbAlpha(midOff.rects.first.argb), greaterThan(0.0));
+        expect(argbAlpha(midOff.rects.first.argb), lessThan(1.0));
+        final midOffKnobX = tester.getTopLeft(knobFinder).dx;
+        expect(midOffKnobX, lessThan(onKnobX));
+
+        // End of quick: underlines are completely faded out.
+        await tester.pump(NocheMotion.quick - (NocheMotion.quick ~/ 2));
+        final endOff = _paintPageDecorations(tester);
+        expect(endOff.lines, isEmpty);
+        expect(endOff.rects, isEmpty);
+
+        // End of move: knob finishes traveling to start.
+        await tester.pump(NocheMotion.move - NocheMotion.quick);
+        final offKnobX = tester.getTopLeft(knobFinder).dx;
+        expect(offKnobX, lessThan(midOffKnobX));
+
+        // Toggle ON.
+        await tester.tap(switchFinder);
+        await tester.pump();
+
+        // Midpoint of quick: both underline kinds fade back in partway.
+        await tester.pump(NocheMotion.quick ~/ 2);
+        final midOn = _paintPageDecorations(tester);
+        expect(midOn.lines, isNotEmpty);
+        expect(midOn.rects, isNotEmpty);
+        expect(argbAlpha(midOn.lines.first.argb), greaterThan(0.0));
+        expect(argbAlpha(midOn.lines.first.argb), lessThan(1.0));
+        expect(argbAlpha(midOn.rects.first.argb), greaterThan(0.0));
+        expect(argbAlpha(midOn.rects.first.argb), lessThan(1.0));
+        final midOnKnobX = tester.getTopLeft(knobFinder).dx;
+        expect(midOnKnobX, greaterThan(offKnobX));
+        expect(midOnKnobX, lessThan(onKnobX));
+
+        // End of quick: underlines are back to full color.
+        await tester.pump(NocheMotion.quick - (NocheMotion.quick ~/ 2));
+        final endOn = _paintPageDecorations(tester);
+        expect(
+          endOn.lines.any((l) => l.argb == NocheColors.listening.toARGB32()),
+          isTrue,
+        );
+        expect(
+          endOn.rects.any((r) => r.argb == NocheColors.lessonLabel.toARGB32()),
+          isTrue,
+        );
+
+        // End of move: knob returns to ON position.
+        await tester.pump(NocheMotion.move - NocheMotion.quick);
+        expect(tester.getTopLeft(knobFinder).dx, closeTo(onKnobX, 0.5));
+      },
+    );
+
+    testWidgets(
+      'light-up-sentence switch knob travels in move while active sentence highlight fades out/in in quick',
+      (tester) async {
+        tester.view.devicePixelRatio = 1;
+        tester.view.physicalSize = const Size(390, 844);
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        final course = TestCourse();
+        final clips = TimedClips(length: const Duration(seconds: 10));
+        final services = fakeServices(course: course, clips: clips);
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: TextReader(services: services, id: 'uno'),
+          ),
+        );
+        await settle(tester);
+
+        // Start playback so first sentence is active and lit.
+        await tester.tap(find.byKey(const Key('reader-play-disc')));
+        await tester.pump();
+        await tester.pump(NocheMotion.quick);
+
+        await _openSettingsSheet(tester);
+
+        final switchFinder = find.byKey(const Key('reader-switch-lit'));
+        final knobFinder = find.descendant(
+          of: switchFinder,
+          matching: find.byKey(const ValueKey('noche_switch_knob')),
+        );
+        final onKnobX = tester.getTopLeft(knobFinder).dx;
+        final fullLitAlpha = NocheColors.litSentence.a;
+
+        // Toggle OFF.
+        await tester.tap(switchFinder);
+        await tester.pump();
+
+        // Midpoint of quick: sentence highlight alpha is strictly intermediate.
+        await tester.pump(NocheMotion.quick ~/ 2);
+        final midOff = _paintPageDecorations(tester);
+        expect(midOff.rrects, isNotEmpty);
+        expect(argbAlpha(midOff.rrects.first.argb), greaterThan(0.0));
+        expect(argbAlpha(midOff.rrects.first.argb), lessThan(fullLitAlpha));
+        final midOffKnobX = tester.getTopLeft(knobFinder).dx;
+        expect(midOffKnobX, lessThan(onKnobX));
+
+        // End of quick: highlight faded out completely.
+        await tester.pump(NocheMotion.quick - (NocheMotion.quick ~/ 2));
+        expect(_paintPageDecorations(tester).rrects, isEmpty);
+
+        // End of move: knob lands at OFF position.
+        await tester.pump(NocheMotion.move - NocheMotion.quick);
+        final offKnobX = tester.getTopLeft(knobFinder).dx;
+        expect(offKnobX, lessThan(midOffKnobX));
+
+        // Toggle ON.
+        await tester.tap(switchFinder);
+        await tester.pump();
+
+        // Midpoint of quick: sentence highlight fades back in partway.
+        await tester.pump(NocheMotion.quick ~/ 2);
+        final midOn = _paintPageDecorations(tester);
+        expect(midOn.rrects, isNotEmpty);
+        expect(argbAlpha(midOn.rrects.first.argb), greaterThan(0.0));
+        expect(argbAlpha(midOn.rrects.first.argb), lessThan(fullLitAlpha));
+        final midOnKnobX = tester.getTopLeft(knobFinder).dx;
+        expect(midOnKnobX, greaterThan(offKnobX));
+        expect(midOnKnobX, lessThan(onKnobX));
+
+        // End of quick: highlight reaches full litSentence color.
+        await tester.pump(NocheMotion.quick - (NocheMotion.quick ~/ 2));
+        expect(
+          _paintPageDecorations(tester).rrects
+              .any((r) => r.argb == NocheColors.litSentence.toARGB32()),
+          isTrue,
+        );
+
+        // End of move: knob returns to ON position.
+        await tester.pump(NocheMotion.move - NocheMotion.quick);
+        expect(tester.getTopLeft(knobFinder).dx, closeTo(onKnobX, 0.5));
+
+        // Close sheet and stop narration cleanly.
+        await tester.tap(find.byKey(const Key('reader-settings-closer')));
+        await tester.pumpAndSettle();
+        await tester.tap(
+          find.bySemanticsLabel(NocheA11y.label(NocheA11y.pause)),
+        );
+        await settle(tester);
+      },
+    );
+
+    testWidgets(
+      'reduced motion fades sheet in place, snaps sliding marks with quick fade, and finishes page colors in quick',
+      (tester) async {
+        await pumpSampleReader(tester, disableAnimations: true);
+
+        // Open sheet: uses Opacity (no FractionalTranslation) and fades in quick.
+        await tester.tap(find.byKey(const Key('reader-aa-button')));
+        await tester.pump();
+        final surfaceFinder = find.byKey(
+          const ValueKey('reader_settings_sheet_surface'),
+        );
+        expect(surfaceFinder, findsOneWidget);
+        expect(tester.widget(surfaceFinder), isA<Opacity>());
+        expect(
+          find.ancestor(
+            of: find.byType(NocheSheet),
+            matching: find.byType(FractionalTranslation),
+          ),
+          findsNothing,
+        );
+
+        await tester.pump(NocheMotion.quick ~/ 2);
+        final midSheetOpacity = tester.widget<Opacity>(surfaceFinder).opacity;
+        expect(midSheetOpacity, greaterThan(0.0));
+        expect(midSheetOpacity, lessThan(1.0));
+
+        await tester.pump(NocheMotion.quick - (NocheMotion.quick ~/ 2));
+        expect(
+          tester.widget<Opacity>(surfaceFinder).opacity,
+          closeTo(1.0, 1e-6),
+        );
+
+        // Font outline snaps to Atkinson on frame 0 and fades in quick.
+        final atkinsonFinder = find.bySemanticsLabel('Atkinson');
+        final fontMarkFinder = find.byKey(
+          const ValueKey('noche_outline_group_mark'),
+        );
+        final atkinsonX = tester.getTopLeft(atkinsonFinder).dx;
+        await tester.tap(atkinsonFinder);
+        await tester.pump();
+        expect(tester.getTopLeft(fontMarkFinder).dx, closeTo(atkinsonX, 0.5));
+        final fontMarkOpacityWidget = tester.widget<Opacity>(
+          find
+              .ancestor(of: fontMarkFinder, matching: find.byType(Opacity))
+              .first,
+        );
+        expect(fontMarkOpacityWidget.opacity, closeTo(0.0, 1e-6));
+        await tester.pump(NocheMotion.quick ~/ 2);
+        final fontMarkMidOpacity = tester
+            .widget<Opacity>(
+              find
+                  .ancestor(of: fontMarkFinder, matching: find.byType(Opacity))
+                  .first,
+            )
+            .opacity;
+        expect(fontMarkMidOpacity, greaterThan(0.0));
+        expect(fontMarkMidOpacity, lessThan(1.0));
+        await tester.pump(NocheMotion.quick - (NocheMotion.quick ~/ 2));
+
+        // Line spacing thumb snaps to Loose on frame 0 and fades in quick.
+        final looseFinder = find.bySemanticsLabel(
+          NocheA11y.label(NocheA11y.lineSpacingLoose),
+        );
+        final spacingThumbFinder = find.byKey(
+          const ValueKey('reader-line-spacing-thumb'),
+        );
+        final looseX = tester.getTopLeft(looseFinder).dx;
+        await tester.tap(looseFinder);
+        await tester.pump();
+        expect(tester.getTopLeft(spacingThumbFinder).dx, closeTo(looseX, 0.5));
+        await tester.pump(NocheMotion.quick ~/ 2);
+        final spacingMidOpacity = tester
+            .widget<Opacity>(
+              find
+                  .ancestor(
+                    of: spacingThumbFinder,
+                    matching: find.byType(Opacity),
+                  )
+                  .first,
+            )
+            .opacity;
+        expect(spacingMidOpacity, greaterThan(0.0));
+        expect(spacingMidOpacity, lessThan(1.0));
+        await tester.pump(NocheMotion.quick - (NocheMotion.quick ~/ 2));
+
+        // Page colour ring snaps to Sepia on frame 0 and page colors finish in quick.
+        final sepiaFinder = find.bySemanticsLabel(
+          NocheA11y.label(NocheA11y.pageSepia),
+        );
+        final pageRingFinder = find.byKey(
+          const ValueKey('reader-page-color-ring'),
+        );
+        final sepiaX = tester.getTopLeft(sepiaFinder).dx;
+        await tester.tap(sepiaFinder);
+        await tester.pump();
+        expect(tester.getTopLeft(pageRingFinder).dx, closeTo(sepiaX, 0.5));
+        await tester.pump(NocheMotion.quick ~/ 2);
+        final ringMidOpacity = tester
+            .widget<Opacity>(
+              find
+                  .ancestor(of: pageRingFinder, matching: find.byType(Opacity))
+                  .first,
+            )
+            .opacity;
+        expect(ringMidOpacity, greaterThan(0.0));
+        expect(ringMidOpacity, lessThan(1.0));
+        expectIntermediateColor(
+          _readerPageBackground(tester),
+          NocheColors.lessonGround,
+          NocheColors.sepiaPage,
+        );
+        await tester.pump(NocheMotion.quick - (NocheMotion.quick ~/ 2));
+        expect(_readerPageBackground(tester), NocheColors.sepiaPage);
+        expect(_firstBodyTextStyle(tester).color, NocheColors.sepiaText);
+      },
+    );
+
+    testWidgets(
+      'RTL Arabic renders and animates scrimless sheet and sliding controls cleanly',
+      (tester) async {
+        tester.view.devicePixelRatio = 1;
+        tester.view.physicalSize = const Size(390, 844);
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        final course = FakeCourseCatalog.arabic();
+        await course.load();
+        final services = fakeServices(course: course);
+        final store = ReadingStore(services.storage(ReadingStore.space));
+        final book = await store.add(
+          now: 1,
+          title: 'بيت جدة',
+          body: 'هذا بيت جدة الكبير في المدينة القديمة.',
+          generated: false,
+        );
+
+        await tester.pumpWidget(
+          MaterialApp(
+            builder: (context, child) =>
+                Directionality(textDirection: TextDirection.rtl, child: child!),
+            home: TextReader(services: services, id: book.id),
+          ),
+        );
+        await settle(tester);
+
+        await _openSettingsSheet(tester);
+        expect(tester.takeException(), isNull);
+        expect(find.byKey(const ValueKey('noche_sheet_scrim')), findsNothing);
+
+        // In RTL, options lay out right-to-left: Atkinson is to the left of Literata,
+        // Loose is to the left of Normal, and Sepia is to the left of Night.
+        final fontMark = find.byKey(const ValueKey('noche_outline_group_mark'));
+        final atkinson = find.bySemanticsLabel('Atkinson');
+        final fontStartX = tester.getTopLeft(fontMark).dx;
+        final fontTargetX = tester.getTopLeft(atkinson).dx;
+        expect(fontTargetX, lessThan(fontStartX));
+        await tester.tap(atkinson);
+        await tester.pump();
+        await tester.pump(NocheMotion.move ~/ 2);
+        final fontMidX = tester.getTopLeft(fontMark).dx;
+        expect(fontMidX, lessThan(fontStartX));
+        expect(fontMidX, greaterThan(fontTargetX));
+        await tester.pump(NocheMotion.move - (NocheMotion.move ~/ 2));
+        expect(tester.getTopLeft(fontMark).dx, closeTo(fontTargetX, 0.5));
+
+        final spacingThumb = find.byKey(
+          const ValueKey('reader-line-spacing-thumb'),
+        );
+        final loose = find.bySemanticsLabel(
+          NocheA11y.label(NocheA11y.lineSpacingLoose),
+        );
+        final spacingStartX = tester.getTopLeft(spacingThumb).dx;
+        final spacingTargetX = tester.getTopLeft(loose).dx;
+        expect(spacingTargetX, lessThan(spacingStartX));
+        await tester.tap(loose);
+        await tester.pump();
+        await tester.pump(NocheMotion.move ~/ 2);
+        final spacingMidX = tester.getTopLeft(spacingThumb).dx;
+        expect(spacingMidX, lessThan(spacingStartX));
+        expect(spacingMidX, greaterThan(spacingTargetX));
+        await tester.pump(NocheMotion.move - (NocheMotion.move ~/ 2));
+        expect(
+          tester.getTopLeft(spacingThumb).dx,
+          closeTo(spacingTargetX, 0.5),
+        );
+
+        final pageRing = find.byKey(const ValueKey('reader-page-color-ring'));
+        final sepia = find.bySemanticsLabel(
+          NocheA11y.label(NocheA11y.pageSepia),
+        );
+        final ringStartX = tester.getTopLeft(pageRing).dx;
+        final ringTargetX = tester.getTopLeft(sepia).dx;
+        expect(ringTargetX, lessThan(ringStartX));
+        await tester.tap(sepia);
+        await tester.pump();
+        await tester.pump(NocheMotion.move ~/ 2);
+        final ringMidX = tester.getTopLeft(pageRing).dx;
+        expect(ringMidX, lessThan(ringStartX));
+        expect(ringMidX, greaterThan(ringTargetX));
+        await tester.pump(NocheMotion.move - (NocheMotion.move ~/ 2));
+        expect(tester.getTopLeft(pageRing).dx, closeTo(ringTargetX, 0.5));
+        expect(_readerPageBackground(tester), NocheColors.sepiaPage);
+        expect(tester.takeException(), isNull);
       },
     );
   });
