@@ -184,18 +184,28 @@ class _ReadingHomeState extends State<ReadingHome>
     if (_busy) return (text: null, error: null, close: false);
     setState(() => _busy = true);
     try {
-      final generator = _generator ??= await StoryGenerator.load();
-      if (!mounted) return (text: null, error: null, close: true);
+      final StoryGenerator generator;
+      final StoryDraft? story;
       final trimmed = input.trim();
-      final story = await generator.writeStory(
-        vocabulary: ReadingVocabulary(_s.progress.words, language: lang),
-        focus: trimmed.isEmpty ? const [] : trimmed.split(RegExp(r'[,،]')),
-        due: _s.progress.due(Skill.ear),
-        previous: {
-          for (final text in _texts.where((t) => t.generated)) text.body,
-        },
-        rng: _s.rng,
-      );
+      try {
+        generator = _generator ??= await StoryGenerator.load();
+        if (!mounted) return (text: null, error: null, close: true);
+        story = await generator.writeStory(
+          vocabulary: ReadingVocabulary(_s.progress.words, language: lang),
+          focus: trimmed.isEmpty ? const [] : trimmed.split(RegExp(r'[,،]')),
+          due: _s.progress.due(Skill.ear),
+          previous: {
+            for (final text in _texts.where((t) => t.generated)) text.body,
+          },
+          rng: _s.rng,
+        );
+      } on Object {
+        return (
+          text: null,
+          error: LibraryWording.storyWriteFailed,
+          close: false,
+        );
+      }
       if (!mounted) return (text: null, error: null, close: true);
       if (story == null) {
         if (trimmed.isNotEmpty) {
@@ -208,7 +218,7 @@ class _ReadingHomeState extends State<ReadingHome>
         if (mounted) _refreshState();
         return (
           text: null,
-          error: LibraryWording.storySaveFailed,
+          error: LibraryWording.storyWriteFailed,
           close: false,
         );
       }
@@ -258,6 +268,7 @@ class _ReadingHomeState extends State<ReadingHome>
     if (_busy ||
         _sheetOpen ||
         _pendingInsertStoryId != null ||
+        _insertingStoryId != null ||
         _canWrite != true) {
       return;
     }

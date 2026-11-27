@@ -1145,10 +1145,12 @@ void main() {
           storage: (_) => storage,
         );
         final firstFail = Completer<StoryDraft?>();
-        final secondSuccessThenStorageFail = Completer<StoryDraft?>();
+        final secondEmptyFail = Completer<StoryDraft?>();
+        final thirdSuccessThenStorageFail = Completer<StoryDraft?>();
         final generator = _SlowStoryGenerator([
           firstFail,
-          secondSuccessThenStorageFail,
+          secondEmptyFail,
+          thirdSuccessThenStorageFail,
         ]);
 
         await _pumpHome(
@@ -1255,15 +1257,28 @@ void main() {
         final heightAfterError = tester.getSize(sheetFinder).height;
         expect(heightAfterError, closeTo(heightBefore, 0.01));
 
-        // Storage-full failure also swaps back to form with storySaveFailed at same height.
-        storage.failWrites = true;
+        // Empty-prompt null -> swaps back to form with storyWriteFailed at same height.
         await tester.enterText(find.byType(TextFormField), '');
         await tester.tap(submitFinder);
         await tester.pump();
         await tester.pump(NocheMotion.swapAfter + NocheMotion.move);
         expect(find.text(LibraryWording.writingStoryTitle), findsOneWidget);
 
-        secondSuccessThenStorageFail.complete(
+        secondEmptyFail.complete(null);
+        await tester.pump();
+        await tester.pump(NocheMotion.swapAfter + NocheMotion.move);
+
+        expect(find.text(LibraryWording.storyWriteFailed), findsOneWidget);
+        expect(tester.getSize(sheetFinder).height, closeTo(heightBefore, 0.01));
+
+        // Storage-full failure also swaps back to form with storySaveFailed at same height.
+        storage.failWrites = true;
+        await tester.tap(submitFinder);
+        await tester.pump();
+        await tester.pump(NocheMotion.swapAfter + NocheMotion.move);
+        expect(find.text(LibraryWording.writingStoryTitle), findsOneWidget);
+
+        thirdSuccessThenStorageFail.complete(
           const StoryDraft('La casa', 'La casa es azul.'),
         );
         await tester.pump();
@@ -1497,6 +1512,59 @@ void main() {
           find.byKey(Key('library-story-new-tag:${newStory.id}')),
           findsOneWidget,
         );
+      },
+    );
+
+    testWidgets(
+      'open sheet scrolls cleanly without overflow and keeps submit button reachable when keyboard viewInsets are large',
+      (tester) async {
+        final rig = Rig();
+        _learnWords(rig.store, ['la', 'casa', 'es', 'azul']);
+        tester.view.devicePixelRatio = 1;
+        tester.view.physicalSize = const Size(390, 844);
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        await tester.pumpWidget(
+          MaterialApp(
+            debugShowCheckedModeBanner: false,
+            builder: (context, child) => MediaQuery(
+              data: MediaQuery.of(context)
+                  .copyWith(viewInsets: const EdgeInsets.only(bottom: 500)),
+              child: child!,
+            ),
+            home: ReadingHome(
+              services: rig.services,
+              generator: _simpleGenerator(),
+            ),
+          ),
+        );
+        await settle(tester);
+
+        await tester.tap(find.byKey(const Key('library-write-story')));
+        await tester.pumpAndSettle();
+
+        expect(tester.takeException(), isNull);
+        final submitFinder = find.byKey(
+          const Key('library-write-story-submit'),
+        );
+        expect(submitFinder, findsOneWidget);
+
+        await tester.ensureVisible(submitFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(submitFinder);
+        await tester.pumpAndSettle();
+        await tester.pump(
+          LibraryMotion.shelfInsertAfter +
+              LibraryMotion.shelfInsertFadeDelay +
+              NocheMotion.move,
+        );
+        await tester.pumpAndSettle();
+
+        expect(tester.takeException(), isNull);
+        expect(find.text('La casa'), findsOneWidget);
       },
     );
   });

@@ -7,7 +7,7 @@ import 'package:feature_library/src/reading.dart';
 import 'package:feature_library/src/wording.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// Result returned by the story-writing callback to [_StoryPromptSheet].
+/// Result returned by the story-writing callback passed to [showWriteStorySheet].
 typedef WriteStoryResult = ({ReadingText? text, String? error, bool close});
 
 /// Opens the Noche bottom sheet for entering optional practice words and
@@ -171,7 +171,7 @@ class _WriteStorySheetRoute<T> extends PopupRoute<T> {
     final sheetBody = NocheSheet(
       title: null,
       onClose: null,
-      scrollable: false,
+      scrollable: true,
       child: _StoryPromptSheet(
         language: language,
         onCancel: _close,

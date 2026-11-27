@@ -20,6 +20,8 @@ abstract final class LibraryWording {
   static const String newStoryTag = 'New';
   static const String noStoryMatchFocused =
       'There’s no new story that fits both your practice words and your current level.';
+  static const String storyWriteFailed =
+      'The story couldn’t be written. Try again.';
   static const String storySaveFailed =
       'The story couldn’t be saved. Try again.';
   static const String emptyShelfBooks = 'No books on your shelf yet.';
