@@ -7,7 +7,9 @@ import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_map/src/map_perf.dart';
 import 'package:feature_map/src/map_screen.dart';
+import 'package:feature_map/src/motion.dart';
 import 'package:feature_map/src/place_screen.dart';
+import 'package:feature_map/src/wording.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'map_fixture.dart';
@@ -40,11 +42,14 @@ class MapDevApp extends StatefulWidget {
 
 class _MapDevAppState extends State<MapDevApp> {
   final perf = MapPerf();
+  final GlobalKey<NavigatorState> _navKey = GlobalKey<NavigatorState>();
+  final HeroController _heroController = HeroController();
   late final MapFixture fixtureState;
   late final Services services;
   late final Entitlements _entitlements;
   FakeEntitlements? _ownedFakeEntitlements;
-  String? _activePlaceId;
+  String? _initialPlaceId;
+  bool _atPlace = false;
 
   @override
   void initState() {
@@ -101,7 +106,8 @@ class _MapDevAppState extends State<MapDevApp> {
     if (rawPlace != null && rawPlace.isNotEmpty) {
       final placeNum = int.tryParse(rawPlace);
       if (placeNum == null) {
-        _activePlaceId = rawPlace;
+        _initialPlaceId = rawPlace;
+        _atPlace = true;
       } else {
         unawaited(_resolveInitialPlace(placeNum));
       }
@@ -114,30 +120,88 @@ class _MapDevAppState extends State<MapDevApp> {
     final places = services.course.places;
     final idx = placeNum - 1;
     if (idx >= 0 && idx < places.length) {
-      setState(() => _activePlaceId = places[idx].id);
+      _pushPlace(places[idx].id);
     }
+  }
+
+  PageRoute<void> _mapRoute(BuildContext context) {
+    final q = widget.query;
+    return buildNocheMapRoute<void>(
+      context: context,
+      serviceReduceMotion: services.reduceMotion,
+      settings: const RouteSettings(name: 'map'),
+      builder: (_) => MapScreen(
+        services: services,
+        perf: perf,
+        reviewTitle: q['review'] == '0' ? null : MapWording.reviewTitle,
+        entitlements: _entitlements,
+      ),
+    );
+  }
+
+  PageRoute<void> _placeRoute(BuildContext context, String placeId) {
+    return buildNocheMapRoute<void>(
+      context: context,
+      serviceReduceMotion: services.reduceMotion,
+      settings: RouteSettings(name: 'place:$placeId'),
+      builder: (_) => PlaceScreen(
+        key: ValueKey(PlaceRoute(placeId)),
+        placeId: placeId,
+        services: services,
+        entitlements: _entitlements,
+      ),
+    );
+  }
+
+  void _pushPlace(String placeId) {
+    final nav = _navKey.currentState;
+    if (nav == null) return;
+    final route = _placeRoute(nav.context, placeId);
+    if (_atPlace) {
+      unawaited(
+        nav.pushReplacement(route).whenComplete(() {
+          if (mounted) _atPlace = nav.canPop();
+        }),
+      );
+    } else {
+      _atPlace = true;
+      unawaited(
+        nav.push(route).whenComplete(() {
+          if (mounted) _atPlace = nav.canPop();
+        }),
+      );
+    }
+  }
+
+  void _popToMap() {
+    final nav = _navKey.currentState;
+    if (nav == null || !nav.canPop()) return;
+    nav.popUntil((r) => r.isFirst);
+    _atPlace = false;
   }
 
   void _onRoute(AppRoute route) {
     fixtureState.nav.go(route);
     if (!mounted) return;
     if (route is PlaceRoute) {
-      setState(() => _activePlaceId = route.placeId);
+      _pushPlace(route.placeId);
     } else if (route is TabRoute && route.tab == NocheTabs.map) {
-      setState(() => _activePlaceId = null);
+      _popToMap();
     }
   }
 
   void _onBack() {
     fixtureState.nav.back();
     if (!mounted) return;
-    if (_activePlaceId != null) {
-      setState(() => _activePlaceId = null);
+    final nav = _navKey.currentState;
+    if (nav != null && nav.canPop()) {
+      nav.pop();
     }
   }
 
   @override
   void dispose() {
+    _heroController.dispose();
     _ownedFakeEntitlements?.dispose();
     perf.dispose();
     super.dispose();
@@ -147,7 +211,6 @@ class _MapDevAppState extends State<MapDevApp> {
   Widget build(BuildContext context) {
     final q = widget.query;
     final lang = services.course.language;
-    final placeId = _activePlaceId;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Coqui map',
@@ -157,20 +220,21 @@ class _MapDevAppState extends State<MapDevApp> {
         body: Stack(
           fit: StackFit.expand,
           children: [
-            if (placeId == null)
-              MapScreen(
-                services: services,
-                perf: perf,
-                reviewTitle: q['review'] == '0' ? null : 'Review',
-                entitlements: _entitlements,
-              )
-            else
-              PlaceScreen(
-                key: ValueKey(PlaceRoute(placeId)),
-                placeId: placeId,
-                services: services,
-                entitlements: _entitlements,
+            Builder(
+              builder: (navContext) => Navigator(
+                key: _navKey,
+                observers: [_heroController],
+                onGenerateInitialRoutes: (navigator, initialRoute) {
+                  final routes = <Route<dynamic>>[_mapRoute(navContext)];
+                  final placeId = _initialPlaceId;
+                  if (placeId != null) {
+                    routes.add(_placeRoute(navContext, placeId));
+                  }
+                  return routes;
+                },
+                onGenerateRoute: (settings) => _mapRoute(navContext),
               ),
+            ),
             PositionedDirectional(
               start: 0,
               end: 0,
@@ -181,8 +245,8 @@ class _MapDevAppState extends State<MapDevApp> {
                 script: lang.script,
                 languageCode: lang.code,
                 onTap: (id) {
-                  if (id == NocheTabs.map && _activePlaceId != null) {
-                    setState(() => _activePlaceId = null);
+                  if (id == NocheTabs.map) {
+                    _popToMap();
                   }
                 },
               ),

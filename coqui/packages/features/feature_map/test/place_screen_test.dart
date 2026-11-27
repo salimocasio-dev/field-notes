@@ -938,7 +938,7 @@ void main() {
               tester.element(find.byType(PlaceScreen)),
             );
           });
-          await tester.pump();
+          await tester.pump(const Duration(milliseconds: 500));
 
           final bytes = await tester.runAsync(() async {
             final boundary =
@@ -1096,7 +1096,7 @@ void main() {
             tester.element(find.byType(PlaceScreen)),
           );
         });
-        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 500));
 
         final bytes = await tester.runAsync(() async {
           final boundary =
