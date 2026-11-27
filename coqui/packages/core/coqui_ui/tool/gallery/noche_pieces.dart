@@ -534,3 +534,570 @@ class _NochePiecesDevPageState extends State<NochePiecesDevPage> {
     );
   }
 }
+
+/// Interactive dev gallery for all 16 N8.2 shared motion pieces:
+/// [NocheTabBar], [NocheSegmented], [NochePillGroup], [NocheSwitchRow],
+/// [NocheSheet] / [showNocheSheet] / [NocheSheetSwap], [NocheDashes],
+/// [NocheStageBar], [NocheProgressBar], [NocheBarChart], [NocheMic],
+/// [NocheOutlineGroup], [TouchSign], [NocheArrive], [NocheFollow],
+/// [NocheWindow] (single-screen and cross-route), [NocheQuietLock], and
+/// [NocheLtr].
+class NocheMotionDevPage extends StatefulWidget {
+  const NocheMotionDevPage({super.key, this.textDirection = TextDirection.ltr});
+
+  final TextDirection textDirection;
+
+  @override
+  State<NocheMotionDevPage> createState() => _NocheMotionDevPageState();
+}
+
+class _NocheMotionDevPageState extends State<NocheMotionDevPage> {
+  static final Map<String, String> _devMicWords = {
+    NocheMicState.values[0].wordKey: 'Tap to talk',
+    NocheMicState.values[1].wordKey: 'Listening',
+    NocheMicState.values[2].wordKey: 'Thinking',
+    NocheMicState.values[3].wordKey: 'Listen',
+    NocheMicState.values[4].wordKey: 'Well done',
+    NocheMicState.values[5].wordKey: 'Try again',
+  };
+
+  static const List<String> _micStateLabels = [
+    'Ready',
+    'Listening',
+    'Thinking',
+    'They speak',
+    'Heard',
+    'Not yet',
+  ];
+
+  String _selectedTab = NocheTabs.words;
+  String _segment = 'listening';
+  String _place = 'kitchen';
+  String _languageChoice = 'es';
+  String _fontChoice = 'sans';
+  bool _switchOn = true;
+  int _dashesDone = 2;
+  int _replayTick = 0;
+  int _followIndex = 0;
+  NocheFollowSide _followSide = NocheFollowSide.end;
+  NocheMicState _micState = NocheMicState.ready;
+  bool _windowExpanded = false;
+  int _lockTaps = 0;
+  int _sheetStep = 0;
+
+  bool get _isRtl => widget.textDirection == TextDirection.rtl;
+  String get _script => _isRtl ? 'Arab' : 'Latn';
+  String get _langCode => _isRtl ? 'ar' : 'es';
+  Map<String, String> get _tabNames =>
+      _isRtl ? nocheDevArabicTabNames : nocheDevSpanishTabNames;
+
+  void _openAnimatedSheet() {
+    showNocheSheet<void>(
+      context,
+      title: 'Sheet motion',
+      builder: (context, close) {
+        var step = _sheetStep;
+        return StatefulBuilder(
+          builder: (context, setSheetState) => Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              NocheSheetSwap(
+                contentKey: step,
+                child: step.isEven
+                    ? NocheArrive(
+                        delay: NocheMotion.rowsAfter,
+                        spacing: 8,
+                        next: NocheOutlineButton(
+                          label: 'Swap in place',
+                          onPressed: () {
+                            setSheetState(() => step++);
+                            setState(() => _sheetStep = step);
+                          },
+                        ),
+                        children: [
+                          Text(
+                            'Row 1 arrives first',
+                            style: NocheType.rowTitle.copyWith(
+                              color: NocheColors.text,
+                            ),
+                          ),
+                          Text(
+                            'Row 2 follows by stagger',
+                            style: NocheType.body.copyWith(
+                              color: NocheColors.label,
+                            ),
+                          ),
+                        ],
+                      )
+                    : Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            'Swapped view keeps the exact sheet height.',
+                            style: NocheType.body.copyWith(
+                              color: NocheColors.text,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          NocheOutlineButton(
+                            label: 'Swap back',
+                            onPressed: () {
+                              setSheetState(() => step++);
+                              setState(() => _sheetStep = step);
+                            },
+                          ),
+                        ],
+                      ),
+              ),
+              const SizedBox(height: 12),
+              NochePrimaryButton(label: 'Done', onPressed: close),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _openWindowRoute() {
+    Navigator.of(context).push<void>(
+      PageRouteBuilder<void>(
+        transitionDuration: NocheMotion.of(context).pageIn,
+        reverseTransitionDuration: NocheMotion.of(context).pageOut,
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const _NocheWindowDetailRoute(tag: 'motion_demo_window'),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(opacity: animation, child: child),
+      ),
+    );
+  }
+
+  Widget _samplePicture() => SizedBox(
+    width: 320,
+    height: 180,
+    child: DecoratedBox(
+      decoration: BoxDecoration(color: NocheColors.coverBlue.face),
+      child: Center(
+        child: Text(
+          'UNSCALED PICTURE',
+          style: NocheType.labelStrong.copyWith(color: NocheColors.next),
+        ),
+      ),
+    ),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    final tabBar = NocheTabBar(
+      selectedId: _selectedTab,
+      tabNames: _tabNames,
+      script: _script,
+      languageCode: _langCode,
+      onTap: (id) => setState(() => _selectedTab = id),
+    );
+
+    return Directionality(
+      textDirection: widget.textDirection,
+      child: NocheScreen(
+        tabBar: tabBar,
+        body: ListView(
+          padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 24),
+          children: [
+            Text(
+              'Noche motion pieces',
+              style: NocheType.pageTitle.copyWith(color: NocheColors.text),
+            ),
+            const SizedBox(height: 16),
+
+            // 1. NocheSegmented + NocheFollow
+            const NocheSectionLabel('Segmented + Follow'),
+            NocheSegmented<String>(
+              role: NocheSegmentedRole.tabList,
+              semanticLabel: 'Skill',
+              selected: _segment,
+              onChanged: (v) {
+                final oldIdx = [
+                  'listening',
+                  'speaking',
+                  'reading',
+                ].indexOf(_segment);
+                final newIdx = ['listening', 'speaking', 'reading'].indexOf(v);
+                setState(() {
+                  _segment = v;
+                  _followSide = newIdx >= oldIdx
+                      ? NocheFollowSide.end
+                      : NocheFollowSide.start;
+                  _followIndex++;
+                });
+              },
+              options: const [
+                NocheSegmentOption(value: 'listening', label: 'Listening'),
+                NocheSegmentOption(value: 'speaking', label: 'Speaking'),
+                NocheSegmentOption(value: 'reading', label: 'Reading'),
+              ],
+            ),
+            const SizedBox(height: 12),
+            NocheFollow(
+              contentKey: '$_segment-$_followIndex',
+              side: _followSide,
+              child: NocheCard(
+                child: Text(
+                  'Active panel: $_segment',
+                  style: NocheType.rowTitle.copyWith(color: NocheColors.text),
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // 2. NochePillGroup
+            const NocheSectionLabel('Pill group'),
+            NochePillGroup<String>(
+              semanticLabel: 'Places',
+              selected: _place,
+              onChanged: (v) => setState(() => _place = v),
+              options: const [
+                NochePillOption(value: 'kitchen', label: 'La cocina'),
+                NochePillOption(value: 'park', label: 'El parque'),
+                NochePillOption(value: 'home', label: 'Casa'),
+              ],
+              trailing: const NochePill.dashedLocked(
+                semanticLabel: 'Locked place',
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // 3. NocheOutlineGroup (vertical + horizontal)
+            const NocheSectionLabel('Outline group (vertical & horizontal)'),
+            NocheOutlineGroup<String>(
+              axis: Axis.vertical,
+              selected: _languageChoice,
+              onChanged: (v) => setState(() => _languageChoice = v),
+              options: [
+                NocheOutlineOption(
+                  value: 'es',
+                  semanticLabel: 'Spanish',
+                  child: NocheCard(
+                    child: Text(
+                      'Español',
+                      style: NocheType.rowTitle.copyWith(
+                        color: NocheColors.text,
+                      ),
+                    ),
+                  ),
+                ),
+                NocheOutlineOption(
+                  value: 'ar',
+                  semanticLabel: 'Arabic',
+                  child: NocheCard(
+                    child: Text(
+                      'العربية',
+                      style: NocheType.rowTitle.copyWith(
+                        color: NocheColors.text,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            NocheOutlineGroup<String>(
+              axis: Axis.horizontal,
+              selected: _fontChoice,
+              onChanged: (v) => setState(() => _fontChoice = v),
+              options: [
+                NocheOutlineOption(
+                  value: 'sans',
+                  semanticLabel: 'Sans',
+                  child: NocheCard(
+                    child: Center(
+                      child: Text(
+                        'Aa',
+                        style: NocheType.cardTitle.copyWith(
+                          color: NocheColors.text,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                NocheOutlineOption(
+                  value: 'serif',
+                  semanticLabel: 'Serif',
+                  child: NocheCard(
+                    child: Center(
+                      child: Text(
+                        'Aa',
+                        style: NocheType.cardTitle.copyWith(
+                          color: NocheColors.label,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+
+            // 4. NocheSwitchRow
+            const NocheSectionLabel('Switch row'),
+            NocheCard(
+              child: NocheSwitchRow(
+                label: 'Highlight active line',
+                value: _switchOn,
+                showTopBorder: false,
+                onChanged: (v) => setState(() => _switchOn = v),
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // 5. NocheSheet & NocheSheetSwap
+            const NocheSectionLabel('Sheet & in-place swap'),
+            NocheOutlineButton(
+              label: 'Open animated sheet',
+              onPressed: _openAnimatedSheet,
+            ),
+            const SizedBox(height: 24),
+
+            // 6. NocheDashes, NocheStageBar, NocheProgressBar, NocheBarChart, NocheArrive
+            const NocheSectionLabel('Dashes, bars, chart & arrive'),
+            NocheCard(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  NocheDashes.progress(
+                    count: 5,
+                    done: _dashesDone,
+                    currentIndex: _dashesDone < 5 ? _dashesDone : null,
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: NocheOutlineButton(
+                          label: 'Advance dash',
+                          onPressed: () => setState(
+                            () => _dashesDone = (_dashesDone + 1) % 6,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: NocheOutlineButton(
+                          label: 'Replay bars',
+                          onPressed: () => setState(() => _replayTick++),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  NocheStageBar(
+                    key: ValueKey('motion_stage_$_replayTick'),
+                    stage: 3,
+                    max: 4,
+                    animateFrom: 0.25,
+                  ),
+                  const SizedBox(height: 12),
+                  NocheProgressBar(
+                    key: ValueKey('motion_progress_$_replayTick'),
+                    value: 0.72,
+                    color: NocheColors.next,
+                    animateFrom: 0.1,
+                  ),
+                  const SizedBox(height: 16),
+                  NocheBarChart(
+                    key: ValueKey('motion_chart_$_replayTick'),
+                    items: const [
+                      NocheBarItem(label: '1', value: 12, highlighted: true),
+                      NocheBarItem(label: '2', value: 18),
+                      NocheBarItem(label: '3', value: 26),
+                      NocheBarItem(label: '4', value: 20),
+                      NocheBarItem(label: '5', value: 30),
+                      NocheBarItem(label: '6', value: 15),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            NocheArrive(
+              key: ValueKey('motion_arrive_$_replayTick'),
+              spacing: 8,
+              next: Text(
+                'Arrived after nextDelay',
+                style: NocheType.bodySmall.copyWith(color: NocheColors.label),
+              ),
+              children: const [
+                NocheChip(label: 'First'),
+                NocheChip(label: 'Second'),
+                NocheChip(label: 'Third'),
+              ],
+            ),
+            const SizedBox(height: 24),
+
+            // 7. NocheMic (all 6 states via NocheMic.custom)
+            const NocheSectionLabel('Mic motion (6 states)'),
+            NocheCard(
+              child: Column(
+                children: [
+                  NocheMic.custom(
+                    state: _micState,
+                    micWords: _devMicWords,
+                    level: 0.75,
+                    onPressed: () {
+                      final nextIdx =
+                          (NocheMicState.values.indexOf(_micState) + 1) %
+                          NocheMicState.values.length;
+                      setState(() => _micState = NocheMicState.values[nextIdx]);
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  NochePillGroup<NocheMicState>(
+                    selected: _micState,
+                    onChanged: (s) => setState(() => _micState = s),
+                    options: [
+                      for (var i = 0; i < NocheMicState.values.length; i++)
+                        NochePillOption(
+                          value: NocheMicState.values[i],
+                          label: _micStateLabels[i],
+                        ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // 8. NocheWindow (single-screen + cross-route)
+            const NocheSectionLabel('Window (single-screen & route)'),
+            SizedBox(
+              height: 160,
+              child: Stack(
+                children: [
+                  NocheWindow(
+                    rect: _windowExpanded
+                        ? const Rect.fromLTWH(0, 0, 320, 152)
+                        : const Rect.fromLTWH(0, 16, 160, 120),
+                    borderRadius: _windowExpanded ? 8 : 24,
+                    pictureOffset: _windowExpanded
+                        ? Offset.zero
+                        : const Offset(-40, -16),
+                    pictureSize: const Size(320, 180),
+                    leaving: !_windowExpanded,
+                    onPressed: () =>
+                        setState(() => _windowExpanded = !_windowExpanded),
+                    semanticLabel: 'Toggle window size',
+                    child: _samplePicture(),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
+            SizedBox(
+              width: 160,
+              height: 96,
+              child: NocheWindow(
+                tag: 'motion_demo_window',
+                borderRadius: 20,
+                pictureOffset: const Offset(-40, -24),
+                pictureSize: const Size(320, 180),
+                onPressed: _openWindowRoute,
+                semanticLabel: 'Open window route',
+                child: _samplePicture(),
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // 9. NocheQuietLock, TouchSign, NocheLtr
+            const NocheSectionLabel('Quiet lock, TouchSign & NocheLtr'),
+            NocheQuietLock(
+              semanticLabel: 'Locked chapter',
+              onTap: () => setState(() => _lockTaps++),
+              builder: (context, reasonColor) => Row(
+                children: [
+                  NocheIcon(NocheIcons.lock, size: 20, color: reasonColor),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      'Finish Story 1 first (taps: $_lockTaps)',
+                      style: NocheType.body.copyWith(color: reasonColor),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TouchSign(),
+                NocheLtr(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      NocheChip(label: '1'),
+                      SizedBox(width: 8),
+                      NocheChip(label: '2'),
+                      SizedBox(width: 8),
+                      NocheChip(label: '3'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _NocheWindowDetailRoute extends StatelessWidget {
+  const _NocheWindowDetailRoute({required this.tag});
+
+  final Object tag;
+
+  @override
+  Widget build(BuildContext context) {
+    return NocheScreen(
+      body: Padding(
+        padding: const EdgeInsetsDirectional.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(
+              height: 180,
+              child: NocheWindow(
+                tag: tag,
+                borderRadius: 8,
+                pictureOffset: Offset.zero,
+                pictureSize: const Size(320, 180),
+                child: SizedBox(
+                  width: 320,
+                  height: 180,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: NocheColors.coverBlue.face,
+                    ),
+                    child: Center(
+                      child: Text(
+                        'UNSCALED PICTURE',
+                        style: NocheType.labelStrong.copyWith(
+                          color: NocheColors.next,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            NochePrimaryButton(
+              label: 'Back',
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

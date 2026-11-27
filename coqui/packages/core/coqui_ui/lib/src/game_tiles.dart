@@ -211,11 +211,11 @@ class NumberBadge extends StatelessWidget {
   );
 }
 
-/// The sign for what to touch: Material's pointing hand (`touch_app`), white on a 44 px green disc, that bounces
-/// gently (still with reduced motion, or [still]). It goes inside the bottom-right corner of the picture whose answer is
-/// shown, [pictureInset] from both its edges (so it never covers what the picture is about), and at the right end of a
-/// word tile ([WordTile.sign]: inside the tile, vertically centred, clear of the word), never on a border between two
-/// things; it takes no touch itself.
+/// The sign for what to touch: Material's pointing hand (`touch_app`), white on a 44 px green disc, that rises and
+/// falls gently on `NocheMotion.travel` with no overshoot (still with reduced motion, or [still]). It goes inside the
+/// bottom-right corner of the picture whose answer is shown, [pictureInset] from both its edges (so it never covers
+/// what the picture is about), and at the right end of a word tile ([WordTile.sign]: inside the tile, vertically
+/// centred, clear of the word), never on a border between two things; it takes no touch itself.
 class TouchSign extends StatefulWidget {
   const TouchSign({super.key, this.still = false});
 
@@ -224,7 +224,7 @@ class TouchSign extends StatefulWidget {
   /// How far the sign's disc stands from a picture's right and bottom edges.
   static const double pictureInset = 12;
 
-  /// How far up the bounce takes it.
+  /// How far up the rise takes it.
   static const double bounce = 5;
   final bool still;
 
@@ -239,8 +239,7 @@ class _TouchSignState extends State<TouchSign>
     duration: NocheMotion.settle,
   );
 
-  bool get _still =>
-      widget.still || MediaQuery.maybeDisableAnimationsOf(context) == true;
+  bool get _still => widget.still || !NocheMotion.of(context).loops;
 
   @override
   void didChangeDependencies() {
@@ -270,38 +269,41 @@ class _TouchSignState extends State<TouchSign>
   }
 
   @override
-  Widget build(BuildContext context) => IgnorePointer(
-    child: Semantics(
-      label: 'Touch here',
-      child: AnimatedBuilder(
-        animation: _a,
-        builder: (context, child) => Transform.translate(
-          offset: Offset(
-            0,
-            -TouchSign.bounce * NocheMotion.travel.transform(_a.value),
+  Widget build(BuildContext context) {
+    final motion = NocheMotion.of(context);
+    return IgnorePointer(
+      child: Semantics(
+        label: 'Touch here',
+        child: AnimatedBuilder(
+          animation: _a,
+          builder: (context, child) => Transform.translate(
+            offset: Offset(
+              0,
+              -TouchSign.bounce * motion.travel.transform(_a.value),
+            ),
+            child: child,
           ),
-          child: child,
-        ),
-        child: Container(
-          width: TouchSign.size,
-          height: TouchSign.size,
-          alignment: Alignment.center,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            color: CoquiColors.lessonGreen,
-            boxShadow: [
-              BoxShadow(color: CoquiColors.lessonInk, spreadRadius: 2),
-            ],
-          ),
-          child: const CoquiIcon(
-            CoquiIcons.touchApp,
-            size: 30,
-            color: CoquiColors.lessonInk,
+          child: Container(
+            width: TouchSign.size,
+            height: TouchSign.size,
+            alignment: Alignment.center,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: CoquiColors.lessonGreen,
+              boxShadow: [
+                BoxShadow(color: CoquiColors.lessonInk, spreadRadius: 2),
+              ],
+            ),
+            child: const CoquiIcon(
+              CoquiIcons.touchApp,
+              size: 30,
+              color: CoquiColors.lessonInk,
+            ),
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 /// A written word to touch. [onSpeaker] puts a speaker at its right end that plays the word alone (a word with no
