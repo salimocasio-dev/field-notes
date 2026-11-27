@@ -3,8 +3,8 @@
 
 Stdlib-only Python 3.12 gate script invoked by `.github/workflows/coqui-sitio.yml`.
 Validates `coqui/.flutter-version` and `coqui/BUILD`, evaluates git diff / Pages
-deployment state to skip no-op rebuilds, and provides the `#262` green-`main`
-CI check extension point (`check_main_ci_green`).
+deployment state to skip no-op rebuilds, and enforces the `#262` green-`main`
+CI check (`check_main_ci_green`) by default.
 """
 
 from __future__ import annotations
@@ -27,6 +27,7 @@ BUILD_RE = re.compile(r"^[0-9]+$")
 HEX40_RE = re.compile(r"^[0-9a-fA-F]{40}$")
 ZERO_SHA = "0" * 40
 TRUTHY = {"1", "true", "yes", "on"}
+FALSY = {"0", "false", "no", "off"}
 
 ApiGetFn = Callable[[str, str], Any]
 
@@ -42,6 +43,12 @@ class GateDecision:
 
 def _env_truthy(value: str | None) -> bool:
     return (value or "").strip().lower() in TRUTHY
+
+
+def _env_bool_default_true(value: str | None) -> bool:
+    if value is None or not value.strip():
+        return True
+    return value.strip().lower() not in FALSY
 
 
 def _normalize_repo_path(path: str) -> str:
@@ -85,6 +92,16 @@ def is_site_content_path(path: str) -> bool:
     return False
 
 
+def is_coqui_main_ci_path(path: str) -> bool:
+    """Return True if a repo-relative path triggers the push-to-main `coqui.yml` workflow."""
+    norm = _normalize_repo_path(path).rstrip("/")
+    return (
+        norm == "coqui"
+        or norm.startswith("coqui/")
+        or norm in {".github/workflows/coqui.yml", ".github/scripts/coqui_ci_gate.sh"}
+    )
+
+
 def read_flutter_and_build(repo_root: Path) -> tuple[str, str]:
     """Read and validate `coqui/.flutter-version` and `coqui/BUILD`."""
     flutter_path = repo_root / "coqui" / ".flutter-version"
@@ -118,6 +135,11 @@ def _commit_exists(repo_root: Path, sha: str) -> bool:
     if not sha or not HEX40_RE.match(sha) or sha == ZERO_SHA:
         return False
     res = _run_git(repo_root, "cat-file", "-e", f"{sha}^{{commit}}")
+    return res.returncode == 0
+
+
+def _is_ancestor(repo_root: Path, ancestor: str, descendant: str) -> bool:
+    res = _run_git(repo_root, "merge-base", "--is-ancestor", ancestor, descendant)
     return res.returncode == 0
 
 
@@ -220,12 +242,13 @@ def check_main_ci_green(
     sha: str,
     token: str,
     *,
-    require_green_main: bool = False,
+    require_green_main: bool = True,
+    repo_root: Path | None = None,
     api_get: ApiGetFn = github_api_get_json,
 ) -> tuple[bool, str]:
-    """Extension point for #262 (E6): require green `coqui` check-run on `main`."""
+    """Verify the latest full `coqui.yml` workflow run on `main` succeeded (#262)."""
     if not require_green_main:
-        return True, "green-main gate not yet enabled (#262)"
+        return True, "green-main gate explicitly disabled"
 
     if not repository or not sha or not token:
         return (
@@ -234,8 +257,8 @@ def check_main_ci_green(
         )
 
     url = (
-        f"{API_BASE}/repos/{repository}/commits/{sha}/check-runs"
-        "?check_name=coqui&per_page=20"
+        f"{API_BASE}/repos/{repository}/actions/workflows/coqui.yml/runs"
+        "?branch=main&per_page=20"
     )
     try:
         payload = api_get(url, token)
@@ -246,29 +269,89 @@ def check_main_ci_green(
         json.JSONDecodeError,
         OSError,
     ) as exc:
-        return False, f"failed to query 'coqui' check-runs for {sha[:12]}: {exc}"
+        return False, f"failed to query 'coqui' workflow runs on main for {sha[:12]}: {exc}"
 
-    runs = payload.get("check_runs") if isinstance(payload, dict) else None
+    runs = payload.get("workflow_runs") if isinstance(payload, dict) else None
     if not isinstance(runs, list):
-        return False, f"unexpected check-runs payload for {sha[:12]}"
+        return False, f"unexpected workflow runs payload for {sha[:12]}"
 
-    for run in runs:
-        if (
-            isinstance(run, dict)
-            and run.get("status") == "completed"
-            and run.get("conclusion") == "success"
-        ):
-            return True, f"check 'coqui' succeeded on {sha[:12]}"
-
-    states = [
-        f"{r.get('status')}/{r.get('conclusion')}"
+    full_runs = [
+        r
         for r in runs
         if isinstance(r, dict)
+        and r.get("head_branch") == "main"
+        and r.get("event") in {"push", "workflow_dispatch"}
     ]
-    summary = ", ".join(states) if states else "no check-runs found"
+    if not full_runs:
+        return (
+            False,
+            f"refusing to publish {sha[:12]}: no full 'coqui' workflow runs found on main",
+        )
+
+    latest = full_runs[0]
+    status = latest.get("status")
+    conclusion = latest.get("conclusion")
+    latest_sha = (latest.get("head_sha") or "").strip()
+
+    if status != "completed":
+        return (
+            False,
+            f"refusing to publish {sha[:12]}: latest full 'coqui' run on main is pending "
+            f"(status={status}, run_sha={latest_sha[:12]})",
+        )
+
+    if conclusion != "success":
+        return (
+            False,
+            f"refusing to publish {sha[:12]}: latest full 'coqui' run on main is not green "
+            f"(conclusion={conclusion}, run_sha={latest_sha[:12]})",
+        )
+
+    if not latest_sha:
+        return (
+            False,
+            f"refusing to publish {sha[:12]}: latest full 'coqui' run on main has missing head_sha",
+        )
+
+    if latest_sha == sha:
+        return True, f"latest full 'coqui' run on main succeeded on {sha[:12]}"
+
+    if repo_root is None:
+        return (
+            False,
+            f"refusing to publish {sha[:12]}: latest green full 'coqui' run on main is on "
+            f"{latest_sha[:12]}, not {sha[:12]}",
+        )
+
+    if (
+        not _commit_exists(repo_root, latest_sha)
+        or not _commit_exists(repo_root, sha)
+        or not _is_ancestor(repo_root, latest_sha, sha)
+    ):
+        return (
+            False,
+            f"refusing to publish {sha[:12]}: latest green full 'coqui' run "
+            f"({latest_sha[:12]}) does not cover {sha[:12]}",
+        )
+
+    changed = _git_diff_names(repo_root, latest_sha, sha)
+    if changed is None:
+        return (
+            False,
+            f"refusing to publish {sha[:12]}: failed to diff {latest_sha[:12]}..{sha[:12]}",
+        )
+
+    ci_changed = [p for p in changed if is_coqui_main_ci_path(p)]
+    if ci_changed:
+        return (
+            False,
+            f"refusing to publish {sha[:12]}: Coquí CI paths changed since last green full "
+            f"'coqui' run ({latest_sha[:12]}): {', '.join(ci_changed[:5])}",
+        )
+
     return (
-        False,
-        f"refusing to publish {sha[:12]}: required check 'coqui' is not green ({summary})",
+        True,
+        f"latest full 'coqui' run on main succeeded on {latest_sha[:12]} and no Coquí CI paths changed since",
     )
 
 
@@ -283,7 +366,7 @@ def evaluate_gate(
     token: str,
     force: bool = False,
     skip_api: bool = False,
-    require_green_main: bool = False,
+    require_green_main: bool = True,
     api_get: ApiGetFn = github_api_get_json,
     stderr: Any = None,
 ) -> tuple[GateDecision, int]:
@@ -402,6 +485,7 @@ def evaluate_gate(
         resolved_sha,
         token,
         require_green_main=require_green_main,
+        repo_root=repo_root,
         api_get=api_get,
     )
     if not green:
@@ -472,8 +556,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument(
         "--require-green-main",
-        action="store_true",
-        default=_env_truthy(os.environ.get("REQUIRE_GREEN_MAIN")),
+        action=argparse.BooleanOptionalAction,
+        default=_env_bool_default_true(os.environ.get("REQUIRE_GREEN_MAIN")),
     )
     parser.add_argument("--skip-api", action="store_true", default=False)
     return parser.parse_args(argv)

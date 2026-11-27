@@ -178,6 +178,10 @@ check_publish_workflows() {
   python3 "$SCRIPT_DIR/test_publish_workflows.py"
 }
 
+check_coqui_ci_gate() {
+  python3 "$SCRIPT_DIR/test_coqui_ci_gate.py"
+}
+
 check_lanes_tests() {
   if [ "${COQUI_SKIP_LANES_SELF_TEST:-0}" = "1" ]; then
     return 0
@@ -193,6 +197,7 @@ check_noche_motion || overall_rc=1
 check_codeowners || overall_rc=1
 check_claude_pr_review || overall_rc=1
 check_publish_workflows || overall_rc=1
+check_coqui_ci_gate || overall_rc=1
 check_lanes_tests || overall_rc=1
 
 exit "$overall_rc"
