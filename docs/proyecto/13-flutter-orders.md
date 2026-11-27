@@ -2,6 +2,8 @@
 
 > **Status (Nov 24, 2026):** Root `AGENTS.md` now governs the multi-AI workflow (not Claude-Sonnet-only). Live work and open tickets live on GitHub Issues and the GitHub Project board in `salimocasio-dev/field-notes`; the orders below are kept as historical reference.
 
+> **Standing rules only:** Do not append per-ticket notes to this page; record what a ticket did in its PR body and its issue (see `coqui/AGENTS.md`).
+
 Nov 19 2026, after the second review. Goes with 11-flutter-plan (decisions), 12-flutter-contracts (interfaces, the scene method, porting rules) and 11-pixel-engine (the spec for the map and scene pictures).
 
 ## How to use this page
