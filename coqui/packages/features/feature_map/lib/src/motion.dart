@@ -17,6 +17,27 @@ abstract final class MapMotion {
   /// Delay before returning rows fade in on back navigation (`pageOut`).
   static final Duration backFadeAfter = NocheMotion.ms(40);
 
+  /// Wait after tapping an open place before the coquí starts hopping or fading.
+  static final Duration tripStartDelay = NocheMotion.ms(90);
+
+  /// Pause after the coquí lands before switching pills and bottom card.
+  static final Duration tripSettleDelay = NocheMotion.ms(250);
+
+  /// Delay before `"You are here"` rises into place over the destination stop.
+  static const Duration hereRiseAfter = NocheMotion.rowsAfter;
+
+  /// Starting scale of the destination place-name pill as it enters (`0.92 -> 1.0`).
+  static const double destEnterScale = 0.92;
+
+  /// Vertical rise/drop distance for the progress-closed lock pill (`4 px`).
+  static const double lockDropOffset = 4.0;
+
+  /// Cold-load arrival stagger waits (`Noche-Motion-Carga.dc.html`).
+  static final Duration loadChipsAfter = NocheMotion.ms(180);
+  static final Duration loadHereAfter = NocheMotion.ms(210);
+  static final Duration loadCardAfter = NocheMotion.ms(240);
+  static final Duration loadPlayAfter = NocheMotion.ms(400);
+
   /// Shared [NocheWindow] tag connecting a story picture across map, place,
   /// and lesson screens.
   static String storyWindowTag(String storyId) => storyId;

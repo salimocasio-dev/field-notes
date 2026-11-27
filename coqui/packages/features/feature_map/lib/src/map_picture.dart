@@ -64,6 +64,8 @@ class Frog {
   double squash = 0;
   int target = 0;
   void Function()? onArrive;
+  double opacity = 1.0;
+  bool hideArrow = false;
 }
 
 /// One hop of the frog, from (x0, y0) to (x1, y1) in world x, y.
@@ -104,6 +106,11 @@ class MapPicture {
 
   /// mapa.js: owner. For each pixel the place that drew it, or -1.
   final Int8List owner = Int8List(mapW * mapH)..fillRange(0, mapW * mapH, -1);
+
+  /// Top picture pixel row (`iy`) owned by a place whose house sits directly
+  /// above its stop (`DIO[k][0] == PADS[k][0] && DIO[k][1] < PADS[k][1]`), or
+  /// null otherwise.
+  final List<int?> _houseTopY = List<int?>.filled(placeCount, null);
 
   /// mapa.js: colourPix. The baked picture before any place goes grey.
   Uint32List? colourPix;
@@ -347,7 +354,28 @@ class MapPicture {
     e.shadeEdges();
     colourPix = Uint32List.fromList(e.pix);
     e.bakedZ.setAll(0, e.zb);
+    _houseTopY.fillRange(0, placeCount, null);
+    for (var k = 0; k < placeCount; k++) {
+      if (DIO[k][0] == PADS[k][0] && DIO[k][1] < PADS[k][1]) {
+        int? topY;
+        for (var iy = 0; iy < H && topY == null; iy++) {
+          final row = iy * W;
+          for (var ix = 0; ix < W; ix++) {
+            if (owner[row + ix] == k) {
+              topY = iy;
+              break;
+            }
+          }
+        }
+        _houseTopY[k] = topY;
+      }
+    }
   }
+
+  /// Top picture row (`iy`) of place [k]'s house when it sits directly above
+  /// its stop (places 1, 4, and 10), or `null` otherwise.
+  int? houseTopOnPicture(int k) =>
+      (k >= 0 && k < placeCount) ? _houseTopY[k] : null;
 
   // mapa.js: the PLACES wrapper of the block after `slabSides`: what a place does in the patch pass and in the
   // real one
@@ -460,19 +488,23 @@ class MapPicture {
       ..x = xy.x
       ..y = xy.y
       ..z = 0
-      ..path = null;
+      ..path = null
+      ..opacity = 1.0
+      ..hideArrow = false;
   }
 
-  // mapa.js: hopTo. [done] is called when the frog has arrived. A hop to the stop he is at has no hops: it is
-  // done at once (the old page never asks for one)
-  void hopTo(int k, [void Function()? done]) {
-    final pts = [for (final p in route(FROG.at, k)) XY(p[0], p[1])];
-    // break long legs into hops of about 2.2 units
+  /// Plans the frog hops from stop [from] to stop [to], capped at
+  /// [maxTripHops] total hops and returning an empty list for same-stop or
+  /// routes exceeding [maxHopLegs] legs.
+  List<Hop> planHops(int from, int to) {
+    final r = route(from, to);
+    final counts = legHopCounts(r);
+    if (counts.isEmpty) return const [];
+    final pts = [for (final p in r) XY(p[0], p[1])];
     final hops = <Hop>[];
     for (var n = 1; n < pts.length; n++) {
       final a = pts[n - 1], bb = pts[n];
-      final d = hypot(bb.x - a.x, bb.y - a.y);
-      final m = math.max(1, _round(d / 2.2));
+      final m = counts[n - 1];
       for (var j = 1; j <= m; j++) {
         hops.add(
           Hop(
@@ -484,7 +516,15 @@ class MapPicture {
         );
       }
     }
+    return hops;
+  }
+
+  // mapa.js: hopTo. [done] is called when the frog has arrived. A hop to the stop he is at, or a trip with more
+  // than [maxHopLegs] legs, produces no hops: it places immediately (if needed) and calls [done].
+  void hopTo(int k, [void Function()? done]) {
+    final hops = planHops(FROG.at, k);
     if (hops.isEmpty) {
+      if (k != FROG.at) placeFrog(k);
       done?.call();
       return;
     }
@@ -492,7 +532,9 @@ class MapPicture {
       ..path = hops
       ..t = 0
       ..target = k
-      ..onArrive = done;
+      ..onArrive = done
+      ..opacity = 1.0
+      ..hideArrow = false;
   }
 
   // mapa.js: updateFrog
@@ -642,14 +684,43 @@ class MapPicture {
         STATE.abierto[9] ? b.C.red : const [150, 150, 160],
       );
     }
-    drawFrog(FROG.x, FROG.y, FROG.z, FROG.yaw, FROG.squash);
-    e.flushShadows();
-    e.applyShadows(e.groundZ);
+    final frogAlpha = FROG.opacity;
+    if (frogAlpha >= 1.0) {
+      drawFrog(FROG.x, FROG.y, FROG.z, FROG.yaw, FROG.squash);
+      e.flushShadows();
+      e.applyShadows(e.groundZ);
+    } else if (frogAlpha > 0.0) {
+      e.flushShadows();
+      e.applyShadows(e.groundZ);
+      e.pendingShadows.clear();
+      final before = Uint32List.fromList(e.pix);
+      drawFrog(FROG.x, FROG.y, FROG.z, FROG.yaw, FROG.squash);
+      e.flushShadows();
+      e.applyShadows(e.groundZ);
+      final a = frogAlpha.clamp(0.0, 1.0);
+      final inv = 1.0 - a;
+      for (var i = 0; i < e.pix.length; i++) {
+        final fPix = e.pix[i];
+        final bPix = before[i];
+        if (fPix == bPix) continue;
+        final r = _round((bPix & 255) * inv + (fPix & 255) * a).clamp(0, 255);
+        final g = _round(((bPix >> 8) & 255) * inv + ((fPix >> 8) & 255) * a)
+            .clamp(0, 255);
+        final bl = _round(((bPix >> 16) & 255) * inv + ((fPix >> 16) & 255) * a)
+            .clamp(0, 255);
+        final al = _round(((bPix >> 24) & 255) * inv + ((fPix >> 24) & 255) * a)
+            .clamp(0, 255);
+        e.pix[i] = (al << 24) | (bl << 16) | (g << 8) | r;
+      }
+    } else {
+      e.flushShadows();
+      e.applyShadows(e.groundZ);
+    }
     for (var k = 0; k < PADS.length; k++) {
       final xy = XY(PADS[k][0], PADS[k][1]), p = e.project(xy.x, xy.y, 0);
       plate(k, p.sx, p.sy + 7);
     }
-    if (FROG.path == null) {
+    if (frogAlpha >= 1.0 && FROG.path == null && !FROG.hideArrow) {
       final p = e.project(FROG.x, FROG.y, 1.2 + FROG.z);
       e.drawArrow(p.sx, p.sy - 2, time);
     }

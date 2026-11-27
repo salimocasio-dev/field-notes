@@ -447,14 +447,15 @@ void main() {
       expect(route(3, 3), [PADS[3]]);
     });
 
-    test('the frog hops about 2.2 units, a fifth of a second each, squashes on landing, and says when he is there', () {
+    test('the frog caps trips at 6 hops, a fifth of a second each, squashes on landing, and says when he is there', () {
       var arrived = 0;
       final hopSounds = <int>[];
       final map = MapPicture(onHop: () => hopSounds.add(1))..placeFrog(0);
       map.hopTo(2, () => arrived++);
       final hops = map.FROG.path!.length;
-      // 5 units across and 15 up: 2 + 7 hops
-      expect(hops, 9);
+      // 5 units across and 15 up: capped proportionally to [2, 4] = 6 hops (1.2 s)
+      expect(legHopCounts(route(0, 2)), [2, 4]);
+      expect(hops, 6);
       var t = 0.0;
       while (map.FROG.path != null) {
         map.updateFrog(.05);
@@ -484,6 +485,117 @@ void main() {
       m.hopTo(4, () => done++);
       expect(done, 1);
       expect(m.FROG.path, isNull);
+    });
+
+    test('legHopCountsForLengths handles short, proportional, tie-break, and >6 legs', () {
+      expect(legHopCountsForLengths(const []), isEmpty);
+      expect(legHopCountsForLengths(const [5, 5]), [2, 2]);
+      expect(legHopCountsForLengths(const [5, 15]), [2, 4]);
+      expect(legHopCountsForLengths(const [5, 15, 15]), [1, 3, 2]);
+      expect(legHopCountsForLengths(const [1, 1, 1, 10, 10]), [1, 1, 1, 2, 1]);
+      expect(legHopCountsForLengths(const [1, 1, 1, 1, 1, 100]), [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+      ]);
+      expect(legHopCountsForLengths(const [5, 5, 5, 5, 5, 5, 5]), isEmpty);
+    });
+
+    test('exhaustive 10x10 shortest routes, junctions, hop cap <= 6, and >6 leg fade trips', () {
+      const expectedFadePairs = <(int, int)>{
+        (0, 6),
+        (0, 7),
+        (0, 8),
+        (0, 9),
+        (1, 8),
+        (1, 9),
+        (2, 8),
+        (2, 9),
+        (6, 0),
+        (7, 0),
+        (8, 0),
+        (9, 0),
+        (8, 1),
+        (9, 1),
+        (8, 2),
+        (9, 2),
+      };
+
+      // Junction routes never detour through PADS[0] or merge across junctions
+      expect(route(2, 1), [
+        PADS[2],
+        [0.0, 25.0],
+        PADS[1],
+      ]);
+      expect(route(1, 2), [
+        PADS[1],
+        [0.0, 25.0],
+        PADS[2],
+      ]);
+      expect(legHopCounts(route(2, 1)), [2, 2]);
+      expect(legHopCounts(route(1, 2)), [2, 2]);
+
+      expect(route(6, 7), [
+        PADS[6],
+        [0.0, -20.0],
+        PADS[7],
+      ]);
+      expect(route(7, 6), [
+        PADS[7],
+        [0.0, -20.0],
+        PADS[6],
+      ]);
+      expect(legHopCounts(route(6, 7)), [2, 2]);
+      expect(legHopCounts(route(7, 6)), [2, 2]);
+
+      final probe = MapPicture();
+      for (var a = 0; a < placeCount; a++) {
+        for (var b = 0; b < placeCount; b++) {
+          final r = route(a, b);
+          expect(r.first, PADS[a], reason: 'start $a->$b');
+          expect(r.last, PADS[b], reason: 'end $a->$b');
+          for (var i = 1; i < r.length; i++) {
+            final du = r[i][0] - r[i - 1][0], dv = r[i][1] - r[i - 1][1];
+            expect(du == 0 || dv == 0, isTrue, reason: '$a->$b leg $i');
+            expect(du == 0 && dv == 0, isFalse, reason: '$a->$b leg $i');
+          }
+          final legCount = r.length - 1;
+          final counts = legHopCounts(r);
+          final planned = probe.planHops(a, b);
+          final totalHops = counts.fold<int>(0, (s, c) => s + c);
+          expect(totalHops, lessThanOrEqualTo(maxTripHops), reason: '$a->$b');
+          expect(planned.length, totalHops, reason: '$a->$b');
+
+          if (a == b) {
+            expect(legCount, 0);
+            expect(planned, isEmpty);
+          } else if (expectedFadePairs.contains((a, b))) {
+            expect(legCount, greaterThan(maxHopLegs), reason: '$a->$b');
+            expect(counts, isEmpty, reason: '$a->$b');
+            expect(planned, isEmpty, reason: '$a->$b');
+
+            var hopTones = 0;
+            var arrived = 0;
+            final m = MapPicture(onHop: () => hopTones++)..placeFrog(a);
+            m.hopTo(b, () => arrived++);
+            expect(hopTones, 0, reason: 'fade pair $a->$b');
+            expect(arrived, 1, reason: 'fade pair $a->$b');
+            expect(m.FROG.at, b, reason: 'fade pair $a->$b');
+            expect(m.FROG.path, isNull, reason: 'fade pair $a->$b');
+          } else {
+            expect(legCount, inInclusiveRange(1, maxHopLegs), reason: '$a->$b');
+            expect(counts, hasLength(legCount), reason: '$a->$b');
+            expect(
+              totalHops,
+              inInclusiveRange(legCount, maxTripHops),
+              reason: '$a->$b',
+            );
+          }
+        }
+      }
     });
   });
 

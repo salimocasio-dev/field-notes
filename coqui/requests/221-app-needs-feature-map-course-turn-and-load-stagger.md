@@ -20,3 +20,7 @@ Order #221 (`N8.3 The shell: tabs, lessons, loading`) implements `Noche-Motion-C
 
 - Order: 221 (`lane:app`)
 - Branch: `lane/app/221`
+
+## Status
+
+`MapModule` (`lib/src/module.dart`) now exposes optional `ValueListenable<double>? overlayOpacity` and `bool animateColdLoad = false` parameters (forwarded to `MapScreen`, keeping `feature_map.dart`'s single-module public surface), ready for `lane:app` to wire in `AppShell`/`CoquiApp`.
