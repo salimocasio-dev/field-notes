@@ -1,0 +1,167 @@
+{
+  "what": "engine reference: estantes",
+  "files": 32,
+  "totalBytes": 1899356,
+  "entries": [
+    {
+      "path": "anillos-0-mesa-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "16adfdcdc60ba824da1c92f9e5df50d5742f7b9eecaff47156a5d38f517619f7"
+    },
+    {
+      "path": "anillos-0-mesa-0/kinds.json",
+      "bytes": 305,
+      "sha256": "cf8af1c38fa5cc16c6550b5a05c0380f0bd9520e614665e9c8e85d8eae3b7375"
+    },
+    {
+      "path": "anillos-0-mesa-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "78c5fdefa7a687e0a02434410445d6ce4920248bdef4197e99cc65fea774ad22"
+    },
+    {
+      "path": "anillos-0-mesa-0/pix.json",
+      "bytes": 370,
+      "sha256": "e2855dd5952b7bf7c917d3dc299235237c473401801c0365e3d3e189804730ab"
+    },
+    {
+      "path": "anillos-0-mesa-0/pix.png",
+      "bytes": 5934,
+      "sha256": "2653e05444c43f9981fd584d3141fb0c34d6b2acf9e1b47b7537c66908f6ed66"
+    },
+    {
+      "path": "anillos-0-mesa-0/state.json",
+      "bytes": 950,
+      "sha256": "1be61765ce22e65a7e88fefcd2da9b440d280e10d3e8cfe4d6ec29d906431fcd"
+    },
+    {
+      "path": "anillos-0-mesa-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "3bb1e946cc701230952b016c6296f3b17e7ead5d6195523657a9c4fbda86f08c"
+    },
+    {
+      "path": "anillos-0-mesa-0/zb.json",
+      "bytes": 322,
+      "sha256": "c0f882f6c9fff1b8bfcc265a723ab3daead610a646b905f82b9e93a59c9a3576"
+    },
+    {
+      "path": "anillos-0-mesa-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "16adfdcdc60ba824da1c92f9e5df50d5742f7b9eecaff47156a5d38f517619f7"
+    },
+    {
+      "path": "anillos-0-mesa-1/kinds.json",
+      "bytes": 305,
+      "sha256": "cf8af1c38fa5cc16c6550b5a05c0380f0bd9520e614665e9c8e85d8eae3b7375"
+    },
+    {
+      "path": "anillos-0-mesa-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "0d95c929c22a471a98522f70949a991871309abed970d8772f93bca61d9d4ade"
+    },
+    {
+      "path": "anillos-0-mesa-1/pix.json",
+      "bytes": 370,
+      "sha256": "5ed27e3cda17cb3208e9291bd0a1f85ccea2b333bd82ceac4b36b3b6aab5b336"
+    },
+    {
+      "path": "anillos-0-mesa-1/pix.png",
+      "bytes": 6629,
+      "sha256": "aafd5e6f8304888adf1958601795e7bafe60f4f57ef387ed61471494b599b3b1"
+    },
+    {
+      "path": "anillos-0-mesa-1/state.json",
+      "bytes": 950,
+      "sha256": "02342115293bb9141ebd8e9d42e22a0a67fd4f7918a93935144e17ee846c6578"
+    },
+    {
+      "path": "anillos-0-mesa-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "2a0206c517c09894a1d6432ea6d4a99de364d7de633b4f6780dd6e9fc0fef536"
+    },
+    {
+      "path": "anillos-0-mesa-1/zb.json",
+      "bytes": 322,
+      "sha256": "94215debe7d2266ae6814679a59eb2183c0a2beb8f3ead192ee69c54f28899ca"
+    },
+    {
+      "path": "anillos-1-mesa-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "16adfdcdc60ba824da1c92f9e5df50d5742f7b9eecaff47156a5d38f517619f7"
+    },
+    {
+      "path": "anillos-1-mesa-0/kinds.json",
+      "bytes": 305,
+      "sha256": "cf8af1c38fa5cc16c6550b5a05c0380f0bd9520e614665e9c8e85d8eae3b7375"
+    },
+    {
+      "path": "anillos-1-mesa-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "a256363826c73cfeaf1f8e7ed07f8d8cf944117e300caebbec185a826a1fe4e9"
+    },
+    {
+      "path": "anillos-1-mesa-0/pix.json",
+      "bytes": 370,
+      "sha256": "e2d3880d84d4938bc28ef818650d6d8ef8853ce0f1c727b0a4f6d79ad7da9ad2"
+    },
+    {
+      "path": "anillos-1-mesa-0/pix.png",
+      "bytes": 6034,
+      "sha256": "d17c64dbd2658cf01b7a3ad7120418dfbfee92cafad7533abe49ad21a75a00a7"
+    },
+    {
+      "path": "anillos-1-mesa-0/state.json",
+      "bytes": 950,
+      "sha256": "9b0b31baa58a77721e1eed58582119958a1eeda979f270f8cf1f7704e563ffb6"
+    },
+    {
+      "path": "anillos-1-mesa-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "c378bccddf27a5b8241f06f963a816274c29f782c62ab942cb21f47af487891a"
+    },
+    {
+      "path": "anillos-1-mesa-0/zb.json",
+      "bytes": 322,
+      "sha256": "61c59eb11ead5fb48e7152e1262a7ce7f18bfe443181f699555de63bf30eb0a1"
+    },
+    {
+      "path": "anillos-1-mesa-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "16adfdcdc60ba824da1c92f9e5df50d5742f7b9eecaff47156a5d38f517619f7"
+    },
+    {
+      "path": "anillos-1-mesa-1/kinds.json",
+      "bytes": 305,
+      "sha256": "cf8af1c38fa5cc16c6550b5a05c0380f0bd9520e614665e9c8e85d8eae3b7375"
+    },
+    {
+      "path": "anillos-1-mesa-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "2f9e53b12ecae6879ceb8d6c7b678614eb25c4544cc37c2cda919fff120b2777"
+    },
+    {
+      "path": "anillos-1-mesa-1/pix.json",
+      "bytes": 370,
+      "sha256": "ee34df467e7bbf29d46ba6efe79092f571cb8537d25c8eaaa1320609d8774c7e"
+    },
+    {
+      "path": "anillos-1-mesa-1/pix.png",
+      "bytes": 6731,
+      "sha256": "90539aa80492582e7693de7c2fe71f3900c139ee03a6cf8e1827fe83da204f29"
+    },
+    {
+      "path": "anillos-1-mesa-1/state.json",
+      "bytes": 950,
+      "sha256": "18117faf85d0d3aabfdf411cafdd86dedb882e4c97f50289ec4bcfab62288537"
+    },
+    {
+      "path": "anillos-1-mesa-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "1a5ea29ed6c35b7e8c9d77186f2551784ef70cd088a9fb32a2305136b6c0d68c"
+    },
+    {
+      "path": "anillos-1-mesa-1/zb.json",
+      "bytes": 322,
+      "sha256": "a6469b3f4e4a7aa91f813260b3c16b7d5e292c9051e51ca07632ae32943bd41c"
+    }
+  ]
+}

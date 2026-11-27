@@ -1,0 +1,87 @@
+{
+  "what": "engine reference: camino",
+  "files": 16,
+  "totalBytes": 962486,
+  "entries": [
+    {
+      "path": "gran-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "cfb7c228c585217f72fc3addf0b53c89f20dbd86ca08729d774a18a57c5f73dd"
+    },
+    {
+      "path": "gran-0/kinds.json",
+      "bytes": 305,
+      "sha256": "df7939521073461a74b0d34c30c843f234cca30be903c334d124ea61d6edd062"
+    },
+    {
+      "path": "gran-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "ec83f17bb00a3f936d0b563367c7d036e673fd1577ad8b71d3cd230e8d6d4a18"
+    },
+    {
+      "path": "gran-0/pix.json",
+      "bytes": 370,
+      "sha256": "f181e79664f0e3713010dc49db8d2d5651ce7262455e27df3e88fd0e3248a744"
+    },
+    {
+      "path": "gran-0/pix.png",
+      "bytes": 11274,
+      "sha256": "3c2e9a1b8b6f8b7ca8a54f72a9e3dd785d15e8b8e7256684991d5feb4d4b6f4e"
+    },
+    {
+      "path": "gran-0/state.json",
+      "bytes": 919,
+      "sha256": "87ef27de0ee7ae89f3b91f6c74a390fc2baf2a1adf6424591b6ccd46665f642a"
+    },
+    {
+      "path": "gran-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "a495f79afca16ec8aa03afc4878f48dd727164ed747b6c850ff287c9d6f9f7fd"
+    },
+    {
+      "path": "gran-0/zb.json",
+      "bytes": 322,
+      "sha256": "d2db2311a02038a51d05a10cf85e7d81d29d266b93fd64d4b0784ff129083f6f"
+    },
+    {
+      "path": "gran-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "cfb7c228c585217f72fc3addf0b53c89f20dbd86ca08729d774a18a57c5f73dd"
+    },
+    {
+      "path": "gran-1/kinds.json",
+      "bytes": 305,
+      "sha256": "df7939521073461a74b0d34c30c843f234cca30be903c334d124ea61d6edd062"
+    },
+    {
+      "path": "gran-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "d83e67276182f9ae54dadbc8489cde87e075befa8df5ce05aaaf044c854f5217"
+    },
+    {
+      "path": "gran-1/pix.json",
+      "bytes": 370,
+      "sha256": "cd3436bf36445d339d1a45dd7a4ac13ebf215ba4c6865d6067625d91f562c7b1"
+    },
+    {
+      "path": "gran-1/pix.png",
+      "bytes": 14258,
+      "sha256": "d169d2b48c2644e6bb178228c8fd3ed32723c08786612175cf9233c4d0887b5f"
+    },
+    {
+      "path": "gran-1/state.json",
+      "bytes": 921,
+      "sha256": "d9aeb7f116a683e506b1f86e8e5ca7403ab61285bd07e4944ef791075f5a7ee7"
+    },
+    {
+      "path": "gran-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "ed13d0ac45ed6b275657c8a28fdef7590e8390472542c52bd32d46485ca83076"
+    },
+    {
+      "path": "gran-1/zb.json",
+      "bytes": 322,
+      "sha256": "5948619a9cddb77b3a4c21f1ac3dd51f1dde9fd16332bf0ae7e3726286bff7d3"
+    }
+  ]
+}
