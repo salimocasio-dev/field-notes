@@ -10,13 +10,14 @@ import 'package:app/src/entitlements.dart';
 import 'package:app/src/platform.dart';
 import 'package:app/src/previa.dart';
 import 'package:app/src/scoped_clip_player.dart';
+import 'package:app/src/shell.dart';
 import 'package:app/src/switches.dart';
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_progress/coqui_progress.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_profile/feature_profile.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -206,7 +207,7 @@ class TestApp {
       final text = f.readAsStringSync();
       return Future.value(editContent?.call(path, text) ?? text);
     },
-    bundle: TestSceneBundle(),
+    bundle: rootBundle,
     contentBase: contentBaseOf(Uri.parse('http://127.0.0.1/field-notes/app/')),
     storage: () async => spaces.storage,
     clipPlayer: (lookup) =>
@@ -288,14 +289,13 @@ class TestApp {
   bool get lessonShown => !tabBarShown;
 }
 
-/// The widgets whose class is named [name] (a feature's own screen, which only its package can name).
-Finder byTypeName(String name) =>
-    find.byWidgetPredicate((w) => w.runtimeType.toString() == name);
+/// The shell's mounted wrapper for tab [id] (visible when active; pass
+/// `skipOffstage: false` to check offstage kept-alive tabs).
+Finder findShellTab(String id, {bool skipOffstage = true}) =>
+    find.byKey(ShellKeys.tab(id), skipOffstage: skipOffstage);
 
-/// The state of the one widget named [name], to read what a feature's screen shows (its session), as a test of the
-/// feature reads it, without naming its type.
-dynamic stateNamed(WidgetTester tester, String name) =>
-    tester.state(byTypeName(name));
+/// The shell's mounted wrapper for a non-tab [route] screen.
+Finder findShellRoute(AppRoute route) => find.byKey(ShellKeys.route(route));
 
 /// The map's top chips bar (N4.1's `language-chip`).
 Finder findMapTopChips() => find.byKey(const Key('language-chip'));
@@ -306,75 +306,49 @@ Finder findMapUpNextCard() => find.byKey(const Key('up-next-card'));
 /// The tap target that starts the map's Up next entry (N4.1's `up-next-play` disc).
 Finder findMapUpNextAction() => find.byKey(const Key('up-next-play'));
 
-/// The story lesson's header (N4.3's `StoryHeader`).
-Finder findStoryFrame() => byTypeName('StoryHeader');
-
-/// The story lesson's close button (N4.3's `StoryCloseButton`).
-Finder findStoryCloseButton() => byTypeName('StoryCloseButton');
-
 /// The story lesson's start disc (N4.3's `story-start-disc`).
 Finder findStoryStartButton() => find.byKey(const Key('story-start-disc'));
 
-/// Review / level check close button (N4.8a's `NocheLessonCloseButton`).
-Finder findReviewCloseButton() => byTypeName('NocheLessonCloseButton');
+/// Opens the Up Next story from the map (`Key('up-next-play')`) and plays it to
+/// completion using scattered grid taps over `PixelView` (driven strictly by
+/// keys and progress state — zero feature wording, zero type-name probes).
+/// Returns the virtual ms elapsed.
+Future<int> playUpNextStoryToEnd(TestApp app, String storyId) async {
+  final tester = app.tester;
+  await app.tap(findMapUpNextAction());
+  await app.until(
+    () =>
+        findShellRoute(StoryRoute(storyId)).evaluate().isNotEmpty &&
+        findStoryStartButton().evaluate().isNotEmpty,
+    what: 'story $storyId start disc',
+  );
+  expect(findShellRoute(StoryRoute(storyId)), findsOneWidget);
+  expect(app.lessonShown, isTrue);
+  expect(find.byKey(ShellKeys.tabBar), findsNothing);
+  expect(findStoryStartButton(), findsOneWidget);
 
-/// Review / level check start disc (N4.8a's [NochePlayDisc]).
-Finder findReviewStartButton() => find.byType(NochePlayDisc);
-
-/// Review Next button (N4.8a's [NochePrimaryButton] labelled 'Next').
-Finder findReviewNextButton() => find.byWidgetPredicate(
-  (w) => w is NochePrimaryButton && w.label == 'Next',
-  description: 'review Next button (NochePrimaryButton)',
-);
-
-/// Review picture choice (N4.8a's `NochePictureChoice`).
-Finder findReviewPictureChoice() => byTypeName('NochePictureChoice');
-
-/// Review word tile (N4.8a's `NocheWordTile`).
-Finder findReviewWordTile() => byTypeName('NocheWordTile');
-
-/// Review tile tray (N4.8a's `NocheTileTray`).
-Finder findReviewTileTray() => byTypeName('NocheTileTray');
-
-/// Review speaker tile (N4.8a's `NocheSpeakerTile`).
-Finder findReviewSpeakerTile() => byTypeName('NocheSpeakerTile');
-
-/// TEST-ONLY. A scene that is not converted and never will be: no scene of coqui_scenes' registry has its id. Its old
-/// pictures are order 06's pictures of El banco (coqui/ref/escenas/banco/pairs/), as they were before order 36b converted
-/// El banco. The test of ¿Cuál?'s old pictures puts a review set at it (TestApp.editContent), so that it does not depend
-/// on which real scenes are converted (order 36b).
-const String testSceneId = 'prueba';
-
-/// Where the test scene's old pictures are: the folder of order 06's pictures it takes them from.
-String get testScenePictures => '$repoRoot/coqui/ref/escenas/banco/pairs';
-
-/// The root bundle, with the old pictures of the test scene ([testSceneId]) added, read from [testScenePictures]: what
-/// ScenePictures reads them from, as it reads a real scene's from the package's assets.
-class TestSceneBundle extends CachingAssetBundle {
-  static const _at = 'packages/coqui_scenes/assets/old_pictures/$testSceneId/';
-
-  ByteData _bytes(List<int> b) => ByteData.sublistView(Uint8List.fromList(b));
-
-  @override
-  Future<ByteData> load(String key) async {
-    if (key.startsWith(_at)) {
-      final file = key.substring(_at.length);
-      if (file == 'index.json') {
-        final names = [
-          for (final f in Directory(testScenePictures).listSync())
-            if (f.path.endsWith('.png')) f.uri.pathSegments.last,
-        ]..sort();
-        return _bytes(
-          utf8.encode(
-            jsonEncode({
-              for (final f in names) f.substring(0, f.length - 4): f,
-            }),
-          ),
-        );
-      }
-      final f = File('$testScenePictures/$file');
-      if (f.existsSync()) return _bytes(f.readAsBytesSync());
-    }
-    return rootBundle.load(key);
+  await app.tap(findStoryStartButton());
+  final pic = tester.getRect(find.byType(PixelView));
+  final points = <Offset>[
+    for (var j = 0; j < 9; j++)
+      for (var i = 0; i < 7; i++)
+        Offset(
+          pic.left + pic.width * (i + .5) / 7,
+          pic.top + pic.height * (j + .5) / 9,
+        ),
+  ];
+  final endAction = find.byType(NochePrimaryButton);
+  var k = 0;
+  var t = 0;
+  for (
+    ;
+    !(app.services.progress.played(storyId) && endAction.evaluate().isNotEmpty);
+    t += 700
+  ) {
+    if (t > 15 * 60 * 1000) fail('story $storyId did not end in 15 minutes');
+    await tester.tapAt(points[(k * 17) % points.length]);
+    k++;
+    await app.advance(700);
   }
+  return t;
 }

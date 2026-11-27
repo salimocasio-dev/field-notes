@@ -152,7 +152,9 @@ void main() {
       }
 
       await pumpWithLanguage(spanishCatalog);
-      expect(byTypeName('CoquiTabBar'), findsNothing);
+      // CoquiTabBar was deleted in #82; AppShell only mounts NocheTabBar under ShellKeys.tabBar.
+      expect(find.byType(NocheTabBar), findsOneWidget);
+      expect(find.byKey(ShellKeys.tabBar), findsOneWidget);
       final spanishBar = tester.widget<NocheTabBar>(find.byType(NocheTabBar));
       expect(spanishBar.tabNames, Language.spanish.tabNames);
       expect(spanishBar.script, 'Latn');
@@ -162,6 +164,7 @@ void main() {
       }
 
       await pumpWithLanguage(arabicCatalog);
+      expect(find.byKey(ShellKeys.tabBar), findsOneWidget);
       final arabicBar = tester.widget<NocheTabBar>(find.byType(NocheTabBar));
       expect(arabicBar.tabNames, _arabicTestLanguage.tabNames);
       expect(arabicBar.script, 'Arab');
@@ -234,21 +237,27 @@ void main() {
       }
 
       await pumpRoute(const LanguagesRoute());
+      expect(findShellRoute(const LanguagesRoute()), findsOneWidget);
+      expect(findShellTab('map'), findsOneWidget);
       expect(find.text('screen:languages'), findsOneWidget);
       expect(find.text('tab:map'), findsOneWidget);
       expect(find.byType(NocheTabBar), findsNothing);
 
       await pumpRoute(const PlansRoute());
+      expect(findShellRoute(const PlansRoute()), findsOneWidget);
       expect(find.text('screen:plans'), findsOneWidget);
       expect(find.byType(NocheTabBar), findsNothing);
 
       await pumpRoute(const ImportRoute());
+      expect(findShellRoute(const ImportRoute()), findsOneWidget);
       expect(find.text('screen:import'), findsOneWidget);
       expect(find.byType(NocheTabBar), findsNothing);
 
       await pumpRoute(const PlaceRoute('casa'));
+      expect(findShellRoute(const PlaceRoute('casa')), findsOneWidget);
       expect(find.text('screen:place:casa'), findsOneWidget);
       expect(find.byType(NocheTabBar), findsOneWidget);
+      expect(find.byKey(ShellKeys.tabBar), findsOneWidget);
       expect(
         tester.widget<NocheTabBar>(find.byType(NocheTabBar)).selectedId,
         NocheTabs.map,
@@ -257,7 +266,7 @@ void main() {
   );
 
   testWidgets(
-    'unknown PlaceRoute falls back and logs; LanguagesRoute, PlaceRoute, and upcoming PlansRoute/ImportRoute behave cleanly',
+    'unknown PlaceRoute falls back and logs; LanguagesRoute, PlaceRoute, PlansRoute, and ImportRoute behave cleanly',
     (tester) async {
       final logs = <String>[];
       final DebugPrintCallback previous = debugPrint;
@@ -269,35 +278,32 @@ void main() {
       final app = TestApp(tester);
       await app.open(stored: seed('curso'));
       expect(app.selectedTab, 'map');
+      expect(findShellTab('map'), findsOneWidget);
 
       // Unknown PlaceRoute always falls back to map and logs.
       logs.clear();
       await app.go(const PlaceRoute('no-existe'));
+      expect(findShellRoute(const PlaceRoute('no-existe')), findsNothing);
       expect(app.tabBarShown, isTrue, reason: 'PlaceRoute(no-existe)');
       expect(app.selectedTab, 'map', reason: 'PlaceRoute(no-existe)');
       expect(logs, isNotEmpty, reason: 'expected log line for unknown place');
       expect(tester.takeException(), isNull, reason: 'PlaceRoute(no-existe)');
 
-      // PlansRoute() opens PlansScreen (with tab bar hidden) once #96 lands,
-      // or stays on map and logs unanswered before #96.
+      // PlansRoute() opens under ShellKeys.route(PlansRoute()) with tab bar hidden.
       logs.clear();
       await app.go(const PlansRoute());
       expect(tester.takeException(), isNull, reason: 'PlansRoute()');
-      if (byTypeName('PlansScreen').evaluate().isNotEmpty) {
-        expect(app.tabBarShown, isFalse, reason: 'PlansRoute()');
-        await app.go(const TabRoute('map'));
-      } else {
-        expect(app.tabBarShown, isTrue, reason: 'PlansRoute()');
-        expect(app.selectedTab, 'map', reason: 'PlansRoute()');
-        expect(logs, isNotEmpty, reason: 'expected log line for PlansRoute');
-      }
+      expect(findShellRoute(const PlansRoute()), findsOneWidget);
+      expect(find.byKey(const Key('plans-scroll')), findsOneWidget);
+      expect(app.tabBarShown, isFalse, reason: 'PlansRoute()');
+      await app.go(const TabRoute('map'));
 
-      // ImportRoute() opens ImportScreen (with tab bar hidden) once #115 lands,
-      // or stays on map and logs unanswered before #115.
+      // ImportRoute() opens under ShellKeys.route(ImportRoute()) (with tab bar
+      // hidden) once #115 lands, or stays on map and logs unanswered before #115.
       logs.clear();
       await app.go(const ImportRoute());
       expect(tester.takeException(), isNull, reason: 'ImportRoute()');
-      if (byTypeName('ImportScreen').evaluate().isNotEmpty ||
+      if (findShellRoute(const ImportRoute()).evaluate().isNotEmpty ||
           !app.tabBarShown) {
         expect(app.tabBarShown, isFalse, reason: 'ImportRoute()');
         await app.go(const TabRoute('map'));
@@ -307,11 +313,12 @@ void main() {
         expect(logs, isNotEmpty, reason: 'expected log line for ImportRoute');
       }
 
-      // LanguagesRoute() opens LanguagesSheet with tab bar hidden.
+      // LanguagesRoute() opens under ShellKeys.route(LanguagesRoute()) with tab bar hidden.
       logs.clear();
       await app.go(const LanguagesRoute());
       expect(tester.takeException(), isNull, reason: 'LanguagesRoute()');
-      expect(byTypeName('LanguagesSheet'), findsOneWidget);
+      expect(findShellRoute(const LanguagesRoute()), findsOneWidget);
+      expect(find.byKey(const ValueKey('language-card-es')), findsOneWidget);
       expect(app.tabBarShown, isFalse, reason: 'LanguagesRoute()');
 
       // Opening unknown PlaceRoute directly falls back to the map and logs.
@@ -322,6 +329,7 @@ void main() {
         stored: seed('curso'),
         location: '/lugar/no-existe',
       );
+      expect(findShellRoute(const PlaceRoute('no-existe')), findsNothing);
       expect(unknownPlaceDirect.tabBarShown, isTrue);
       expect(unknownPlaceDirect.selectedTab, 'map');
       expect(
@@ -331,27 +339,24 @@ void main() {
       );
       expect(tester.takeException(), isNull);
 
-      // /planes opens PlansScreen (tab bar hidden) once #96 lands, or falls back to map and logs.
+      // /planes opens under ShellKeys.route(PlansRoute()) with tab bar hidden.
       logs.clear();
       await tester.pumpWidget(const SizedBox());
       final plansDirect = TestApp(tester);
       await plansDirect.open(stored: seed('curso'), location: '/planes');
       expect(tester.takeException(), isNull, reason: '/planes');
-      if (byTypeName('PlansScreen').evaluate().isNotEmpty) {
-        expect(plansDirect.tabBarShown, isFalse, reason: '/planes');
-      } else {
-        expect(plansDirect.tabBarShown, isTrue, reason: '/planes');
-        expect(plansDirect.selectedTab, 'map', reason: '/planes');
-        expect(logs, isNotEmpty, reason: 'expected log line for /planes');
-      }
+      expect(findShellRoute(const PlansRoute()), findsOneWidget);
+      expect(find.byKey(const Key('plans-scroll')), findsOneWidget);
+      expect(plansDirect.tabBarShown, isFalse, reason: '/planes');
 
-      // /importar opens ImportScreen (tab bar hidden) once #115 lands, or falls back to map and logs.
+      // /importar opens under ShellKeys.route(ImportRoute()) (tab bar hidden)
+      // once #115 lands, or falls back to map and logs.
       logs.clear();
       await tester.pumpWidget(const SizedBox());
       final importDirect = TestApp(tester);
       await importDirect.open(stored: seed('curso'), location: '/importar');
       expect(tester.takeException(), isNull, reason: '/importar');
-      if (byTypeName('ImportScreen').evaluate().isNotEmpty ||
+      if (findShellRoute(const ImportRoute()).evaluate().isNotEmpty ||
           !importDirect.tabBarShown) {
         expect(importDirect.tabBarShown, isFalse, reason: '/importar');
       } else {
@@ -360,23 +365,25 @@ void main() {
         expect(logs, isNotEmpty, reason: 'expected log line for /importar');
       }
 
-      // /idiomas opens LanguagesSheet with tab bar hidden.
+      // /idiomas opens under ShellKeys.route(LanguagesRoute()) with tab bar hidden.
       logs.clear();
       await tester.pumpWidget(const SizedBox());
       final languagesDirect = TestApp(tester);
       await languagesDirect.open(stored: seed('curso'), location: '/idiomas');
       expect(tester.takeException(), isNull, reason: '/idiomas');
-      expect(byTypeName('LanguagesSheet'), findsOneWidget);
+      expect(findShellRoute(const LanguagesRoute()), findsOneWidget);
+      expect(find.byKey(const ValueKey('language-card-es')), findsOneWidget);
       expect(languagesDirect.tabBarShown, isFalse, reason: '/idiomas');
 
-      // /lugar/casa opens PlaceScreen with Map tab bar.
+      // /lugar/casa opens under ShellKeys.route(PlaceRoute('casa')) with Map tab bar.
       logs.clear();
       await tester.pumpWidget(const SizedBox());
       final placeDirect = TestApp(tester);
       await placeDirect.open(stored: seed('curso'), location: '/lugar/casa');
       expect(placeDirect.tabBarShown, isTrue);
       expect(placeDirect.selectedTab, 'map');
-      expect(byTypeName('PlaceScreen'), findsOneWidget);
+      expect(findShellRoute(const PlaceRoute('casa')), findsOneWidget);
+      expect(find.byKey(const Key('place-back')), findsOneWidget);
       expect(tester.takeException(), isNull);
     },
   );

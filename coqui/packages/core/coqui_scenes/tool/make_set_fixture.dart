@@ -147,6 +147,11 @@ void main(List<String> args) {
       constant: 'orillaSetRefs',
       what: "La orilla's baked states",
     ),
+    'sombrilla': (
+      file: 'sombrilla_set_refs.dart',
+      constant: 'sombrillaSetRefs',
+      what: "La sombrilla's baked states",
+    ),
   };
   var stale = 0;
   for (final s in scenes.entries) {

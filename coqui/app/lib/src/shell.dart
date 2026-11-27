@@ -7,6 +7,25 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:material_ui/material_ui.dart';
 
+/// Stable shell-owned keys for mounted tabs, route screens, and shell chrome.
+abstract final class ShellKeys {
+  /// Mounted tab wrapper for [tabId] (inside `Offstage` and the epoch
+  /// `KeyedSubtree`, so `find.byKey(ShellKeys.tab(id))` matches the visible
+  /// tab across language switches without affecting epoch-based state reset).
+  static ValueKey<String> tab(String tabId) => ValueKey('shell-tab:$tabId');
+
+  /// Mounted non-tab route wrapper for [route] (inside `Directionality` and
+  /// the epoch `KeyedSubtree`, so `Directionality.of` reflects the reading
+  /// direction given to the route screen). Because the outer `KeyedSubtree`
+  /// already keys on `lesson:$_epoch:${addressOf(route)}`, keying this inner
+  /// wrapper on `addressOf(route)` preserves identical remount behavior.
+  static ValueKey<String> route(AppRoute route) =>
+      ValueKey('shell-route:${addressOf(route)}');
+
+  /// Floating bottom tab bar wrapper.
+  static const ValueKey<String> tabBar = ValueKey('tab-bar');
+}
+
 /// The app's screens for the address [route]: the five tabs, each kept alive once it has been shown (the map bakes
 /// once), with the tab bar drawn over the tab (each tab lays itself out under the bar and draws its own fade); or a
 /// lesson (story, Repaso, level check, book, call, voice test) over everything, full screen, the tab bar hidden.
@@ -118,7 +137,10 @@ class _AppShellState extends State<AppShell> {
                       enabled: screen == null && id == tab,
                       child: ColoredBox(
                         color: coquiTheme().scaffoldBackgroundColor,
-                        child: Builder(builder: _tabs[id]!),
+                        child: KeyedSubtree(
+                          key: ShellKeys.tab(id),
+                          child: Builder(builder: _tabs[id]!),
+                        ),
                       ),
                     ),
                   ),
@@ -131,12 +153,12 @@ class _AppShellState extends State<AppShell> {
                 textDirection: isLessonRoute(route)
                     ? language.textDirection
                     : TextDirection.ltr,
-                child: screen,
+                child: KeyedSubtree(key: ShellKeys.route(route), child: screen),
               ),
             ),
           if (showsTabBar)
             PositionedDirectional(
-              key: const ValueKey('tab-bar'),
+              key: ShellKeys.tabBar,
               start: 0,
               end: 0,
               bottom: 0,
