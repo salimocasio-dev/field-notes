@@ -319,8 +319,9 @@ Future<int> playUpNextStoryToEnd(TestApp app, String storyId) async {
   await app.until(
     () =>
         findShellRoute(StoryRoute(storyId)).evaluate().isNotEmpty &&
-        findStoryStartButton().evaluate().isNotEmpty,
-    what: 'story $storyId start disc',
+        findStoryStartButton().evaluate().isNotEmpty &&
+        !app.tabBarShown,
+    what: 'story $storyId start disc and tab bar sink',
   );
   expect(findShellRoute(StoryRoute(storyId)), findsOneWidget);
   expect(app.lessonShown, isTrue);

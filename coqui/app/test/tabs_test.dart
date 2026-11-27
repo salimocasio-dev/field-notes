@@ -92,8 +92,8 @@ void main() {
       await tester.ensureVisible(storyTile);
       await app.tap(storyTile);
       await app.until(
-        () => findStoryStartButton().evaluate().isNotEmpty,
-        what: 'story start disc',
+        () => findStoryStartButton().evaluate().isNotEmpty && !app.tabBarShown,
+        what: 'story start disc and tab bar sink',
       );
 
       expect(findShellRoute(const StoryRoute('la-lluvia')), findsOneWidget);
