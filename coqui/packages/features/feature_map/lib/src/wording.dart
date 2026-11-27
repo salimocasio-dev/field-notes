@@ -37,6 +37,10 @@ abstract final class MapWording {
   static String streakDays(int streak) =>
       streak == 1 ? '1 day' : '$streak days';
   static const String youAreHere = 'You are here';
+  static const String newPlace = 'New place';
+  static String newPlaceCounter(int current, int total) =>
+      'New place · $current of $total';
+  static String playFirstStory(int number) => 'Play first · Story $number';
   static const String afterPlacePrefix = 'After ';
   static String afterPlace(String placeName) => '$afterPlacePrefix$placeName';
   static const String upNext = 'UP NEXT';

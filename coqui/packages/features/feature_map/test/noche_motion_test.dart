@@ -2667,6 +2667,526 @@ void main() {
     );
   });
 
+  group('N8.7 Map: a new place opens', () {
+    mapTest(
+      '1. 4-step choreography in order and exact start times: here fade at 0 ms, crossfade & rising New place pill at 100 ms, hops & camera travel at 600 ms, pill crossfade & new place card after 250 ms settle',
+      (tester) async {
+        _phone(tester, size: const Size(390, 844), dpr: 3.0);
+        final clock = FakeClock(fixtureNowMs);
+        final progress = FakeProgressStore(clock: clock);
+        final clips = FakeClipPlayer();
+        final course = MapFixtureCourse(
+          builtPlaces: 4,
+          customPairs: [..._casaPairs, _pair('mostrador', 'mostrador')],
+          storyScenes: {
+            ..._casaScenes,
+            'uno-dos-tres': 'camino',
+            'colmado-1': 'mostrador',
+          },
+        );
+        late MapPicture picture;
+
+        // Finish places 0 and 1 before opening the map so the learner sits at place 2 (La cocina)
+        // and place 3 (El colmado) is next.
+        for (final p in course.places.take(2)) {
+          for (final id in p.stories) {
+            clock.advance(const Duration(seconds: 5));
+            finishStory(progress, id);
+          }
+        }
+        final cocinaStories = course.places[2].stories;
+        for (final id in cocinaStories.take(cocinaStories.length - 1)) {
+          clock.advance(const Duration(seconds: 5));
+          finishStory(progress, id);
+        }
+
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: course,
+            progress: progress,
+            clock: clock,
+            clips: clips,
+            pictures: _pixelPictures(),
+            entitlements: const AllowAllEntitlements(),
+            onPicture: (p) => picture = p,
+          ),
+        );
+        await _pumpMapReady(tester);
+        expect(picture.FROG.at, 2);
+        expect(picture.STATE.hecho[2], isFalse);
+        expect(find.byKey(const Key('up-next-card')), findsOneWidget);
+        expect(find.byKey(const Key('map-place-card')), findsNothing);
+
+        final hopCount = picture.planHops(2, 3).length;
+        expect(hopCount, greaterThan(0));
+        final scrollV = tester.state<ScrollableState>(
+          find.byType(Scrollable).at(0),
+        );
+        final startScrollY = scrollV.position.pixels;
+
+        // Finish the last story of La cocina -> triggers N8.7 Step 1 at t = 0 ms.
+        finishStory(progress, cocinaStories.last);
+        await tester.pump();
+
+        // Step 1 (t = 50 ms): "You are here" fading out in quick, no crossfade or New place pill yet, frog still at 2.
+        await tester.pump(const Duration(milliseconds: 50));
+        final hereOp50 = _slotOpacity(tester, const Key('map-here-motion'));
+        expect(hereOp50, greaterThan(0.0));
+        expect(hereOp50, lessThan(1.0));
+        expect(_slotDy(tester, const Key('map-here-motion')), 0.0);
+        expect(find.byKey(const Key('map-unlock-crossfade')), findsNothing);
+        expect(find.byKey(const Key('map-new-place-pill')), findsNothing);
+        expect(picture.FROG.at, 2);
+        expect(picture.FROG.path, isNull);
+
+        // Step 2 (t = 100 ms -> sample ~60 ms into Step 2): crossfade overlay visible, new state applied,
+        // "New place El colmado" pill rising by row, frog still parked at 2.
+        await tester.pump(const Duration(milliseconds: 55)); // past 100 ms
+        await tester.pump(); // settle Step 2 start frame
+        await tester.pump(
+          const Duration(milliseconds: 60),
+        ); // 60 ms into Step 2
+        expect(find.byKey(const Key('map-unlock-crossfade')), findsOneWidget);
+        final crossOp160 = _slotOpacity(
+          tester,
+          const Key('map-unlock-crossfade'),
+        );
+        expect(crossOp160, greaterThan(0.0));
+        expect(crossOp160, lessThan(1.0));
+        expect(picture.STATE.hecho[2], isTrue);
+        expect(find.byKey(const Key('map-new-place-pill')), findsOneWidget);
+        expect(find.text(MapWording.newPlace), findsOneWidget);
+        expect(find.text('El colmado'), findsOneWidget);
+        final destOp160 = _slotOpacity(tester, const Key('map-dest-motion'));
+        final destDy160 = _slotDy(tester, const Key('map-dest-motion'));
+        expect(destOp160, greaterThan(0.0));
+        expect(destOp160, lessThan(1.0));
+        expect(destDy160, greaterThan(0.0));
+        expect(destDy160, lessThan(NocheMotion.row));
+        expect(picture.FROG.at, 2);
+        expect(picture.FROG.path, isNull);
+
+        // At t = 330 ms: New place pill settled (op == 1, dy == 0), crossfade still running (480 ms settle), frog still at 2.
+        await _runFrames(tester, 170, step: 45);
+        expect(_slotOpacity(tester, const Key('map-dest-motion')), 1.0);
+        expect(_slotDy(tester, const Key('map-dest-motion')), 0.0);
+        final crossOp330 = _slotOpacity(
+          tester,
+          const Key('map-unlock-crossfade'),
+        );
+        expect(crossOp330, greaterThan(0.0));
+        expect(crossOp330, lessThan(crossOp160));
+        expect(picture.FROG.at, 2);
+        expect(picture.FROG.path, isNull);
+
+        // Step 3 (t = 600 ms -> sample at t = 650 ms): crossfade gone, frog hopping, camera travelling.
+        await _runFrames(tester, 270, step: 45); // t = 600 ms
+        await tester.pump(Duration.zero);
+        await tester.pump(const Duration(milliseconds: 50)); // t = 650 ms
+        expect(find.byKey(const Key('map-unlock-crossfade')), findsNothing);
+        expect(picture.FROG.path, isNotNull);
+        await _runFrames(
+          tester,
+          150,
+          step: 50,
+        ); // t = 800 ms (200 ms into hops)
+        expect(scrollV.position.pixels, isNot(closeTo(startScrollY, 1.0)));
+
+        // Land and wait 250 ms settle -> Step 4 (sample 70 ms into 140 ms quick crossfade).
+        final remainingHopMs = hopCount * NocheMotion.hop.inMilliseconds - 200;
+        await _runFrames(tester, remainingHopMs + 60, step: 50);
+        expect(picture.FROG.path, isNull);
+        expect(picture.FROG.at, 3);
+        expect(clips.tones, hasLength(hopCount));
+        await _runFrames(tester, 250, step: 50);
+        await tester.pump(Duration.zero);
+        await tester.pump(const Duration(milliseconds: 70));
+
+        final destExitOp = _slotOpacity(tester, const Key('map-dest-motion'));
+        expect(destExitOp, greaterThan(0.0));
+        expect(destExitOp, lessThan(1.0));
+        expect(_slotDy(tester, const Key('map-dest-motion')), 0.0);
+        final hereEnterOp = _slotOpacity(tester, const Key('map-here-motion'));
+        expect(hereEnterOp, greaterThan(0.0));
+        expect(hereEnterOp, lessThan(1.0));
+        expect(_slotDy(tester, const Key('map-here-motion')), 0.0);
+
+        expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+        expect(
+          find.text(MapWording.newPlaceCounter(4, 10).toUpperCase()),
+          findsOneWidget,
+        );
+        expect(find.text('El colmado'), findsAtLeastNWidgets(1));
+        expect(
+          find.text(MapWording.playFirstStory(1).toUpperCase()),
+          findsOneWidget,
+        );
+
+        // Finish pill crossfade and card swap, verify MapSceneWindow uses PixelView.
+        await _runFrames(tester, 400, step: 50);
+        expect(find.byKey(const Key('map-new-place-pill')), findsNothing);
+        expect(_slotOpacity(tester, const Key('map-here-motion')), 1.0);
+        expect(_slotDy(tester, const Key('map-here-motion')), 0.0);
+        expect(
+          find.descendant(
+            of: find.byKey(const Key('up-next-window')),
+            matching: find.byType(PixelView),
+          ),
+          findsOneWidget,
+        );
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+
+    mapTest(
+      '2. Offstage deferral & plays once: finishing last story while TickerMode(enabled: false) defers until visible, then plays once without replaying on further toggles',
+      (tester) async {
+        _phone(tester, size: const Size(390, 844), dpr: 3.0);
+        final f = fixture(
+          seed: 'vacio',
+          customPairs: _casaPairs,
+          storyScenes: {..._casaScenes, 'uno-dos-tres': 'camino'},
+        );
+        late MapPicture picture;
+        final visible = ValueNotifier<bool>(true);
+        addTearDown(visible.dispose);
+
+        await tester.pumpWidget(
+          ValueListenableBuilder<bool>(
+            valueListenable: visible,
+            builder: (_, enabled, child) =>
+                TickerMode(enabled: enabled, child: child!),
+            child: _MapMotionHarness(
+              course: f.services.course,
+              progress: f.progress,
+              clock: f.clock,
+              pictures: _pixelPictures(),
+              entitlements: const AllowAllEntitlements(),
+              onPicture: (p) => picture = p,
+            ),
+          ),
+        );
+        await _pumpMapReady(tester);
+
+        // Go offstage (as when Lesson/StoryRoute covers the map).
+        visible.value = false;
+        await tester.pump();
+
+        final ids = f.services.course.places[0].stories;
+        for (final id in ids) {
+          finishStory(f.progress, id);
+        }
+        await tester.pump();
+        await _runFrames(tester, 500, step: 50);
+
+        // Deferred while offstage: frog and pre-unlock state unchanged.
+        expect(picture.FROG.at, 0);
+        expect(picture.STATE.hecho[0], isFalse);
+        expect(find.byKey(const Key('map-new-place-pill')), findsNothing);
+        expect(find.byKey(const Key('map-place-card')), findsNothing);
+
+        // Return to the map -> post-frame callback starts unlock sequence, next frame settles t = 0.
+        visible.value = true;
+        await tester.pump();
+        await tester.pump();
+
+        await tester.pump(const Duration(milliseconds: 50));
+        expect(
+          _slotOpacity(tester, const Key('map-here-motion')),
+          lessThan(1.0),
+        );
+        expect(find.byKey(const Key('map-new-place-pill')), findsNothing);
+
+        await tester.pump(const Duration(milliseconds: 110));
+        expect(find.byKey(const Key('map-unlock-crossfade')), findsOneWidget);
+        expect(find.byKey(const Key('map-new-place-pill')), findsOneWidget);
+        expect(find.text('El parque'), findsOneWidget);
+
+        await _runFrames(tester, 2500, step: 50);
+        expect(picture.FROG.at, 1);
+        expect(picture.STATE.hecho[0], isTrue);
+        expect(find.byKey(const Key('map-new-place-pill')), findsNothing);
+        expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+        expect(
+          find.text(MapWording.newPlaceCounter(2, 10).toUpperCase()),
+          findsOneWidget,
+        );
+        expect(
+          find.text(MapWording.playFirstStory(1).toUpperCase()),
+          findsOneWidget,
+        );
+
+        // Toggling TickerMode off and back on must NOT replay the unlock sequence.
+        visible.value = false;
+        await tester.pump();
+        visible.value = true;
+        await tester.pump();
+        await _runFrames(tester, 300, step: 50);
+        expect(find.byKey(const Key('map-new-place-pill')), findsNothing);
+        expect(find.byKey(const Key('map-unlock-crossfade')), findsNothing);
+        expect(picture.FROG.at, 1);
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+
+    mapTest(
+      '3. Leaving the map mid-sequence (TickerMode -> false at ~250 ms) finishes the unlock immediately',
+      (tester) async {
+        _phone(tester, size: const Size(390, 844), dpr: 3.0);
+        final f = fixture(seed: 'vacio');
+        late MapPicture picture;
+        final visible = ValueNotifier<bool>(true);
+        addTearDown(visible.dispose);
+
+        await tester.pumpWidget(
+          ValueListenableBuilder<bool>(
+            valueListenable: visible,
+            builder: (_, enabled, child) =>
+                TickerMode(enabled: enabled, child: child!),
+            child: _MapMotionHarness(
+              course: f.services.course,
+              progress: f.progress,
+              clock: f.clock,
+              pictures: _pixelPictures(),
+              entitlements: const AllowAllEntitlements(),
+              onPicture: (p) => picture = p,
+            ),
+          ),
+        );
+        await _pumpMapReady(tester);
+
+        final ids = f.services.course.places[0].stories;
+        for (final id in ids.take(ids.length - 1)) {
+          finishStory(f.progress, id);
+        }
+        await tester.pump();
+        finishStory(f.progress, ids.last);
+        await tester.pump();
+
+        // Mid-Step 2 (~250 ms): crossfade active, New place pill visible, frog still at 0.
+        await _runFrames(tester, 250, step: 50);
+        expect(find.byKey(const Key('map-unlock-crossfade')), findsOneWidget);
+        expect(find.byKey(const Key('map-new-place-pill')), findsOneWidget);
+        expect(picture.FROG.at, 0);
+
+        // Leave the map mid-sequence -> finishes at once.
+        visible.value = false;
+        await tester.pump();
+        expect(picture.FROG.at, 1);
+        expect(picture.FROG.path, isNull);
+        expect(picture.STATE.hecho[0], isTrue);
+        expect(picture.STATE.aqui, 1);
+        expect(find.byKey(const Key('map-unlock-crossfade')), findsNothing);
+        expect(find.byKey(const Key('map-new-place-pill')), findsNothing);
+        expect(_slotOpacity(tester, const Key('map-here-motion')), 1.0);
+        expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+        expect(
+          find.text(MapWording.newPlaceCounter(2, 10).toUpperCase()),
+          findsOneWidget,
+        );
+        expect(
+          find.text(MapWording.playFirstStory(1).toUpperCase()),
+          findsOneWidget,
+        );
+        expect(_slotOpacity(tester, const Key('map-card-motion')), 1.0);
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+
+    mapTest(
+      '4. Reduced motion (disableAnimations: true): immediately places frog, applies new map state with no crossfade or hop tones, and swaps card in quick fade (dy == 0)',
+      (tester) async {
+        _phone(tester, size: const Size(390, 844), dpr: 3.0);
+        final f = fixture(seed: 'vacio');
+        final clips = FakeClipPlayer();
+        late MapPicture picture;
+
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: f.services.course,
+            progress: f.progress,
+            clock: f.clock,
+            clips: clips,
+            pictures: _pixelPictures(),
+            entitlements: const AllowAllEntitlements(),
+            disableAnimations: true,
+            onPicture: (p) => picture = p,
+          ),
+        );
+        await _pumpMapReady(tester);
+
+        final ids = f.services.course.places[0].stories;
+        for (final id in ids) {
+          finishStory(f.progress, id);
+        }
+        await tester.pump();
+
+        expect(picture.FROG.at, 1);
+        expect(picture.FROG.path, isNull);
+        expect(picture.STATE.hecho[0], isTrue);
+        expect(clips.tones, isEmpty);
+        expect(find.byKey(const Key('map-unlock-crossfade')), findsNothing);
+        expect(find.byKey(const Key('map-new-place-pill')), findsNothing);
+        expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+
+        await tester.pump(const Duration(milliseconds: 70));
+        final opMid = _slotOpacity(tester, const Key('map-card-motion'));
+        expect(opMid, greaterThan(0.0));
+        expect(opMid, lessThan(1.0));
+        expect(_slotDy(tester, const Key('map-card-motion')), 0.0);
+
+        await tester.pump(const Duration(milliseconds: 100));
+        expect(_slotOpacity(tester, const Key('map-card-motion')), 1.0);
+        expect(
+          find.text(MapWording.newPlaceCounter(2, 10).toUpperCase()),
+          findsOneWidget,
+        );
+        expect(
+          find.text(MapWording.playFirstStory(1).toUpperCase()),
+          findsOneWidget,
+        );
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+
+    mapTest(
+      '5. Arabic RTL (FakeCourseCatalog.arabic()): finishing place 1 runs the 4 steps cleanly in RTL with NocheLtr on NEW PLACE and PLAY FIRST labels',
+      (tester) async {
+        _phone(tester, size: const Size(390, 844), dpr: 3.0);
+        final clock = FakeClock(fixtureNowMs);
+        final progress = FakeProgressStore(clock: clock);
+        final arabicCourse = FakeCourseCatalog.arabic(
+          fetch: (path) async {
+            final raw = await arabicSampleFile(path);
+            if (path != 'datos/curso.json') return raw;
+            final doc = jsonDecode(raw) as Map<String, dynamic>;
+            final lugares = (doc['lugares'] as List<dynamic>).toList();
+            lugares.add({
+              'id': 'parque',
+              'n': 2,
+              'nombre': 'الحديقة',
+              'en': 'The park',
+              'cuentos': ['uno-dos-tres'],
+              'escenas': ['الأمام'],
+            });
+            lugares.add({
+              'id': 'cocina',
+              'n': 3,
+              'nombre': 'المطبخ',
+              'en': 'The kitchen',
+              'cuentos': <String>[],
+              'escenas': <String>[],
+            });
+            doc['lugares'] = lugares;
+            return jsonEncode(doc);
+          },
+        );
+        late MapPicture picture;
+
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: arabicCourse,
+            progress: progress,
+            clock: clock,
+            pictures: _pixelPictures(),
+            entitlements: const AllowAllEntitlements(),
+            textDirection: TextDirection.rtl,
+            onPicture: (p) => picture = p,
+          ),
+        );
+        await _pumpMapReady(tester);
+
+        for (final id in arabicCourse.places[0].stories) {
+          finishStory(progress, id);
+        }
+        await tester.pump();
+        await _runFrames(tester, 200, step: 50);
+        expect(find.byKey(const Key('map-new-place-pill')), findsOneWidget);
+        expect(tester.takeException(), isNull);
+
+        await _runFrames(tester, 2500, step: 50);
+        expect(picture.FROG.at, 1);
+        expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+        expect(find.text('الحديقة'), findsOneWidget);
+        expect(
+          Directionality.of(
+            tester.element(
+              find.text(MapWording.newPlaceCounter(2, 3).toUpperCase()),
+            ),
+          ),
+          TextDirection.ltr,
+        );
+        expect(
+          Directionality.of(
+            tester.element(
+              find.text(MapWording.playFirstStory(1).toUpperCase()),
+            ),
+          ),
+          TextDirection.ltr,
+        );
+        expect(tester.takeException(), isNull);
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+
+    mapTest(
+      '6. Plan.free gating after finishing free place 1 (La casa -> El parque): all 4 steps play, and Play first disc opens PlaceRoute(parque) and never StoryRoute',
+      (tester) async {
+        _phone(tester, size: const Size(390, 844), dpr: 3.0);
+        final entitlements = FakeEntitlements(plan: Plan.free);
+        addTearDown(entitlements.dispose);
+        final f = fixture(seed: 'vacio');
+        late MapPicture picture;
+        late _FlowNavigator nav;
+
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: f.services.course,
+            progress: f.progress,
+            clock: f.clock,
+            pictures: _pixelPictures(),
+            entitlements: entitlements,
+            onPicture: (p) => picture = p,
+            onNavReady: (n, _) => nav = n,
+          ),
+        );
+        await _pumpMapReady(tester);
+
+        for (final id in f.services.course.places[0].stories) {
+          finishStory(f.progress, id);
+        }
+        await tester.pump();
+        await _runFrames(tester, 2600, step: 50);
+
+        expect(picture.FROG.at, 1);
+        expect(
+          find.text(MapWording.newPlaceCounter(2, 10).toUpperCase()),
+          findsOneWidget,
+        );
+        expect(
+          find.text(MapWording.playFirstStory(1).toUpperCase()),
+          findsOneWidget,
+        );
+        expect(nav.routes, isEmpty);
+
+        await tester.tap(find.byKey(const Key('up-next-play')));
+        await tester.pump();
+        await _runFrames(tester, 550);
+        expect(nav.routes, [const PlaceRoute('parque')]);
+        expect(nav.routes.whereType<StoryRoute>(), isEmpty);
+        expect(find.byKey(const Key('place-plan-card')), findsOneWidget);
+        expect(find.byKey(const Key('place-see-plans')), findsOneWidget);
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+  });
+
   if (Platform.environment['COQUI_CAPTURE_SHOTS'] == '1') {
     testWidgets('capture N8.6 place card screenshots', (tester) async {
       for (final entry in nocheFontFiles.entries) {
