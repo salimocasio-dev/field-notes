@@ -7,6 +7,7 @@ import 'package:feature_library/src/motion.dart';
 import 'package:feature_library/src/reading.dart';
 import 'package:feature_library/src/story_generator.dart';
 import 'package:feature_library/src/wording.dart';
+import 'package:feature_library/src/write_story_sheet.dart';
 import 'package:material_ui/material_ui.dart';
 
 class ReadingHome extends StatefulWidget {
@@ -31,7 +32,8 @@ class ReadingHome extends StatefulWidget {
   State<ReadingHome> createState() => _ReadingHomeState();
 }
 
-class _ReadingHomeState extends State<ReadingHome> {
+class _ReadingHomeState extends State<ReadingHome>
+    with SingleTickerProviderStateMixin {
   Services get _s => widget.services;
   ReadingStore get _store => ReadingStore(_s.storage(ReadingStore.space));
 
@@ -40,6 +42,23 @@ class _ReadingHomeState extends State<ReadingHome> {
   StoryGenerator? _generator;
   bool? _canWrite;
   bool _busy = false;
+  bool _sheetOpen = false;
+  String? _pendingInsertStoryId;
+  String? _insertingStoryId;
+  Timer? _insertTimer;
+  late final AnimationController _insertController = AnimationController(
+    vsync: this,
+  )..addStatusListener(_handleInsertStatus);
+  final ScrollController _storiesScrollController = ScrollController();
+  NocheMotionData _insertMotion = NocheMotion.normal;
+
+  void _handleInsertStatus(AnimationStatus status) {
+    if (status == AnimationStatus.completed &&
+        _insertingStoryId != null &&
+        mounted) {
+      setState(() => _insertingStoryId = null);
+    }
+  }
 
   @override
   void initState() {
@@ -138,6 +157,11 @@ class _ReadingHomeState extends State<ReadingHome> {
 
   @override
   void dispose() {
+    _insertTimer?.cancel();
+    _insertController
+      ..removeStatusListener(_handleInsertStatus)
+      ..dispose();
+    _storiesScrollController.dispose();
     unawaited(_changes?.cancel());
     super.dispose();
   }
@@ -153,25 +177,36 @@ class _ReadingHomeState extends State<ReadingHome> {
     _s.nav.go(BookRoute(text.id));
   }
 
-  Future<({ReadingText? text, String? error, bool close})> _submitStoryPrompt(
+  Future<WriteStoryResult> _submitStoryPrompt(
     String input,
     Language lang,
   ) async {
     if (_busy) return (text: null, error: null, close: false);
     setState(() => _busy = true);
     try {
-      final generator = _generator ??= await StoryGenerator.load();
-      if (!mounted) return (text: null, error: null, close: true);
+      final StoryGenerator generator;
+      final StoryDraft? story;
       final trimmed = input.trim();
-      final story = generator.generate(
-        vocabulary: ReadingVocabulary(_s.progress.words, language: lang),
-        focus: trimmed.isEmpty ? const [] : trimmed.split(RegExp(r'[,،]')),
-        due: _s.progress.due(Skill.ear),
-        previous: {
-          for (final text in _texts.where((t) => t.generated)) text.body,
-        },
-        rng: _s.rng,
-      );
+      try {
+        generator = _generator ??= await StoryGenerator.load();
+        if (!mounted) return (text: null, error: null, close: true);
+        story = await generator.writeStory(
+          vocabulary: ReadingVocabulary(_s.progress.words, language: lang),
+          focus: trimmed.isEmpty ? const [] : trimmed.split(RegExp(r'[,،]')),
+          due: _s.progress.due(Skill.ear),
+          previous: {
+            for (final text in _texts.where((t) => t.generated)) text.body,
+          },
+          rng: _s.rng,
+        );
+      } on Object {
+        return (
+          text: null,
+          error: LibraryWording.storyWriteFailed,
+          close: false,
+        );
+      }
+      if (!mounted) return (text: null, error: null, close: true);
       if (story == null) {
         if (trimmed.isNotEmpty) {
           return (
@@ -181,15 +216,21 @@ class _ReadingHomeState extends State<ReadingHome> {
           );
         }
         if (mounted) _refreshState();
-        return (text: null, error: null, close: true);
+        return (
+          text: null,
+          error: LibraryWording.storyWriteFailed,
+          close: false,
+        );
       }
       final saved = await _store.add(
         now: _s.clock.nowMs(),
         title: story.title,
         body: story.body,
         generated: true,
+        isNew: true,
       );
-      if (mounted) _refreshState();
+      if (!mounted) return (text: saved, error: null, close: true);
+      _pendingInsertStoryId = saved.id;
       return (text: saved, error: null, close: true);
     } on Object {
       return (text: null, error: LibraryWording.storySaveFailed, close: false);
@@ -198,21 +239,58 @@ class _ReadingHomeState extends State<ReadingHome> {
     }
   }
 
-  Future<void> _generate() async {
-    if (_busy || _canWrite != true) return;
-    final lang = _s.course.language;
-    final created = await showNocheSheet<ReadingText>(
-      context,
-      title: LibraryWording.writeMyStory,
-      builder: (context, close) => _StoryPromptSheet(
-        language: lang,
-        onCancel: close,
-        onSubmit: (words) => _submitStoryPrompt(words, lang),
-      ),
-    );
-    if (created != null && mounted) {
-      await _open(created);
+  void _beginStoryInsertion() {
+    if (!mounted) return;
+    final id = _pendingInsertStoryId;
+    _pendingInsertStoryId = null;
+    if (id == null) return;
+    if (_storiesScrollController.hasClients &&
+        _storiesScrollController.offset != 0) {
+      _storiesScrollController.jumpTo(0);
     }
+    _insertMotion = NocheMotion.of(context);
+    final totalDuration = _insertMotion.reduced
+        ? _insertMotion.quick
+        : LibraryMotion.shelfInsertFadeDelay + _insertMotion.move;
+    setState(() {
+      _insertingStoryId = id;
+      _texts = _store.texts();
+      final gen = _generator;
+      if (gen != null) {
+        _canWrite = _evaluateCanWrite(gen);
+      }
+      _insertController.duration = totalDuration;
+    });
+    _insertController.forward(from: 0.0);
+  }
+
+  Future<void> _generate() async {
+    if (_busy ||
+        _sheetOpen ||
+        _pendingInsertStoryId != null ||
+        _insertingStoryId != null ||
+        _canWrite != true) {
+      return;
+    }
+    final lang = _s.course.language;
+    _sheetOpen = true;
+    final ReadingText? created;
+    try {
+      created = await showWriteStorySheet<ReadingText>(
+        context,
+        language: lang,
+        onSubmit: (words) => _submitStoryPrompt(words, lang),
+      );
+    } finally {
+      _sheetOpen = false;
+    }
+    if (!mounted) return;
+    if (created == null) {
+      _pendingInsertStoryId = null;
+      return;
+    }
+    _insertTimer?.cancel();
+    _insertTimer = Timer(LibraryMotion.shelfInsertAfter, _beginStoryInsertion);
   }
 
   ReviewPair? _storyPair(ReadingText text) {
@@ -237,7 +315,9 @@ class _ReadingHomeState extends State<ReadingHome> {
         ? TextDirection.rtl
         : TextDirection.ltr;
     final pad = MediaQuery.paddingOf(context);
-    final stories = _texts.where((t) => t.generated).toList();
+    final stories = _texts
+        .where((t) => t.generated && t.id != _pendingInsertStoryId)
+        .toList();
     final books = sortShelfByRecent(
       _texts.where((t) => !t.generated).toList(),
       _store.place,
@@ -318,6 +398,7 @@ class _ReadingHomeState extends State<ReadingHome> {
                   minHeight: 132,
                 ),
                 child: SingleChildScrollView(
+                  controller: _storiesScrollController,
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsetsDirectional.only(end: 16),
                   child: Row(
@@ -327,16 +408,30 @@ class _ReadingHomeState extends State<ReadingHome> {
                         canWrite: _canWrite,
                         onPressed: _busy ? null : _generate,
                       ),
-                      for (final story in stories) ...[
-                        const SizedBox(width: 12),
-                        _StoryShelfItem(
-                          text: story,
-                          lang: lang,
-                          pair: _storyPair(story),
-                          pictures: _s.pictures,
-                          onPressed: _busy ? null : () => _open(story),
-                        ),
-                      ],
+                      for (final story in stories)
+                        if (story.id == _insertingStoryId)
+                          _InsertingStoryShelfItem(
+                            controller: _insertController,
+                            motion: _insertMotion,
+                            storyId: story.id,
+                            child: _StoryShelfItem(
+                              text: story,
+                              lang: lang,
+                              pair: _storyPair(story),
+                              pictures: _s.pictures,
+                              onPressed: _busy ? null : () => _open(story),
+                            ),
+                          )
+                        else ...[
+                          const SizedBox(width: 12),
+                          _StoryShelfItem(
+                            text: story,
+                            lang: lang,
+                            pair: _storyPair(story),
+                            pictures: _s.pictures,
+                            onPressed: _busy ? null : () => _open(story),
+                          ),
+                        ],
                     ],
                   ),
                 ),
@@ -905,6 +1000,78 @@ class _NewStorySlotState extends State<_NewStorySlot>
   }
 }
 
+class _InsertingStoryShelfItem extends StatelessWidget {
+  const _InsertingStoryShelfItem({
+    required this.controller,
+    required this.motion,
+    required this.storyId,
+    required this.child,
+  });
+
+  final Animation<double> controller;
+  final NocheMotionData motion;
+  final String storyId;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (context, builtChild) {
+        final double widthFactor;
+        final double opacity;
+        final t = controller.value.clamp(0.0, 1.0);
+
+        if (motion.reduced) {
+          widthFactor = 1.0;
+          opacity = motion.enter.transform(t).clamp(0.0, 1.0);
+        } else {
+          final totalUs = (LibraryMotion.shelfInsertFadeDelay + motion.move)
+              .inMicroseconds
+              .toDouble();
+          final elapsedUs = t * totalUs;
+          final moveUs = motion.move.inMicroseconds.toDouble();
+          final fadeDelayUs = LibraryMotion.shelfInsertFadeDelay.inMicroseconds
+              .toDouble();
+
+          final rawWidth = moveUs <= 0
+              ? 1.0
+              : (elapsedUs / moveUs).clamp(0.0, 1.0);
+          widthFactor = motion.travel.transform(rawWidth).clamp(0.0, 1.0);
+
+          if (elapsedUs <= fadeDelayUs) {
+            opacity = 0.0;
+          } else if (moveUs <= 0) {
+            opacity = 1.0;
+          } else {
+            final rawOpacity = ((elapsedUs - fadeDelayUs) / moveUs).clamp(
+              0.0,
+              1.0,
+            );
+            opacity = motion.enter.transform(rawOpacity).clamp(0.0, 1.0);
+          }
+        }
+
+        return ClipRect(
+          child: Align(
+            alignment: AlignmentDirectional.topStart,
+            widthFactor: widthFactor,
+            child: Padding(
+              padding: const EdgeInsetsDirectional.only(start: 12),
+              child: Opacity(
+                key: ValueKey('library-story-insert-opacity:$storyId'),
+                opacity: opacity,
+                child: builtChild,
+              ),
+            ),
+          ),
+        );
+      },
+      child: child,
+    );
+  }
+}
+
 class _StoryShelfItem extends StatelessWidget {
   const _StoryShelfItem({
     required this.text,
@@ -983,17 +1150,52 @@ class _StoryShelfItem extends StatelessWidget {
       );
     }
 
+    final tileVisual = Stack(
+      children: [
+        visual,
+        if (text.isNew)
+          PositionedDirectional(
+            start: 8,
+            top: 8,
+            child: ExcludeSemantics(
+              child: Container(
+                key: Key('library-story-new-tag:${text.id}'),
+                height: 24,
+                padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
+                alignment: AlignmentDirectional.center,
+                decoration: BoxDecoration(
+                  color: NocheColors.ground,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: NocheLtr(
+                  child: Text(
+                    LibraryWording.newStoryTag.toUpperCase(),
+                    maxLines: 1,
+                    softWrap: false,
+                    style: NocheType.labelStrong.copyWith(
+                      color: NocheColors.text,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+      ],
+    );
+
     return Pressable(
       key: ValueKey('library-book:${text.id}'),
       onPressed: onPressed,
-      semanticLabel: text.title,
+      semanticLabel: text.isNew
+          ? '${text.title}, ${LibraryWording.newStoryTag}'
+          : text.title,
       builder: (context, _) => SizedBox(
         width: 104,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            visual,
+            tileVisual,
             const SizedBox(height: 20),
             Text(
               text.title,
@@ -1040,154 +1242,6 @@ class _BookShelfItem extends StatelessWidget {
           size: NocheCoverSize.regular,
           script: lang.script,
           locale: locale,
-        ),
-      ),
-    );
-  }
-}
-
-class _StoryPromptSheet extends StatefulWidget {
-  const _StoryPromptSheet({
-    required this.language,
-    required this.onCancel,
-    required this.onSubmit,
-  });
-
-  final Language language;
-  final VoidCallback onCancel;
-  final Future<({ReadingText? text, String? error, bool close})> Function(
-    String words,
-  )
-  onSubmit;
-
-  @override
-  State<_StoryPromptSheet> createState() => _StoryPromptSheetState();
-}
-
-class _StoryPromptSheetState extends State<_StoryPromptSheet> {
-  final _words = TextEditingController();
-  bool _submitting = false;
-  String? _error;
-
-  @override
-  void dispose() {
-    _words.dispose();
-    super.dispose();
-  }
-
-  Future<void> _submit() async {
-    if (_submitting) return;
-    setState(() {
-      _submitting = true;
-      _error = null;
-    });
-    final result = await widget.onSubmit(_words.text.trim());
-    if (!mounted) return;
-    if (result.close) {
-      Navigator.pop(context, result.text);
-      return;
-    }
-    setState(() {
-      _submitting = false;
-      _error = result.error;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final courseDirection = widget.language.direction == LanguageDirection.rtl
-        ? TextDirection.rtl
-        : TextDirection.ltr;
-    final border = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(NocheSize.tileRadius),
-      borderSide: const BorderSide(color: NocheColors.line),
-    );
-    final focusedBorder = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(NocheSize.tileRadius),
-      borderSide: const BorderSide(color: NocheColors.text),
-    );
-
-    TextStyle fieldStyle(TextStyle base, Color color) =>
-        base.copyWith(color: color, textBaseline: TextBaseline.alphabetic);
-
-    return Material(
-      type: MaterialType.transparency,
-      child: Padding(
-        padding: EdgeInsetsDirectional.only(
-          bottom: MediaQuery.viewInsetsOf(context).bottom,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextFormField(
-              controller: _words,
-              enabled: !_submitting,
-              minLines: 1,
-              maxLines: 2,
-              maxLength: 180,
-              cursorColor: NocheColors.next,
-              textDirection: courseDirection,
-              style: fieldStyle(
-                NocheType.forScript(NocheType.body, widget.language.script),
-                NocheColors.text,
-              ),
-              textInputAction: TextInputAction.done,
-              onFieldSubmitted: (_) => unawaited(_submit()),
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: NocheColors.ground,
-                labelText: LibraryWording.practiceWordsLabel,
-                labelStyle: fieldStyle(NocheType.body, NocheColors.label),
-                floatingLabelStyle: fieldStyle(
-                  NocheType.label,
-                  NocheColors.text,
-                ),
-                helperText: LibraryWording.practiceWordsHelper,
-                helperStyle: fieldStyle(NocheType.bodySmall, NocheColors.label),
-                helperMaxLines: 3,
-                counterStyle: fieldStyle(
-                  NocheType.bodySmall,
-                  NocheColors.label,
-                ),
-                contentPadding: const EdgeInsetsDirectional.symmetric(
-                  horizontal: 16,
-                  vertical: 14,
-                ),
-                border: border,
-                enabledBorder: border,
-                focusedBorder: focusedBorder,
-              ),
-            ),
-            if (_error case final error?) ...[
-              const SizedBox(height: 12),
-              Semantics(
-                liveRegion: true,
-                child: Text(
-                  error,
-                  style: NocheType.body.copyWith(color: NocheColors.label),
-                ),
-              ),
-            ],
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                NocheOutlineButton(
-                  label: LibraryWording.cancel,
-                  expand: false,
-                  onPressed: _submitting ? null : widget.onCancel,
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: NochePrimaryButton(
-                    label: LibraryWording.writeMyStory,
-                    small: true,
-                    onPressed: _submitting ? null : () => unawaited(_submit()),
-                  ),
-                ),
-              ],
-            ),
-          ],
         ),
       ),
     );
