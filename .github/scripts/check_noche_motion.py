@@ -382,9 +382,10 @@ def parse_diff_entries(unified_diff: str) -> list[DiffEntry]:
     cur_new: str | None = None
     cur_added: set[int] = set()
     in_file = False
+    in_hunk = False
 
     def flush() -> None:
-        nonlocal cur_old, cur_new, cur_added, in_file
+        nonlocal cur_old, cur_new, cur_added, in_file, in_hunk
         if in_file and cur_new is not None:
             entries.append(
                 DiffEntry(
@@ -397,6 +398,7 @@ def parse_diff_entries(unified_diff: str) -> list[DiffEntry]:
         cur_new = None
         cur_added = set()
         in_file = False
+        in_hunk = False
 
     for raw_line in unified_diff.splitlines():
         if raw_line.startswith("diff --git "):
@@ -404,6 +406,16 @@ def parse_diff_entries(unified_diff: str) -> list[DiffEntry]:
             in_file = True
             continue
         if not in_file:
+            continue
+        m = HUNK_HEADER_RE.match(raw_line)
+        if m:
+            in_hunk = True
+            start = int(m.group(1))
+            count = 1 if m.group(2) is None else int(m.group(2))
+            if count > 0:
+                cur_added.update(range(start, start + count))
+            continue
+        if in_hunk:
             continue
         if raw_line.startswith("rename from "):
             cur_old = raw_line[len("rename from ") :]
@@ -431,12 +443,6 @@ def parse_diff_entries(unified_diff: str) -> list[DiffEntry]:
             elif dst.startswith("b/"):
                 cur_new = dst[2:]
             continue
-        m = HUNK_HEADER_RE.match(raw_line)
-        if m:
-            start = int(m.group(1))
-            count = 1 if m.group(2) is None else int(m.group(2))
-            if count > 0:
-                cur_added.update(range(start, start + count))
 
     flush()
     return entries

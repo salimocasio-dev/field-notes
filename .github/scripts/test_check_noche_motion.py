@@ -279,6 +279,29 @@ class SourceScanningTests(unittest.TestCase):
             [(1, "Curves.")],
         )
 
+    def test_diff_hunk_lines_starting_with_plus_or_minus_do_not_corrupt_header(
+        self,
+    ) -> None:
+        diff = "\n".join(
+            [
+                "diff --git a/coqui/app/lib/src/shell.dart b/coqui/app/lib/src/shell.dart",
+                "index 1111111..2222222 100644",
+                "--- a/coqui/app/lib/src/shell.dart",
+                "+++ b/coqui/app/lib/src/shell.dart",
+                "@@ -1,1 +1,2 @@",
+                "--- count;",
+                "+++ b/fake_header.dart",
+                "+++ /dev/null",
+                "@@ -10,0 +11,1 @@",
+                "+final c = Curves.easeIn;",
+            ]
+        )
+        entries = mod.parse_diff_entries(diff)
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0].old_path, "coqui/app/lib/src/shell.dart")
+        self.assertEqual(entries[0].new_path, "coqui/app/lib/src/shell.dart")
+        self.assertEqual(entries[0].added_lines, {1, 2, 11})
+
 
 class GitIntegrationTests(unittest.TestCase):
     def _run_git(self, repo: Path, *args: str) -> str:

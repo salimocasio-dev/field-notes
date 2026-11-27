@@ -108,7 +108,7 @@ Beside what page 22, Part 1.6 asks:
 - A test with `disableAnimations: true` showing the reduced form.
 - A screen recording of the screen on a phone or the simulator, beside the board's video, in the pull request.
 - Every wait the story names is a named constant (Part 1.2, "Waits"). The reviewer greps the changed files: `NocheMotion.ms(` appears only in the package's `lib/src/motion.dart`.
-- CI runs these greps on every PR's added lines (`.github/scripts/check_noche_motion.py`, invoked by `coqui-guardrails.yml`): raw `Curves.`, `Cubic(`, and `Duration(` fail outside `coqui_ui` and a package's `lib/src/motion.dart` (non-motion `Duration(` calls such as timeouts or clip lengths pass with a `// non-motion` comment on the same line), and `NocheMotion.ms(` fails outside `coqui_ui` and a package's `lib/src/motion.dart`.
+- CI runs these greps on every PR's added lines (`.github/scripts/check_noche_motion.py`, invoked by `coqui-guardrails.yml`): raw `Curves.`, `Cubic(`, and `Duration(` fail in `coqui/packages/features/*/lib/` and `coqui/app/lib/` outside a package's `lib/src/motion.dart` (non-motion `Duration(` calls such as timeouts or clip lengths pass with a `// non-motion` comment on the same line), and `NocheMotion.ms(` fails in any Dart file under `coqui/` outside `coqui_ui` and a package's `lib/src/motion.dart`.
 
 ### 1.7 Things that cost money or need Salim
 
