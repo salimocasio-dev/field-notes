@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui' as ui;
@@ -6,6 +7,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_library/feature_library.dart';
+import 'package:feature_library/src/motion.dart';
 import 'package:feature_library/src/reading.dart';
 import 'package:feature_library/src/reading_home.dart';
 import 'package:feature_library/src/story_generator.dart';
@@ -131,6 +133,46 @@ void _learnWords(FakeProgressStore store, Iterable<String> words) {
       },
     }),
   );
+}
+
+class _SlowStoryGenerator extends StoryGenerator {
+  _SlowStoryGenerator(this.responses)
+    : super([
+        (
+          title: 'La casa',
+          beats: [
+            ['La casa es azul.'],
+          ],
+        ),
+        (
+          title: 'Otra casa',
+          beats: [
+            ['La casa azul.'],
+          ],
+        ),
+      ]);
+
+  final List<Completer<StoryDraft?>> responses;
+  int _index = 0;
+
+  @override
+  Future<StoryDraft?> writeStory({
+    required ReadingVocabulary vocabulary,
+    required List<String> focus,
+    required Iterable<String> due,
+    required Set<String> previous,
+    required Rng rng,
+  }) => responses[_index++].future;
+}
+
+class _FailingWriteStore extends FakeKeyValueStore {
+  bool failWrites = false;
+
+  @override
+  Future<void> write(String key, String value) async {
+    if (failWrites) throw StateError('storage full');
+    await super.write(key, value);
+  }
 }
 
 class _RtlCatalog extends TestCourse implements LanguageCatalog {
@@ -711,9 +753,7 @@ void main() {
         await tester.pumpAndSettle();
         expect(find.byType(TextFormField), findsOneWidget);
         await tester.enterText(find.byType(TextFormField), 'elefante');
-        await tester.tap(
-          find.widgetWithText(NochePrimaryButton, LibraryWording.writeMyStory),
-        );
+        await tester.tap(find.byKey(const Key('library-write-story-submit')));
         await tester.pumpAndSettle();
         expect(find.text(LibraryWording.noStoryMatchFocused), findsOneWidget);
       },
@@ -1058,5 +1098,474 @@ void main() {
         });
       }
     }
+  });
+
+  group('N8.12 Writing a story', () {
+    setUpAll(() async {
+      await _loadNocheFonts();
+    });
+
+    test('ReadingText.isNew persists in ReadingStore and markOpened clears it even at now == 0', () async {
+      final kv = FakeKeyValueStore();
+      final store = ReadingStore(kv);
+      final added = await store.add(
+        now: 10,
+        title: 'La casa',
+        body: 'La casa es azul.',
+        generated: true,
+        isNew: true,
+      );
+      expect(added.isNew, isTrue);
+      expect(store.text(added.id)?.isNew, isTrue);
+
+      final old = await store.add(
+        now: 5,
+        title: 'El parque',
+        body: 'El parque es grande.',
+        generated: true,
+      );
+      expect(old.isNew, isFalse);
+      expect(store.text(old.id)?.isNew, isFalse);
+
+      // markOpened at clock == 0 still clears isNew.
+      await store.markOpened(added.id, 0);
+      expect(store.text(added.id)?.isNew, isFalse);
+      expect(store.texts().firstWhere((t) => t.id == added.id).isNew, isFalse);
+    });
+
+    testWidgets(
+      'sheet swaps in place at identical height, animates 3 dots, blocks dismissal while writing, and shows error on mismatch or save failure',
+      (tester) async {
+        final storage = _FailingWriteStore();
+        final progress = FakeProgressStore();
+        _learnWords(progress, ['la', 'casa', 'es', 'azul']);
+        final services = fakeServices(
+          progress: progress,
+          course: TestCourse(),
+          storage: (_) => storage,
+        );
+        final firstFail = Completer<StoryDraft?>();
+        final secondEmptyFail = Completer<StoryDraft?>();
+        final thirdSuccessThenStorageFail = Completer<StoryDraft?>();
+        final generator = _SlowStoryGenerator([
+          firstFail,
+          secondEmptyFail,
+          thirdSuccessThenStorageFail,
+        ]);
+
+        await _pumpHome(
+          tester,
+          services: services,
+          size: _viewports.first,
+          generator: generator,
+        );
+
+        await tester.tap(find.byKey(const Key('library-write-story')));
+        await tester.pumpAndSettle();
+
+        // Submit button is text-filled (NocheColors.text, NOT NocheColors.next),
+        // and the sheet contains no NochePrimaryButton.
+        final sheetFinder = find.byType(NocheSheet);
+        expect(sheetFinder, findsOneWidget);
+        expect(
+          find.descendant(
+            of: sheetFinder,
+            matching: find.byType(NochePrimaryButton),
+          ),
+          findsNothing,
+        );
+        final submitFinder = find.byKey(
+          const Key('library-write-story-submit'),
+        );
+        final submitBox = tester.widget<Container>(
+          find.descendant(of: submitFinder, matching: find.byType(Container)),
+        );
+        expect((submitBox.decoration as BoxDecoration).color, NocheColors.text);
+
+        // Measure sheet height BEFORE writing.
+        final heightBefore = tester.getSize(sheetFinder).height;
+
+        // Submit unmatched practice word -> swaps into writing view.
+        await tester.enterText(find.byType(TextFormField), 'elefante');
+        await tester.tap(submitFinder);
+        await tester.pump();
+        await tester.pump(NocheMotion.swapAfter + NocheMotion.move);
+
+        expect(find.text(LibraryWording.writingStoryTitle), findsOneWidget);
+        expect(find.text(LibraryWording.writingStorySubtitle), findsOneWidget);
+        final titleWidget = tester.widget<Text>(
+          find.text(LibraryWording.writingStoryTitle),
+        );
+        expect(titleWidget.style?.fontSize, NocheType.sheetTitle.fontSize);
+
+        // Three 12x12 dots in NocheColors.other whose opacities animate across frames.
+        final opacitiesT0 = <double>[];
+        for (var i = 0; i < 3; i++) {
+          final dotFinder = find.byKey(
+            ValueKey<String>('library-writing-dot-$i'),
+          );
+          expect(dotFinder, findsOneWidget);
+          expect(tester.getSize(dotFinder), const Size(12, 12));
+          final dotBox = tester.widget<DecoratedBox>(
+            find.descendant(of: dotFinder, matching: find.byType(DecoratedBox)),
+          );
+          final deco = dotBox.decoration as BoxDecoration;
+          expect(deco.color, NocheColors.other);
+          expect(deco.shape, BoxShape.circle);
+          opacitiesT0.add(tester.widget<Opacity>(dotFinder).opacity);
+        }
+
+        await tester.pump(const Duration(milliseconds: 150));
+        final opacitiesT1 = [
+          for (var i = 0; i < 3; i++)
+            tester
+                .widget<Opacity>(
+                  find.byKey(ValueKey<String>('library-writing-dot-$i')),
+                )
+                .opacity,
+        ];
+        expect(opacitiesT1, isNot(equals(opacitiesT0)));
+
+        // Measure sheet height DURING writing -> matches BEFORE.
+        final heightDuring = tester.getSize(sheetFinder).height;
+        expect(heightDuring, closeTo(heightBefore, 0.01));
+
+        // Scrim tap, drag-down, and Navigator.maybePop all do NOT close while writing.
+        await tester.tapAt(const Offset(20, 40));
+        await tester.pump();
+        expect(sheetFinder, findsOneWidget);
+
+        await tester.drag(sheetFinder, const Offset(0, 140));
+        await tester.pump();
+        expect(sheetFinder, findsOneWidget);
+
+        final sheetRoute = ModalRoute.of(tester.element(sheetFinder))!;
+        expect(sheetRoute.popDisposition, RoutePopDisposition.doNotPop);
+        final handled = await Navigator.maybePop(tester.element(sheetFinder));
+        await tester.pump();
+        expect(handled, isTrue);
+        expect(sheetRoute.isCurrent, isTrue);
+        expect(sheetFinder, findsOneWidget);
+
+        // Complete slow generator with null -> swaps back to form with error above button.
+        firstFail.complete(null);
+        await tester.pump();
+        await tester.pump(NocheMotion.swapAfter + NocheMotion.move);
+
+        expect(find.text(LibraryWording.noStoryMatchFocused), findsOneWidget);
+        expect(submitFinder, findsOneWidget);
+        final heightAfterError = tester.getSize(sheetFinder).height;
+        expect(heightAfterError, closeTo(heightBefore, 0.01));
+
+        // Empty-prompt null -> swaps back to form with storyWriteFailed at same height.
+        await tester.enterText(find.byType(TextFormField), '');
+        await tester.tap(submitFinder);
+        await tester.pump();
+        await tester.pump(NocheMotion.swapAfter + NocheMotion.move);
+        expect(find.text(LibraryWording.writingStoryTitle), findsOneWidget);
+
+        secondEmptyFail.complete(null);
+        await tester.pump();
+        await tester.pump(NocheMotion.swapAfter + NocheMotion.move);
+
+        expect(find.text(LibraryWording.storyWriteFailed), findsOneWidget);
+        expect(tester.getSize(sheetFinder).height, closeTo(heightBefore, 0.01));
+
+        // Storage-full failure also swaps back to form with storySaveFailed at same height.
+        storage.failWrites = true;
+        await tester.tap(submitFinder);
+        await tester.pump();
+        await tester.pump(NocheMotion.swapAfter + NocheMotion.move);
+        expect(find.text(LibraryWording.writingStoryTitle), findsOneWidget);
+
+        thirdSuccessThenStorageFail.complete(
+          const StoryDraft('La casa', 'La casa es azul.'),
+        );
+        await tester.pump();
+        await tester.pump(NocheMotion.swapAfter + NocheMotion.move);
+
+        expect(find.text(LibraryWording.storySaveFailed), findsOneWidget);
+        expect(tester.getSize(sheetFinder).height, closeTo(heightBefore, 0.01));
+
+        // Scrim tap now DOES close the sheet once writing has failed and unlocked.
+        await tester.tapAt(const Offset(20, 40));
+        await tester.pumpAndSettle();
+        expect(sheetFinder, findsNothing);
+      },
+    );
+
+    testWidgets(
+      'sheet slides down, waits 260ms, shifts existing stories, fades new story in with NEW badge, and clears NEW on tap',
+      (tester) async {
+        final rig = Rig();
+        _learnWords(rig.store, ['la', 'casa', 'es', 'azul']);
+        final services = rig.services;
+        final store = ReadingStore(services.storage(ReadingStore.space));
+        final existing = await store.add(
+          now: 100,
+          title: 'Sin dibujo',
+          body: 'Un texto anterior.',
+          generated: true,
+        );
+        await store.markOpened(existing.id, 100);
+
+        final completer = Completer<StoryDraft?>();
+        final generator = _SlowStoryGenerator([completer]);
+
+        await _pumpHome(
+          tester,
+          services: services,
+          size: _viewports.first,
+          withTabBar: true,
+          generator: generator,
+        );
+
+        final existingFinder = find.byKey(
+          ValueKey('library-book:${existing.id}'),
+        );
+        final existingLeftBefore = tester.getRect(existingFinder).left;
+
+        await tester.tap(find.byKey(const Key('library-write-story')));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(const Key('library-write-story-submit')));
+        await tester.pump();
+        await tester.pump(NocheMotion.swapAfter + NocheMotion.move);
+
+        completer.complete(const StoryDraft('La casa', 'La casa es azul.'));
+        await tester.pump();
+        await tester.pump();
+
+        // Sheet slides down over pageOut (200ms): mid-way at 100ms, gone by 201ms.
+        await tester.pump(NocheMotion.pageOut ~/ 2);
+        final surface = tester.widget<FractionalTranslation>(
+          find.byKey(const ValueKey('noche_sheet_surface')),
+        );
+        expect(surface.translation.dy, greaterThan(0.0));
+        expect(surface.translation.dy, lessThan(1.0));
+        expect(find.text('La casa'), findsNothing);
+        expect(tester.getRect(existingFinder).left, existingLeftBefore);
+
+        await tester.pump(
+          NocheMotion.pageOut ~/ 2 + const Duration(milliseconds: 1),
+        );
+        await tester.pump();
+        expect(find.byType(NocheSheet), findsNothing);
+        expect(find.text('La casa'), findsNothing);
+        expect(tester.getRect(existingFinder).left, existingLeftBefore);
+
+        // Pump past 260ms (remaining 59ms) -> insertion starts; travel partway at move ~/ 2.
+        await tester.pump(const Duration(milliseconds: 59));
+        await tester.pump();
+        final newStory = store.texts().firstWhere((t) => t.title == 'La casa');
+        expect(newStory.isNew, isTrue);
+
+        await tester.pump(NocheMotion.move ~/ 2);
+        final existingLeftMid = tester.getRect(existingFinder).left;
+        expect(existingLeftMid, greaterThan(existingLeftBefore));
+        expect(existingLeftMid, lessThan(existingLeftBefore + 116));
+
+        final insertOpacityFinder = find.byKey(
+          ValueKey('library-story-insert-opacity:${newStory.id}'),
+        );
+        expect(tester.widget<Opacity>(insertOpacityFinder).opacity, 0.0);
+
+        // At 260ms + 160ms + move ~/ 2: new story is mid-fade (0 < opacity < 1).
+        await tester.pump(LibraryMotion.shelfInsertFadeDelay);
+        final midOpacity = tester.widget<Opacity>(insertOpacityFinder).opacity;
+        expect(midOpacity, greaterThan(0.0));
+        expect(midOpacity, lessThan(1.0));
+
+        // Finish insertion and settle.
+        await tester.pump(NocheMotion.move);
+        await tester.pumpAndSettle();
+
+        // Stayed on Library; order is [open slot, new story, existing story].
+        expect(rig.nav.routes, isEmpty);
+        expect(find.byType(NocheTabBar), findsOneWidget);
+        expect(find.byType(Image), findsNothing);
+        expect(
+          find.descendant(
+            of: find.byKey(ValueKey('library-book:${newStory.id}')),
+            matching: find.byType(OverflowBox),
+          ),
+          findsOneWidget,
+        );
+
+        final slotRect = tester.getRect(
+          find.byKey(const Key('library-write-story')),
+        );
+        final newRect = tester.getRect(
+          find.byKey(ValueKey('library-book:${newStory.id}')),
+        );
+        final existingRectAfter = tester.getRect(existingFinder);
+        expect(slotRect.left, lessThan(newRect.left));
+        expect(newRect.left, lessThan(existingRectAfter.left));
+        expect(existingRectAfter.left, closeTo(existingLeftBefore + 116, 0.5));
+
+        // NEW badge renders with ground fill and labelStrong style.
+        final badgeFinder = find.byKey(
+          Key('library-story-new-tag:${newStory.id}'),
+        );
+        expect(badgeFinder, findsOneWidget);
+        final badgeContainer = tester.widget<Container>(badgeFinder);
+        expect(
+          (badgeContainer.decoration as BoxDecoration).color,
+          NocheColors.ground,
+        );
+        final badgeText = tester.widget<Text>(
+          find.descendant(
+            of: badgeFinder,
+            matching: find.text(LibraryWording.newStoryTag.toUpperCase()),
+          ),
+        );
+        expect(badgeText.style?.fontWeight, NocheType.labelStrong.fontWeight);
+        expect(badgeText.style?.fontSize, NocheType.labelStrong.fontSize);
+
+        // Tapping the new story navigates to BookRoute and removes the NEW tag.
+        await tester.tap(find.byKey(ValueKey('library-book:${newStory.id}')));
+        await settle(tester);
+        expect(rig.nav.routes, [BookRoute(newStory.id)]);
+        expect(badgeFinder, findsNothing);
+        expect(store.text(newStory.id)?.isNew, isFalse);
+      },
+    );
+
+    testWidgets(
+      'honours disableAnimations: true with static dots at opacity 1.0 and instant space + quick fade-in on shelf',
+      (tester) async {
+        final rig = Rig();
+        _learnWords(rig.store, ['la', 'casa', 'es', 'azul']);
+        final services = rig.services;
+        final store = ReadingStore(services.storage(ReadingStore.space));
+        final existing = await store.add(
+          now: 100,
+          title: 'Sin dibujo',
+          body: 'Un texto anterior.',
+          generated: true,
+        );
+        await store.markOpened(existing.id, 100);
+
+        final completer = Completer<StoryDraft?>();
+        final generator = _SlowStoryGenerator([completer]);
+
+        await _pumpHome(
+          tester,
+          services: services,
+          size: _viewports.first,
+          disableAnimations: true,
+          generator: generator,
+        );
+
+        final existingFinder = find.byKey(
+          ValueKey('library-book:${existing.id}'),
+        );
+        final existingLeftBefore = tester.getRect(existingFinder).left;
+
+        await tester.tap(find.byKey(const Key('library-write-story')));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(const Key('library-write-story-submit')));
+        await tester.pump();
+        await tester.pump(NocheMotion.swapAfter + NocheMotion.quick);
+
+        // Three dots stay static at opacity 1.0 across multiple frames.
+        for (final step in [
+          Duration.zero,
+          const Duration(milliseconds: 150),
+          const Duration(milliseconds: 300),
+        ]) {
+          if (step != Duration.zero) await tester.pump(step);
+          for (var i = 0; i < 3; i++) {
+            expect(
+              tester
+                  .widget<Opacity>(
+                    find.byKey(ValueKey<String>('library-writing-dot-$i')),
+                  )
+                  .opacity,
+              1.0,
+            );
+          }
+        }
+
+        completer.complete(const StoryDraft('La casa', 'La casa es azul.'));
+        await tester.pump();
+        await tester.pump(LibraryMotion.shelfInsertAfter);
+        await tester.pump();
+
+        final newStory = store.texts().firstWhere((t) => t.title == 'La casa');
+        final insertOpacityFinder = find.byKey(
+          ValueKey('library-story-insert-opacity:${newStory.id}'),
+        );
+
+        // Space opens immediately (no travel of existing stories), new story fades in over quick.
+        expect(
+          tester.getRect(existingFinder).left,
+          closeTo(existingLeftBefore + 116, 0.5),
+        );
+        await tester.pump(NocheMotion.quick ~/ 2);
+        final midOpacity = tester.widget<Opacity>(insertOpacityFinder).opacity;
+        expect(midOpacity, greaterThan(0.0));
+        expect(midOpacity, lessThan(1.0));
+
+        await tester.pump(NocheMotion.quick);
+        await tester.pumpAndSettle();
+        expect(
+          find.byKey(Key('library-story-new-tag:${newStory.id}')),
+          findsOneWidget,
+        );
+      },
+    );
+
+    testWidgets(
+      'open sheet scrolls cleanly without overflow and keeps submit button reachable when keyboard viewInsets are large',
+      (tester) async {
+        final rig = Rig();
+        _learnWords(rig.store, ['la', 'casa', 'es', 'azul']);
+        tester.view.devicePixelRatio = 1;
+        tester.view.physicalSize = const Size(390, 844);
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        await tester.pumpWidget(
+          MaterialApp(
+            debugShowCheckedModeBanner: false,
+            builder: (context, child) => MediaQuery(
+              data: MediaQuery.of(context)
+                  .copyWith(viewInsets: const EdgeInsets.only(bottom: 500)),
+              child: child!,
+            ),
+            home: ReadingHome(
+              services: rig.services,
+              generator: _simpleGenerator(),
+            ),
+          ),
+        );
+        await settle(tester);
+
+        await tester.tap(find.byKey(const Key('library-write-story')));
+        await tester.pumpAndSettle();
+
+        expect(tester.takeException(), isNull);
+        final submitFinder = find.byKey(
+          const Key('library-write-story-submit'),
+        );
+        expect(submitFinder, findsOneWidget);
+
+        await tester.ensureVisible(submitFinder);
+        await tester.pumpAndSettle();
+        await tester.tap(submitFinder);
+        await tester.pumpAndSettle();
+        await tester.pump(
+          LibraryMotion.shelfInsertAfter +
+              LibraryMotion.shelfInsertFadeDelay +
+              NocheMotion.move,
+        );
+        await tester.pumpAndSettle();
+
+        expect(tester.takeException(), isNull);
+        expect(find.text('La casa'), findsOneWidget);
+      },
+    );
   });
 }

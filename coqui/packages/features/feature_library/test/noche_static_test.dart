@@ -16,6 +16,7 @@ void main() {
     'lib/src/import_screen.dart',
     'lib/src/reading.dart',
     'lib/src/story_generator.dart',
+    'lib/src/write_story_sheet.dart',
     'lib/src/motion.dart',
     'lib/src/module.dart',
   ];
