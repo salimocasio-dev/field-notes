@@ -4,6 +4,7 @@
 //
 // Run at coqui/:  dart test tool/test
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:test/test.dart';
@@ -21,8 +22,16 @@ void main() {
 
   tearDown(() => repo.deleteSync(recursive: true));
 
-  Future<List<String>> check({String? branch = 'main', String? base}) =>
-      checkBoundaries(coqui, branch: branch, base: base);
+  Future<List<String>> check({
+    String? branch = 'main',
+    String? base,
+    File? laneMapFile,
+  }) => checkBoundaries(
+    coqui,
+    branch: branch,
+    base: base,
+    laneMapFile: laneMapFile,
+  );
 
   group('[a] a pubspec lists a package its row does not allow', () {
     test(
@@ -581,6 +590,7 @@ import 'package:material_ui/material_ui.dart';
     late Git git;
 
     setUp(() {
+      installRealLaneMap();
       package('feature_words', deps: ['coqui_ui']);
       package('feature_map', deps: ['coqui_ui']);
       src('feature_words', 'lib/src/a.dart', '// a\n');
@@ -652,12 +662,13 @@ import 'package:material_ui/material_ui.dart';
       expect(await check(branch: null), isEmpty);
     });
 
-    test('fails: the lane names no package', () async {
+    test('fails: the lane names an unknown lane', () async {
       git.branch('lane/feature_nothing/1');
-      expect(await check(branch: null), [
-        '[d] branch lane/feature_nothing/1 names feature_nothing, which is '
-            'not a package',
-      ]);
+      final problems = await check(branch: null);
+      expect(problems, hasLength(1));
+      expect(problems.single, contains('[d]'));
+      expect(problems.single, contains('unknown lane'));
+      expect(problems.single, contains('feature_nothing'));
     });
 
     test('takes the branch name from the argument (CI variables)', () async {
@@ -700,49 +711,42 @@ import 'package:material_ui/material_ui.dart';
       expect(await check(branch: null, base: 'lane/feature_words/5'), isEmpty);
     });
 
-    test('passes: lane/tool changes tool/ and requests/', () async {
-      git.branch('lane/tool/55');
-      write('tool/helper.dart', '// tool\n');
-      write('requests/tool-needs-a-thing.md', 'please\n');
-      git.commit('work');
-      expect(await check(branch: null), isEmpty);
-    });
-
     test(
-      'passes: lane/tool changes coqui_scenes/tool/ and ref/pp/ (#258)',
+      'passes: lane/tool changes coqui/tool/, tools/, tool/, and requests/',
       () async {
-        git.branch('lane/tool/258');
-        write('packages/core/coqui_scenes/tool/dev_main.dart', '// dev main\n');
-        write('ref/pp/orilla/index.json', '{}\n');
-        git.commit('tool + ref/pp work');
+        git.branch('lane/tool/55');
+        write('tool/helper.dart', '// tool\n');
+        writeRepo('tools/helper.py', '# tool\n');
+        writeRepo('tool/hook.py', '# hook\n');
+        write('requests/tool-needs-a-thing.md', 'please\n');
+        git.commit('work');
         expect(await check(branch: null), isEmpty);
       },
     );
 
-    test('fails: lane/tool changes coqui_scenes/lib/, ref/other/, or ref/pp_extra/', () async {
-      git.branch('lane/tool/258');
+    test('fails: lane/tool rejects coqui_scenes/tool/, ref/pp/, coqui_scenes/lib/, ref/other/, and ref/pp_extra/', () async {
+      git.branch('lane/tool/263');
+      write('packages/core/coqui_scenes/tool/dev_main.dart', '// dev main\n');
+      write('ref/pp/orilla/index.json', '{}\n');
       write('packages/core/coqui_scenes/lib/src/x.dart', '// disallowed\n');
       write('ref/other/x.json', '{}\n');
       write('ref/pp_extra/x.json', '{}\n');
       git.commit('disallowed paths on lane/tool');
       final problems = await check(branch: null);
-      expect(problems, hasLength(3));
-      expect(
-        problems.any(
-          (p) => p.startsWith(
-            'coqui/packages/core/coqui_scenes/lib/src/x.dart: [d]',
-          ),
-        ),
-        isTrue,
-      );
-      expect(
-        problems.any((p) => p.startsWith('coqui/ref/other/x.json: [d]')),
-        isTrue,
-      );
-      expect(
-        problems.any((p) => p.startsWith('coqui/ref/pp_extra/x.json: [d]')),
-        isTrue,
-      );
+      expect(problems, hasLength(5));
+      for (final path in [
+        'coqui/packages/core/coqui_scenes/tool/dev_main.dart',
+        'coqui/ref/pp/orilla/index.json',
+        'coqui/packages/core/coqui_scenes/lib/src/x.dart',
+        'coqui/ref/other/x.json',
+        'coqui/ref/pp_extra/x.json',
+      ]) {
+        expect(
+          problems.any((p) => p.startsWith('$path: [d]')),
+          isTrue,
+          reason: 'expected $path to be rejected',
+        );
+      }
     });
 
     test(
@@ -855,12 +859,326 @@ import 'package:material_ui/material_ui.dart';
             'exists to compare with',
       ]);
     });
+
+    test(
+      'passes: real tools/lanes.json validates cleanly on main and tool/263',
+      () async {
+        expect(await check(branch: 'main'), isEmpty);
+        expect(await check(branch: 'tool/263'), isEmpty);
+      },
+    );
+
+    test('fails: custom tools/lanes.json with overlapping concurrent lanes reports witness even on main', () async {
+      final raw = jsonDecode(
+        realLaneMapFile().readAsStringSync(),
+      ) as Map<String, Object?>;
+      final lanes = (raw['lanes'] as Map).cast<String, Object?>();
+      lanes['clash_a'] = {
+        'kind': 'non_package',
+        'paths': ['sandbox/sala_*_test.dart'],
+      };
+      lanes['clash_b'] = {
+        'kind': 'non_package',
+        'paths': ['sandbox/sala_dia_*_test.dart'],
+      };
+      writeRepo('tools/lanes.json', '${jsonEncode(raw)}\n');
+      final problems = await check(branch: 'main');
+      expect(problems, hasLength(1));
+      expect(problems.single, contains('[d]'));
+      expect(problems.single, contains('clash_a'));
+      expect(problems.single, contains('clash_b'));
+      expect(problems.single, contains('sandbox/sala_dia_'));
+    });
+
+    test('fails: missing tools/lanes.json fails on lane branch, board repo, or explicit --lane-map', () async {
+      File('${repo.path}/tools/lanes.json').deleteSync();
+      final onLane = await check(branch: 'lane/feature_words/99');
+      expect(onLane, hasLength(1));
+      expect(onLane.single, contains('[d] missing lane map'));
+
+      writeRepo('tools/board.py', '# board\n');
+      final withBoard = await check(branch: 'main');
+      expect(withBoard, hasLength(1));
+      expect(withBoard.single, contains('[d] missing lane map'));
+
+      File('${repo.path}/tools/board.py').deleteSync();
+      final explicit = await check(
+        branch: 'main',
+        laneMapFile: File('${repo.path}/tools/nope.json'),
+      );
+      expect(explicit, hasLength(1));
+      expect(explicit.single, contains('[d] missing lane map'));
+    });
+
+    test('per-scene lane allows owned paths, generated_paths, and requests/, and rejects other scenes', () async {
+      git.branch('lane/scene.entrada/301');
+      write('packages/core/coqui_scenes/lib/src/entrada/scene.dart', '// ok\n');
+      write(
+        'packages/core/coqui_scenes/assets/sheets/entrada-sheet.json',
+        '{}\n',
+      );
+      write(
+        'packages/core/coqui_scenes/test/entrada_acts_test.dart',
+        '// ok\n',
+      );
+      write(
+        'packages/coqui_story_checks/test/entrada_stories_test.dart',
+        '// ok\n',
+      );
+      write('ref/pp/entrada/frame.png', 'png\n');
+      write('packages/core/coqui_scenes/tool/dev_main.dart', '// generated\n');
+      write(
+        'packages/core/coqui_scenes/tool/make_set_fixture.dart',
+        '// gen\n',
+      );
+      write('ref/pp/index.json', '{}\n');
+      write('requests/301-entrada.md', 'req\n');
+      git.commit('valid entrada work');
+      expect(await check(branch: null), isEmpty);
+
+      write(
+        'packages/core/coqui_scenes/lib/src/pedido/scene.dart',
+        '// stray\n',
+      );
+      git.commit('stray into pedido');
+      final problems = await check(branch: null);
+      expect(problems, hasLength(1));
+      expect(
+        problems.single,
+        startsWith(
+          'coqui/packages/core/coqui_scenes/lib/src/pedido/scene.dart: [d]',
+        ),
+      );
+    });
+
+    test('scene.sala and scene.sala_dia are strictly disjoint', () async {
+      git.branch('lane/scene.sala/10');
+      write('packages/core/coqui_scenes/test/sala_acts_test.dart', '// ok\n');
+      write('packages/core/coqui_scenes/lib/src/sala/a.dart', '// ok\n');
+      git.commit('sala');
+      expect(await check(branch: null), isEmpty);
+
+      write(
+        'packages/core/coqui_scenes/test/sala_dia_acts_test.dart',
+        '// stray\n',
+      );
+      git.commit('stray sala_dia');
+      final salaProblems = await check(branch: null);
+      expect(salaProblems, hasLength(1));
+      expect(salaProblems.single, contains('sala_dia_acts_test.dart'));
+
+      git.run(['checkout', '-q', 'main']);
+      git.branch('lane/scene.sala_dia/11');
+      write(
+        'packages/core/coqui_scenes/test/sala_dia_acts_test.dart',
+        '// ok\n',
+      );
+      git.commit('sala_dia');
+      expect(await check(branch: null), isEmpty);
+
+      write(
+        'packages/core/coqui_scenes/test/sala_acts_test.dart',
+        '// stray\n',
+      );
+      git.commit('stray sala');
+      final salaDiaProblems = await check(branch: null);
+      expect(salaDiaProblems, hasLength(1));
+      expect(salaDiaProblems.single, contains('sala_acts_test.dart'));
+    });
+
+    test('feature_library.reader and feature_library.shelf enforce screen boundaries', () async {
+      git.branch('lane/feature_library.reader/401');
+      write(
+        'packages/features/feature_library/lib/src/reader_page.dart',
+        '// ok\n',
+      );
+      write(
+        'packages/features/feature_library/lib/src/text_reader.dart',
+        '// ok\n',
+      );
+      write(
+        'packages/features/feature_library/lib/src/reader/sub.dart',
+        '// ok\n',
+      );
+      write(
+        'packages/features/feature_library/test/reader_test.dart',
+        '// ok\n',
+      );
+      write(
+        'packages/features/feature_library/test/screenshots/reader_1.png',
+        'p\n',
+      );
+      git.commit('reader');
+      expect(await check(branch: null), isEmpty);
+
+      write(
+        'packages/features/feature_library/lib/src/reading_home.dart',
+        '// stray\n',
+      );
+      git.commit('stray shelf');
+      final readerProblems = await check(branch: null);
+      expect(readerProblems, hasLength(1));
+      expect(readerProblems.single, contains('reading_home.dart'));
+
+      git.run(['checkout', '-q', 'main']);
+      git.branch('lane/feature_library.shelf/402');
+      write(
+        'packages/features/feature_library/lib/src/reading_home.dart',
+        '// ok\n',
+      );
+      write(
+        'packages/features/feature_library/lib/src/write_story_sheet.dart',
+        '// ok\n',
+      );
+      write(
+        'packages/features/feature_library/lib/src/story_generator.dart',
+        '// ok\n',
+      );
+      write(
+        'packages/features/feature_library/test/reading_home_test.dart',
+        '// ok\n',
+      );
+      write(
+        'packages/features/feature_library/test/screenshots/library_1.png',
+        'p\n',
+      );
+      git.commit('shelf');
+      expect(await check(branch: null), isEmpty);
+
+      write(
+        'packages/features/feature_library/lib/src/text_reader.dart',
+        '// stray\n',
+      );
+      git.commit('stray reader');
+      final shelfProblems = await check(branch: null);
+      expect(shelfProblems, hasLength(1));
+      expect(shelfProblems.single, contains('text_reader.dart'));
+    });
+
+    test(
+      'content.lines.es accepts Spanish lines and rejects French lines',
+      () async {
+        git.branch('lane/content.lines.es/501');
+        writeRepo('content/lines/es/01.json', '{}\n');
+        git.commit('es');
+        expect(await check(branch: null), isEmpty);
+
+        writeRepo('content/lines/fr/01.json', '{}\n');
+        git.commit('stray fr');
+        final problems = await check(branch: null);
+        expect(problems, hasLength(1));
+        expect(problems.single, startsWith('content/lines/fr/01.json: [d]'));
+      },
+    );
+
+    test('design lane allows coqui_ui and docs/proyecto/noche/ and rejects other docs', () async {
+      git.branch('lane/design/601');
+      write('packages/core/coqui_ui/lib/src/tokens.dart', '// ok\n');
+      writeRepo('docs/proyecto/noche/spec.md', '# noche\n');
+      git.commit('design');
+      expect(await check(branch: null), isEmpty);
+
+      writeRepo('docs/other.md', '# stray\n');
+      git.commit('stray docs');
+      final problems = await check(branch: null);
+      expect(problems, hasLength(1));
+      expect(problems.single, startsWith('docs/other.md: [d]'));
+    });
+
+    test(
+      'non-package lanes github, docs, and content enforce their own paths',
+      () async {
+        git.branch('lane/github/1');
+        writeRepo('.github/scripts/helper.py', '# ok\n');
+        git.commit('github');
+        expect(await check(branch: null), isEmpty);
+        writeRepo('tools/x.py', '# stray\n');
+        git.commit('stray');
+        expect(await check(branch: null), hasLength(1));
+
+        git.run(['checkout', '-q', 'main']);
+        git.branch('lane/docs/2');
+        writeRepo('docs/guide.md', '# ok\n');
+        writeRepo('AGENTS.md', '# ok\n');
+        write('AGENTS.md', '# ok\n');
+        git.commit('docs');
+        expect(await check(branch: null), isEmpty);
+        writeRepo('tools/x.py', '# stray\n');
+        git.commit('stray');
+        expect(await check(branch: null), hasLength(1));
+
+        git.run(['checkout', '-q', 'main']);
+        git.branch('lane/content/3');
+        writeRepo('content/games/a.json', '{}\n');
+        writeRepo('historia/datos/a.json', '{}\n');
+        git.commit('content');
+        expect(await check(branch: null), isEmpty);
+        writeRepo('historia/cuentos/a.mp3', 'nope\n');
+        git.commit('stray');
+        expect(await check(branch: null), hasLength(1));
+      },
+    );
+
+    test('multi-lane github+tool and sanctioned app+coqui_platform pass, unsanctioned multi-package fails', () async {
+      git.branch('lane/github+tool/263');
+      writeRepo('.github/scripts/x.py', '# ok\n');
+      writeRepo('tools/x.py', '# ok\n');
+      write('tool/x.dart', '// ok\n');
+      write('requests/263.md', 'ok\n');
+      git.commit('github+tool');
+      expect(await check(branch: null), isEmpty);
+
+      git.run(['checkout', '-q', 'main']);
+      git.branch('lane/app+coqui_platform/72');
+      write('app/lib/main.dart', '// app\n');
+      write('packages/core/coqui_platform/lib/p.dart', '// plat\n');
+      git.commit('platform_app');
+      expect(await check(branch: null), isEmpty);
+
+      final unsanctioned = await check(
+        branch: 'lane/feature_words+feature_map/99',
+      );
+      expect(unsanctioned, hasLength(1));
+      expect(unsanctioned.single, contains('[d]'));
+      expect(unsanctioned.single, contains('unsanctioned'));
+
+      final madeup = await check(branch: 'lane/madeup_lane/999');
+      expect(madeup, hasLength(1));
+      expect(madeup.single, contains('[d]'));
+      expect(madeup.single, contains('unknown lane'));
+      expect(madeup.single, contains('madeup_lane'));
+    });
+
+    test('adding a new lane only in tools/lanes.json works immediately with zero Dart changes', () async {
+      final raw = jsonDecode(
+        realLaneMapFile().readAsStringSync(),
+      ) as Map<String, Object?>;
+      final lanes = (raw['lanes'] as Map).cast<String, Object?>();
+      lanes['experimental_lab'] = {
+        'kind': 'non_package',
+        'paths': ['lab/**'],
+      };
+      writeRepo('tools/lanes.json', '${jsonEncode(raw)}\n');
+      git.commit('add experimental_lab lane to json');
+
+      git.branch('lane/experimental_lab/777');
+      writeRepo('lab/hello.txt', 'hi\n');
+      git.commit('owned lab file');
+      expect(await check(branch: null), isEmpty);
+
+      writeRepo('docs/stray.md', 'nope\n');
+      git.commit('stray outside lab');
+      final problems = await check(branch: null);
+      expect(problems, hasLength(1));
+      expect(problems.single, startsWith('docs/stray.md: [d]'));
+    });
   });
 
   group('[h] new code uses start/end, not left/right (#55)', () {
     late Git git;
 
     setUp(() {
+      installRealLaneMap();
       package('coqui_ui', deps: ['coqui_contracts']);
       package(
         'coqui_scenes',
@@ -1085,6 +1403,7 @@ final s = 'value: \${Alignment.centerLeft}';
     late Git git;
 
     setUp(() {
+      installRealLaneMap();
       package('coqui_ui', deps: ['coqui_contracts']);
       package('feature_words', deps: ['coqui_ui']);
       package('coqui_story_checks', deps: ['coqui_scenes', 'feature_story']);
@@ -1342,6 +1661,22 @@ void write(String path, String text) {
   File('${coqui.path}/$path')
     ..createSync(recursive: true)
     ..writeAsStringSync(text);
+}
+
+void writeRepo(String path, String text) {
+  File('${repo.path}/$path')
+    ..createSync(recursive: true)
+    ..writeAsStringSync(text);
+}
+
+File realLaneMapFile() {
+  final parent = File('../tools/lanes.json');
+  if (parent.existsSync()) return parent;
+  return File('tools/lanes.json');
+}
+
+void installRealLaneMap() {
+  writeRepo('tools/lanes.json', realLaneMapFile().readAsStringSync());
 }
 
 /// A throwaway git repository in [repo].

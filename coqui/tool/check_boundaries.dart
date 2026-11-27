@@ -11,10 +11,9 @@
 //       (workspace packages and third-party packages both)
 //   [b] a Dart file imports a package its pubspec does not list
 //   [c] a Dart file imports another package's src/
-//   [d] the branch is `lane/<package>/...` (or `lane/tool/...`) and changes a
-//       file outside that lane's folder(s) and requests/, or `story/<n>` and
-//       changes a file outside coqui_scenes/, feature_story/,
-//       coqui_story_checks/, ref/pp/, and requests/
+//   [d] the branch is `lane/<lane>/...` or `story/<n>` and changes a file
+//       outside the paths allowed by tools/lanes.json (plus shared_paths and
+//       generated_paths), or tools/lanes.json itself fails schema/overlap checks
 //   [e] a feature's pubspec or imports name another feature
 // Added by the orchestrator on Nov 19, 2026 (not in the plan's rules):
 //   [f] a Dart file imports package:flutter/material.dart (deprecated in
@@ -33,6 +32,8 @@
 // The tables below are data. They are copied from the plan, with the
 // orchestrator's changes of Nov 19, 2026 noted where they differ.
 
+import 'dart:collection';
+import 'dart:convert';
 import 'dart:io';
 
 /// One row of the plan's table "Packages: what each replaces and what it may
@@ -234,14 +235,18 @@ const skippedNames = {'build', 'node_modules'};
 Future<void> main(List<String> args) async {
   var root = Directory.current;
   String? base;
+  File? laneMapFile;
   for (var i = 0; i < args.length; i++) {
     if (args[i] == '--root' && i + 1 < args.length) {
       root = Directory(args[++i]);
     } else if (args[i] == '--base' && i + 1 < args.length) {
       base = args[++i];
+    } else if (args[i] == '--lane-map' && i + 1 < args.length) {
+      laneMapFile = File(args[++i]);
     } else {
       stderr.writeln(
-        'usage: dart run tool/check_boundaries.dart [--root DIR] [--base REF]',
+        'usage: dart run tool/check_boundaries.dart '
+        '[--root DIR] [--base REF] [--lane-map PATH]',
       );
       exit(64);
     }
@@ -255,7 +260,12 @@ Future<void> main(List<String> args) async {
       break;
     }
   }
-  final problems = await checkBoundaries(root, branch: branch, base: base);
+  final problems = await checkBoundaries(
+    root,
+    branch: branch,
+    base: base,
+    laneMapFile: laneMapFile,
+  );
   if (problems.isEmpty) {
     stdout.writeln('check_boundaries: ok');
     return;
@@ -269,11 +279,12 @@ Future<void> main(List<String> args) async {
 /// Runs every check on the workspace at [root] (the coqui/ folder) and returns
 /// one line per problem. [branch] overrides the branch git reports; [base]
 /// overrides the ref the lane check compares against (default `origin/main`,
-/// else `main`).
+/// else `main`); [laneMapFile] overrides `<repoRoot>/tools/lanes.json`.
 Future<List<String>> checkBoundaries(
   Directory root, {
   String? branch,
   String? base,
+  File? laneMapFile,
 }) async {
   final problems = <String>[];
   final packages = _findPackages(root);
@@ -289,7 +300,14 @@ Future<List<String>> checkBoundaries(
     problems.addAll(_checkPubspec(package, rule));
     problems.addAll(_checkImports(root, package));
   }
-  problems.addAll(await _checkLane(root, branch: branch, base: base));
+  problems.addAll(
+    await _checkLane(
+      root,
+      branch: branch,
+      base: base,
+      laneMapFile: laneMapFile,
+    ),
+  );
   problems.addAll(await _checkDirectional(root, base: base));
   problems.addAll(await _checkAgentsIssueRefs(root, base: base));
   return problems;
@@ -597,48 +615,1104 @@ List<_Use> _packageUris(String source) {
   return uses;
 }
 
-// --- [d]: the lane ------------------------------------------------------------
+// --- [d]: the lane (reads tools/lanes.json) ----------------------------------
 
-/// Non-package lanes (not in [packageRules], so they cannot be listed as
-/// pubspec dependencies). Maps lane name -> folders relative to coqui/.
-///
-/// Holds for #258 until #263 replaces branch rules with the lane map.
-const _nonPackageLaneDirs = <String, List<String>>{
-  // TODO(#263): remove packages/core/coqui_scenes/tool and ref/pp once #263 replaces branch rules with the lane map.
-  'tool': ['tool', 'packages/core/coqui_scenes/tool', 'ref/pp'],
-};
+final _laneIdRe = RegExp(r'^[A-Za-z0-9._-]+$');
+final _placeholderRe = RegExp(r'\{([A-Za-z0-9_]+)\}');
+final _digitsRe = RegExp(r'^[0-9]+$');
 
-/// Folders relative to coqui/ that a `story/<n>` branch may change (#170).
-const _storyBranchDirs = <String>[
-  'packages/core/coqui_scenes',
-  'packages/features/feature_story',
-  'packages/coqui_story_checks',
-  'ref/pp',
-  'requests',
-];
+class _LaneEntry {
+  _LaneEntry({
+    required this.id,
+    required this.kind,
+    required this.paths,
+    required this.generatedPaths,
+    required this.parents,
+    required this.spans,
+    required this.conflictsWith,
+    required this.multiPackageOk,
+  });
+
+  final String id;
+  final String kind;
+  final List<String> paths;
+  final List<String> generatedPaths;
+  final List<String> parents;
+  final List<String> spans;
+  final List<String> conflictsWith;
+  final bool multiPackageOk;
+}
+
+class _SanctionedMultiPackage {
+  _SanctionedMultiPackage({
+    required this.name,
+    required this.combinations,
+    required this.extraPaths,
+    required this.branchStyle,
+    required this.requiresLabel,
+  });
+
+  final String name;
+  final List<List<String>> combinations;
+  final List<String> extraPaths;
+  final String branchStyle;
+  final String? requiresLabel;
+}
+
+class _BranchRules {
+  _BranchRules({
+    required this.lanePrefix,
+    required this.storyPrefix,
+    required this.storyDefaultLane,
+  });
+
+  final String lanePrefix;
+  final String storyPrefix;
+  final String storyDefaultLane;
+}
+
+class _LaneMap {
+  _LaneMap({
+    required this.version,
+    required this.sharedPaths,
+    required this.packageRootPrefix,
+    required this.multiPackageLabel,
+    required this.branchRules,
+    required this.generatedPathGroups,
+    required this.sanctionedMultiPackage,
+    required this.lanes,
+  });
+
+  final int version;
+  final List<String> sharedPaths;
+  final String packageRootPrefix;
+  final String multiPackageLabel;
+  final _BranchRules branchRules;
+  final Map<String, List<String>> generatedPathGroups;
+  final Map<String, _SanctionedMultiPackage> sanctionedMultiPackage;
+  final Map<String, _LaneEntry> lanes;
+}
+
+class _ParsedPattern {
+  _ParsedPattern(this.raw, this.segs, this.rec, this.hasStar);
+
+  final String raw;
+  final List<String> segs;
+  final bool rec;
+  final List<bool> hasStar;
+}
+
+class _BranchResolution {
+  _BranchResolution({
+    required this.branch,
+    required this.restricted,
+    this.laneIds = const [],
+    this.allowedPaths = const [],
+    this.generatedPaths = const [],
+    this.sharedPaths = const [],
+    this.error,
+  });
+
+  final String branch;
+  final bool restricted;
+  final List<String> laneIds;
+  final List<String> allowedPaths;
+  final List<String> generatedPaths;
+  final List<String> sharedPaths;
+  final String? error;
+
+  List<String> get allAllowedPatterns =>
+      _dedupeStrings([...allowedPaths, ...generatedPaths, ...sharedPaths]);
+}
+
+List<String> _dedupeStrings(Iterable<String> items) {
+  final seen = <String>{};
+  final out = <String>[];
+  for (final item in items) {
+    if (seen.add(item)) out.add(item);
+  }
+  return out;
+}
+
+String? _validateLanePattern(String pattern) {
+  if (pattern.isEmpty) return 'pattern must be a non-empty string';
+  if (pattern.contains(r'\')) {
+    return "pattern '$pattern' must use POSIX '/' separators, not '\\'";
+  }
+  if (pattern.startsWith('/')) {
+    return "pattern '$pattern' must not start with '/'";
+  }
+  if (pattern.endsWith('/')) {
+    return "pattern '$pattern' must not end with '/' (use '/**' for directories)";
+  }
+  final segments = pattern.split('/');
+  for (var i = 0; i < segments.length; i++) {
+    final seg = segments[i];
+    if (seg.isEmpty) {
+      return "pattern '$pattern' contains an empty path segment";
+    }
+    if (seg == '.' || seg == '..') {
+      return "pattern '$pattern' contains disallowed segment '$seg'";
+    }
+    if (seg.contains('**')) {
+      if (seg != '**') {
+        return "pattern '$pattern' uses '**' inside segment '$seg'; "
+            "only trailing '/**' is allowed";
+      }
+      if (i != segments.length - 1 || segments.length < 2) {
+        return "pattern '$pattern' may only use '**' as a trailing '/**'";
+      }
+    }
+  }
+  return null;
+}
+
+bool _matchSegment(String patSeg, String valSeg) {
+  if (!patSeg.contains('*')) return patSeg == valSeg;
+  final parts = patSeg.split('*').map(RegExp.escape).join('[^/]*');
+  return RegExp('^$parts\$').hasMatch(valSeg);
+}
+
+bool _matchLanePattern(String pattern, String path) {
+  if (path.isEmpty ||
+      path.startsWith('/') ||
+      path.endsWith('/') ||
+      path.contains(r'\')) {
+    return false;
+  }
+  final pSegs = pattern.split('/');
+  final fSegs = path.split('/');
+  for (final seg in fSegs) {
+    if (seg.isEmpty || seg == '.' || seg == '..') return false;
+  }
+  if (pSegs.last == '**') {
+    final prefixLen = pSegs.length - 1;
+    if (fSegs.length <= prefixLen) return false;
+    for (var i = 0; i < prefixLen; i++) {
+      if (!_matchSegment(pSegs[i], fSegs[i])) return false;
+    }
+    return true;
+  }
+  if (fSegs.length != pSegs.length) return false;
+  for (var i = 0; i < pSegs.length; i++) {
+    if (!_matchSegment(pSegs[i], fSegs[i])) return false;
+  }
+  return true;
+}
+
+int _nextSegKind(int kind, int ch) {
+  // 0 = "", 1 = ".", 2 = "..", 3 = valid non-dot-dot non-empty segment
+  if (kind == 0) return ch == 0x2E /* . */ ? 1 : 3;
+  if (kind == 1) return ch == 0x2E /* . */ ? 2 : 3;
+  return 3;
+}
+
+String? _segmentOverlap(String pat1, String pat2) {
+  final hasStar1 = pat1.contains('*');
+  final hasStar2 = pat2.contains('*');
+  if (!hasStar1 && !hasStar2) {
+    return pat1 == pat2 && pat1.isNotEmpty && pat1 != '.' && pat1 != '..'
+        ? pat1
+        : null;
+  }
+  if (pat1.isNotEmpty && pat2.isNotEmpty) {
+    final f1 = pat1.codeUnitAt(0);
+    final f2 = pat2.codeUnitAt(0);
+    if (f1 != 0x2A && f2 != 0x2A && f1 != f2) return null;
+    final l1 = pat1.codeUnitAt(pat1.length - 1);
+    final l2 = pat2.codeUnitAt(pat2.length - 1);
+    if (l1 != 0x2A && l2 != 0x2A && l1 != l2) return null;
+  }
+
+  final n1 = pat1.length;
+  final n2 = pat2.length;
+  final strideJ = 4;
+  final strideI = (n2 + 1) * strideJ;
+  int key(int i, int j, int kind) => i * strideI + j * strideJ + kind;
+
+  final visited = <int>{key(0, 0, 0)};
+  final queue = Queue<(int, int, int, String)>()..add((0, 0, 0, ''));
+
+  void enqueue(int i, int j, int kind, String witness) {
+    final k = key(i, j, kind);
+    if (visited.add(k)) {
+      queue.add((i, j, kind, witness));
+    }
+  }
+
+  while (queue.isNotEmpty) {
+    final (i, j, kind, witness) = queue.removeFirst();
+    if (i == n1 && j == n2 && kind == 3) return witness;
+
+    if (i < n1 && pat1.codeUnitAt(i) == 0x2A /* * */ ) {
+      enqueue(i + 1, j, kind, witness);
+    }
+    if (j < n2 && pat2.codeUnitAt(j) == 0x2A /* * */ ) {
+      enqueue(i, j + 1, kind, witness);
+    }
+
+    if (i < n1 && j < n2) {
+      final c1 = pat1.codeUnitAt(i);
+      final c2 = pat2.codeUnitAt(j);
+      if (c1 != 0x2A && c2 != 0x2A) {
+        if (c1 == c2) {
+          enqueue(
+            i + 1,
+            j + 1,
+            _nextSegKind(kind, c1),
+            '$witness${String.fromCharCode(c1)}',
+          );
+        }
+      } else if (c1 == 0x2A && c2 != 0x2A) {
+        enqueue(
+          i,
+          j + 1,
+          _nextSegKind(kind, c2),
+          '$witness${String.fromCharCode(c2)}',
+        );
+      } else if (c1 != 0x2A && c2 == 0x2A) {
+        enqueue(
+          i + 1,
+          j,
+          _nextSegKind(kind, c1),
+          '$witness${String.fromCharCode(c1)}',
+        );
+      } else {
+        enqueue(i, j, _nextSegKind(kind, 0x78 /* x */), '${witness}x');
+      }
+    }
+  }
+  return null;
+}
+
+String _concreteSegment(String patSeg) {
+  final stripped = patSeg.replaceAll('*', '');
+  if (stripped.isNotEmpty && stripped != '.' && stripped != '..') {
+    return stripped;
+  }
+  return patSeg.replaceFirst('*', 'x').replaceAll('*', '');
+}
+
+_ParsedPattern _parseLanePattern(String pattern) {
+  final parts = pattern.split('/');
+  final rec = parts.last == '**';
+  final segs = rec ? parts.sublist(0, parts.length - 1) : parts;
+  return _ParsedPattern(pattern, segs, rec, [
+    for (final s in segs) s.contains('*'),
+  ]);
+}
+
+String? _parsedPatternsOverlap(_ParsedPattern p1, _ParsedPattern p2) {
+  final a = p1.segs;
+  final b = p2.segs;
+  final na = a.length;
+  final nb = b.length;
+  final int k;
+  if (!p1.rec && !p2.rec) {
+    if (na != nb) return null;
+    k = na;
+  } else if (p1.rec && !p2.rec) {
+    if (nb <= na) return null;
+    k = na;
+  } else if (!p1.rec && p2.rec) {
+    if (na <= nb) return null;
+    k = nb;
+  } else {
+    k = na < nb ? na : nb;
+  }
+
+  for (var i = k - 1; i >= 0; i--) {
+    if (!p1.hasStar[i] && !p2.hasStar[i] && a[i] != b[i]) {
+      return null;
+    }
+  }
+
+  final witness = <String>[];
+  for (var i = 0; i < k; i++) {
+    if (!p1.hasStar[i] && !p2.hasStar[i]) {
+      witness.add(a[i]);
+    } else {
+      final w = _segmentOverlap(a[i], b[i]);
+      if (w == null) return null;
+      witness.add(w);
+    }
+  }
+
+  if (!p1.rec && !p2.rec) return witness.join('/');
+  if (p1.rec && !p2.rec) {
+    for (var i = na; i < nb; i++) {
+      witness.add(_concreteSegment(b[i]));
+    }
+    return witness.join('/');
+  }
+  if (!p1.rec && p2.rec) {
+    for (var i = nb; i < na; i++) {
+      witness.add(_concreteSegment(a[i]));
+    }
+    return witness.join('/');
+  }
+
+  final longer = na >= nb ? a : b;
+  for (var i = k; i < longer.length; i++) {
+    witness.add(_concreteSegment(longer[i]));
+  }
+  witness.add('file');
+  return witness.join('/');
+}
+
+String? _patternsOverlap(String p1, String p2) =>
+    _parsedPatternsOverlap(_parseLanePattern(p1), _parseLanePattern(p2));
+
+List<String> _asStringList(
+  Object? obj,
+  String field,
+  List<String> errors, {
+  bool allowEmpty = true,
+}) {
+  if (obj is! List || obj.any((e) => e is! String)) {
+    errors.add('$field must be a list of strings');
+    return const [];
+  }
+  final list = obj.cast<String>();
+  if (!allowEmpty && list.isEmpty) {
+    errors.add('$field must be a non-empty list of strings');
+  }
+  return list;
+}
+
+String _expandTemplatePath(
+  String templatePath,
+  Map<String, String> params,
+  String laneId,
+  List<String> errors,
+) {
+  return templatePath.replaceAllMapped(_placeholderRe, (m) {
+    final key = m.group(1)!;
+    final val = params[key];
+    if (val == null) {
+      errors.add(
+        "lane '$laneId': template path '$templatePath' references missing "
+        "param '$key'",
+      );
+      return m.group(0)!;
+    }
+    return val;
+  });
+}
+
+(_LaneMap?, List<String>) _parseLaneMap(Object? raw) {
+  final errors = <String>[];
+  if (raw is! Map) {
+    return (null, ['lane map root must be a JSON object']);
+  }
+  final data = raw.cast<String, Object?>();
+
+  final version = data['version'];
+  if (version is! int || version != 1) {
+    errors.add('unsupported lane map version $version; expected 1');
+  }
+
+  final sharedPaths = _asStringList(
+    data['shared_paths'] ?? const <Object?>[],
+    'shared_paths',
+    errors,
+  );
+
+  var packageRootPrefix = 'coqui/packages/';
+  final rawPkgPrefix = data['package_root_prefix'];
+  if (rawPkgPrefix is! String ||
+      !rawPkgPrefix.endsWith('/') ||
+      rawPkgPrefix.startsWith('/')) {
+    errors.add(
+      "package_root_prefix must be a non-empty relative path ending with '/'",
+    );
+  } else {
+    packageRootPrefix = rawPkgPrefix;
+  }
+
+  var multiPackageLabel = 'multi-package-ok';
+  final rawMpLabel = data['multi_package_label'];
+  if (rawMpLabel is! String || rawMpLabel.isEmpty) {
+    errors.add('multi_package_label must be a non-empty string');
+  } else {
+    multiPackageLabel = rawMpLabel;
+  }
+
+  var lanePrefix = 'lane/';
+  var storyPrefix = 'story/';
+  var storyDefaultLane = '';
+  final rawBranchRules = data['branch_rules'];
+  if (rawBranchRules is! Map) {
+    errors.add('branch_rules must be an object');
+  } else {
+    final br = rawBranchRules.cast<String, Object?>();
+    final lp = br['lane_prefix'];
+    final sp = br['story_prefix'];
+    final sdl = br['story_default_lane'];
+    if (lp is! String || !lp.endsWith('/')) {
+      errors.add("branch_rules.lane_prefix must be a string ending with '/'");
+    } else {
+      lanePrefix = lp;
+    }
+    if (sp is! String || !sp.endsWith('/')) {
+      errors.add("branch_rules.story_prefix must be a string ending with '/'");
+    } else {
+      storyPrefix = sp;
+    }
+    if (sdl is! String || sdl.isEmpty) {
+      errors.add('branch_rules.story_default_lane must be a non-empty string');
+    } else {
+      storyDefaultLane = sdl;
+    }
+  }
+
+  final generatedPathGroups = <String, List<String>>{};
+  final rawGenGroups =
+      data['generated_path_groups'] ?? const <String, Object?>{};
+  if (rawGenGroups is! Map) {
+    errors.add('generated_path_groups must be an object');
+  } else {
+    rawGenGroups.forEach((key, val) {
+      if (key is! String || key.isEmpty) {
+        errors.add('generated_path_groups keys must be non-empty strings');
+        return;
+      }
+      generatedPathGroups[key] = _asStringList(
+        val,
+        'generated_path_groups.$key',
+        errors,
+        allowEmpty: false,
+      );
+    });
+  }
+
+  final rawTemplatesObj = data['templates'] ?? const <String, Object?>{};
+  final rawTemplates = <String, Object?>{};
+  if (rawTemplatesObj is! Map) {
+    errors.add('templates must be an object');
+  } else {
+    rawTemplates.addAll(rawTemplatesObj.cast<String, Object?>());
+  }
+
+  final lanes = <String, _LaneEntry>{};
+  final rawLanes = data['lanes'];
+  if (rawLanes is! Map || rawLanes.isEmpty) {
+    errors.add('lanes must be a non-empty object');
+  } else {
+    rawLanes.forEach((rawId, rawLaneObj) {
+      if (rawId is! String || !_laneIdRe.hasMatch(rawId)) {
+        errors.add(
+          "invalid lane id '$rawId' (allowed: letters, digits, '.', '_', '-')",
+        );
+        return;
+      }
+      if (rawLaneObj is! Map) {
+        errors.add("lane '$rawId' must be an object");
+        return;
+      }
+      final rawLane = rawLaneObj.cast<String, Object?>();
+      final tmplName = rawLane['template'];
+      var tmpl = <String, Object?>{};
+      final params = <String, String>{};
+      if (tmplName != null) {
+        if (tmplName is! String || !rawTemplates.containsKey(tmplName)) {
+          errors.add("lane '$rawId': unknown template '$tmplName'");
+        } else if (rawTemplates[tmplName] is! Map) {
+          errors.add("template '$tmplName' must be an object");
+        } else {
+          tmpl = (rawTemplates[tmplName] as Map).cast<String, Object?>();
+        }
+        final rawParams = rawLane['params'] ?? const <String, Object?>{};
+        if (rawParams is! Map) {
+          errors.add("lane '$rawId'.params must be an object");
+        } else {
+          rawParams.forEach((pk, pv) {
+            if (pk is! String ||
+                pv is! String ||
+                pv.isEmpty ||
+                pv.contains('/') ||
+                pv.contains(r'\')) {
+              errors.add(
+                "lane '$rawId'.params['$pk'] must be a non-empty single-segment string",
+              );
+            } else {
+              params[pk] = pv;
+            }
+          });
+        }
+      }
+
+      final kindObj = rawLane.containsKey('kind')
+          ? rawLane['kind']
+          : tmpl['kind'];
+      var kind = '';
+      if (kindObj is! String || kindObj.isEmpty) {
+        errors.add("lane '$rawId'.kind must be a non-empty string");
+      } else {
+        kind = kindObj;
+      }
+
+      final parents = _asStringList(
+        rawLane.containsKey('parents')
+            ? rawLane['parents']
+            : (tmpl['parents'] ?? const <Object?>[]),
+        'lanes.$rawId.parents',
+        errors,
+      );
+      final spans = _asStringList(
+        rawLane.containsKey('spans')
+            ? rawLane['spans']
+            : (tmpl['spans'] ?? const <Object?>[]),
+        'lanes.$rawId.spans',
+        errors,
+      );
+      final conflictsWith = _asStringList(
+        rawLane.containsKey('conflicts_with')
+            ? rawLane['conflicts_with']
+            : (tmpl['conflicts_with'] ?? const <Object?>[]),
+        'lanes.$rawId.conflicts_with',
+        errors,
+      );
+
+      final multiOkObj = rawLane.containsKey('multi_package_ok')
+          ? rawLane['multi_package_ok']
+          : (tmpl['multi_package_ok'] ?? false);
+      var multiOk = false;
+      if (multiOkObj is! bool) {
+        errors.add('lanes.$rawId.multi_package_ok must be a boolean');
+      } else {
+        multiOk = multiOkObj;
+      }
+
+      final genGroupObj = rawLane.containsKey('generated_group')
+          ? rawLane['generated_group']
+          : tmpl['generated_group'];
+      var generatedPaths = const <String>[];
+      if (genGroupObj != null) {
+        if (genGroupObj is! String ||
+            !generatedPathGroups.containsKey(genGroupObj)) {
+          errors.add(
+            "lanes.$rawId.generated_group references unknown group '$genGroupObj'",
+          );
+        } else {
+          generatedPaths = generatedPathGroups[genGroupObj]!;
+        }
+      }
+
+      final List<String> paths;
+      if (rawLane['paths'] == null) {
+        final tmplPaths = _asStringList(
+          tmpl['paths'] ?? const <Object?>[],
+          'templates.$tmplName.paths',
+          errors,
+          allowEmpty: false,
+        );
+        paths = [
+          for (final p in tmplPaths)
+            _expandTemplatePath(p, params, rawId, errors),
+        ];
+      } else {
+        paths = _asStringList(
+          rawLane['paths'],
+          'lanes.$rawId.paths',
+          errors,
+          allowEmpty: false,
+        );
+      }
+
+      lanes[rawId] = _LaneEntry(
+        id: rawId,
+        kind: kind,
+        paths: paths,
+        generatedPaths: generatedPaths,
+        parents: parents,
+        spans: spans,
+        conflictsWith: conflictsWith,
+        multiPackageOk: multiOk,
+      );
+    });
+  }
+
+  final sanctioned = <String, _SanctionedMultiPackage>{};
+  final rawSanctioned =
+      data['sanctioned_multi_package'] ?? const <String, Object?>{};
+  if (rawSanctioned is! Map) {
+    errors.add('sanctioned_multi_package must be an object');
+  } else {
+    rawSanctioned.forEach((ruleName, rawRuleObj) {
+      if (ruleName is! String || ruleName.isEmpty) {
+        errors.add('sanctioned_multi_package keys must be non-empty strings');
+        return;
+      }
+      if (rawRuleObj is! Map) {
+        errors.add('sanctioned_multi_package.$ruleName must be an object');
+        return;
+      }
+      final rawRule = rawRuleObj.cast<String, Object?>();
+      final rawCombos = rawRule['combinations'];
+      final combos = <List<String>>[];
+      if (rawCombos is! List || rawCombos.isEmpty) {
+        errors.add(
+          'sanctioned_multi_package.$ruleName.combinations must be a non-empty list',
+        );
+      } else {
+        for (var i = 0; i < rawCombos.length; i++) {
+          final combo = _asStringList(
+            rawCombos[i],
+            'sanctioned_multi_package.$ruleName.combinations[$i]',
+            errors,
+            allowEmpty: false,
+          );
+          if (combo.isNotEmpty) {
+            combos.add([...combo]..sort());
+          }
+        }
+      }
+      final extraPaths = _asStringList(
+        rawRule['extra_paths'] ?? const <Object?>[],
+        'sanctioned_multi_package.$ruleName.extra_paths',
+        errors,
+      );
+      final styleObj = rawRule['branch_style'] ?? 'lane';
+      var branchStyle = 'lane';
+      if (styleObj is! String || (styleObj != 'lane' && styleObj != 'story')) {
+        errors.add(
+          "sanctioned_multi_package.$ruleName.branch_style must be 'lane' or 'story'",
+        );
+      } else {
+        branchStyle = styleObj;
+      }
+      final reqObj = rawRule['requires_label'];
+      String? reqLabel;
+      if (reqObj != null) {
+        if (reqObj is! String || reqObj.isEmpty) {
+          errors.add(
+            'sanctioned_multi_package.$ruleName.requires_label must be null or a non-empty string',
+          );
+        } else {
+          reqLabel = reqObj;
+        }
+      }
+      sanctioned[ruleName] = _SanctionedMultiPackage(
+        name: ruleName,
+        combinations: combos,
+        extraPaths: extraPaths,
+        branchStyle: branchStyle,
+        requiresLabel: reqLabel,
+      );
+    });
+  }
+
+  final laneMap = _LaneMap(
+    version: version is int ? version : 0,
+    sharedPaths: sharedPaths,
+    packageRootPrefix: packageRootPrefix,
+    multiPackageLabel: multiPackageLabel,
+    branchRules: _BranchRules(
+      lanePrefix: lanePrefix,
+      storyPrefix: storyPrefix,
+      storyDefaultLane: storyDefaultLane,
+    ),
+    generatedPathGroups: generatedPathGroups,
+    sanctionedMultiPackage: sanctioned,
+    lanes: lanes,
+  );
+  return (laneMap, errors);
+}
+
+Set<String> _ancestorsOf(_LaneMap map, String laneId) {
+  final result = <String>{};
+  final lane = map.lanes[laneId];
+  if (lane == null) return result;
+  final stack = [...lane.parents];
+  while (stack.isNotEmpty) {
+    final cur = stack.removeLast();
+    if (cur == laneId || !result.add(cur)) continue;
+    final parentLane = map.lanes[cur];
+    if (parentLane != null) {
+      stack.addAll(parentLane.parents);
+    }
+  }
+  return result;
+}
+
+List<String> _validateLaneMap(_LaneMap map) {
+  final errors = <String>[];
+  final invalidPatterns = <String>{};
+
+  void checkPat(String pat, String where) {
+    final err = _validateLanePattern(pat);
+    if (err != null) {
+      errors.add('$where: $err');
+      invalidPatterns.add(pat);
+    }
+  }
+
+  for (final p in map.sharedPaths) {
+    checkPat(p, 'shared_paths');
+  }
+  map.generatedPathGroups.forEach((group, paths) {
+    for (final p in paths) {
+      checkPat(p, 'generated_path_groups.$group');
+    }
+  });
+  if (!map.lanes.containsKey(map.branchRules.storyDefaultLane)) {
+    errors.add(
+      "branch_rules.story_default_lane references unknown lane "
+      "'${map.branchRules.storyDefaultLane}'",
+    );
+  }
+  map.sanctionedMultiPackage.forEach((name, rule) {
+    for (final combo in rule.combinations) {
+      for (final lid in combo) {
+        if (!map.lanes.containsKey(lid)) {
+          errors.add(
+            "sanctioned_multi_package.$name references unknown lane '$lid'",
+          );
+        }
+      }
+    }
+    for (final p in rule.extraPaths) {
+      checkPat(p, 'sanctioned_multi_package.$name.extra_paths');
+    }
+  });
+
+  map.lanes.forEach((laneId, lane) {
+    if (lane.paths.isEmpty) {
+      errors.add('lanes.$laneId.paths must be non-empty');
+    }
+    for (final p in lane.paths) {
+      checkPat(p, 'lanes.$laneId.paths');
+    }
+    for (final parent in lane.parents) {
+      if (parent == laneId) {
+        errors.add('lanes.$laneId.parents cannot reference itself');
+      } else if (!map.lanes.containsKey(parent)) {
+        errors.add("lanes.$laneId.parents references unknown lane '$parent'");
+      }
+    }
+    for (final span in lane.spans) {
+      if (span == laneId) {
+        errors.add('lanes.$laneId.spans cannot reference itself');
+      } else if (!map.lanes.containsKey(span)) {
+        errors.add("lanes.$laneId.spans references unknown lane '$span'");
+      }
+    }
+    for (final other in lane.conflictsWith) {
+      if (other == laneId) {
+        errors.add('lanes.$laneId.conflicts_with cannot reference itself');
+      } else if (!map.lanes.containsKey(other)) {
+        errors.add(
+          "lanes.$laneId.conflicts_with references unknown lane '$other'",
+        );
+      }
+    }
+  });
+
+  // Detect parent cycles via 3-color DFS.
+  final color = <String, int>{}; // 0=unvisited, 1=visiting, 2=done
+  void dfsCycle(String lid, List<String> trail) {
+    color[lid] = 1;
+    for (final parent in map.lanes[lid]!.parents) {
+      if (!map.lanes.containsKey(parent)) continue;
+      final state = color[parent] ?? 0;
+      if (state == 1) {
+        final cycle = [
+          ...trail.sublist(trail.indexOf(parent)),
+          parent,
+        ].join(' -> ');
+        errors.add('parent cycle detected: $cycle');
+      } else if (state == 0) {
+        dfsCycle(parent, [...trail, parent]);
+      }
+    }
+    color[lid] = 2;
+  }
+
+  for (final laneId in map.lanes.keys) {
+    if ((color[laneId] ?? 0) == 0) {
+      dfsCycle(laneId, [laneId]);
+    }
+  }
+
+  // Pairwise overlap check across all distinct lanes not declared exclusive.
+  final laneIds = map.lanes.keys.toList();
+  final ancestorsCache = {
+    for (final lid in laneIds) lid: _ancestorsOf(map, lid),
+  };
+
+  bool declaredExclusive(String lidA, String lidB) {
+    final a = map.lanes[lidA]!;
+    final b = map.lanes[lidB]!;
+    final ancA = ancestorsCache[lidA]!;
+    final ancB = ancestorsCache[lidB]!;
+    if (ancB.contains(lidA) || ancA.contains(lidB)) return true;
+    if (a.spans.contains(lidB) || a.spans.any(ancB.contains)) return true;
+    if (b.spans.contains(lidA) || b.spans.any(ancA.contains)) return true;
+    if (a.conflictsWith.contains(lidB) || b.conflictsWith.contains(lidA)) {
+      return true;
+    }
+    return false;
+  }
+
+  final parsedByLane = {
+    for (final lid in laneIds)
+      lid: [
+        for (final p in map.lanes[lid]!.paths)
+          if (!invalidPatterns.contains(p)) _parseLanePattern(p),
+      ],
+  };
+
+  for (var i = 0; i < laneIds.length; i++) {
+    final lidA = laneIds[i];
+    final validA = parsedByLane[lidA]!;
+    for (var j = i + 1; j < laneIds.length; j++) {
+      final lidB = laneIds[j];
+      if (declaredExclusive(lidA, lidB)) continue;
+      final validB = parsedByLane[lidB]!;
+      var found = false;
+      for (final pa in validA) {
+        for (final pb in validB) {
+          final witness = _parsedPatternsOverlap(pa, pb);
+          if (witness != null) {
+            errors.add(
+              "overlapping concurrent lanes '$lidA' and '$lidB': "
+              "patterns '${pa.raw}' and '${pb.raw}' both match '$witness'",
+            );
+            found = true;
+            break;
+          }
+        }
+        if (found) break;
+      }
+    }
+  }
+
+  return errors;
+}
+
+Set<String> _touchedPackages(_LaneMap map, String laneId) {
+  final lane = map.lanes[laneId];
+  if (lane == null) return const {};
+  final pkgs = <String>{};
+  map.lanes.forEach((pkgId, pkgLane) {
+    if (pkgLane.kind != 'package') return;
+    for (final p1 in lane.paths) {
+      for (final p2 in pkgLane.paths) {
+        if (_patternsOverlap(p1, p2) != null) {
+          pkgs.add(pkgId);
+          return;
+        }
+      }
+    }
+  });
+  return pkgs;
+}
+
+_SanctionedMultiPackage? _findSanctionedMultiPackage(
+  _LaneMap map,
+  List<String> laneIds,
+) {
+  final sorted = [...laneIds]..sort();
+  for (final rule in map.sanctionedMultiPackage.values) {
+    for (final combo in rule.combinations) {
+      if (combo.length != sorted.length) continue;
+      var same = true;
+      for (var i = 0; i < combo.length; i++) {
+        if (combo[i] != sorted[i]) {
+          same = false;
+          break;
+        }
+      }
+      if (same) return rule;
+    }
+  }
+  return null;
+}
+
+_BranchResolution _resolveBranch(_LaneMap map, String branch) {
+  final lanePrefix = map.branchRules.lanePrefix;
+  final storyPrefix = map.branchRules.storyPrefix;
+
+  if (branch.startsWith(lanePrefix)) {
+    final after = branch.substring(lanePrefix.length);
+    final slash = after.indexOf('/');
+    if (slash <= 0 || slash == after.length - 1) {
+      return _BranchResolution(
+        branch: branch,
+        restricted: true,
+        error: "branch $branch must match '$lanePrefix<lane>/<id>'",
+      );
+    }
+    final spec = after.substring(0, slash);
+    final parts = spec.split('+');
+    if (parts.any((p) => p.isEmpty)) {
+      return _BranchResolution(
+        branch: branch,
+        restricted: true,
+        error: "branch $branch contains an empty lane name in '$spec'",
+      );
+    }
+    if (parts.toSet().length != parts.length) {
+      return _BranchResolution(
+        branch: branch,
+        restricted: true,
+        error: "branch $branch lists duplicate lane in '$spec'",
+      );
+    }
+    for (final p in parts) {
+      if (!map.lanes.containsKey(p)) {
+        return _BranchResolution(
+          branch: branch,
+          restricted: true,
+          error:
+              "branch $branch names unknown lane '$p' (not in tools/lanes.json)",
+        );
+      }
+    }
+
+    final allPkgs = <String>{};
+    for (final lid in parts) {
+      allPkgs.addAll(_touchedPackages(map, lid));
+    }
+
+    final extraPaths = <String>[];
+    if (parts.length == 1) {
+      final lane = map.lanes[parts.single]!;
+      if (allPkgs.length > 1 && !lane.multiPackageOk) {
+        final pkgList = (allPkgs.toList()..sort()).join(', ');
+        return _BranchResolution(
+          branch: branch,
+          restricted: true,
+          error:
+              "branch $branch lane '${lane.id}' touches multiple packages "
+              '($pkgList) without multi_package_ok',
+        );
+      }
+    } else if (allPkgs.length > 1) {
+      final sanctioned = _findSanctionedMultiPackage(map, parts);
+      if (sanctioned == null) {
+        final pkgList = (allPkgs.toList()..sort()).join(', ');
+        return _BranchResolution(
+          branch: branch,
+          restricted: true,
+          error:
+              'branch $branch touches multiple packages ($pkgList) with '
+              "unsanctioned lane combination '$spec'",
+        );
+      }
+      extraPaths.addAll(sanctioned.extraPaths);
+    }
+
+    final allowed = _dedupeStrings([
+      for (final lid in parts) ...map.lanes[lid]!.paths,
+      ...extraPaths,
+    ]);
+    final generated = _dedupeStrings([
+      for (final lid in parts) ...map.lanes[lid]!.generatedPaths,
+    ]);
+    return _BranchResolution(
+      branch: branch,
+      restricted: true,
+      laneIds: parts,
+      allowedPaths: allowed,
+      generatedPaths: generated,
+      sharedPaths: map.sharedPaths,
+    );
+  }
+
+  if (branch.startsWith(storyPrefix)) {
+    final rest = branch.substring(storyPrefix.length);
+    if (!_digitsRe.hasMatch(rest)) {
+      return _BranchResolution(
+        branch: branch,
+        restricted: true,
+        error: "branch $branch must match '$storyPrefix<number>'",
+      );
+    }
+    final defaultId = map.branchRules.storyDefaultLane;
+    final lane = map.lanes[defaultId]!;
+    return _BranchResolution(
+      branch: branch,
+      restricted: true,
+      laneIds: [defaultId],
+      allowedPaths: lane.paths,
+      generatedPaths: lane.generatedPaths,
+      sharedPaths: map.sharedPaths,
+    );
+  }
+
+  return _BranchResolution(
+    branch: branch,
+    restricted: false,
+    sharedPaths: map.sharedPaths,
+  );
+}
+
+String _formatAllowedSummary(List<String> patterns) {
+  if (patterns.isEmpty) return '(no paths)';
+  if (patterns.length == 1) return patterns.single;
+  if (patterns.length == 2) return '${patterns[0]} and ${patterns[1]}';
+  if (patterns.length <= 6) {
+    return '${patterns.sublist(0, patterns.length - 1).join(', ')}, and '
+        '${patterns.last}';
+  }
+  return '${patterns.take(4).join(', ')}, ... (${patterns.length} patterns total)';
+}
+
+Directory _findRepoRoot(Directory root) {
+  final top = _git(root, ['rev-parse', '--show-toplevel']);
+  if (top.ok && top.out.isNotEmpty) {
+    return Directory(top.out);
+  }
+  if (File('${root.path}/tools/lanes.json').existsSync() ||
+      File('${root.path}/tools/board.py').existsSync()) {
+    return root;
+  }
+  return root.parent;
+}
 
 Future<List<String>> _checkLane(
   Directory root, {
   String? branch,
   String? base,
+  File? laneMapFile,
 }) async {
   branch ??= _git(root, ['rev-parse', '--abbrev-ref', 'HEAD']).out;
-  final List<String> allowedDirs;
-  final laneMatch = RegExp(r'^lane/([^/]+)/').firstMatch(branch);
-  if (laneMatch != null) {
-    final name = laneMatch.group(1)!;
-    final pkgDir = packageRules[name]?.dir;
-    final extraDirs = _nonPackageLaneDirs[name];
-    if (pkgDir != null) {
-      allowedDirs = [pkgDir, 'requests'];
-    } else if (extraDirs != null) {
-      allowedDirs = [...extraDirs, 'requests'];
-    } else {
-      return ['[d] branch $branch names $name, which is not a package'];
+  final repoRoot = _findRepoRoot(root);
+  final laneFile = laneMapFile ?? File('${repoRoot.path}/tools/lanes.json');
+
+  if (!laneFile.existsSync()) {
+    final isLaneOrStory =
+        branch.startsWith('lane/') || branch.startsWith('story/');
+    final hasBoard = File('${repoRoot.path}/tools/board.py').existsSync();
+    if (laneMapFile != null || isLaneOrStory || hasBoard) {
+      return ['[d] missing lane map ${laneFile.path}'];
     }
-  } else if (RegExp(r'^story/.+').hasMatch(branch)) {
-    allowedDirs = _storyBranchDirs;
-  } else {
+    return const [];
+  }
+
+  Object? decoded;
+  try {
+    decoded = jsonDecode(laneFile.readAsStringSync());
+  } on FormatException catch (e) {
+    return ['[d] invalid JSON in ${laneFile.path}: ${e.message}'];
+  }
+
+  final (laneMap, parseErrors) = _parseLaneMap(decoded);
+  final mapErrors = <String>[...parseErrors];
+  if (laneMap != null) {
+    mapErrors.addAll(_validateLaneMap(laneMap));
+  }
+  if (mapErrors.isNotEmpty) {
+    return [for (final e in mapErrors) '[d] lane map error: $e'];
+  }
+
+  final resolution = _resolveBranch(laneMap!, branch);
+  if (resolution.error != null) {
+    return ['[d] ${resolution.error}'];
+  }
+  if (!resolution.restricted) {
     return const [];
   }
 
@@ -647,6 +1721,8 @@ Future<List<String>> _checkLane(
     return ['[d] branch $branch: ${mb.error}'];
   }
   final diff = _git(root, [
+    '-c',
+    'core.quotepath=false',
     'diff',
     '--name-only',
     '--no-renames',
@@ -656,19 +1732,13 @@ Future<List<String>> _checkLane(
   if (!diff.ok) {
     return ['[d] branch $branch: git diff failed: ${diff.err}'];
   }
-  final prefix = _git(root, [
-    'rev-parse',
-    '--show-prefix',
-  ]).out; // "coqui/" or ""
-  final allowed = [for (final dir in allowedDirs) '$prefix$dir/'];
-  final allowedSummary = allowed.length == 2
-      ? '${allowed[0]} and ${allowed[1]}'
-      : '${allowed.sublist(0, allowed.length - 1).join(', ')}, and '
-            '${allowed.last}';
+
+  final allowed = resolution.allAllowedPatterns;
+  final allowedSummary = _formatAllowedSummary(allowed);
   final problems = <String>[];
   for (final file in diff.raw.split('\u0000')) {
     if (file.isEmpty) continue;
-    if (allowed.any(file.startsWith)) continue;
+    if (allowed.any((pat) => _matchLanePattern(pat, file))) continue;
     problems.add('$file: [d] branch $branch may change only $allowedSummary');
   }
   return problems;

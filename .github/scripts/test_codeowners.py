@@ -26,6 +26,8 @@ MUST_MATCH = (
     "GEMINI.md",
     "tool/antigravity_guard_hook.py",
     "tools/board.py",
+    "tools/lanes.json",
+    "tools/lanes.py",
     "coqui/BUILD",
     "coqui/tool/build_sitio.sh",
     "index.html",

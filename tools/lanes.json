@@ -1,0 +1,584 @@
+{
+  "version": 1,
+  "shared_paths": [
+    "coqui/requests/**"
+  ],
+  "package_root_prefix": "coqui/packages/",
+  "multi_package_label": "multi-package-ok",
+  "branch_rules": {
+    "lane_prefix": "lane/",
+    "story_prefix": "story/",
+    "story_default_lane": "scene_port"
+  },
+  "generated_path_groups": {
+    "scene_manifests": [
+      "coqui/packages/core/coqui_scenes/tool/dev_main.dart",
+      "coqui/packages/core/coqui_scenes/tool/make_set_fixture.dart",
+      "coqui/ref/pp/index.json"
+    ]
+  },
+  "templates": {
+    "scene": {
+      "kind": "scene",
+      "parents": [
+        "coqui_scenes",
+        "coqui_story_checks"
+      ],
+      "multi_package_ok": true,
+      "generated_group": "scene_manifests",
+      "paths": [
+        "coqui/packages/core/coqui_scenes/lib/src/{id}/**",
+        "coqui/packages/core/coqui_scenes/assets/sheets/{id}-sheet.json",
+        "coqui/packages/core/coqui_scenes/test/{id}_acts_test.dart",
+        "coqui/packages/core/coqui_scenes/test/{id}_asks_test.dart",
+        "coqui/packages/core/coqui_scenes/test/{id}_boxes_test.dart",
+        "coqui/packages/core/coqui_scenes/test/{id}_pictures_test.dart",
+        "coqui/packages/core/coqui_scenes/test/{id}_preview_test.dart",
+        "coqui/packages/core/coqui_scenes/test/{id}_set_test.dart",
+        "coqui/packages/core/coqui_scenes/test/{id}_sprites_test.dart",
+        "coqui/packages/core/coqui_scenes/test/support/{id}_preview_remap.dart",
+        "coqui/packages/core/coqui_scenes/test/support/fixtures/{id}/**",
+        "coqui/packages/core/coqui_scenes/test/support/fixtures/{id}_set_refs.dart",
+        "coqui/packages/core/coqui_scenes/test/support/fixtures/{id}_sprite_refs.dart",
+        "coqui/packages/core/coqui_scenes/test/support/fixtures/{id}_preview_fixture.dart",
+        "coqui/packages/core/coqui_scenes/tool/{id}_frames_test.dart",
+        "coqui/packages/core/coqui_scenes/tool/{id}_sprites_test.dart",
+        "coqui/packages/core/coqui_scenes/tool/{id}_bake_parts_test.dart",
+        "coqui/packages/core/coqui_scenes/tool/{id}_asks_ref.mjs",
+        "coqui/packages/core/coqui_scenes/tool/make_{id}_sprites_test.dart",
+        "coqui/packages/core/coqui_scenes/tool/make_{id}_still.dart",
+        "coqui/packages/coqui_story_checks/test/{id}_stories_test.dart",
+        "coqui/packages/coqui_story_checks/test/support/{id}_paths.dart",
+        "coqui/packages/coqui_story_checks/test/support/{id}_rules.dart",
+        "coqui/packages/coqui_story_checks/test/fixtures/{id}/**",
+        "coqui/packages/coqui_story_checks/tool/{id}_paths_test.dart",
+        "coqui/ref/pp/{id}/**"
+      ]
+    },
+    "content_lines": {
+      "kind": "language",
+      "parents": [
+        "content"
+      ],
+      "paths": [
+        "content/lines/{lang}/**"
+      ]
+    }
+  },
+  "sanctioned_multi_package": {
+    "scene_port": {
+      "combinations": [
+        [
+          "coqui_scenes",
+          "coqui_story_checks"
+        ],
+        [
+          "coqui_scenes",
+          "feature_story"
+        ],
+        [
+          "coqui_scenes",
+          "coqui_story_checks",
+          "feature_story"
+        ]
+      ],
+      "extra_paths": [
+        "coqui/ref/pp/**"
+      ],
+      "branch_style": "story",
+      "requires_label": null
+    },
+    "platform_progress": {
+      "combinations": [
+        [
+          "coqui_platform",
+          "coqui_progress"
+        ]
+      ],
+      "branch_style": "lane",
+      "requires_label": "multi-package-ok"
+    },
+    "platform_app": {
+      "combinations": [
+        [
+          "app",
+          "coqui_platform"
+        ]
+      ],
+      "branch_style": "lane",
+      "requires_label": "multi-package-ok"
+    },
+    "scenes_app": {
+      "combinations": [
+        [
+          "app",
+          "coqui_scenes"
+        ]
+      ],
+      "branch_style": "lane",
+      "requires_label": "multi-package-ok"
+    }
+  },
+  "lanes": {
+    "coqui_contracts": {
+      "kind": "package",
+      "paths": [
+        "coqui/packages/core/coqui_contracts/**"
+      ]
+    },
+    "coqui_progress": {
+      "kind": "package",
+      "paths": [
+        "coqui/packages/core/coqui_progress/**"
+      ]
+    },
+    "coqui_content": {
+      "kind": "package",
+      "paths": [
+        "coqui/packages/core/coqui_content/**"
+      ]
+    },
+    "coqui_platform": {
+      "kind": "package",
+      "paths": [
+        "coqui/packages/core/coqui_platform/**"
+      ]
+    },
+    "coqui_pixel": {
+      "kind": "package",
+      "paths": [
+        "coqui/packages/core/coqui_pixel/**"
+      ]
+    },
+    "coqui_scenes": {
+      "kind": "package",
+      "paths": [
+        "coqui/packages/core/coqui_scenes/**"
+      ]
+    },
+    "coqui_ui": {
+      "kind": "package",
+      "paths": [
+        "coqui/packages/core/coqui_ui/**"
+      ]
+    },
+    "coqui_testing": {
+      "kind": "package",
+      "paths": [
+        "coqui/packages/core/coqui_testing/**"
+      ]
+    },
+    "feature_map": {
+      "kind": "package",
+      "paths": [
+        "coqui/packages/features/feature_map/**"
+      ]
+    },
+    "feature_story": {
+      "kind": "package",
+      "paths": [
+        "coqui/packages/features/feature_story/**"
+      ]
+    },
+    "feature_review": {
+      "kind": "package",
+      "paths": [
+        "coqui/packages/features/feature_review/**"
+      ]
+    },
+    "feature_words": {
+      "kind": "package",
+      "paths": [
+        "coqui/packages/features/feature_words/**"
+      ]
+    },
+    "feature_library": {
+      "kind": "package",
+      "paths": [
+        "coqui/packages/features/feature_library/**"
+      ]
+    },
+    "feature_speaking": {
+      "kind": "package",
+      "paths": [
+        "coqui/packages/features/feature_speaking/**"
+      ]
+    },
+    "feature_profile": {
+      "kind": "package",
+      "paths": [
+        "coqui/packages/features/feature_profile/**"
+      ]
+    },
+    "coqui_story_checks": {
+      "kind": "package",
+      "paths": [
+        "coqui/packages/coqui_story_checks/**"
+      ]
+    },
+    "app": {
+      "kind": "package",
+      "paths": [
+        "coqui/app/**"
+      ]
+    },
+    "github": {
+      "kind": "non_package",
+      "paths": [
+        ".github/**"
+      ]
+    },
+    "docs": {
+      "kind": "non_package",
+      "paths": [
+        "docs/**",
+        "AGENTS.md",
+        "CLAUDE.md",
+        "GEMINI.md",
+        "README.md",
+        "coqui/AGENTS.md"
+      ]
+    },
+    "content": {
+      "kind": "non_package",
+      "paths": [
+        "content/**",
+        "historia/tools/**",
+        "historia/datos/**",
+        "historia/libros/**",
+        "historia/notas/**"
+      ]
+    },
+    "tool": {
+      "kind": "non_package",
+      "paths": [
+        "coqui/tool/**",
+        "tools/**",
+        "tool/**"
+      ]
+    },
+    "design": {
+      "kind": "design",
+      "parents": [
+        "coqui_ui",
+        "docs"
+      ],
+      "paths": [
+        "coqui/packages/core/coqui_ui/**",
+        "docs/proyecto/noche/**"
+      ]
+    },
+    "feature_library.reader": {
+      "kind": "screen",
+      "parents": [
+        "feature_library"
+      ],
+      "paths": [
+        "coqui/packages/features/feature_library/lib/src/reader/**",
+        "coqui/packages/features/feature_library/lib/src/reader_*.dart",
+        "coqui/packages/features/feature_library/lib/src/text_reader.dart",
+        "coqui/packages/features/feature_library/test/reader/**",
+        "coqui/packages/features/feature_library/test/reader_*.dart",
+        "coqui/packages/features/feature_library/test/screenshots/reader_*.png"
+      ]
+    },
+    "feature_library.shelf": {
+      "kind": "screen",
+      "parents": [
+        "feature_library"
+      ],
+      "paths": [
+        "coqui/packages/features/feature_library/lib/src/shelf/**",
+        "coqui/packages/features/feature_library/lib/src/reading_home.dart",
+        "coqui/packages/features/feature_library/lib/src/write_story_sheet.dart",
+        "coqui/packages/features/feature_library/lib/src/story_generator.dart",
+        "coqui/packages/features/feature_library/test/shelf/**",
+        "coqui/packages/features/feature_library/test/reading_home_test.dart",
+        "coqui/packages/features/feature_library/test/story_generator_test.dart",
+        "coqui/packages/features/feature_library/test/screenshots/library_*.png"
+      ]
+    },
+    "content.games": {
+      "kind": "content_sublane",
+      "parents": [
+        "content"
+      ],
+      "paths": [
+        "content/games/**"
+      ]
+    },
+    "content.lines.es": {
+      "template": "content_lines",
+      "params": {
+        "lang": "es"
+      }
+    },
+    "content.lines.fr": {
+      "template": "content_lines",
+      "params": {
+        "lang": "fr"
+      }
+    },
+    "content.lines.ar": {
+      "template": "content_lines",
+      "params": {
+        "lang": "ar"
+      }
+    },
+    "scene.frente": {
+      "template": "scene",
+      "params": {
+        "id": "frente"
+      }
+    },
+    "scene.balcon": {
+      "template": "scene",
+      "params": {
+        "id": "balcon"
+      }
+    },
+    "scene.sala": {
+      "template": "scene",
+      "params": {
+        "id": "sala"
+      }
+    },
+    "scene.patio": {
+      "template": "scene",
+      "params": {
+        "id": "patio"
+      }
+    },
+    "scene.camino": {
+      "template": "scene",
+      "params": {
+        "id": "camino"
+      }
+    },
+    "scene.campo": {
+      "template": "scene",
+      "params": {
+        "id": "campo"
+      }
+    },
+    "scene.lago": {
+      "template": "scene",
+      "params": {
+        "id": "lago"
+      }
+    },
+    "scene.banco": {
+      "template": "scene",
+      "params": {
+        "id": "banco"
+      }
+    },
+    "scene.mesa": {
+      "template": "scene",
+      "params": {
+        "id": "mesa"
+      }
+    },
+    "scene.estufa": {
+      "template": "scene",
+      "params": {
+        "id": "estufa"
+      }
+    },
+    "scene.nevera": {
+      "template": "scene",
+      "params": {
+        "id": "nevera"
+      }
+    },
+    "scene.comer": {
+      "template": "scene",
+      "params": {
+        "id": "comer"
+      }
+    },
+    "scene.mostrador": {
+      "template": "scene",
+      "params": {
+        "id": "mostrador"
+      }
+    },
+    "scene.estantes": {
+      "template": "scene",
+      "params": {
+        "id": "estantes"
+      }
+    },
+    "scene.frutas": {
+      "template": "scene",
+      "params": {
+        "id": "frutas"
+      }
+    },
+    "scene.caja": {
+      "template": "scene",
+      "params": {
+        "id": "caja"
+      }
+    },
+    "scene.esquina": {
+      "template": "scene",
+      "params": {
+        "id": "esquina"
+      }
+    },
+    "scene.parada": {
+      "template": "scene",
+      "params": {
+        "id": "parada"
+      }
+    },
+    "scene.tiendas": {
+      "template": "scene",
+      "params": {
+        "id": "tiendas"
+      }
+    },
+    "scene.cruce": {
+      "template": "scene",
+      "params": {
+        "id": "cruce"
+      }
+    },
+    "scene.plaza": {
+      "template": "scene",
+      "params": {
+        "id": "plaza"
+      }
+    },
+    "scene.reloj": {
+      "template": "scene",
+      "params": {
+        "id": "reloj"
+      }
+    },
+    "scene.quiosco": {
+      "template": "scene",
+      "params": {
+        "id": "quiosco"
+      }
+    },
+    "scene.calendario": {
+      "template": "scene",
+      "params": {
+        "id": "calendario"
+      }
+    },
+    "scene.orilla": {
+      "template": "scene",
+      "params": {
+        "id": "orilla"
+      }
+    },
+    "scene.sombrilla": {
+      "template": "scene",
+      "params": {
+        "id": "sombrilla"
+      }
+    },
+    "scene.ropa": {
+      "template": "scene",
+      "params": {
+        "id": "ropa"
+      }
+    },
+    "scene.cielo": {
+      "template": "scene",
+      "params": {
+        "id": "cielo"
+      }
+    },
+    "scene.entrada": {
+      "template": "scene",
+      "params": {
+        "id": "entrada"
+      }
+    },
+    "scene.pedido": {
+      "template": "scene",
+      "params": {
+        "id": "pedido"
+      }
+    },
+    "scene.comida": {
+      "template": "scene",
+      "params": {
+        "id": "comida"
+      }
+    },
+    "scene.cuenta": {
+      "template": "scene",
+      "params": {
+        "id": "cuenta"
+      }
+    },
+    "scene.cuarto": {
+      "template": "scene",
+      "params": {
+        "id": "cuarto"
+      }
+    },
+    "scene.bano": {
+      "template": "scene",
+      "params": {
+        "id": "bano"
+      }
+    },
+    "scene.sala_dia": {
+      "template": "scene",
+      "params": {
+        "id": "sala_dia"
+      }
+    },
+    "scene.noche": {
+      "template": "scene",
+      "params": {
+        "id": "noche"
+      }
+    },
+    "scene.subida": {
+      "template": "scene",
+      "params": {
+        "id": "subida"
+      }
+    },
+    "scene.musica": {
+      "template": "scene",
+      "params": {
+        "id": "musica"
+      }
+    },
+    "scene.regalos": {
+      "template": "scene",
+      "params": {
+        "id": "regalos"
+      }
+    },
+    "scene.muralla": {
+      "template": "scene",
+      "params": {
+        "id": "muralla"
+      }
+    },
+    "scene_port": {
+      "kind": "multi_package",
+      "spans": [
+        "coqui_scenes",
+        "feature_story",
+        "coqui_story_checks"
+      ],
+      "multi_package_ok": true,
+      "paths": [
+        "coqui/packages/core/coqui_scenes/**",
+        "coqui/packages/features/feature_story/**",
+        "coqui/packages/coqui_story_checks/**",
+        "coqui/ref/pp/**"
+      ]
+    }
+  }
+}

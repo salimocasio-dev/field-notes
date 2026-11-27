@@ -13,6 +13,8 @@
 /GEMINI.md @salimocasio-dev
 /tool/antigravity_guard_hook.py @salimocasio-dev
 /tools/board.py @salimocasio-dev
+/tools/lanes.json @salimocasio-dev
+/tools/lanes.py @salimocasio-dev
 
 # Build publication and published web app
 /coqui/BUILD @salimocasio-dev

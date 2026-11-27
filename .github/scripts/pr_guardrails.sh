@@ -128,45 +128,7 @@ check_sensitive_paths() {
 }
 
 check_branch_boundaries() {
-  local rc=0
-  local pkg_lines=""
-  local pkgs=""
-  local count="0"
-  local f=""
-
-  pkg_lines="$(printf '%s\n' "$CHANGED" | grep '^coqui/packages/' || true)"
-
-  if [[ "$HEAD_REF" =~ ^story/[0-9]+$ ]]; then
-    if [ -n "$CHANGED" ]; then
-      while IFS= read -r f; do
-        [ -n "$f" ] || continue
-        case "$f" in
-          coqui/packages/core/coqui_scenes/*|coqui/packages/features/feature_story/*|coqui/packages/coqui_story_checks/*|coqui/ref/pp/*|coqui/requests/*)
-            ;;
-          *)
-            echo "::error file=$f::story/<n> branch '$HEAD_REF' modifies disallowed path '$f' (allowed: coqui_scenes, feature_story, coqui_story_checks, coqui/ref/pp/, coqui/requests/)."
-            rc=1
-            ;;
-        esac
-      done <<< "$CHANGED"
-    fi
-  elif [[ "$HEAD_REF" =~ ^lane/[^/]+/ ]]; then
-    if [ -n "$pkg_lines" ]; then
-      pkgs="$(printf '%s\n' "$pkg_lines" | sed -E 's#^coqui/packages/((core|features)/)?([^/]+)(/.*)?$#\1\3#' | sort -u)"
-      count="$(printf '%s\n' "$pkgs" | sed '/^$/d' | wc -l | tr -d '[:space:]')"
-      if [ "$count" -gt 1 ]; then
-        echo "::error::PR touches multiple Flutter packages ($pkgs). One lane branch must change only one package."
-        rc=1
-      fi
-    fi
-  else
-    if [ -n "$pkg_lines" ]; then
-      echo "::error::Branch '$HEAD_REF' modifies coqui/packages/ with an unauthorized prefix. Use lane/<package>/<n> or story/<n>."
-      rc=1
-    fi
-  fi
-
-  return "$rc"
+  python3 "$SCRIPT_DIR/check_lanes.py" --base "$DIFF_BASE" --head-ref "$HEAD_REF"
 }
 
 check_noche_tokens() {
@@ -216,6 +178,13 @@ check_publish_workflows() {
   python3 "$SCRIPT_DIR/test_publish_workflows.py"
 }
 
+check_lanes_tests() {
+  if [ "${COQUI_SKIP_LANES_SELF_TEST:-0}" = "1" ]; then
+    return 0
+  fi
+  python3 "$SCRIPT_DIR/test_lanes.py"
+}
+
 overall_rc=0
 check_sensitive_paths || overall_rc=1
 check_branch_boundaries || overall_rc=1
@@ -224,5 +193,6 @@ check_noche_motion || overall_rc=1
 check_codeowners || overall_rc=1
 check_claude_pr_review || overall_rc=1
 check_publish_workflows || overall_rc=1
+check_lanes_tests || overall_rc=1
 
 exit "$overall_rc"
