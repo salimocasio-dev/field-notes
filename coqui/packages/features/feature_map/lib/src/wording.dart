@@ -37,6 +37,8 @@ abstract final class MapWording {
   static String streakDays(int streak) =>
       streak == 1 ? '1 day' : '$streak days';
   static const String youAreHere = 'You are here';
+  static const String afterPlacePrefix = 'After ';
+  static String afterPlace(String placeName) => '$afterPlacePrefix$placeName';
   static const String upNext = 'UP NEXT';
   static const String upNextWithPlacePrefix = 'UP NEXT · ';
   static const String startReviewSemantic = 'Start review';

@@ -1,11 +1,15 @@
 @TestOn('vm')
 library;
 
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
+import 'package:feature_map/feature_map.dart';
+import 'package:feature_map/src/map_layout.dart';
+import 'package:feature_map/src/map_picture.dart';
 import 'package:feature_map/src/map_screen.dart';
 import 'package:feature_map/src/motion.dart';
 import 'package:feature_map/src/place_screen.dart';
@@ -121,6 +125,64 @@ double _slotDy(WidgetTester tester, Key key) {
   return transform.transform.getTranslation().y;
 }
 
+double _slotScale(WidgetTester tester, Key key) {
+  final finder = find.byKey(key);
+  expect(finder, findsOneWidget);
+  final transform = tester.widget<Transform>(finder);
+  return transform.transform.storage[0];
+}
+
+Future<void> _runFrames(WidgetTester tester, int ms, {int step = 50}) async {
+  var remaining = ms;
+  while (remaining > 0) {
+    final dt = remaining < step ? remaining : step;
+    await tester.pump(Duration(milliseconds: dt));
+    remaining -= dt;
+  }
+}
+
+Finder _mapPixelViewFinder() => find.descendant(
+  of: find.byType(SingleChildScrollView).first,
+  matching: find.byType(PixelView),
+);
+
+Future<void> _tapStopOnMap(
+  WidgetTester tester,
+  int k, {
+  bool scrollFirst = true,
+}) async {
+  final view = _mapPixelViewFinder();
+  final scale = tester.getSize(view).width / mapW;
+  final p = MapPicture().stopOnPicture(k);
+  if (scrollFirst) {
+    final scrollV = tester.state<ScrollableState>(
+      find.byType(Scrollable).at(0),
+    );
+    final scrollH = tester.state<ScrollableState>(
+      find.byType(Scrollable).at(1),
+    );
+    final size = tester.getSize(find.byType(MapScreen));
+    final posV = scrollV.position;
+    final posH = scrollH.position;
+    posV.jumpTo(
+      (p.sy * scale - size.height * 0.4).clamp(
+        posV.minScrollExtent,
+        posV.maxScrollExtent,
+      ),
+    );
+    posH.jumpTo(
+      (p.sx * scale - size.width * 0.5).clamp(
+        posH.minScrollExtent,
+        posH.maxScrollExtent,
+      ),
+    );
+    await tester.pump();
+  }
+  final top = tester.getTopLeft(view);
+  await tester.tapAt(top + Offset(p.sx * scale, p.sy * scale));
+  await tester.pump();
+}
+
 class _FlowNavigator implements AppNavigator {
   _FlowNavigator(this.onGo, this.onBack);
 
@@ -226,9 +288,15 @@ class _MapMotionHarness extends StatefulWidget {
     required this.clock,
     required this.pictures,
     required this.entitlements,
+    this.clips,
     this.reduceMotion = false,
     this.disableAnimations = false,
     this.textDirection = TextDirection.ltr,
+    this.useArrivalScope = false,
+    this.overlayOpacity = 1.0,
+    this.animateColdLoad = false,
+    this.onPicture,
+    this.onCamera,
     this.onNavReady,
   });
 
@@ -237,9 +305,15 @@ class _MapMotionHarness extends StatefulWidget {
   final Clock clock;
   final PictureSource pictures;
   final Entitlements entitlements;
+  final ClipPlayer? clips;
   final bool reduceMotion;
   final bool disableAnimations;
   final TextDirection textDirection;
+  final bool useArrivalScope;
+  final double overlayOpacity;
+  final bool animateColdLoad;
+  final void Function(MapPicture picture)? onPicture;
+  final void Function(MapCamera camera)? onCamera;
   final void Function(_FlowNavigator nav, GlobalKey<NavigatorState> navKey)?
   onNavReady;
 
@@ -262,6 +336,7 @@ class _MapMotionHarnessState extends State<_MapMotionHarness> {
       course: widget.course,
       clock: widget.clock,
       nav: _flowNav,
+      clips: widget.clips,
       pictures: widget.pictures,
       entitlements: widget.entitlements,
       reduceMotion: widget.reduceMotion,
@@ -340,11 +415,21 @@ class _MapMotionHarnessState extends State<_MapMotionHarness> {
               onGenerateRoute: (_) => buildNocheMapRoute<void>(
                 context: navContext,
                 serviceReduceMotion: widget.reduceMotion,
-                builder: (_) => MapScreen(
-                  services: _services,
-                  reviewTitle: MapWording.reviewTitle,
-                  entitlements: widget.entitlements,
-                ),
+                builder: (_) {
+                  final map = MapScreen(
+                    services: _services,
+                    reviewTitle: MapWording.reviewTitle,
+                    entitlements: widget.entitlements,
+                    onPicture: widget.onPicture,
+                    onCamera: widget.onCamera,
+                  );
+                  if (!widget.useArrivalScope) return map;
+                  return MapArrivalScope(
+                    overlayOpacity: widget.overlayOpacity,
+                    animateColdLoad: widget.animateColdLoad,
+                    child: map,
+                  );
+                },
               ),
             ),
           ),
@@ -1107,6 +1192,626 @@ void main() {
             reason: '$key on locked PlaceScreen',
           );
         }
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+  });
+
+  group('N8.5 Map trips, lock pill, house clearance, and MapArrivalScope', () {
+    mapTest(
+      '1. Open place tap (3 -> 2 in 4 hops): dest pill enters in press, here fades in quick, 90 ms delay, smooth camera travel, 250 ms settle, here rises, card swaps; second tap opens PlaceScreen',
+      (tester) async {
+        _phone(tester, size: const Size(390, 844), dpr: 3.0);
+        final f = fixtureDemoWith('place3');
+        final clips = FakeClipPlayer();
+        late MapPicture picture;
+        late _FlowNavigator nav;
+
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: f.services.course,
+            progress: f.progress,
+            clock: f.clock,
+            clips: clips,
+            pictures: _pixelPictures(),
+            entitlements: const AllowAllEntitlements(),
+            onPicture: (p) => picture = p,
+            onNavReady: (n, _) => nav = n,
+          ),
+        );
+        await _pumpMapReady(tester);
+        expect(picture.FROG.at, 2);
+        expect(find.text('UP NEXT · LA COCINA'), findsOneWidget);
+
+        // Tap stop 1 (El parque) directly on screen without pre-scrolling so camera travels from stop 2 -> stop 1.
+        final scrollH = tester.state<ScrollableState>(
+          find.byType(Scrollable).at(1),
+        );
+        final startScrollX = scrollH.position.pixels;
+        expect(startScrollX, greaterThan(0.0));
+        await _tapStopOnMap(tester, 1, scrollFirst: false);
+
+        // At 45 ms: dest pill mid-enter (press = 90 ms), here pill mid-fade-out (quick = 140 ms),
+        // frog still waiting on 90 ms tripStartDelay.
+        await tester.pump(const Duration(milliseconds: 45));
+        expect(find.byKey(const Key('map-dest-pill')), findsOneWidget);
+        expect(find.text('El parque'), findsOneWidget);
+        final destOp45 = _slotOpacity(tester, const Key('map-dest-motion'));
+        final destScale45 = _slotScale(tester, const Key('map-dest-motion'));
+        expect(destOp45, greaterThan(0.0));
+        expect(destOp45, lessThan(1.0));
+        expect(destScale45, greaterThan(MapMotion.destEnterScale));
+        expect(destScale45, lessThan(1.0));
+        final hereOp45 = _slotOpacity(tester, const Key('map-here-motion'));
+        expect(hereOp45, greaterThan(0.0));
+        expect(hereOp45, lessThan(1.0));
+        expect(picture.FROG.path, isNull);
+
+        // Past 90 ms delay (135 ms total): dest pill settled, frog hopping 4 hops.
+        await _runFrames(tester, 90, step: 45);
+        expect(_slotOpacity(tester, const Key('map-dest-motion')), 1.0);
+        expect(
+          _slotScale(tester, const Key('map-dest-motion')),
+          closeTo(1.0, 1e-3),
+        );
+        expect(picture.FROG.path, isNotNull);
+
+        // Mid-travel (~400 ms into 800 ms travel): horizontal scroll is strictly between start and 0.
+        await _runFrames(tester, 400);
+        final midTravelX = scrollH.position.pixels;
+        expect(midTravelX, lessThan(startScrollX));
+        expect(midTravelX, greaterThan(0.0));
+        expect(find.byKey(const Key('map-place-card')), findsNothing);
+
+        // Land at ~890 ms (total ~935 ms): frog has landed (4 tones), in 250 ms settle pause.
+        await _runFrames(tester, 450);
+        expect(picture.FROG.path, isNull);
+        expect(picture.FROG.at, 1);
+        expect(clips.tones, hasLength(4));
+        expect(nav.routes, isEmpty);
+
+        // After 250 ms settle + 70 ms: dest pill mid-exit (quick), card swapped to El parque,
+        // "You are here" waiting on hereRiseAfter (120 ms).
+        await _runFrames(tester, 300, step: 50);
+        expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+        expect(find.text('PLACE 2 OF 10'), findsOneWidget);
+        expect(find.text('El parque'), findsAtLeastNWidgets(1));
+        expect(nav.routes, isEmpty);
+
+        // Complete here rise and dest pill exit.
+        await _runFrames(tester, 500);
+        expect(find.byKey(const Key('map-dest-pill')), findsNothing);
+        expect(_slotOpacity(tester, const Key('map-here-motion')), 1.0);
+        expect(_slotDy(tester, const Key('map-here-motion')), 0.0);
+        expect(nav.routes, isEmpty);
+
+        // Tapping stop 1 again opens PlaceScreen for El parque.
+        await _tapStopOnMap(tester, 1);
+        await _runFrames(tester, 550);
+        expect(nav.routes, [const PlaceRoute('parque')]);
+        expect(find.byKey(const Key('place-screen')), findsOneWidget);
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+
+    mapTest(
+      '2. Tap current place: first tap focuses its card without opening PlaceScreen; second tap opens PlaceScreen',
+      (tester) async {
+        _phone(tester, size: const Size(390, 844), dpr: 3.0);
+        final f = fixture(seed: 'vacio');
+        final clips = FakeClipPlayer();
+        late _FlowNavigator nav;
+
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: f.services.course,
+            progress: f.progress,
+            clock: f.clock,
+            clips: clips,
+            pictures: _pixelPictures(),
+            entitlements: const AllowAllEntitlements(),
+            onNavReady: (n, _) => nav = n,
+          ),
+        );
+        await _pumpMapReady(tester);
+        expect(find.text('UP NEXT · LA CASA'), findsOneWidget);
+        expect(find.byKey(const Key('map-place-card')), findsNothing);
+
+        // First tap on current stop (0): switches card to focused place, does not open PlaceScreen.
+        await _tapStopOnMap(tester, 0);
+        await _runFrames(tester, 350);
+        expect(clips.tones, isEmpty);
+        expect(nav.routes, isEmpty);
+        expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+        expect(find.text('PLACE 1 OF 10'), findsOneWidget);
+        expect(find.text('La casa'), findsOneWidget);
+
+        // Second tap on current stop (0): opens PlaceScreen.
+        await _tapStopOnMap(tester, 0);
+        await _runFrames(tester, 550);
+        expect(nav.routes, [const PlaceRoute('casa')]);
+        expect(find.byKey(const Key('place-screen')), findsOneWidget);
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+
+    mapTest(
+      '3. Far place (> 6 legs, 0 -> 9 with todo): 0 hop tones, frog fades out in quick, camera travels in pageIn, frog fades in in quick, card updates',
+      (tester) async {
+        _phone(tester, size: const Size(390, 844), dpr: 3.0);
+        final f = fixture(seed: 'vacio', todo: true);
+        final clips = FakeClipPlayer();
+        late MapPicture picture;
+        late _FlowNavigator nav;
+
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: f.services.course,
+            progress: f.progress,
+            clock: f.clock,
+            clips: clips,
+            pictures: _pixelPictures(),
+            entitlements: const AllowAllEntitlements(),
+            onPicture: (p) => picture = p,
+            onNavReady: (n, _) => nav = n,
+          ),
+        );
+        await _pumpMapReady(tester);
+        expect(picture.FROG.at, 0);
+
+        await _tapStopOnMap(tester, 9);
+
+        // Past 90 ms start delay -> fade-out starts on next frame, then 70 ms into quick (140 ms): frog fading out.
+        await tester.pump(const Duration(milliseconds: 95));
+        await tester.pump(Duration.zero);
+        await tester.pump(const Duration(milliseconds: 70));
+        expect(picture.FROG.path, isNull);
+        expect(picture.FROG.hideArrow, isTrue);
+        expect(picture.FROG.opacity, greaterThan(0.0));
+        expect(picture.FROG.opacity, lessThan(1.0));
+        expect(clips.tones, isEmpty);
+
+        // Finish fade out (+90 ms) and enter pageIn (320 ms) camera travel: frog placed at 9 at opacity 0.
+        await tester.pump(const Duration(milliseconds: 90));
+        expect(picture.FROG.at, 9);
+        expect(picture.FROG.opacity, 0.0);
+        expect(picture.FROG.hideArrow, isTrue);
+
+        // Complete pageIn (320 ms) camera travel, start quick fade-in, sample at 70 ms.
+        await tester.pump(Duration.zero);
+        await _runFrames(tester, 340, step: 40);
+        await tester.pump(Duration.zero);
+        await tester.pump(const Duration(milliseconds: 70));
+        expect(picture.FROG.opacity, greaterThan(0.0));
+        expect(picture.FROG.opacity, lessThan(1.0));
+
+        // Finish fade-in, settle (250 ms), and card swap.
+        await _runFrames(tester, 800);
+        expect(picture.FROG.at, 9);
+        expect(picture.FROG.opacity, 1.0);
+        expect(picture.FROG.hideArrow, isFalse);
+        expect(clips.tones, isEmpty);
+        expect(nav.routes, isEmpty);
+        expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+        expect(find.text('PLACE 10 OF 10'), findsOneWidget);
+        expect(find.text('El fuerte'), findsOneWidget);
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+
+    mapTest(
+      '4. Closed place tap (k = 3, El colmado): lock pill ("After La cocina") enters in press, holds lockHold (1400 ms), exits in move; frog stays put',
+      (tester) async {
+        _phone(tester, size: const Size(390, 844), dpr: 3.0);
+        final f = fixture(seed: 'vacio');
+        final clips = FakeClipPlayer();
+        late MapPicture picture;
+        late _FlowNavigator nav;
+
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: f.services.course,
+            progress: f.progress,
+            clock: f.clock,
+            clips: clips,
+            pictures: _pixelPictures(),
+            entitlements: const AllowAllEntitlements(),
+            onPicture: (p) => picture = p,
+            onNavReady: (n, _) => nav = n,
+          ),
+        );
+        await _pumpMapReady(tester);
+
+        await _tapStopOnMap(tester, 3);
+
+        // At 45 ms (mid press = 90 ms): rising 4 -> 0 and fading 0 -> 1.
+        await tester.pump(const Duration(milliseconds: 45));
+        expect(find.byKey(const Key('map-lock-pill')), findsOneWidget);
+        expect(
+          find.text('After La cocina', findRichText: true),
+          findsOneWidget,
+        );
+        final enterOp = _slotOpacity(tester, const Key('map-lock-motion'));
+        final enterDy = _slotDy(tester, const Key('map-lock-motion'));
+        expect(enterOp, greaterThan(0.0));
+        expect(enterOp, lessThan(1.0));
+        expect(enterDy, greaterThan(0.0));
+        expect(enterDy, lessThan(MapMotion.lockDropOffset));
+
+        // During lockHold (90..1490 ms): opacity 1.0, dy 0.0.
+        await tester.pump(const Duration(milliseconds: 155)); // 200 ms
+        expect(_slotOpacity(tester, const Key('map-lock-motion')), 1.0);
+        expect(_slotDy(tester, const Key('map-lock-motion')), 0.0);
+
+        await tester.pump(const Duration(milliseconds: 1200)); // 1400 ms
+        expect(_slotOpacity(tester, const Key('map-lock-motion')), 1.0);
+        expect(_slotDy(tester, const Key('map-lock-motion')), 0.0);
+
+        // Mid exit over move (1490..1710 ms): fading out and dropping 0 -> 4.
+        await tester.pump(const Duration(milliseconds: 180)); // 1580 ms
+        final exitOp = _slotOpacity(tester, const Key('map-lock-motion'));
+        final exitDy = _slotDy(tester, const Key('map-lock-motion'));
+        expect(exitOp, greaterThan(0.0));
+        expect(exitOp, lessThan(1.0));
+        expect(exitDy, greaterThan(0.0));
+        expect(exitDy, lessThan(MapMotion.lockDropOffset));
+
+        // Finished exit: lock pill unmounted, frog never moved, card unchanged.
+        await tester.pump(const Duration(milliseconds: 200)); // 1780 ms
+        expect(find.byKey(const Key('map-lock-pill')), findsNothing);
+        expect(picture.FROG.at, 0);
+        expect(clips.tones, isEmpty);
+        expect(nav.routes, isEmpty);
+        expect(find.text('UP NEXT · LA CASA'), findsOneWidget);
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+
+    mapTest(
+      '5. Pill house clearance: "You are here" on place 1 and lock pill on place 4 sit strictly above house pixels',
+      (tester) async {
+        _phone(tester, size: const Size(390, 844), dpr: 3.0);
+        final f = fixture(seed: 'vacio', reduceMotion: true);
+        late MapPicture picture;
+
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: f.services.course,
+            progress: f.progress,
+            clock: f.clock,
+            pictures: _pixelPictures(),
+            entitlements: const AllowAllEntitlements(),
+            reduceMotion: true,
+            onPicture: (p) => picture = p,
+          ),
+        );
+        await _pumpMapReady(tester);
+
+        final pixRect = tester.getRect(find.byType(PixelView));
+        final scale = pixRect.height / mapH;
+
+        // Place 1 (casa, index 0): house sits directly above stop 0.
+        final casaHouseTopPic = picture.houseTopOnPicture(0);
+        expect(casaHouseTopPic, isNotNull);
+        final casaHouseTopScreenY = pixRect.top + casaHouseTopPic! * scale;
+        final hereRect = tester.getRect(find.byKey(const Key('you-are-here')));
+        expect(hereRect.bottom, lessThanOrEqualTo(casaHouseTopScreenY - 7.0));
+
+        // Place 4 (colmado, index 3): tap locked stop and verify lock pill clears its house.
+        await _tapStopOnMap(tester, 3);
+        await tester.pump(const Duration(milliseconds: 200));
+        final colmadoHouseTopPic = picture.houseTopOnPicture(3);
+        expect(colmadoHouseTopPic, isNotNull);
+        final pixRectAfter = tester.getRect(find.byType(PixelView));
+        final colmadoHouseTopScreenY =
+            pixRectAfter.top + colmadoHouseTopPic! * scale;
+        final lockRect = tester.getRect(find.byKey(const Key('map-lock-pill')));
+        expect(
+          lockRect.bottom,
+          lessThanOrEqualTo(colmadoHouseTopScreenY - 7.0),
+        );
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+
+    mapTest(
+      '6. Reduced motion (disableAnimations: true): open tap places coqui immediately, jumps camera, swaps card via quick fade (dy == 0) without auto-opening',
+      (tester) async {
+        _phone(tester, size: const Size(390, 844), dpr: 3.0);
+        final f = fixture(seed: 'vacio');
+        final clips = FakeClipPlayer();
+        late MapPicture picture;
+        late _FlowNavigator nav;
+        final cameras = <MapCamera>[];
+
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: f.services.course,
+            progress: f.progress,
+            clock: f.clock,
+            clips: clips,
+            pictures: _pixelPictures(),
+            entitlements: const AllowAllEntitlements(),
+            disableAnimations: true,
+            onPicture: (p) => picture = p,
+            onCamera: cameras.add,
+            onNavReady: (n, _) => nav = n,
+          ),
+        );
+        await _pumpMapReady(tester);
+        final camsBefore = cameras.length;
+
+        await _tapStopOnMap(tester, 2);
+        // Immediate frog placement, immediate camera jump, no dest pill, no hop tones, no auto-open.
+        expect(picture.FROG.at, 2);
+        expect(picture.FROG.path, isNull);
+        expect(cameras.length, greaterThan(camsBefore));
+        expect(clips.tones, isEmpty);
+        expect(nav.routes, isEmpty);
+        expect(find.byKey(const Key('map-dest-pill')), findsNothing);
+
+        // Card swaps in quick (140 ms) with dy == 0.
+        await tester.pump(const Duration(milliseconds: 70));
+        final cardOp = _slotOpacity(tester, const Key('map-card-motion'));
+        expect(cardOp, greaterThan(0.0));
+        expect(cardOp, lessThan(1.0));
+        expect(_slotDy(tester, const Key('map-card-motion')), 0.0);
+
+        await tester.pump(const Duration(milliseconds: 100));
+        expect(_slotOpacity(tester, const Key('map-card-motion')), 1.0);
+        expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+        expect(find.text('La cocina'), findsOneWidget);
+        expect(nav.routes, isEmpty);
+
+        // Closed place lock pill also uses quick fade with dy == 0.
+        await _tapStopOnMap(tester, 3);
+        await tester.pump(const Duration(milliseconds: 70));
+        final lockOp = _slotOpacity(tester, const Key('map-lock-motion'));
+        expect(lockOp, greaterThan(0.0));
+        expect(lockOp, lessThan(1.0));
+        expect(_slotDy(tester, const Key('map-lock-motion')), 0.0);
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+
+    mapTest(
+      '7. Arabic RTL fake course (FakeCourseCatalog.arabic()): open place and closed place taps keep LTR map and RTL overlays with zero exceptions',
+      (tester) async {
+        _phone(tester, size: const Size(390, 844), dpr: 3.0);
+        final clock = FakeClock(fixtureNowMs);
+        final progress = FakeProgressStore(clock: clock);
+        final arabicCourse = FakeCourseCatalog.arabic(
+          fetch: (path) async {
+            final raw = await arabicSampleFile(path);
+            if (path != 'datos/curso.json') return raw;
+            final doc = jsonDecode(raw) as Map<String, dynamic>;
+            final lugares = (doc['lugares'] as List<dynamic>).toList();
+            lugares.add({
+              'id': 'parque',
+              'n': 2,
+              'nombre': 'الحديقة',
+              'en': 'The park',
+              'cuentos': ['la-lluvia'],
+              'escenas': ['الأمام'],
+            });
+            lugares.add({
+              'id': 'cocina',
+              'n': 3,
+              'nombre': 'المطبخ',
+              'en': 'The kitchen',
+              'cuentos': <String>[],
+              'escenas': <String>[],
+            });
+            doc['lugares'] = lugares;
+            return jsonEncode(doc);
+          },
+        );
+        late MapPicture picture;
+
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: arabicCourse,
+            progress: progress,
+            clock: clock,
+            pictures: _pixelPictures(),
+            entitlements: const AllowAllEntitlements(),
+            textDirection: TextDirection.rtl,
+            onPicture: (p) => picture = p,
+          ),
+        );
+        await _pumpMapReady(tester);
+        expect(
+          Directionality.of(tester.element(_mapPixelViewFinder())),
+          TextDirection.ltr,
+        );
+
+        // Tap open place 2 (index 1, الحديقة).
+        await _tapStopOnMap(tester, 1);
+        await _runFrames(tester, 50);
+        expect(find.byKey(const Key('map-dest-pill')), findsOneWidget);
+        expect(tester.takeException(), isNull);
+        await _runFrames(tester, 2200);
+        expect(picture.FROG.at, 1);
+        expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+        expect(find.text('الحديقة'), findsOneWidget);
+        expect(
+          Directionality.of(tester.element(find.text('PLACE 2 OF 3'))),
+          TextDirection.ltr,
+        );
+        expect(tester.takeException(), isNull);
+
+        // Tap closed place 3 (index 2, المطبخ).
+        await _tapStopOnMap(tester, 2);
+        await _runFrames(tester, 150);
+        expect(find.byKey(const Key('map-lock-pill')), findsOneWidget);
+        expect(find.text('After الحديقة', findRichText: true), findsOneWidget);
+        expect(picture.FROG.at, 1);
+        expect(tester.takeException(), isNull);
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+
+    mapTest(
+      '8. MapArrivalScope: overlayOpacity fades overlays while PixelView stays unfaded; animateColdLoad staggers chips/here/card/play disc',
+      (tester) async {
+        _phone(tester, size: const Size(390, 844), dpr: 3.0);
+        final f = fixture(seed: 'vacio', reduceMotion: true);
+
+        // (a) overlayOpacity = 0.35 fades overlays but NEVER PixelView.
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: f.services.course,
+            progress: f.progress,
+            clock: f.clock,
+            pictures: _pixelPictures(),
+            entitlements: const AllowAllEntitlements(),
+            reduceMotion: true,
+            useArrivalScope: true,
+            overlayOpacity: 0.35,
+          ),
+        );
+        await _pumpMapReady(tester);
+
+        expect(
+          _slotOpacity(tester, const Key('map-load-chips')),
+          closeTo(0.35, 1e-6),
+        );
+        expect(
+          _slotOpacity(tester, const Key('map-here-motion')),
+          closeTo(0.35, 1e-6),
+        );
+        expect(
+          _slotOpacity(tester, const Key('map-load-card')),
+          closeTo(0.35, 1e-6),
+        );
+        final pixelAncestors = tester
+            .widgetList<Opacity>(
+              find.ancestor(
+                of: _mapPixelViewFinder(),
+                matching: find.byType(Opacity),
+              ),
+            )
+            .toList();
+        for (final op in pixelAncestors) {
+          expect(op.opacity, 1.0, reason: 'PixelView must stay unfaded');
+        }
+
+        // (b) animateColdLoad = true staggers chips (180), here (210), card (240), play (400).
+        await tester.pumpWidget(const SizedBox.shrink());
+        final fCold = fixture(seed: 'vacio');
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: fCold.services.course,
+            progress: fCold.progress,
+            clock: fCold.clock,
+            pictures: _pixelPictures(),
+            entitlements: const AllowAllEntitlements(),
+            useArrivalScope: true,
+            animateColdLoad: true,
+          ),
+        );
+        await tester.pump();
+        await tester.pump();
+        await tester.pump();
+
+        // At t = 150 ms (< 180 ms): all four slots still hidden.
+        await _runFrames(tester, 150);
+        expect(_slotOpacity(tester, const Key('map-load-chips')), 0.0);
+        expect(_slotOpacity(tester, const Key('map-here-motion')), 0.0);
+        expect(_slotOpacity(tester, const Key('map-load-card')), 0.0);
+        expect(_slotOpacity(tester, const Key('map-load-play')), 0.0);
+
+        // At t = 195 ms: chips rising; here, card, play still 0.
+        await tester.pump(const Duration(milliseconds: 45));
+        expect(
+          _slotOpacity(tester, const Key('map-load-chips')),
+          greaterThan(0.0),
+        );
+        expect(_slotDy(tester, const Key('map-load-chips')), greaterThan(0.0));
+        expect(_slotOpacity(tester, const Key('map-here-motion')), 0.0);
+        expect(_slotOpacity(tester, const Key('map-load-card')), 0.0);
+
+        // At t = 225 ms: here rising; card still 0.
+        await tester.pump(const Duration(milliseconds: 30));
+        expect(
+          _slotOpacity(tester, const Key('map-here-motion')),
+          greaterThan(0.0),
+        );
+        expect(_slotOpacity(tester, const Key('map-load-card')), 0.0);
+
+        // At t = 260 ms: card rising; play disc still 0.
+        await tester.pump(const Duration(milliseconds: 35));
+        expect(
+          _slotOpacity(tester, const Key('map-load-card')),
+          greaterThan(0.0),
+        );
+        expect(_slotOpacity(tester, const Key('map-load-play')), 0.0);
+
+        // At t = 430 ms: play disc rising.
+        await _runFrames(tester, 170, step: 45);
+        final playOp = _slotOpacity(tester, const Key('map-load-play'));
+        expect(playOp, greaterThan(0.0));
+        expect(playOp, lessThan(1.0));
+        expect(_slotDy(tester, const Key('map-load-play')), greaterThan(0.0));
+
+        // Settled at 700 ms: all four at opacity 1.0, dy 0.0.
+        await _runFrames(tester, 300);
+        for (final key in const [
+          Key('map-load-chips'),
+          Key('map-here-motion'),
+          Key('map-load-card'),
+          Key('map-load-play'),
+        ]) {
+          expect(_slotOpacity(tester, key), 1.0, reason: '$key settled');
+          expect(_slotDy(tester, key), 0.0, reason: '$key dy settled');
+        }
+
+        // (c) animateColdLoad under reduced motion collapses to quick fade in place (dy == 0).
+        await tester.pumpWidget(const SizedBox.shrink());
+        final fReduced = fixture(seed: 'vacio');
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: fReduced.services.course,
+            progress: fReduced.progress,
+            clock: fReduced.clock,
+            pictures: _pixelPictures(),
+            entitlements: const AllowAllEntitlements(),
+            disableAnimations: true,
+            useArrivalScope: true,
+            animateColdLoad: true,
+          ),
+        );
+        await tester.pump();
+        await tester.pump();
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 70));
+        final cOp = _slotOpacity(tester, const Key('map-load-chips'));
+        expect(cOp, greaterThan(0.0));
+        expect(cOp, lessThan(1.0));
+        expect(
+          _slotOpacity(tester, const Key('map-here-motion')),
+          closeTo(cOp, 1e-6),
+        );
+        expect(
+          _slotOpacity(tester, const Key('map-load-card')),
+          closeTo(cOp, 1e-6),
+        );
+        expect(_slotDy(tester, const Key('map-load-chips')), 0.0);
+        expect(_slotDy(tester, const Key('map-here-motion')), 0.0);
+        expect(_slotDy(tester, const Key('map-load-card')), 0.0);
+
+        await tester.pump(const Duration(milliseconds: 100));
+        expect(_slotOpacity(tester, const Key('map-load-chips')), 1.0);
+        expect(_slotOpacity(tester, const Key('map-here-motion')), 1.0);
+        expect(_slotOpacity(tester, const Key('map-load-card')), 1.0);
 
         await tester.pumpWidget(const SizedBox.shrink());
       },

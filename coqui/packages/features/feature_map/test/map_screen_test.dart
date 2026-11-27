@@ -198,66 +198,81 @@ void main() {
     expect(find.byType(PixelView), findsOneWidget);
   });
 
-  mapTest('tap an open place: the frog hops there, then PlaceRoute opens', (
-    tester,
-  ) async {
-    phone(tester);
-    final f = fixture(seed: 'vacio');
-    final s = await showMap(tester, f);
-    final m = s.picture;
-    expect(m.FROG.at, 0);
-    expect(m.STATE.abierto.take(4), [true, true, true, false]);
-    await tapStop(tester, 2);
-    expect(m.FROG.path, isNotNull);
-    expect(f.nav.routes, isEmpty);
-    expect(f.haptics.ticks, 1);
-    await run(tester, 100);
-    expect(f.nav.routes, isEmpty);
-    await run(tester, 3000);
-    expect(m.FROG.path, isNull);
-    expect(m.FROG.at, 2);
-    final stop = XY(PADS[2][0], PADS[2][1]);
-    expect(m.FROG.x, closeTo(stop.x, 1e-9));
-    expect(m.FROG.y, closeTo(stop.y, 1e-9));
-    expect(f.nav.routes, [const PlaceRoute('cocina')]);
-    final hops = route(0, 2);
-    expect(f.clips.tones, isNotEmpty);
-    expect(f.clips.tones.length, greaterThanOrEqualTo(hops.length - 1));
-    for (final t in f.clips.tones) {
-      expect(
-        (t.hz, t.dur, t.wave, t.vol, t.toHz),
-        (320.0, .07, 'square', .025, 520.0),
-      );
-    }
-    // the current place did not change: Up next still names La casa
-    expect(find.text('UP NEXT · LA CASA'), findsOneWidget);
-  });
+  mapTest(
+    'tap an open place: the frog hops there and focuses the card; tapping again opens PlaceRoute',
+    (tester) async {
+      phone(tester);
+      final f = fixture(seed: 'vacio');
+      final s = await showMap(tester, f);
+      final m = s.picture;
+      expect(m.FROG.at, 0);
+      expect(m.STATE.abierto.take(4), [true, true, true, false]);
+      await tapStop(tester, 2);
+      expect(find.byKey(const Key('map-dest-pill')), findsOneWidget);
+      expect(f.nav.routes, isEmpty);
+      expect(f.haptics.ticks, 1);
+      // After 90 ms tripStartDelay, the frog is mid-hop
+      await run(tester, 150);
+      expect(m.FROG.path, isNotNull);
+      expect(f.nav.routes, isEmpty);
+      await run(tester, 2500);
+      expect(m.FROG.path, isNull);
+      expect(m.FROG.at, 2);
+      final stop = XY(PADS[2][0], PADS[2][1]);
+      expect(m.FROG.x, closeTo(stop.x, 1e-9));
+      expect(m.FROG.y, closeTo(stop.y, 1e-9));
+      expect(f.nav.routes, isEmpty);
+      expect(f.clips.tones, hasLength(6));
+      for (final t in f.clips.tones) {
+        expect(
+          (t.hz, t.dur, t.wave, t.vol, t.toHz),
+          (320.0, .07, 'square', .025, 520.0),
+        );
+      }
+      // Card switched to the visited place without opening PlaceRoute
+      expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+      expect(find.text('La cocina'), findsOneWidget);
+      // Tapping the focused stop again opens PlaceRoute
+      await tapStop(tester, 2);
+      expect(f.nav.routes, [const PlaceRoute('cocina')]);
+    },
+  );
 
   mapTest(
-    'a tap on a locked place routes to PlaceRoute at once without hopping',
+    'a tap on a locked place shows the lock pill without hopping or opening PlaceRoute',
     (tester) async {
       phone(tester);
       final f = fixture(seed: 'vacio');
       final s = await showMap(tester, f);
       await tapStop(tester, 3);
-      await run(tester, 300);
+      await run(tester, 200);
       expect(s.picture.FROG.path, isNull);
       expect(s.picture.FROG.at, 0);
       expect(f.clips.tones, isEmpty);
-      expect(f.nav.routes, [const PlaceRoute('colmado')]);
+      expect(f.nav.routes, isEmpty);
+      expect(find.byKey(const Key('map-lock-pill')), findsOneWidget);
+      expect(find.text('After La cocina', findRichText: true), findsOneWidget);
+      expect(find.text('UP NEXT · LA CASA'), findsOneWidget);
+      await run(tester, 1800);
+      expect(find.byKey(const Key('map-lock-pill')), findsNothing);
     },
   );
 
   mapTest(
-    '"Open every place" opens a place with no stories: the frog hops, then PlaceRoute opens',
+    '"Open every place" opens a place with no stories: the frog hops and focuses card; tapping again opens PlaceRoute',
     (tester) async {
       phone(tester);
       final f = fixture(seed: 'todo', todo: true);
       final s = await showMap(tester, f);
       expect(s.picture.STATE.abierto, everyElement(isTrue));
       await tapStop(tester, 3);
-      await run(tester, 6000);
+      await run(tester, 2500);
       expect(s.picture.FROG.at, 3);
+      expect(f.nav.routes, isEmpty);
+      expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+      expect(find.text('El colmado'), findsOneWidget);
+      expect(find.text('Not built yet.'), findsOneWidget);
+      await tapStop(tester, 3);
       expect(f.nav.routes, [const PlaceRoute('colmado')]);
     },
   );
@@ -466,7 +481,7 @@ void main() {
   });
 
   mapTest(
-    'reduceMotion: everything stands still and tap opens PlaceRoute immediately',
+    'reduceMotion: everything stands still; first tap moves immediately and focuses card, second opens PlaceRoute',
     (tester) async {
       phone(tester);
       final f = fixture(seed: 'vacio', reduceMotion: true);
@@ -478,9 +493,14 @@ void main() {
       expect(m.pix, first);
       expect(m.e.STILL, isTrue);
       await tapStop(tester, 2);
+      await run(tester, 200);
       expect(m.FROG.path, isNull);
       expect(m.FROG.at, 2);
       expect(f.clips.tones, isEmpty);
+      expect(f.nav.routes, isEmpty);
+      expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+      expect(find.text('La cocina'), findsOneWidget);
+      await tapStop(tester, 2);
       expect(f.nav.routes, [const PlaceRoute('cocina')]);
     },
   );
@@ -785,20 +805,31 @@ void main() {
       await tester.pump();
       expect(fCurso.nav.routes, [const PlaceRoute('parque')]);
 
-      // Tapping place 2 on map still hops frog normally and opens PlaceRoute
+      // Tapping place 2 on map focuses its card; play disc still gates to PlaceRoute; tapping again opens PlaceRoute
       await tapStop(tester, 1);
-      await run(tester, 3000);
+      await run(tester, 400);
+      expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+      expect(find.text('El parque'), findsOneWidget);
+      expect(fCurso.nav.routes, [const PlaceRoute('parque')]);
+      await tester.tap(find.byKey(const Key('up-next-play')));
+      await tester.pump();
       expect(fCurso.nav.routes, [
         const PlaceRoute('parque'),
         const PlaceRoute('parque'),
       ]);
+      await tapStop(tester, 1);
+      expect(fCurso.nav.routes, [
+        const PlaceRoute('parque'),
+        const PlaceRoute('parque'),
+        const PlaceRoute('parque'),
+      ]);
 
-      // Upgrading to Plan.course restores direct StoryRoute playback
+      // Upgrading to Plan.course restores direct StoryRoute playback for the focused place's next unheard story
       entitlements.plan = Plan.course;
       await tester.pump();
       await tester.tap(find.byKey(const Key('up-next-play')));
       await tester.pump();
-      expect(fCurso.nav.routes.last, const StoryRoute('la-bola'));
+      expect(fCurso.nav.routes.last, const StoryRoute('arriba-abajo'));
     },
   );
 

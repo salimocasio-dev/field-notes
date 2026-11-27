@@ -20,3 +20,7 @@ Order #221 (`N8.3 The shell: tabs, lessons, loading`) implements `Noche-Motion-C
 
 - Order: 221 (`lane:app`)
 - Branch: `lane/app/221`
+
+## Status
+
+`MapArrivalScope` (`overlayOpacity`, `animateColdLoad`, `maybeOf`) is now implemented and exported by `feature_map` (`lane/feature_map/223`), ready for `lane:app` to wrap `MapScreen` in `AppShell`/`CoquiApp`.

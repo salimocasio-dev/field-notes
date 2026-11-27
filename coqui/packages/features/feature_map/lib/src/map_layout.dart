@@ -60,6 +60,11 @@ const List<List<int>> ROAD = [
   [8, 9],
 ];
 
+/// Maximum number of hops for a single map trip; trips longer than
+/// [maxHopLegs] legs use a fade-and-travel transition instead of hopping.
+const int maxTripHops = 6;
+const int maxHopLegs = 6;
+
 /// mapa.js: the ten places' PLACES builders are in the order of the course's places.
 const int placeCount = 10;
 
@@ -118,44 +123,215 @@ double segDist(double u, double v, List<List<double>> s) {
 double roadDist(double u, double v) =>
     SEGS.map((s) => segDist(u, v, s)).reduce(math.min);
 
-/// mapa.js: route. The path the frog hops from stop a to stop b: road corners in between, as [u, v].
-List<List<double>> route(int a, int b) {
-  if (a == b) return [PADS[a]];
-  // breadth-first over the road graph
-  final prev = <int, int>{a: -1}, q = <int>[a];
-  while (q.isNotEmpty) {
-    final n = q.removeAt(0);
-    if (n == b) break;
-    for (final r in ROAD) {
-      final p = r[0], s = r[1];
-      final m = p == n
-          ? s
-          : s == n
-          ? p
-          : -1;
-      if (m >= 0 && !prev.containsKey(m)) {
-        prev[m] = n;
-        q.add(m);
+class _RoadGraph {
+  _RoadGraph(this.vertices, this.adj, this.padVertex);
+
+  final List<List<double>> vertices;
+  final List<List<({int to, double weight})>> adj;
+  final List<int> padVertex;
+}
+
+const double _coordEps = 1e-9;
+
+bool _samePoint(List<double> a, List<double> b) =>
+    (a[0] - b[0]).abs() <= _coordEps && (a[1] - b[1]).abs() <= _coordEps;
+
+_RoadGraph _buildRoadGraph() {
+  final vertices = <List<double>>[];
+  for (final seg in SEGS) {
+    for (final pt in seg) {
+      if (!vertices.any((v) => _samePoint(v, pt))) {
+        vertices.add([pt[0], pt[1]]);
       }
     }
   }
-  final chain = <int>[];
-  for (var n = b; n != -1; n = prev[n]!) {
-    chain.insert(0, n);
+  vertices.sort((a, b) {
+    final du = a[0].compareTo(b[0]);
+    return du != 0 ? du : a[1].compareTo(b[1]);
+  });
+
+  final n = vertices.length;
+  final edgeMaps = List<Map<int, double>>.generate(n, (_) => <int, double>{});
+
+  for (final seg in SEGS) {
+    final p0 = seg[0], p1 = seg[1];
+    final du = p1[0] - p0[0], dv = p1[1] - p0[1];
+    final minU = math.min(p0[0], p1[0]) - _coordEps;
+    final maxU = math.max(p0[0], p1[0]) + _coordEps;
+    final minV = math.min(p0[1], p1[1]) - _coordEps;
+    final maxV = math.max(p0[1], p1[1]) + _coordEps;
+
+    final onSeg = <int>[];
+    for (var i = 0; i < n; i++) {
+      final v = vertices[i];
+      if (du.abs() <= _coordEps) {
+        if ((v[0] - p0[0]).abs() <= _coordEps && v[1] >= minV && v[1] <= maxV) {
+          onSeg.add(i);
+        }
+      } else if (dv.abs() <= _coordEps) {
+        if ((v[1] - p0[1]).abs() <= _coordEps && v[0] >= minU && v[0] <= maxU) {
+          onSeg.add(i);
+        }
+      }
+    }
+    onSeg.sort((ia, ib) {
+      final va = vertices[ia], vb = vertices[ib];
+      final pa = (va[0] - p0[0]) * du + (va[1] - p0[1]) * dv;
+      final pb = (vb[0] - p0[0]) * du + (vb[1] - p0[1]) * dv;
+      final c = pa.compareTo(pb);
+      return c != 0 ? c : ia.compareTo(ib);
+    });
+    for (var j = 1; j < onSeg.length; j++) {
+      final uIdx = onSeg[j - 1], vIdx = onSeg[j];
+      final va = vertices[uIdx], vb = vertices[vIdx];
+      final w = hypot(vb[0] - va[0], vb[1] - va[1]);
+      if (w <= _coordEps) continue;
+      final prevW = edgeMaps[uIdx][vIdx];
+      if (prevW == null || w < prevW) {
+        edgeMaps[uIdx][vIdx] = w;
+        edgeMaps[vIdx][uIdx] = w;
+      }
+    }
   }
-  final pts = <List<double>>[PADS[chain[0]]];
-  for (var k = 1; k < chain.length; k++) {
-    final p = chain[k - 1], n = chain[k], up = PADS[n][1] < PADS[p][1];
-    final ls = up
-        ? legs(p, n)
-        : [
-            for (final s in legs(n, p)) [s[1], s[0]],
-          ].reversed.toList();
-    for (final s in ls) {
-      pts.add(s[1]);
+
+  final adj = [
+    for (var i = 0; i < n; i++)
+      [
+        for (final to in edgeMaps[i].keys.toList()..sort())
+          (to: to, weight: edgeMaps[i][to]!),
+      ],
+  ];
+  final padVertex = [
+    for (final pad in PADS) vertices.indexWhere((v) => _samePoint(v, pad)),
+  ];
+  return _RoadGraph(vertices, adj, padVertex);
+}
+
+final _RoadGraph _roadGraph = _buildRoadGraph();
+
+/// Shortest path on the road-junction graph from stop [a] to stop [b]:
+/// road corners and junctions in between, as `[u, v]`.
+List<List<double>> route(int a, int b) {
+  if (a == b) return [PADS[a]];
+  final g = _roadGraph;
+  final n = g.vertices.length;
+  final start = g.padVertex[a];
+  final goal = g.padVertex[b];
+
+  final dist = List<double>.filled(n, double.infinity);
+  final edges = List<int>.filled(n, 1 << 30);
+  final prev = List<int>.filled(n, -1);
+  final visited = List<bool>.filled(n, false);
+  dist[start] = 0;
+  edges[start] = 0;
+
+  bool isBetter(double d1, int e1, int i1, double d2, int e2, int i2) {
+    if ((d1 - d2).abs() > _coordEps) return d1 < d2;
+    if (e1 != e2) return e1 < e2;
+    return i1 < i2;
+  }
+
+  for (var step = 0; step < n; step++) {
+    var u = -1;
+    for (var i = 0; i < n; i++) {
+      if (visited[i] || dist[i].isInfinite) continue;
+      if (u == -1 || isBetter(dist[i], edges[i], i, dist[u], edges[u], u)) {
+        u = i;
+      }
+    }
+    if (u == -1 || u == goal) break;
+    visited[u] = true;
+    for (final e in g.adj[u]) {
+      if (visited[e.to]) continue;
+      final nd = dist[u] + e.weight;
+      final ne = edges[u] + 1;
+      final v = e.to;
+      final better = (nd - dist[v]).abs() > _coordEps
+          ? nd < dist[v]
+          : (ne != edges[v] ? ne < edges[v] : (prev[v] == -1 || u < prev[v]));
+      if (better) {
+        dist[v] = nd;
+        edges[v] = ne;
+        prev[v] = u;
+      }
+    }
+  }
+
+  final chain = <int>[];
+  for (var cur = goal; cur != -1; cur = prev[cur]) {
+    chain.add(cur);
+    if (cur == start) break;
+  }
+  final pts = <List<double>>[];
+  for (var i = chain.length - 1; i >= 0; i--) {
+    final idx = chain[i];
+    if (idx == start) {
+      pts.add(PADS[a]);
+    } else if (idx == goal) {
+      pts.add(PADS[b]);
+    } else {
+      pts.add(g.vertices[idx]);
     }
   }
   return pts;
+}
+
+int _roundHop(num x) => (x + .5).floor();
+
+/// Computes per-leg hop counts for [legLengths], capping total hops at
+/// [maxTripHops] and returning an empty list for empty routes or routes with
+/// more than [maxHopLegs] legs.
+List<int> legHopCountsForLengths(List<double> legLengths) {
+  if (legLengths.isEmpty || legLengths.length > maxHopLegs) return const [];
+  final raw = [for (final d in legLengths) math.max(1, _roundHop(d / 2.2))];
+  final rawSum = raw.fold<int>(0, (s, c) => s + c);
+  if (rawSum <= maxTripHops) return raw;
+
+  final totalLen = legLengths.fold<double>(0, (s, d) => s + d);
+  if (totalLen <= 0) {
+    return List<int>.filled(legLengths.length, 1);
+  }
+  final exact = [for (final d in legLengths) maxTripHops * d / totalLen];
+  final counts = [for (final x in exact) math.max(1, x.floor())];
+  var sum = counts.fold<int>(0, (s, c) => s + c);
+
+  while (sum < maxTripHops) {
+    var best = 0;
+    var bestRem = exact[0] - counts[0];
+    for (var i = 1; i < counts.length; i++) {
+      final rem = exact[i] - counts[i];
+      if (rem > bestRem + _coordEps) {
+        bestRem = rem;
+        best = i;
+      }
+    }
+    counts[best]++;
+    sum++;
+  }
+  while (sum > maxTripHops) {
+    var best = 0;
+    for (var i = 1; i < counts.length; i++) {
+      if (counts[i] >= counts[best]) {
+        best = i;
+      }
+    }
+    counts[best]--;
+    sum--;
+  }
+  return counts;
+}
+
+/// Computes per-leg hop counts for a polyline of `[u, v]` [routePoints].
+List<int> legHopCounts(List<List<double>> routePoints) {
+  if (routePoints.length <= 1) return const [];
+  final lengths = [
+    for (var i = 1; i < routePoints.length; i++)
+      hypot(
+        routePoints[i][0] - routePoints[i - 1][0],
+        routePoints[i][1] - routePoints[i - 1][1],
+      ),
+  ];
+  return legHopCountsForLengths(lengths);
 }
 
 /// mapa.js: islandSd
