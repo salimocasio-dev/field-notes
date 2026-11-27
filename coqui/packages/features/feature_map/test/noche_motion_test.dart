@@ -2,7 +2,9 @@
 library;
 
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
+import 'dart:ui' as ui;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
@@ -15,6 +17,10 @@ import 'package:feature_map/src/motion.dart';
 import 'package:feature_map/src/place_screen.dart';
 import 'package:feature_map/src/scene_window.dart';
 import 'package:feature_map/src/wording.dart';
+import 'package:flutter/rendering.dart' show RenderRepaintBoundary;
+import 'package:flutter/semantics.dart'
+    show CustomSemanticsAction, SemanticsAction;
+import 'package:flutter/services.dart' show FontLoader;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -1889,7 +1895,7 @@ void main() {
     );
 
     mapTest(
-      '10. Plan-locked stop on Plan.free preserves N3.4: tapping place 2 hops and opens PlaceRoute(parque) with plan card',
+      '10. Plan-locked stop on Plan.free preserves N3.4: tapping place 2 hops and focuses place card; opening it opens PlaceRoute(parque) with plan card',
       (tester) async {
         _phone(tester, size: const Size(390, 844), dpr: 3.0);
         final entitlements = FakeEntitlements(plan: Plan.free);
@@ -1913,9 +1919,18 @@ void main() {
         expect(picture.FROG.at, 0);
 
         await _tapStopOnMap(tester, 1);
-        // 90 ms delay + 1200 ms (6 hops) + 250 ms settle + PlaceScreen arrival
+        // 90 ms delay + 1200 ms (6 hops) + 250 ms settle + 360 ms card swap
         await _runFrames(tester, 2200, step: 50);
         expect(picture.FROG.at, 1);
+        expect(nav.routes, isEmpty);
+        expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+        expect(find.text('PLACE 2 OF 10'), findsOneWidget);
+        expect(find.text('El parque'), findsOneWidget);
+
+        await tester.tap(find.byKey(const Key('place-card-open')));
+        await tester.pump();
+        await _runFrames(tester, 550);
+        expect(nav.routes.whereType<StoryRoute>(), isEmpty);
         expect(nav.routes, [const PlaceRoute('parque')]);
         expect(find.byKey(const Key('place-plan-card')), findsOneWidget);
         expect(find.byKey(const Key('place-see-plans')), findsOneWidget);
@@ -1924,4 +1939,935 @@ void main() {
       },
     );
   });
+
+  group('N8.6 Map: the place card', () {
+    mapTest(
+      '1. Card swap to place card: height grows ~60 px (start/middle/end in move), incoming rises at 60 ms, play disc lands last at 140..360 ms',
+      (tester) async {
+        _phone(tester, size: const Size(390, 844), dpr: 3.0);
+        final f = fixture(seed: 'vacio');
+
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: f.services.course,
+            progress: f.progress,
+            clock: f.clock,
+            pictures: _pixelPictures(),
+            entitlements: const AllowAllEntitlements(),
+          ),
+        );
+        await _pumpMapReady(tester);
+
+        final upNextHeight = tester
+            .getSize(find.byKey(const Key('up-next-card')))
+            .height;
+        expect(upNextHeight, greaterThanOrEqualTo(150));
+        expect(upNextHeight, lessThanOrEqualTo(185));
+        expect(find.byKey(const Key('map-place-card')), findsNothing);
+
+        // Tap current stop (0) to focus La casa place card.
+        await _tapStopOnMap(tester, 0);
+        final startHeight = tester
+            .getSize(find.byKey(const Key('up-next-card')))
+            .height;
+        expect(startHeight, closeTo(upNextHeight, 0.5));
+        expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+        expect(find.byKey(const Key('place-card-handle')), findsOneWidget);
+        expect(
+          tester.getSize(find.byKey(const Key('place-card-handle'))),
+          const Size(40, 4),
+        );
+
+        // At 45 ms: incoming content still waiting on followAfter (60 ms); play disc waiting on 140 ms.
+        await tester.pump(const Duration(milliseconds: 45));
+        expect(_slotOpacity(tester, const Key('map-card-motion')), 0.0);
+        expect(_slotOpacity(tester, const Key('map-load-play')), 0.0);
+
+        // At NocheMotion.move ~/ 2 (110 ms): card height mid-expansion, incoming rising, play disc still 0.
+        await tester.pump(const Duration(milliseconds: 65));
+        final midHeight = tester
+            .getSize(find.byKey(const Key('up-next-card')))
+            .height;
+        expect(midHeight, greaterThan(startHeight));
+        expect(midHeight, lessThan(215));
+        final inOp110 = _slotOpacity(tester, const Key('map-card-motion'));
+        final inDy110 = _slotDy(tester, const Key('map-card-motion'));
+        expect(inOp110, greaterThan(0.0));
+        expect(inOp110, lessThan(1.0));
+        expect(inDy110, greaterThan(0.0));
+        expect(inDy110, lessThan(NocheMotion.row));
+        expect(_slotOpacity(tester, const Key('map-load-play')), 0.0);
+
+        // At NocheMotion.move (220 ms): height animation finished (~214 px place card); play disc rising (140..360 ms).
+        await tester.pump(const Duration(milliseconds: 110));
+        final endHeight = tester
+            .getSize(find.byKey(const Key('up-next-card')))
+            .height;
+        expect(endHeight, closeTo(214, 4));
+        expect(endHeight, greaterThan(startHeight));
+        expect(
+          _slotOpacity(tester, const Key('map-load-play')),
+          greaterThan(0.0),
+        );
+
+        // At 300 ms: card content has already landed (1.0 / 0.0), while play disc is still landing last!
+        await tester.pump(const Duration(milliseconds: 80));
+        expect(_slotOpacity(tester, const Key('map-card-motion')), 1.0);
+        expect(_slotDy(tester, const Key('map-card-motion')), 0.0);
+        final playOp300 = _slotOpacity(tester, const Key('map-load-play'));
+        final playDy300 = _slotDy(tester, const Key('map-load-play'));
+        expect(playOp300, greaterThan(0.0));
+        expect(playOp300, lessThan(1.0));
+        expect(playDy300, greaterThan(0.0));
+        expect(playDy300, lessThan(NocheMotion.row));
+
+        // Settled at 380 ms.
+        await tester.pump(const Duration(milliseconds: 80));
+        expect(_slotOpacity(tester, const Key('map-load-play')), 1.0);
+        expect(_slotDy(tester, const Key('map-load-play')), 0.0);
+        expect(find.text('PLACE 1 OF 10'), findsOneWidget);
+        expect(find.text('La casa'), findsOneWidget);
+        expect(find.text('0 of 11 stories heard'), findsOneWidget);
+        expect(find.text('PLAY NEXT · STORY 1'), findsOneWidget);
+        expect(find.text('La lluvia'), findsOneWidget);
+        expect(find.text('2 min'), findsOneWidget);
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+
+    mapTest(
+      '2. Small drag of 20 up and 20 down follows finger, returns in NocheMotion.move (middle & end), and clamp caps at -80 / +48',
+      (tester) async {
+        _phone(tester, size: const Size(390, 844), dpr: 3.0);
+        final f = fixture(seed: 'vacio');
+        late _FlowNavigator nav;
+
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: f.services.course,
+            progress: f.progress,
+            clock: f.clock,
+            pictures: _pixelPictures(),
+            entitlements: const AllowAllEntitlements(),
+            onNavReady: (n, _) => nav = n,
+          ),
+        );
+        await _pumpMapReady(tester);
+
+        await _tapStopOnMap(tester, 0);
+        await _runFrames(tester, 400);
+
+        // Drag 20 up: follows finger, then returns over NocheMotion.move without opening.
+        final dragUp = await tester.startGesture(
+          tester.getCenter(find.byKey(const Key('up-next-card'))),
+        );
+        await dragUp.moveBy(const Offset(0, -20));
+        await tester.pump();
+        expect(
+          _slotDy(tester, const Key('map-card-drag')),
+          closeTo(-20.0, 0.5),
+        );
+        await dragUp.up();
+        await tester.pump();
+
+        await tester.pump(NocheMotion.move ~/ 2);
+        final midUpDy = _slotDy(tester, const Key('map-card-drag'));
+        expect(midUpDy, greaterThan(-20.0));
+        expect(midUpDy, lessThan(0.0));
+
+        await tester.pump(
+          NocheMotion.move ~/ 2 + const Duration(milliseconds: 20),
+        );
+        expect(_slotDy(tester, const Key('map-card-drag')), 0.0);
+        expect(nav.routes, isEmpty);
+        expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+
+        // Drag 20 down: follows finger, then returns over NocheMotion.move without collapsing.
+        final dragDown = await tester.startGesture(
+          tester.getCenter(find.byKey(const Key('up-next-card'))),
+        );
+        await dragDown.moveBy(const Offset(0, 20));
+        await tester.pump();
+        expect(_slotDy(tester, const Key('map-card-drag')), closeTo(20.0, 0.5));
+        await dragDown.up();
+        await tester.pump();
+
+        await tester.pump(NocheMotion.move ~/ 2);
+        final midDownDy = _slotDy(tester, const Key('map-card-drag'));
+        expect(midDownDy, greaterThan(0.0));
+        expect(midDownDy, lessThan(20.0));
+
+        await tester.pump(
+          NocheMotion.move ~/ 2 + const Duration(milliseconds: 20),
+        );
+        expect(_slotDy(tester, const Key('map-card-drag')), 0.0);
+        expect(nav.routes, isEmpty);
+        expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+
+        // Drag -120 clamps at -80 (MapMotion.cardDragUpLimit); +80 clamps at +48.
+        final dragClampUp = await tester.startGesture(
+          tester.getCenter(find.byKey(const Key('up-next-card'))),
+        );
+        await dragClampUp.moveBy(const Offset(0, -120));
+        await tester.pump();
+        expect(
+          _slotDy(tester, const Key('map-card-drag')),
+          closeTo(MapMotion.cardDragUpLimit, 0.5),
+        );
+        await dragClampUp.moveBy(const Offset(0, 200));
+        await tester.pump();
+        expect(
+          _slotDy(tester, const Key('map-card-drag')),
+          closeTo(MapMotion.cardDragDownLimit, 0.5),
+        );
+        await dragClampUp.cancel();
+        await tester.pump();
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+
+    mapTest(
+      '3. Drag of 40 up opens PlaceRoute with NocheWindow flying from dragged rect; back keeps place card at dy == 0',
+      (tester) async {
+        const dpr = 3.0;
+        _phone(tester, size: const Size(390, 844), dpr: dpr);
+        final f = fixture(
+          seed: 'vacio',
+          customPairs: _casaPairs,
+          storyScenes: _casaScenes,
+        );
+        late _FlowNavigator nav;
+        final expectedGeom = computeScenePictureGeometry(
+          viewportWidth: 390,
+          heroHeight: placeHeroBaseHeight,
+          dpr: dpr,
+        );
+
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: f.services.course,
+            progress: f.progress,
+            clock: f.clock,
+            pictures: _pixelPictures(),
+            entitlements: const AllowAllEntitlements(),
+            onNavReady: (n, _) => nav = n,
+          ),
+        );
+        await _pumpMapReady(tester);
+
+        await _tapStopOnMap(tester, 0);
+        await _runFrames(tester, 400);
+
+        final restWinRect = tester.getRect(
+          find.byKey(const Key('up-next-window')),
+        );
+        final drag = await tester.startGesture(
+          tester.getCenter(find.byKey(const Key('up-next-card'))),
+        );
+        await drag.moveBy(const Offset(0, -40));
+        await tester.pump();
+        final draggedWinRect = tester.getRect(
+          find.byKey(const Key('up-next-window')),
+        );
+        expect(draggedWinRect.top, closeTo(restWinRect.top - 40, 0.5));
+
+        await drag.up();
+        await tester.pump();
+
+        // At 1 ms into pageIn: Hero shuttle starts from the dragged window rect (40 px higher).
+        await tester.pump(const Duration(milliseconds: 1));
+        final shuttleRect = tester.getRect(
+          find.byKey(NocheWindow.surfaceKey('la-lluvia')),
+        );
+        expect(shuttleRect.top, closeTo(restWinRect.top - 40, 20));
+        expect(shuttleRect.top, lessThan(restWinRect.top - 20));
+        expect(
+          _pixelScaleInWindow(tester, tag: 'la-lluvia', dpr: dpr),
+          expectedGeom.scale,
+        );
+
+        await tester.pump(const Duration(milliseconds: 520));
+        expect(nav.routes, [const PlaceRoute('casa')]);
+        expect(find.byKey(const Key('place-screen')), findsOneWidget);
+
+        // Pop back: place card remains focused and rests at dy == 0.
+        await tester.tap(find.byKey(const Key('place-back')));
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 240));
+        expect(find.byKey(const Key('place-screen')), findsNothing);
+        expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+        expect(_slotDy(tester, const Key('map-card-drag')), 0.0);
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+
+    mapTest(
+      '4. Drag of 40 down collapses place card back to Up next and shrinks height over NocheMotion.move',
+      (tester) async {
+        _phone(tester, size: const Size(390, 844), dpr: 3.0);
+        final f = fixture(seed: 'vacio');
+        late _FlowNavigator nav;
+
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: f.services.course,
+            progress: f.progress,
+            clock: f.clock,
+            pictures: _pixelPictures(),
+            entitlements: const AllowAllEntitlements(),
+            onNavReady: (n, _) => nav = n,
+          ),
+        );
+        await _pumpMapReady(tester);
+
+        final upNextHeight = tester
+            .getSize(find.byKey(const Key('up-next-card')))
+            .height;
+        await _tapStopOnMap(tester, 0);
+        await _runFrames(tester, 400);
+        final placeHeight = tester
+            .getSize(find.byKey(const Key('up-next-card')))
+            .height;
+        expect(placeHeight, greaterThan(upNextHeight));
+
+        await tester.drag(
+          find.byKey(const Key('up-next-card')),
+          const Offset(0, 40),
+        );
+        await tester.pump();
+        expect(nav.routes, isEmpty);
+        expect(find.byKey(const Key('map-place-card')), findsNothing);
+        expect(find.text('UP NEXT · LA CASA'), findsOneWidget);
+
+        await tester.pump(NocheMotion.move ~/ 2);
+        final midHeight = tester
+            .getSize(find.byKey(const Key('up-next-card')))
+            .height;
+        expect(midHeight, lessThan(placeHeight));
+        expect(midHeight, greaterThan(upNextHeight));
+
+        await tester.pump(NocheMotion.move);
+        final endHeight = tester
+            .getSize(find.byKey(const Key('up-next-card')))
+            .height;
+        expect(endHeight, closeTo(upNextHeight, 0.5));
+        expect(_slotDy(tester, const Key('map-card-drag')), 0.0);
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+
+    mapTest(
+      '5. Card tap and 48x48 arrow button (place-card-open, semantic "Open <place>") both open PlaceRoute',
+      (tester) async {
+        _phone(tester, size: const Size(390, 844), dpr: 3.0);
+        final f = fixture(seed: 'vacio');
+        late _FlowNavigator nav;
+
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: f.services.course,
+            progress: f.progress,
+            clock: f.clock,
+            pictures: _pixelPictures(),
+            entitlements: const AllowAllEntitlements(),
+            onNavReady: (n, _) => nav = n,
+          ),
+        );
+        await _pumpMapReady(tester);
+
+        await _tapStopOnMap(tester, 0);
+        await _runFrames(tester, 400);
+
+        final openBtn = find.byKey(const Key('place-card-open'));
+        expect(openBtn, findsOneWidget);
+        final btnSize = tester.getSize(openBtn);
+        expect(btnSize.width, greaterThanOrEqualTo(48));
+        expect(btnSize.height, greaterThanOrEqualTo(48));
+        expect(
+          find.bySemanticsLabel(MapWording.openPlaceSemantic('La casa')),
+          findsOneWidget,
+        );
+
+        await tester.tap(openBtn);
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 520));
+        expect(nav.routes, [const PlaceRoute('casa')]);
+
+        await tester.tap(find.byKey(const Key('place-back')));
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 240));
+        expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+
+        // Tapping the card itself also opens PlaceRoute.
+        await tester.tap(find.byKey(const Key('up-next-card')));
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 520));
+        expect(nav.routes, [
+          const PlaceRoute('casa'),
+          const TabRoute(NocheTabs.map),
+          const PlaceRoute('casa'),
+        ]);
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+
+    mapTest(
+      '6. Finished place (all stories heard): shows ALL STORIES HEARD, Call Danny (or Review with no calls), mic/play icon, and routes play disc to CallRoute/ReviewRoute',
+      (tester) async {
+        _phone(tester, size: const Size(390, 844), dpr: 3.0);
+
+        // (a) Place with a call: Call Danny + mic icon + 4 min -> CallRoute('casa').
+        final fCall = fixture(seed: 'vacio', callPlaces: const {'casa'});
+        for (final id in fCall.services.course.places[0].stories) {
+          finishStory(fCall.progress, id);
+        }
+        late _FlowNavigator navCall;
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: fCall.services.course,
+            progress: fCall.progress,
+            clock: fCall.clock,
+            pictures: _pixelPictures(),
+            entitlements: const AllowAllEntitlements(),
+            reduceMotion: true,
+            onNavReady: (n, _) => navCall = n,
+          ),
+        );
+        await _pumpMapReady(tester);
+        await _tapStopOnMap(tester, 0);
+        await _runFrames(tester, 200);
+
+        expect(find.text('ALL STORIES HEARD'), findsOneWidget);
+        expect(find.text('Call Danny'), findsOneWidget);
+        expect(find.text('4 min'), findsOneWidget);
+        final micDisc = tester.widget<NochePlayDisc>(
+          find.byKey(const Key('up-next-play')),
+        );
+        expect(micDisc.icon, NocheIcons.mic);
+        expect(find.bySemanticsLabel('Call Danny'), findsOneWidget);
+
+        await tester.tap(find.byKey(const Key('up-next-play')));
+        await tester.pump();
+        expect(navCall.routes, [const CallRoute('casa')]);
+
+        // (b) Place with no calls: Review + play icon -> ReviewRoute().
+        await tester.pumpWidget(const SizedBox.shrink());
+        final fReview = fixture(seed: 'vacio', callPlaces: const {});
+        for (final id in fReview.services.course.places[0].stories) {
+          finishStory(fReview.progress, id);
+        }
+        late _FlowNavigator navReview;
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: fReview.services.course,
+            progress: fReview.progress,
+            clock: fReview.clock,
+            pictures: _pixelPictures(),
+            entitlements: const AllowAllEntitlements(),
+            reduceMotion: true,
+            onNavReady: (n, _) => navReview = n,
+          ),
+        );
+        await _pumpMapReady(tester);
+        await _tapStopOnMap(tester, 0);
+        await _runFrames(tester, 200);
+
+        expect(find.text('ALL STORIES HEARD'), findsOneWidget);
+        expect(find.text('Review'), findsOneWidget);
+        final reviewDisc = tester.widget<NochePlayDisc>(
+          find.byKey(const Key('up-next-play')),
+        );
+        expect(reviewDisc.icon, NocheIcons.play);
+        expect(
+          find.bySemanticsLabel(MapWording.startReviewSemantic),
+          findsOneWidget,
+        );
+
+        await tester.tap(find.byKey(const Key('up-next-play')));
+        await tester.pump();
+        expect(navReview.routes, [const ReviewRoute()]);
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+
+    mapTest(
+      '7. Screen reader actions "Open" and "Show what is next" via CustomSemanticsActions',
+      (tester) async {
+        final semantics = tester.ensureSemantics();
+        _phone(tester, size: const Size(390, 844), dpr: 3.0);
+        final f = fixture(seed: 'vacio', reduceMotion: true);
+        late _FlowNavigator nav;
+
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: f.services.course,
+            progress: f.progress,
+            clock: f.clock,
+            pictures: _pixelPictures(),
+            entitlements: const AllowAllEntitlements(),
+            reduceMotion: true,
+            onNavReady: (n, _) => nav = n,
+          ),
+        );
+        await _pumpMapReady(tester);
+
+        await _tapStopOnMap(tester, 0);
+        await _runFrames(tester, 200);
+        expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+
+        final openId = CustomSemanticsAction.getIdentifier(
+          const CustomSemanticsAction(label: MapWording.cardActionOpen),
+        );
+        final showUpNextId = CustomSemanticsAction.getIdentifier(
+          const CustomSemanticsAction(label: MapWording.cardActionShowUpNext),
+        );
+
+        final cardNode = tester.getSemantics(
+          find.byKey(const Key('up-next-card')),
+        );
+        expect(
+          cardNode.getSemanticsData().customSemanticsActionIds,
+          containsAll([openId, showUpNextId]),
+        );
+
+        // Trigger "Show what is next" -> returns to Up next card.
+        tester.binding.rootPipelineOwner.semanticsOwner!.performAction(
+          cardNode.id,
+          SemanticsAction.customAction,
+          showUpNextId,
+        );
+        await tester.pump();
+        await _runFrames(tester, 200);
+        expect(find.byKey(const Key('map-place-card')), findsNothing);
+        expect(find.text('UP NEXT · LA CASA'), findsOneWidget);
+
+        // Focus again and trigger "Open" -> opens PlaceRoute('casa').
+        await _tapStopOnMap(tester, 0);
+        await _runFrames(tester, 200);
+        final cardNode2 = tester.getSemantics(
+          find.byKey(const Key('up-next-card')),
+        );
+        tester.binding.rootPipelineOwner.semanticsOwner!.performAction(
+          cardNode2.id,
+          SemanticsAction.customAction,
+          openId,
+        );
+        await tester.pump();
+        expect(nav.routes, [const PlaceRoute('casa')]);
+
+        semantics.dispose();
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+
+    mapTest(
+      '8. Reduced motion (disableAnimations: true) and Arabic RTL (FakeCourseCatalog.arabic())',
+      (tester) async {
+        // (a) Reduced motion: snaps height, quick fade (dy == 0), instant drag snap-back.
+        _phone(tester, size: const Size(390, 844), dpr: 3.0);
+        final f = fixture(seed: 'vacio');
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: f.services.course,
+            progress: f.progress,
+            clock: f.clock,
+            pictures: _pixelPictures(),
+            entitlements: const AllowAllEntitlements(),
+            disableAnimations: true,
+          ),
+        );
+        await _pumpMapReady(tester);
+
+        await _tapStopOnMap(tester, 0);
+        await tester.pump(const Duration(milliseconds: 70));
+        final opMid = _slotOpacity(tester, const Key('map-card-motion'));
+        expect(opMid, greaterThan(0.0));
+        expect(opMid, lessThan(1.0));
+        expect(_slotDy(tester, const Key('map-card-motion')), 0.0);
+        await tester.pump(const Duration(milliseconds: 100));
+        expect(_slotOpacity(tester, const Key('map-card-motion')), 1.0);
+
+        final smallDrag = await tester.startGesture(
+          tester.getCenter(find.byKey(const Key('up-next-card'))),
+        );
+        await smallDrag.moveBy(const Offset(0, -20));
+        await tester.pump();
+        await smallDrag.up();
+        await tester.pump();
+        expect(_slotDy(tester, const Key('map-card-drag')), 0.0);
+
+        await tester.drag(
+          find.byKey(const Key('up-next-card')),
+          const Offset(0, 40),
+        );
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 70));
+        expect(_slotDy(tester, const Key('map-card-motion')), 0.0);
+        await tester.pump(const Duration(milliseconds: 100));
+        expect(find.byKey(const Key('map-place-card')), findsNothing);
+
+        // (b) Arabic RTL: mirrored arrow-up and play disc at end (left), picture at start (right), LTR numbers.
+        await tester.pumpWidget(const SizedBox.shrink());
+        final clockAr = FakeClock(fixtureNowMs);
+        final progressAr = FakeProgressStore(clock: clockAr);
+        final arabicCourse = FakeCourseCatalog.arabic();
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: arabicCourse,
+            progress: progressAr,
+            clock: clockAr,
+            pictures: _pixelPictures(),
+            entitlements: const AllowAllEntitlements(),
+            textDirection: TextDirection.rtl,
+          ),
+        );
+        await _pumpMapReady(tester);
+
+        await _tapStopOnMap(tester, 0);
+        await _runFrames(tester, 400);
+        expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+
+        final winRect = tester.getRect(find.byKey(const Key('up-next-window')));
+        final openRect = tester.getRect(
+          find.byKey(const Key('place-card-open')),
+        );
+        final playRect = tester.getRect(find.byKey(const Key('up-next-play')));
+        expect(openRect.center.dx, lessThan(winRect.center.dx));
+        expect(playRect.center.dx, lessThan(winRect.center.dx));
+        expect(
+          Directionality.of(tester.element(find.textContaining('PLACE 1 OF'))),
+          TextDirection.ltr,
+        );
+        expect(
+          Directionality.of(
+            tester.element(find.textContaining('stories heard')),
+          ),
+          TextDirection.ltr,
+        );
+        expect(
+          Directionality.of(tester.element(find.text('PLAY NEXT · STORY 1'))),
+          TextDirection.ltr,
+        );
+        expect(tester.takeException(), isNull);
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+
+    mapTest(
+      '9. Plan.free gating on place 2 (El parque): swipe up, tap, arrow button, and play disc (unheard & all-heard) ALL open PlaceRoute(parque) and never StoryRoute/CallRoute',
+      (tester) async {
+        _phone(tester, size: const Size(390, 844), dpr: 3.0);
+        final entitlements = FakeEntitlements(plan: Plan.free);
+        addTearDown(entitlements.dispose);
+
+        // (a) Place 2 with unheard stories.
+        final f = fixture(seed: 'curso', reduceMotion: true);
+        late _FlowNavigator nav;
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: f.services.course,
+            progress: f.progress,
+            clock: f.clock,
+            pictures: _pixelPictures(),
+            entitlements: entitlements,
+            reduceMotion: true,
+            onNavReady: (n, _) => nav = n,
+          ),
+        );
+        await _pumpMapReady(tester);
+
+        // Tap stop 1 (El parque) -> focuses place card.
+        await _tapStopOnMap(tester, 1);
+        await _runFrames(tester, 200);
+        expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+        expect(find.text('El parque'), findsOneWidget);
+        expect(nav.routes, isEmpty);
+
+        Future<void> verifyGatedOpen(Future<void> Function() action) async {
+          final before = nav.routes.length;
+          await action();
+          await tester.pump();
+          await _runFrames(tester, 200);
+          expect(nav.routes.length, before + 1);
+          expect(nav.routes.last, const PlaceRoute('parque'));
+          expect(nav.routes.whereType<StoryRoute>(), isEmpty);
+          expect(nav.routes.whereType<CallRoute>(), isEmpty);
+          expect(nav.routes.whereType<ReviewRoute>(), isEmpty);
+          expect(find.byKey(const Key('place-plan-card')), findsOneWidget);
+          expect(find.byKey(const Key('place-see-plans')), findsOneWidget);
+
+          await tester.tap(find.byKey(const Key('place-back')));
+          await tester.pump();
+          await _runFrames(tester, 200);
+          expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+        }
+
+        // 1) Swipe up 40.
+        await verifyGatedOpen(
+          () => tester.drag(
+            find.byKey(const Key('up-next-card')),
+            const Offset(0, -40),
+          ),
+        );
+        // 2) Tap card.
+        await verifyGatedOpen(
+          () => tester.tap(find.byKey(const Key('up-next-card'))),
+        );
+        // 3) Tap arrow button.
+        await verifyGatedOpen(
+          () => tester.tap(find.byKey(const Key('place-card-open'))),
+        );
+        // 4) Tap play disc (unheard state).
+        await verifyGatedOpen(
+          () => tester.tap(find.byKey(const Key('up-next-play'))),
+        );
+
+        // (b) Place 2 with all stories heard on Plan.free: play disc still gates to PlaceRoute('parque').
+        await tester.pumpWidget(const SizedBox.shrink());
+        final fAllHeard = fixture(seed: 'vacio', reduceMotion: true);
+        for (final id in fAllHeard.services.course.places[1].stories) {
+          finishStory(fAllHeard.progress, id);
+        }
+        late _FlowNavigator navAllHeard;
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: fAllHeard.services.course,
+            progress: fAllHeard.progress,
+            clock: fAllHeard.clock,
+            pictures: _pixelPictures(),
+            entitlements: entitlements,
+            reduceMotion: true,
+            onNavReady: (n, _) => navAllHeard = n,
+          ),
+        );
+        await _pumpMapReady(tester);
+        await _tapStopOnMap(tester, 1);
+        await _runFrames(tester, 200);
+        expect(find.text('ALL STORIES HEARD'), findsOneWidget);
+
+        await tester.tap(find.byKey(const Key('up-next-play')));
+        await tester.pump();
+        await _runFrames(tester, 200);
+        expect(navAllHeard.routes, [const PlaceRoute('parque')]);
+        expect(navAllHeard.routes.whereType<StoryRoute>(), isEmpty);
+        expect(navAllHeard.routes.whereType<CallRoute>(), isEmpty);
+        expect(navAllHeard.routes.whereType<ReviewRoute>(), isEmpty);
+        expect(find.byKey(const Key('place-plan-card')), findsOneWidget);
+        expect(find.byKey(const Key('place-see-plans')), findsOneWidget);
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+  });
+
+  if (Platform.environment['COQUI_CAPTURE_SHOTS'] == '1') {
+    testWidgets('capture N8.6 place card screenshots', (tester) async {
+      for (final entry in nocheFontFiles.entries) {
+        for (final prefix in ['', 'packages/coqui_ui/']) {
+          final loader = FontLoader('$prefix${entry.key}');
+          for (final path in entry.value.values) {
+            loader.addFont(
+              Future.value(
+                ByteData.sublistView(
+                  File('../../core/coqui_ui/$path').readAsBytesSync(),
+                ),
+              ),
+            );
+          }
+          await loader.load();
+        }
+      }
+
+      final mesaBytes = File('../../../ref/pp/mesa/m0h1/pix.png')
+          .readAsBytesSync();
+      final estufaBytes = File('../../../ref/pp/estufa/banco0/pix.png')
+          .readAsBytesSync();
+      final neveraBytes = File(
+        '../../../ref/pp/nevera/nev-0-cajon-0-pila-0-banco-1/pix.png',
+      ).readAsBytesSync();
+
+      ReviewPair pair(String word, String scene) => ReviewPair(
+        word: word,
+        say: '',
+        scene: scene,
+        yes: PictureSpec(cam: const [0, 0, 196, 104]),
+        no: PictureSpec(cam: const [0, 0, 196, 104]),
+      );
+
+      final cocinaPairs = <ReviewPair>[
+        pair('mesa', 'mesa'),
+        pair('cuchara', 'mesa'),
+        pair('estufa', 'estufa'),
+        pair('nevera', 'nevera'),
+      ];
+      const cocinaScenes = <String, String>{
+        'la-mesa': 'mesa',
+        'la-cuchara': 'mesa',
+        'tengo-hambre': 'mesa',
+        'arroz-con-habichuelas': 'estufa',
+        'el-pollo-y-el-huevo': 'estufa',
+        'cuidado': 'estufa',
+        'no-hay-leche': 'nevera',
+        'para-los-pajaros': 'nevera',
+        'jugo-de-china': 'nevera',
+      };
+
+      final pictures = FakePictureSource(
+        frames: (ref, {required width, required height}) {
+          final Uint8List bytes;
+          if (ref.scene.contains('estufa')) {
+            bytes = estufaBytes;
+          } else if (ref.scene.contains('nevera')) {
+            bytes = neveraBytes;
+          } else {
+            bytes = mesaBytes;
+          }
+          return Image.memory(
+            bytes,
+            width: width.toDouble(),
+            height: height.toDouble(),
+            fit: BoxFit.cover,
+            filterQuality: FilterQuality.none,
+          );
+        },
+      );
+
+      final dir = Directory('test/screenshots')..createSync(recursive: true);
+
+      for (final screen in [
+        (tag: '390x844', size: const Size(390, 844), dpr: 3.0),
+        (tag: '412x915', size: const Size(412, 915), dpr: 2.625),
+      ]) {
+        for (final state in [
+          (name: 'new', count: 0),
+          (name: 'half', count: 2),
+          (name: 'done', count: 9),
+        ]) {
+          _phone(tester, size: screen.size, dpr: screen.dpr);
+          final f = fixture(
+            builtPlaces: 3,
+            reduceMotion: true,
+            customPairs: cocinaPairs,
+            storyScenes: cocinaScenes,
+          );
+          final places = f.services.course.places;
+          for (final p in places.take(2)) {
+            for (final id in p.stories) {
+              f.clock.advance(const Duration(seconds: 5));
+              finishStory(f.progress, id);
+            }
+          }
+          for (final id in places[2].stories.take(state.count)) {
+            f.clock.advance(const Duration(seconds: 5));
+            finishStory(f.progress, id);
+          }
+          // Seed 6-day streak to match Noche-Motion-Visita.dc.html.
+          final now = DateTime.fromMillisecondsSinceEpoch(
+            f.clock.nowMs(),
+            isUtc: true,
+          );
+          final dias = <String, dynamic>{};
+          for (var i = 0; i < 6; i++) {
+            final d = now.subtract(Duration(days: i));
+            final key =
+                '${d.year.toString().padLeft(4, '0')}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+            dias[key] = 5;
+          }
+          final raw = Map<String, dynamic>.from(f.progress.raw);
+          raw['dias'] = dias;
+          f.progress.import(jsonEncode(raw));
+
+          final services = fakeServices(
+            progress: f.progress,
+            course: f.services.course,
+            clock: f.clock,
+            nav: f.nav,
+            clips: f.clips,
+            haptics: f.haptics,
+            pictures: pictures,
+            reduceMotion: true,
+          );
+          final lang = services.course.language;
+          final boundaryKey = GlobalKey();
+
+          await tester.pumpWidget(
+            RepaintBoundary(
+              key: boundaryKey,
+              child: MaterialApp(
+                debugShowCheckedModeBanner: false,
+                theme: coquiTheme(),
+                home: Scaffold(
+                  backgroundColor: NocheColors.ground,
+                  body: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      MapScreen(
+                        services: services,
+                        reviewTitle: MapWording.reviewTitle,
+                        entitlements: const AllowAllEntitlements(),
+                      ),
+                      PositionedDirectional(
+                        start: 0,
+                        end: 0,
+                        bottom: 0,
+                        child: NocheTabBar(
+                          selectedId: NocheTabs.map,
+                          tabNames: lang.tabNames,
+                          script: lang.script,
+                          languageCode: lang.code,
+                          onTap: (_) {},
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+          await _pumpMapReady(tester);
+          await _tapStopOnMap(tester, 2);
+          await tester.pump(const Duration(milliseconds: 250));
+          await tester.runAsync(() async {
+            await precacheImage(
+              MemoryImage(mesaBytes),
+              tester.element(find.byType(MapScreen)),
+            );
+            await precacheImage(
+              MemoryImage(estufaBytes),
+              tester.element(find.byType(MapScreen)),
+            );
+            await precacheImage(
+              MemoryImage(neveraBytes),
+              tester.element(find.byType(MapScreen)),
+            );
+            await Future<void>.delayed(const Duration(milliseconds: 100));
+          });
+          await tester.pump();
+          await tester.pump(const Duration(milliseconds: 200));
+
+          final bytes = await tester.runAsync(() async {
+            final boundary =
+                boundaryKey.currentContext!.findRenderObject()!
+                    as RenderRepaintBoundary;
+            final image = await boundary.toImage(pixelRatio: screen.dpr);
+            final byteData = await image.toByteData(
+              format: ui.ImageByteFormat.png,
+            );
+            image.dispose();
+            return byteData!.buffer.asUint8List();
+          });
+          File('${dir.path}/place_card_${state.name}_${screen.tag}.png')
+              .writeAsBytesSync(bytes!);
+          await tester.pumpWidget(const SizedBox.shrink());
+        }
+      }
+    });
+  }
 }

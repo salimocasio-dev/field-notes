@@ -11,7 +11,9 @@ import 'package:feature_map/src/motion.dart';
 import 'package:feature_map/src/scene_window.dart';
 import 'package:feature_map/src/wording.dart';
 import 'package:flutter/foundation.dart' show ValueListenable;
+import 'package:flutter/gestures.dart' show DragStartBehavior;
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/semantics.dart' show CustomSemanticsAction;
 import 'package:material_ui/material_ui.dart';
 
 /// Camera geometry for the Noche home map: whole-number device scale, scaled map
@@ -199,6 +201,9 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     vsync: this,
     value: 1.0,
   );
+  late final AnimationController _cardDragController = AnimationController(
+    vsync: this,
+  );
   late final AnimationController _coldLoadController = AnimationController(
     vsync: this,
     value: 1.0,
@@ -221,7 +226,11 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
   int? _focusedPlaceIndex;
   _CardSnapshot? _outgoingCard;
   bool _cardSwapping = false;
+  bool _cardSwapToPlace = false;
   bool _cardSwapReduced = false;
+  double _cardDragDy = 0.0;
+  double _cardDragStartDy = 0.0;
+  bool _cardDragging = false;
 
   double _camStartX = 0;
   double _camStartY = 0;
@@ -252,6 +261,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     super.initState();
     _cameraController.addListener(_onCameraTick);
     _frogFadeController.addListener(_onFrogFadeTick);
+    _cardDragController.addListener(_onCardDragTick);
     if (widget.animateColdLoad) {
       _coldLoadPending = true;
       _coldLoadController.value = 0.0;
@@ -283,8 +293,13 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
       _focusedPlaceIndex = null;
       _outgoingCard = null;
       _cardSwapping = false;
+      _cardSwapToPlace = false;
       _cardController.stop();
       _cardController.value = 1.0;
+      _cardDragController.stop();
+      _cardDragging = false;
+      _cardDragDy = 0.0;
+      _cardDragStartDy = 0.0;
       _hereRising = false;
       _hereController.stop();
       _hereController.value = 1.0;
@@ -325,6 +340,8 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     _tripDelayController.dispose();
     _lockController.dispose();
     _cardController.dispose();
+    _cardDragController.removeListener(_onCardDragTick);
+    _cardDragController.dispose();
     _coldLoadController.dispose();
     _scrollV.dispose();
     _scrollH.dispose();
@@ -475,8 +492,13 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
       _focusedPlaceIndex = null;
       _outgoingCard = null;
       _cardSwapping = false;
+      _cardSwapToPlace = false;
       _cardController.stop();
       _cardController.value = 1.0;
+      _cardDragController.stop();
+      _cardDragging = false;
+      _cardDragDy = 0.0;
+      _cardDragStartDy = 0.0;
       _hereStopIndex = st.aqui;
       _hereRising = false;
       _hereController.stop();
@@ -666,9 +688,8 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     }
     final hadLock = _lockPlaceIndex != null;
     _clearLockPill();
-    final isPlanLocked = !placeInPlan(places[k], places, widget.entitlements);
     if (k == _map.FROG.at) {
-      if (isPlanLocked || _focusedPlaceIndex == k) {
+      if (_focusedPlaceIndex == k) {
         if (hadLock) setState(() {});
         _openPlace(k);
       } else {
@@ -694,11 +715,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
         _destController.value = 0.0;
       });
       _centerOnStop(k);
-      if (isPlanLocked) {
-        _openPlace(k);
-      } else {
-        _switchCardToPlace(k);
-      }
+      _switchCardToPlace(k);
       return;
     }
     unawaited(_runTrip(k, motion));
@@ -817,16 +834,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     _hereController.stop();
     _hereController.duration = MapMotion.hereRiseAfter + motion.move;
     unawaited(_hereController.forward(from: 0.0));
-    final places = _s.course.places;
-    final isPlanLocked =
-        k >= 0 &&
-        k < places.length &&
-        !placeInPlan(places[k], places, widget.entitlements);
-    if (isPlanLocked) {
-      _openPlace(k);
-    } else {
-      _switchCardToPlace(k);
-    }
+    _switchCardToPlace(k);
   }
 
   void _showLockPill(int k) {
@@ -876,10 +884,15 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
       serviceReduceMotion: _s.reduceMotion,
     );
     final token = ++_cardToken;
+    _cardDragController.stop();
+    _cardDragging = false;
+    _cardDragDy = 0.0;
+    _cardDragStartDy = 0.0;
     setState(() {
       _outgoingCard = prevSnapshot;
       _focusedPlaceIndex = k;
       _cardSwapping = prevSnapshot != null;
+      _cardSwapToPlace = true;
       _cardSwapReduced = motion.reduced;
     });
     if (prevSnapshot == null) {
@@ -887,6 +900,45 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
       _cardController.value = 1.0;
       return;
     }
+    final total = motion.reduced
+        ? motion.quick
+        : (motion.followAfter + motion.nextDelay + motion.move);
+    _cardController.stop();
+    _cardController.duration = total;
+    unawaited(
+      _cardController.forward(from: 0.0).whenComplete(() {
+        if (mounted && token == _cardToken && _cardController.isCompleted) {
+          setState(() {
+            _outgoingCard = null;
+            _cardSwapping = false;
+          });
+        }
+      }),
+    );
+  }
+
+  void _switchCardToUpNext() {
+    if (!_baked || _focusedPlaceIndex == null) return;
+    final places = _s.course.places;
+    final idx = _focusedPlaceIndex!;
+    if (idx < 0 || idx >= places.length) {
+      setState(() => _focusedPlaceIndex = null);
+      return;
+    }
+    _primeNextStoryScene();
+    final prevSnapshot = _CardSnapshot.place(placeIndex: idx);
+    final motion = MapMotion.resolve(
+      context,
+      serviceReduceMotion: _s.reduceMotion,
+    );
+    final token = ++_cardToken;
+    setState(() {
+      _outgoingCard = prevSnapshot;
+      _focusedPlaceIndex = null;
+      _cardSwapping = true;
+      _cardSwapToPlace = false;
+      _cardSwapReduced = motion.reduced;
+    });
     final total = motion.reduced
         ? motion.quick
         : (motion.followAfter + motion.move);
@@ -902,6 +954,68 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
         }
       }),
     );
+  }
+
+  void _onCardDragTick() {
+    if (!mounted || _cardDragging) return;
+    final motion = MapMotion.resolve(
+      context,
+      serviceReduceMotion: _s.reduceMotion,
+    );
+    final t = motion.travel.transform(
+      _cardDragController.value.clamp(0.0, 1.0),
+    );
+    _cardDragDy = _cardDragStartDy * (1.0 - t);
+  }
+
+  void _animateCardDragBack(NocheMotionData motion) {
+    _cardDragController.stop();
+    final from = _cardDragDy;
+    if (from == 0.0) return;
+    if (motion.reduced || motion.move <= Duration.zero) {
+      setState(() {
+        _cardDragDy = 0.0;
+        _cardDragStartDy = 0.0;
+      });
+      return;
+    }
+    _cardDragStartDy = from;
+    _cardDragController.duration = motion.move;
+    unawaited(
+      _cardDragController.forward(from: 0.0).whenComplete(() {
+        if (mounted && !_cardDragging && _cardDragController.isCompleted) {
+          setState(() {
+            _cardDragDy = 0.0;
+            _cardDragStartDy = 0.0;
+          });
+        }
+      }),
+    );
+  }
+
+  void _finishCardDrag(int placeIdx, NocheMotionData motion) {
+    if (!_cardDragging) return;
+    _cardDragging = false;
+    if (_cardDragDy < -MapMotion.cardDragThreshold) {
+      _s.haptics.tick();
+      _openPlace(placeIdx);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && !_cardDragging && _cardDragDy != 0) {
+          setState(() {
+            _cardDragDy = 0.0;
+            _cardDragStartDy = 0.0;
+          });
+        }
+      });
+      return;
+    }
+    if (_cardDragDy > MapMotion.cardDragThreshold) {
+      _s.haptics.tick();
+      _switchCardToUpNext();
+      _animateCardDragBack(motion);
+      return;
+    }
+    _animateCardDragBack(motion);
   }
 
   void _openPlace(int k) {
@@ -932,20 +1046,29 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     if (placeIdx < 0 || placeIdx >= places.length) return;
     final place = places[placeIdx];
     _s.haptics.tick();
+    if (!placeInPlan(place, places, widget.entitlements)) {
+      _openPlace(placeIdx);
+      return;
+    }
+    if (place.stories.isEmpty) {
+      _openPlace(placeIdx);
+      return;
+    }
     final nextId = nextUnheardStory(_s.progress, place);
-    final lastHeard = nextId == null
-        ? lastHeardStory(_s.progress, place)
-        : null;
-    final storyId = nextId ?? lastHeard;
-    if (storyId == null) {
-      _openPlace(placeIdx);
+    if (nextId != null) {
+      if (!storyInPlan(nextId, places, widget.entitlements)) {
+        _openPlace(placeIdx);
+        return;
+      }
+      _s.nav.go(StoryRoute(nextId));
       return;
     }
-    if (!storyInPlan(storyId, places, widget.entitlements)) {
-      _openPlace(placeIdx);
-      return;
+    final calls = _s.course.callsFor(place.id);
+    if (calls.isNotEmpty) {
+      _s.nav.go(CallRoute(place.id));
+    } else {
+      _s.nav.go(const ReviewRoute());
     }
-    _s.nav.go(StoryRoute(storyId, listen: nextId == null));
   }
 
   List<TodayEntry> _plan() => [
@@ -1116,10 +1239,22 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     );
   }
 
-  ({double outgoingOpacity, double incomingOpacity, double incomingDy})
+  ({
+    double outgoingOpacity,
+    double incomingOpacity,
+    double incomingDy,
+    double playOpacity,
+    double playDy,
+  })
   _cardSwapMotion(NocheMotionData motion) {
     if (!_cardSwapping) {
-      return (outgoingOpacity: 0.0, incomingOpacity: 1.0, incomingDy: 0.0);
+      return (
+        outgoingOpacity: 0.0,
+        incomingOpacity: 1.0,
+        incomingDy: 0.0,
+        playOpacity: 1.0,
+        playDy: 0.0,
+      );
     }
     if (_cardSwapReduced) {
       final v = _cardController.value.clamp(0.0, 1.0);
@@ -1129,10 +1264,14 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
         outgoingOpacity: (1.0 - outP).clamp(0.0, 1.0),
         incomingOpacity: inP,
         incomingDy: 0.0,
+        playOpacity: 1.0,
+        playDy: 0.0,
       );
     }
-    final totalUs = (motion.followAfter + motion.move).inMicroseconds
-        .toDouble();
+    final totalDuration = _cardSwapToPlace
+        ? (motion.followAfter + motion.nextDelay + motion.move)
+        : (motion.followAfter + motion.move);
+    final totalUs = totalDuration.inMicroseconds.toDouble();
     final elapsedUs = _cardController.value * totalUs;
     final outP = MapMotion.segmentProgressUs(
       elapsedUs: elapsedUs,
@@ -1146,10 +1285,20 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
       duration: motion.move,
       curve: motion.enter,
     );
+    final playP = _cardSwapToPlace
+        ? MapMotion.segmentProgressUs(
+            elapsedUs: elapsedUs,
+            start: motion.followAfter + motion.nextDelay,
+            duration: motion.move,
+            curve: motion.enter,
+          )
+        : 1.0;
     return (
       outgoingOpacity: (1.0 - outP).clamp(0.0, 1.0),
       incomingOpacity: inP,
       incomingDy: motion.row * (1.0 - inP),
+      playOpacity: playP,
+      playDy: _cardSwapToPlace ? motion.row * (1.0 - playP) : 0.0,
     );
   }
 
@@ -1174,7 +1323,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     return (stopX - _pillAnchorWidth / 2).clamp(0.0, maxStart);
   }
 
-  Widget _buildCardWidget({
+  Widget _buildCardBody({
     required _CardSnapshot snapshot,
     required bool interactive,
     required List<Place> places,
@@ -1188,18 +1337,17 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
       final place = places[placeIdx];
       final heard = storiesPlayed(_s.progress, place);
       final nextId = nextUnheardStory(_s.progress, place);
-      final lastHeard = nextId == null
-          ? lastHeardStory(_s.progress, place)
-          : null;
-      final playStoryId = nextId ?? lastHeard;
       final heroStoryId = _heroStoryIdForPlace(place);
       final windowTag = interactive && allowHero && heroStoryId != null
           ? MapMotion.storyWindowTag(heroStoryId)
           : null;
       final nextIdx = nextId == null ? -1 : place.stories.indexOf(nextId);
       final nextMeta = nextId != null ? _s.course.meta(nextId) : null;
-      final playMeta = playStoryId != null ? _s.course.meta(playStoryId) : null;
-      return _FocusedPlaceCard(
+      final calls = _s.course.callsFor(place.id);
+      final mainCall = calls.isNotEmpty
+          ? calls.firstWhere((c) => c.isMain, orElse: () => calls.first)
+          : null;
+      return _FocusedPlaceCardBody(
         interactive: interactive,
         place: place,
         totalPlaces: places.length,
@@ -1208,9 +1356,10 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
         pictures: _s.pictures,
         pictureRef: _pictureRefForPlace(place),
         windowTag: windowTag,
+        nextStoryId: nextId,
         nextStoryNumber: nextIdx >= 0 ? nextIdx + 1 : null,
         nextStoryMeta: nextMeta,
-        playStoryTitle: playMeta?.title,
+        mainCall: mainCall,
         playDiscOpacity: interactive ? playDiscOpacity : 1.0,
         playDiscDy: interactive ? playDiscDy : 0.0,
         onOpenPlace: interactive
@@ -1228,7 +1377,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     final windowTag = interactive && allowHero && route is StoryRoute
         ? MapMotion.storyWindowTag(route.id)
         : null;
-    return _UpNextCard(
+    return _UpNextCardBody(
       interactive: interactive,
       entry: entry,
       thenLine: snapshot.thenLine,
@@ -1350,6 +1499,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
               child: AnimatedBuilder(
                 animation: Listenable.merge([
                   _cardController,
+                  _cardDragController,
                   _coldLoadController,
                   ?overlayListenable,
                 ]),
@@ -1364,59 +1514,143 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                     isPlayDisc: true,
                   );
                   final swap = _cardSwapMotion(motion);
-                  final activeCard = _buildCardWidget(
+                  final playOpacity = (coldPlay.opacity * swap.playOpacity)
+                      .clamp(0.0, 1.0);
+                  final playDy = coldPlay.dy + swap.playDy;
+                  final activeBody = _buildCardBody(
                     snapshot: activeSnapshot!,
                     interactive: true,
                     places: places,
                     lang: lang,
                     allowHero: allowHero,
-                    playDiscOpacity: coldPlay.opacity,
-                    playDiscDy: coldPlay.dy,
+                    playDiscOpacity: playOpacity,
+                    playDiscDy: playDy,
                   );
-                  final Widget content;
-                  if (_outgoingCard != null && _cardSwapping) {
-                    content = Stack(
-                      alignment: AlignmentDirectional.bottomCenter,
-                      clipBehavior: Clip.none,
-                      children: [
-                        IgnorePointer(
-                          child: ExcludeSemantics(
-                            child: Opacity(
-                              opacity: swap.outgoingOpacity,
-                              child: _buildCardWidget(
-                                snapshot: _outgoingCard!,
-                                interactive: false,
-                                places: places,
-                                lang: lang,
-                                allowHero: false,
+                  final stack = Stack(
+                    alignment: AlignmentDirectional.topCenter,
+                    children: [
+                      if (_outgoingCard != null && _cardSwapping)
+                        PositionedDirectional(
+                          top: 0,
+                          start: 0,
+                          end: 0,
+                          child: IgnorePointer(
+                            child: ExcludeSemantics(
+                              child: Opacity(
+                                opacity: swap.outgoingOpacity,
+                                child: _buildCardBody(
+                                  snapshot: _outgoingCard!,
+                                  interactive: false,
+                                  places: places,
+                                  lang: lang,
+                                  allowHero: false,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                        Transform.translate(
-                          key: const Key('map-card-motion'),
-                          offset: Offset(0, swap.incomingDy),
-                          child: Opacity(
-                            opacity: swap.incomingOpacity,
-                            child: activeCard,
-                          ),
+                      Transform.translate(
+                        key: const Key('map-card-motion'),
+                        offset: Offset(0, swap.incomingDy),
+                        child: Opacity(
+                          opacity: swap.incomingOpacity,
+                          child: activeBody,
                         ),
-                      ],
-                    );
-                  } else {
-                    content = Transform.translate(
-                      key: const Key('map-card-motion'),
-                      offset: Offset.zero,
-                      child: Opacity(opacity: 1.0, child: activeCard),
-                    );
-                  }
+                      ),
+                    ],
+                  );
+                  final Widget sizedStack = motion.reduced
+                      ? stack
+                      : AnimatedSize(
+                          duration: motion.move,
+                          curve: motion.travel,
+                          alignment: AlignmentDirectional.topCenter,
+                          clipBehavior: Clip.hardEdge,
+                          child: stack,
+                        );
+                  Widget card = Transform.translate(
+                    key: const Key('map-card-drag'),
+                    offset: Offset(0, _cardDragDy),
+                    child: NocheCard(
+                      key: const Key('up-next-card'),
+                      padding: EdgeInsetsDirectional.zero,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                          NocheSize.cardRadius - 1,
+                        ),
+                        child: sizedStack,
+                      ),
+                    ),
+                  );
+                  final focusedPlaceIdx =
+                      (activeSnapshot.placeIndex != null &&
+                          activeSnapshot.placeIndex! >= 0 &&
+                          activeSnapshot.placeIndex! < places.length)
+                      ? activeSnapshot.placeIndex
+                      : null;
+                  card = Semantics(
+                    customSemanticsActions: focusedPlaceIdx != null
+                        ? {
+                            CustomSemanticsAction(
+                              label: MapWording.cardActionOpen,
+                            ): () {
+                              _s.haptics.tick();
+                              _openPlace(focusedPlaceIdx);
+                            },
+                            CustomSemanticsAction(
+                              label: MapWording.cardActionShowUpNext,
+                            ): () {
+                              _s.haptics.tick();
+                              _switchCardToUpNext();
+                            },
+                          }
+                        : null,
+                    child: GestureDetector(
+                      behavior: focusedPlaceIdx != null
+                          ? HitTestBehavior.opaque
+                          : HitTestBehavior.deferToChild,
+                      dragStartBehavior: DragStartBehavior.down,
+                      onTap: focusedPlaceIdx != null
+                          ? () {
+                              _s.haptics.tick();
+                              _openPlace(focusedPlaceIdx);
+                            }
+                          : null,
+                      onVerticalDragStart: focusedPlaceIdx != null
+                          ? (_) {
+                              _cardDragController.stop();
+                              _cardDragging = true;
+                              _cardDragStartDy = _cardDragDy;
+                            }
+                          : null,
+                      onVerticalDragUpdate: focusedPlaceIdx != null
+                          ? (details) {
+                              if (!_cardDragging) return;
+                              setState(() {
+                                _cardDragDy = (_cardDragDy + details.delta.dy)
+                                    .clamp(
+                                      MapMotion.cardDragUpLimit,
+                                      MapMotion.cardDragDownLimit,
+                                    );
+                              });
+                            }
+                          : null,
+                      onVerticalDragEnd: focusedPlaceIdx != null
+                          ? (_) => _finishCardDrag(focusedPlaceIdx, motion)
+                          : null,
+                      onVerticalDragCancel: focusedPlaceIdx != null
+                          ? () => _finishCardDrag(focusedPlaceIdx, motion)
+                          : null,
+                      child: card,
+                    ),
+                  );
                   return Transform.translate(
                     key: const Key('map-load-card'),
                     offset: Offset(0, coldCard.dy),
                     child: Opacity(
                       opacity: (_currentOverlayOpacity() * coldCard.opacity)
                           .clamp(0.0, 1.0),
-                      child: content,
+                      child: card,
                     ),
                   );
                 },
@@ -1962,8 +2196,8 @@ class _LockPlacePill extends StatelessWidget {
   }
 }
 
-class _UpNextCard extends StatelessWidget {
-  const _UpNextCard({
+class _UpNextCardBody extends StatelessWidget {
+  const _UpNextCardBody({
     required this.interactive,
     required this.entry,
     required this.thenLine,
@@ -2119,8 +2353,7 @@ class _UpNextCard extends StatelessWidget {
           )
         : playDisc;
 
-    return NocheCard(
-      key: interactive ? const Key('up-next-card') : null,
+    return Padding(
       padding: const EdgeInsetsDirectional.all(16),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -2157,8 +2390,8 @@ class _UpNextCard extends StatelessWidget {
   }
 }
 
-class _FocusedPlaceCard extends StatelessWidget {
-  const _FocusedPlaceCard({
+class _FocusedPlaceCardBody extends StatelessWidget {
+  const _FocusedPlaceCardBody({
     required this.interactive,
     required this.place,
     required this.totalPlaces,
@@ -2167,9 +2400,10 @@ class _FocusedPlaceCard extends StatelessWidget {
     required this.pictures,
     required this.pictureRef,
     required this.windowTag,
+    required this.nextStoryId,
     required this.nextStoryNumber,
     required this.nextStoryMeta,
-    required this.playStoryTitle,
+    required this.mainCall,
     required this.playDiscOpacity,
     required this.playDiscDy,
     required this.onOpenPlace,
@@ -2184,9 +2418,10 @@ class _FocusedPlaceCard extends StatelessWidget {
   final PictureSource pictures;
   final PictureRef? pictureRef;
   final Object? windowTag;
+  final String? nextStoryId;
   final int? nextStoryNumber;
   final StoryMeta? nextStoryMeta;
-  final String? playStoryTitle;
+  final CallBrief? mainCall;
   final double playDiscOpacity;
   final double playDiscDy;
   final VoidCallback? onOpenPlace;
@@ -2208,12 +2443,37 @@ class _FocusedPlaceCard extends StatelessWidget {
       height: 16 / 14,
       color: NocheColors.label,
     );
-    final storyTitleStyle = NocheType.forScript(
-      metaStyle,
-      language.script,
-    ).copyWith(color: NocheColors.label);
 
-    final details = Row(
+    final arrowCircle = Container(
+      width: NocheSize.touch,
+      height: NocheSize.touch,
+      alignment: AlignmentDirectional.center,
+      decoration: BoxDecoration(
+        color: NocheColors.ground,
+        border: Border.all(color: NocheColors.line, width: 1),
+        shape: BoxShape.circle,
+      ),
+      child: Transform.flip(
+        flipY: true,
+        child: const NocheIcon(
+          NocheIcons.chevronDown,
+          size: 24,
+          color: NocheColors.text,
+        ),
+      ),
+    );
+
+    final openButton = interactive
+        ? Pressable(
+            key: const Key('place-card-open'),
+            semanticLabel: MapWording.openPlaceSemantic(place.name),
+            onPressed: onOpenPlace,
+            builder: (context, _) => arrowCircle,
+          )
+        : arrowCircle;
+
+    final topRow = Row(
+      key: interactive ? const Key('up-next-place') : null,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SizedBox.square(
@@ -2253,7 +2513,7 @@ class _FocusedPlaceCard extends StatelessWidget {
               const SizedBox(height: NocheSize.grid),
               Text(
                 place.name,
-                maxLines: 2,
+                maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 locale: locale,
                 style: titleStyle,
@@ -2272,104 +2532,153 @@ class _FocusedPlaceCard extends StatelessWidget {
             ],
           ),
         ),
+        const SizedBox(width: 16),
+        openButton,
       ],
     );
 
-    final tappableDetails = interactive
-        ? Pressable(
-            key: const Key('up-next-place'),
-            scaleOnPress: false,
-            onPressed: onOpenPlace,
-            builder: (context, _) => details,
-          )
-        : details;
-
-    final playDisc = NochePlayDisc(
-      key: interactive ? const Key('up-next-play') : null,
-      size: NocheSize.disc,
-      onPressed: onPlay ?? () {},
-      semanticLabel: playStoryTitle != null
-          ? MapWording.playStorySemantic(playStoryTitle!)
-          : place.name,
-    );
-
-    final wrappedPlay = interactive
-        ? Transform.translate(
-            key: const Key('map-load-play'),
-            offset: Offset(0, playDiscDy),
-            child: Opacity(opacity: playDiscOpacity, child: playDisc),
-          )
-        : playDisc;
-
-    Widget? bottomRow;
+    Widget? bottomSection;
     if (total > 0) {
-      if (nextStoryNumber != null) {
-        final meta = nextStoryMeta;
-        bottomRow = meta != null
-            ? Text.rich(
-                TextSpan(
-                  children: [
-                    TextSpan(
-                      text: '${MapWording.playNextStory(nextStoryNumber!)} · ',
-                      style: metaStyle,
-                    ),
-                    TextSpan(
-                      text: meta.title,
-                      locale: locale,
-                      style: storyTitleStyle,
-                    ),
-                    TextSpan(
-                      text: ' · ${MapWording.minutesLabel(meta.minutes)}',
-                      style: metaStyle,
-                    ),
-                  ],
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              )
-            : Text(
-                MapWording.playNextStory(nextStoryNumber!),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: metaStyle,
-              );
-      } else {
-        bottomRow = Text(
-          MapWording.allStoriesHeard,
+      final hasNextStory = nextStoryId != null && nextStoryNumber != null;
+      final call = mainCall;
+      final String eyebrowText;
+      final Widget titleWidget;
+      final int? minutes;
+      final NocheIconData discIcon;
+      final String discSemantic;
+
+      if (hasNextStory) {
+        final nextTitle = nextStoryMeta?.title ?? nextStoryId!;
+        eyebrowText = MapWording.playNextStory(nextStoryNumber!).toUpperCase();
+        titleWidget = Text(
+          nextTitle,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: metaStyle,
+          locale: locale,
+          style: NocheType.forScript(
+            NocheType.row,
+            language.script,
+          ).copyWith(fontWeight: FontWeight.w700, color: NocheColors.text),
         );
+        minutes = nextStoryMeta?.minutes;
+        discIcon = NocheIcons.play;
+        discSemantic = MapWording.playStorySemantic(nextTitle);
+      } else if (call != null) {
+        final callTitle = MapWording.callPartner(language.partnerName);
+        eyebrowText = MapWording.allStoriesHeard.toUpperCase();
+        titleWidget = Text(
+          callTitle,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: NocheType.row.copyWith(
+            fontWeight: FontWeight.w700,
+            color: NocheColors.text,
+          ),
+        );
+        minutes = call.minutes > 0 ? call.minutes : null;
+        discIcon = NocheIcons.mic;
+        discSemantic = callTitle;
+      } else {
+        eyebrowText = MapWording.allStoriesHeard.toUpperCase();
+        titleWidget = Text(
+          MapWording.reviewTitle,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: NocheType.row.copyWith(
+            fontWeight: FontWeight.w700,
+            color: NocheColors.text,
+          ),
+        );
+        minutes = null;
+        discIcon = NocheIcons.play;
+        discSemantic = MapWording.startReviewSemantic;
       }
+
+      final playDisc = NochePlayDisc(
+        key: interactive ? const Key('up-next-play') : null,
+        size: NocheSize.disc,
+        icon: discIcon,
+        onPressed: onPlay ?? () {},
+        semanticLabel: discSemantic,
+      );
+
+      final wrappedPlay = interactive
+          ? Transform.translate(
+              key: const Key('map-load-play'),
+              offset: Offset(0, playDiscDy),
+              child: Opacity(opacity: playDiscOpacity, child: playDisc),
+            )
+          : playDisc;
+
+      bottomSection = Container(
+        padding: const EdgeInsetsDirectional.only(top: 16),
+        decoration: const BoxDecoration(
+          border: Border(top: BorderSide(color: NocheColors.line, width: 1)),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  NocheLtr(
+                    child: Text(
+                      eyebrowText,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: labelStyle,
+                    ),
+                  ),
+                  const SizedBox(height: NocheSize.grid),
+                  titleWidget,
+                ],
+              ),
+            ),
+            if (minutes != null) ...[
+              const SizedBox(width: 16),
+              NocheLtr(
+                child: Text(
+                  MapWording.minutesLabel(minutes),
+                  maxLines: 1,
+                  softWrap: false,
+                  style: NocheType.button.copyWith(color: NocheColors.label),
+                ),
+              ),
+            ],
+            const SizedBox(width: 16),
+            wrappedPlay,
+          ],
+        ),
+      );
     }
 
-    return NocheCard(
-      key: interactive ? const Key('up-next-card') : null,
-      padding: const EdgeInsetsDirectional.all(16),
+    return Padding(
+      padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 16),
       child: Column(
         key: interactive ? const Key('map-place-card') : null,
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(child: tappableDetails),
-              const SizedBox(width: 16),
-              wrappedPlay,
-            ],
-          ),
-          if (bottomRow != null) ...[
-            const SizedBox(height: 16),
-            Container(
-              padding: const EdgeInsetsDirectional.only(top: 16),
-              decoration: const BoxDecoration(
-                border: Border(
-                  top: BorderSide(color: NocheColors.line, width: 1),
+          ExcludeSemantics(
+            child: Center(
+              child: Container(
+                key: interactive ? const Key('place-card-handle') : null,
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: NocheColors.bar,
+                  borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              child: bottomRow,
             ),
+          ),
+          const SizedBox(height: 12),
+          topRow,
+          if (bottomSection != null) ...[
+            const SizedBox(height: 16),
+            bottomSection,
           ],
         ],
       ),

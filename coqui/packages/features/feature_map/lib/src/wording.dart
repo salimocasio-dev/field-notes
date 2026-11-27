@@ -43,6 +43,9 @@ abstract final class MapWording {
   static const String upNextWithPlacePrefix = 'UP NEXT · ';
   static const String startReviewSemantic = 'Start review';
   static String playStorySemantic(String title) => 'Play the story $title';
+  static String openPlaceSemantic(String placeName) => 'Open $placeName';
+  static const String cardActionOpen = 'Open';
+  static const String cardActionShowUpNext = 'Show what is next';
 
   // Place screen.
   static const String read = 'Read';
