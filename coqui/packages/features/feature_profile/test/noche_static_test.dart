@@ -11,6 +11,7 @@ void main() {
     'lib/src/languages_sheet.dart',
     'lib/src/language_chip.dart',
     'lib/src/me_data.dart',
+    'lib/src/motion.dart',
     'lib/src/yo_screen.dart',
     'lib/src/about_sheet.dart',
     'lib/src/install_hint.dart',
@@ -95,5 +96,48 @@ void main() {
         reason: '$path imports package:flutter/material.dart',
       );
     }
+  });
+
+  test('no Duration(, Curves., or Cubic( anywhere under lib/', () {
+    final motionLiteralRe = RegExp(r'Duration\(|Curves\.|Cubic\(');
+    final dartFiles = Directory('lib')
+        .listSync(recursive: true)
+        .whereType<File>()
+        .where((f) => f.path.endsWith('.dart'));
+    for (final file in dartFiles) {
+      final content = file.readAsStringSync();
+      expect(
+        motionLiteralRe.allMatches(content),
+        isEmpty,
+        reason: '${file.path} contains a raw Duration/Curve/Cubic literal',
+      );
+    }
+  });
+
+  test('NocheMotion.ms( appears only in lib/src/motion.dart under lib/', () {
+    final msRe = RegExp(r'NocheMotion\.ms\(');
+    final dartFiles = Directory('lib')
+        .listSync(recursive: true)
+        .whereType<File>()
+        .where((f) => f.path.endsWith('.dart'));
+    var foundInMotion = false;
+    for (final file in dartFiles) {
+      final normalized = file.path.replaceAll('\\', '/');
+      final hasMatch = msRe.hasMatch(file.readAsStringSync());
+      if (normalized == 'lib/src/motion.dart') {
+        foundInMotion = hasMatch;
+      } else {
+        expect(
+          hasMatch,
+          isFalse,
+          reason: '$normalized must not call NocheMotion.ms(',
+        );
+      }
+    }
+    expect(
+      foundInMotion,
+      isTrue,
+      reason: 'lib/src/motion.dart should declare waits via NocheMotion.ms(',
+    );
   });
 }

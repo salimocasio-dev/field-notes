@@ -26,6 +26,23 @@ Yo, the welcome, settings, About.
 - Since order 25 the file exports two things: `ProfileModule` (the tab `me`, the Yo screen) and `WelcomeGate`, the widget the shell wraps the app in so that the welcome (app.html: `bienvenida`, `listo`) shows over everything while the `bienvenida` setting is not set: `WelcomeGate(services: s, child: app)`.
 - The dev entry is `tool/dev_main.dart`: `flutter run -d chrome -t tool/dev_main.dart`; `web/` is there for it.
 
+## Stable widget keys
+
+Keep these keys stable as shell and integration test contracts:
+
+- `ValueKey('welcome-step-$step')`
+- `Key('welcome-next-button')`
+- `Key('welcome-new-button')`
+- `Key('me-scroll')`
+- `Key('yo-level-check')`
+- `Key('plans-scroll')`
+- `Key('plans-back')`
+- `ValueKey('language-card-${code}')`
+- `Key('languages-sheet')`
+- `Key('plans-screen')`
+
+Feature-owned copy, metric formatting, and layout checks belong in `feature_profile/test/`.
+
 ## Run and test it alone
 
 ```

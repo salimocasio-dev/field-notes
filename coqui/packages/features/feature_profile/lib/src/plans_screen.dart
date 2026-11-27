@@ -98,6 +98,7 @@ class _PlansScreenState extends State<PlansScreen> {
     final callMinutes = entitlements.callMinutes(Plan.courseAndCalls);
 
     return ColoredBox(
+      key: const Key('plans-screen'),
       color: NocheColors.ground,
       child: DefaultTextStyle.merge(
         style: NocheType.body.copyWith(color: NocheColors.text),
@@ -252,17 +253,15 @@ class _PlansHeader extends StatelessWidget {
               key: const Key('plans-back'),
               onPressed: onBack,
               semanticLabel: plansBackLabel,
-              builder: (context, pressed) => Transform.scale(
-                scale: pressed ? 0.94 : 1,
-                child: SizedBox(
-                  width: NocheSize.touch,
-                  height: NocheSize.touch,
-                  child: Center(
-                    child: NocheIcon(
-                      NocheIcons.back,
-                      size: 24,
-                      color: NocheColors.text,
-                    ),
+              disc: true,
+              builder: (context, _) => const SizedBox(
+                width: NocheSize.touch,
+                height: NocheSize.touch,
+                child: Center(
+                  child: NocheIcon(
+                    NocheIcons.back,
+                    size: 24,
+                    color: NocheColors.text,
                   ),
                 ),
               ),
@@ -401,6 +400,7 @@ class _PaidPlanCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final price = priceLine;
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
     return NocheCard(
       variant: isNext ? NocheCardVariant.highlight : NocheCardVariant.standard,
       padding: const EdgeInsetsDirectional.all(16),
@@ -424,22 +424,27 @@ class _PaidPlanCard extends StatelessWidget {
                 if (isCurrent)
                   const _YourPlanTag()
                 else
-                  Text(
-                    price!,
-                    maxLines: 1,
-                    softWrap: false,
-                    style: NocheType.button.copyWith(color: NocheColors.text),
+                  NocheLtr(
+                    child: Text(
+                      price!,
+                      maxLines: 1,
+                      softWrap: false,
+                      style: NocheType.button.copyWith(color: NocheColors.text),
+                    ),
                   ),
               ],
             ],
           ),
           if (isCurrent && price != null) ...[
             const SizedBox(height: 4),
-            Text(
-              price,
-              style: NocheType.button.copyWith(
-                height: 20 / 14,
-                color: NocheColors.text,
+            NocheLtr(
+              child: Text(
+                price,
+                textAlign: isRtl ? TextAlign.end : TextAlign.start,
+                style: NocheType.button.copyWith(
+                  height: 20 / 14,
+                  color: NocheColors.text,
+                ),
               ),
             ),
           ],
@@ -471,24 +476,47 @@ class _BulletList extends StatelessWidget {
 
   final List<_PlanBullet> bullets;
 
+  static bool _startsWithDigit(String text) {
+    if (text.isEmpty) return false;
+    final code = text.codeUnitAt(0);
+    return code >= 0x30 && code <= 0x39;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         for (var i = 0; i < bullets.length; i++) ...[
           if (i > 0) const SizedBox(height: 4),
-          Text(
-            bullets[i].text,
-            style: NocheType.body.copyWith(
-              color: bullets[i].emphasized
-                  ? NocheColors.text
-                  : NocheColors.label,
-              fontWeight: bullets[i].emphasized
-                  ? FontWeight.w700
-                  : FontWeight.w500,
+          if (_startsWithDigit(bullets[i].text))
+            NocheLtr(
+              child: Text(
+                bullets[i].text,
+                textAlign: isRtl ? TextAlign.end : TextAlign.start,
+                style: NocheType.body.copyWith(
+                  color: bullets[i].emphasized
+                      ? NocheColors.text
+                      : NocheColors.label,
+                  fontWeight: bullets[i].emphasized
+                      ? FontWeight.w700
+                      : FontWeight.w500,
+                ),
+              ),
+            )
+          else
+            Text(
+              bullets[i].text,
+              style: NocheType.body.copyWith(
+                color: bullets[i].emphasized
+                    ? NocheColors.text
+                    : NocheColors.label,
+                fontWeight: bullets[i].emphasized
+                    ? FontWeight.w700
+                    : FontWeight.w500,
+              ),
             ),
-          ),
         ],
       ],
     );
@@ -505,26 +533,23 @@ class _RestoreButton extends StatelessWidget {
     return Pressable(
       onPressed: onPressed,
       semanticLabel: plansRestorePurchases,
-      builder: (context, pressed) => Transform.scale(
-        scale: pressed ? 0.98 : 1,
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(
-            minWidth: NocheSize.touch,
-            minHeight: NocheSize.touch,
-          ),
-          child: Padding(
-            padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
-            child: Center(
-              widthFactor: 1,
-              child: Text(
-                plansRestorePurchases,
-                maxLines: 1,
-                softWrap: false,
-                style: NocheType.button.copyWith(
-                  color: NocheColors.text,
-                  decoration: TextDecoration.underline,
-                  decorationColor: NocheColors.text,
-                ),
+      builder: (context, _) => ConstrainedBox(
+        constraints: const BoxConstraints(
+          minWidth: NocheSize.touch,
+          minHeight: NocheSize.touch,
+        ),
+        child: Padding(
+          padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
+          child: Center(
+            widthFactor: 1,
+            child: Text(
+              plansRestorePurchases,
+              maxLines: 1,
+              softWrap: false,
+              style: NocheType.button.copyWith(
+                color: NocheColors.text,
+                decoration: TextDecoration.underline,
+                decorationColor: NocheColors.text,
               ),
             ),
           ),

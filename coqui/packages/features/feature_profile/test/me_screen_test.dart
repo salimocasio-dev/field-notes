@@ -9,6 +9,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_profile/src/me_data.dart';
+import 'package:feature_profile/src/motion.dart';
 import 'package:feature_profile/src/yo_screen.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -573,6 +574,197 @@ void main() {
       final pillRect = tester.getRect(find.byKey(const Key('yo-how-it-works')));
       expect(titleRect.center.dx, greaterThan(pillRect.center.dx));
     });
+  });
+
+  group('N8.16 Me tab motion', () {
+    Future<void> pumpMeRaw(
+      WidgetTester tester, {
+      required Services services,
+      TextDirection textDirection = TextDirection.ltr,
+      bool disableAnimations = false,
+      int? streakFreezes,
+    }) async {
+      _setPhone(tester);
+      await tester.pumpWidget(const SizedBox());
+      await tester.pumpWidget(
+        MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: coquiTheme(),
+          home: Builder(
+            builder: (context) => MediaQuery(
+              data: MediaQuery.of(context)
+                  .copyWith(disableAnimations: disableAnimations),
+              child: Directionality(
+                textDirection: textDirection,
+                child: Scaffold(
+                  backgroundColor: NocheColors.ground,
+                  body: YoScreen(
+                    services: services,
+                    streakFreezes: streakFreezes,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    double barClipFraction(WidgetTester tester, int index) {
+      final clip = tester.widget<ClipRRect>(
+        find.byKey(ValueKey('noche_bar_clip_$index')),
+      );
+      return clip.clipper!.getClip(const Size(10, 100)).height / 100.0;
+    }
+
+    double skillBarWidthFactor(WidgetTester tester, String key) {
+      final box = tester.widget<FractionallySizedBox>(
+        find.descendant(
+          of: find.byKey(Key(key)),
+          matching: find.byType(FractionallySizedBox),
+        ),
+      );
+      return box.widthFactor!;
+    }
+
+    testWidgets(
+      'minutes bar chart grows after rowsAfter and Listening/Speaking bars grow from zero in settle after 180 ms delay',
+      (tester) async {
+        final f = _weekLearnerFixture();
+        await pumpMeRaw(tester, services: f.services);
+
+        // At t = 0: chart bars and skill bars are all at zero.
+        for (var i = 0; i < 7; i++) {
+          expect(barClipFraction(tester, i), 0.0);
+        }
+        expect(skillBarWidthFactor(tester, 'me-skill-listening'), 0.0);
+        expect(skillBarWidthFactor(tester, 'me-skill-speaking'), 0.0);
+
+        // At t = 120 ms (rowsAfter): skill bars are still zero.
+        await tester.pump(NocheMotion.rowsAfter);
+        expect(skillBarWidthFactor(tester, 'me-skill-listening'), 0.0);
+        expect(skillBarWidthFactor(tester, 'me-skill-speaking'), 0.0);
+
+        // At t = 180 ms (meSkillBarsDelay): chart bar 0 has started growing,
+        // while Listening and Speaking are just starting (still 0).
+        await tester.pump(
+          ProfileMotion.meSkillBarsDelay - NocheMotion.rowsAfter,
+        );
+        expect(barClipFraction(tester, 0), greaterThan(0.0));
+        expect(skillBarWidthFactor(tester, 'me-skill-listening'), 0.0);
+        expect(skillBarWidthFactor(tester, 'me-skill-speaking'), 0.0);
+
+        // Midpoint of skill bar settle (t = 180 ms + settle / 2):
+        // chart bars are growing staggered (bars 4..6 share index 4 start),
+        // and skill bars are strictly between 0 and target on enter curve.
+        await tester.pump(NocheMotion.settle ~/ 2);
+        final bar0Mid = barClipFraction(tester, 0);
+        final bar4Mid = barClipFraction(tester, 4);
+        final bar5Mid = barClipFraction(tester, 5);
+        final bar6Mid = barClipFraction(tester, 6);
+        expect(bar0Mid, greaterThan(bar4Mid));
+        expect(bar4Mid, greaterThan(0.0));
+        expect(bar5Mid, closeTo(bar4Mid, 0.001));
+        expect(bar6Mid, closeTo(bar4Mid, 0.001));
+
+        final expectedMidCurve = NocheMotion.enter.transform(0.5);
+        expect(
+          skillBarWidthFactor(tester, 'me-skill-listening'),
+          closeTo((41 / 96) * expectedMidCurve, 0.005),
+        );
+        expect(
+          skillBarWidthFactor(tester, 'me-skill-speaking'),
+          closeTo((17 / 96) * expectedMidCurve, 0.005),
+        );
+
+        // End: all chart bars at 1.0 and skill bars at final targets.
+        await tester.pump(NocheMotion.settle);
+        for (var i = 0; i < 7; i++) {
+          expect(barClipFraction(tester, i), 1.0);
+        }
+        expect(
+          skillBarWidthFactor(tester, 'me-skill-listening'),
+          closeTo(41 / 96, 0.001),
+        );
+        expect(
+          skillBarWidthFactor(tester, 'me-skill-speaking'),
+          closeTo(17 / 96, 0.001),
+        );
+      },
+    );
+
+    testWidgets(
+      'under reduced motion, chart bars and skill bars start at final values without growing',
+      (tester) async {
+        final f = _weekLearnerFixture();
+        await pumpMeRaw(tester, services: f.services, disableAnimations: true);
+
+        for (var i = 0; i < 7; i++) {
+          expect(barClipFraction(tester, i), 1.0);
+        }
+        expect(
+          skillBarWidthFactor(tester, 'me-skill-listening'),
+          closeTo(41 / 96, 0.001),
+        );
+        expect(
+          skillBarWidthFactor(tester, 'me-skill-speaking'),
+          closeTo(17 / 96, 0.001),
+        );
+      },
+    );
+
+    testWidgets(
+      'in Arabic RTL course, number-leading labels stay LTR via NocheLtr',
+      (tester) async {
+        final f = _weekLearnerFixture();
+        final arCourse = _TenPlaceCourse(
+          language: arabicTestLanguage,
+          fetch: arabicSampleFile,
+        );
+        final services = fakeServices(
+          progress: f.progress,
+          course: arCourse,
+          clock: f.clock,
+          nav: f.nav,
+          haptics: f.haptics,
+        );
+        await pumpMeRaw(
+          tester,
+          services: services,
+          textDirection: TextDirection.rtl,
+          streakFreezes: 1,
+        );
+        await tester.pump(NocheMotion.settle + ProfileMotion.meSkillBarsDelay);
+
+        expect(tester.takeException(), isNull);
+        expect(
+          Directionality.of(tester.element(find.byKey(const Key('me-scroll')))),
+          TextDirection.rtl,
+        );
+
+        for (final ltrText in const [
+          '212',
+          '6 days',
+          '1 freeze saved',
+          '41 of 96 good',
+          '17 of 96 good',
+          'A1 · place 3 of 10',
+        ]) {
+          expect(
+            Directionality.of(tester.element(find.text(ltrText))),
+            TextDirection.ltr,
+            reason: '$ltrText should stay LTR via NocheLtr in RTL',
+          );
+        }
+        expect(
+          Directionality.of(
+            tester.element(find.byKey(const Key('build-number'))),
+          ),
+          TextDirection.ltr,
+          reason: 'build-number should stay LTR via NocheLtr in RTL',
+        );
+      },
+    );
   });
 
   if (Platform.environment['COQUI_CAPTURE_SHOTS'] == '1') {
