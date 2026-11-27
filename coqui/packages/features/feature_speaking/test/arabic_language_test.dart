@@ -171,8 +171,18 @@ void main() {
         expect(find.byKey(const Key('speak-call-disc')), findsOneWidget);
         expect(find.textContaining('Tariq'), findsWidgets);
         expect(find.textContaining('Danny'), findsNothing);
+        expect(find.text('De visita en la casa'), findsNothing);
         expect(
-          find.text('Greet Tariq, introduce yourself, and accept a drink.'),
+          find.descendant(
+            of: find.byKey(const Key('speak-next-call-card')),
+            matching: find.text('البيت'),
+          ),
+          findsOneWidget,
+        );
+        expect(
+          find.text(
+            'Say hello, say who you are, accept a drink and say thanks.',
+          ),
           findsOneWidget,
         );
 

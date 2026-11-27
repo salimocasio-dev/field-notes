@@ -20,8 +20,9 @@ import 'package:material_ui/material_ui.dart';
 ///   they come from somewhere, `VoiceTestRoute` is not answered;
 /// - [voiceTestEntry]: the title of the entry to the voice test on the Hablar tab; with none there is no entry.
 ///
-/// Order 25 adds two stand-ins until the contracts carry them (coqui/requests/25-feature-speaking-needs-coqui-contracts-call-titles.md):
-/// [entitlementCheck] (the live-calls plan) and [completedCallIds] (until `ProgressStore` keeps the calls done).
+/// Stand-ins until `Services.entitlements` lands (`coqui/requests/5-coqui-contracts-needs-coqui-ui-services-entitlements.md`):
+/// [entitlementCheck] (the live-calls plan) and [completedCallIds] (merged with
+/// persisted `progress.callDone(callId)`).
 class SpeakingModule implements FeatureModule {
   const SpeakingModule({
     this.callsLater,
@@ -45,7 +46,7 @@ class SpeakingModule implements FeatureModule {
   /// Subscription tier check hook for live calls.
   final CallEntitlementCheck entitlementCheck;
 
-  /// Completed call IDs (temporary until `ProgressStore` tracks completed calls).
+  /// Additional completed call IDs merged with persisted `progress.callDone(callId)`.
   final Set<String> completedCallIds;
 
   /// Enables starting smaller calls via `CallRoute(placeId, callId:)` once
@@ -74,9 +75,11 @@ class SpeakingModule implements FeatureModule {
   @override
   Widget? screenFor(AppRoute route, Services s) {
     if (route is CallRoute) {
+      final brief = resolveCallBrief(s.course, route.placeId, route.callId);
       final known =
           s.course.places.any((p) => p.id == route.placeId) &&
-          resolveCallBrief(s.course, route.placeId, route.callId) != null;
+          brief != null &&
+          isCallBriefReady(brief);
       return known
           ? CallScreen(
               key: ValueKey('call-${route.placeId}-${route.callId ?? ''}'),

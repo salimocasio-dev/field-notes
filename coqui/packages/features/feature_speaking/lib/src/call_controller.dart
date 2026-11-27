@@ -50,6 +50,9 @@ class _Turn {
   bool spoke = false;
 }
 
+/// Whether [brief] has an authored opening prompt and is ready for a live call.
+bool isCallBriefReady(CallBrief brief) => brief.opening.trim().isNotEmpty;
+
 /// Resolves the [CallBrief] for [placeId] and optional [callId].
 ///
 /// When [callId] is null, returns `course.callFor(placeId)` (the place's main
@@ -106,7 +109,8 @@ class CallController extends ChangeNotifier {
     return null;
   }
 
-  bool get available => place != null && brief != null;
+  bool get available =>
+      place != null && brief != null && isCallBriefReady(brief!);
 
   // ---- what the screen shows ----
 
@@ -208,7 +212,7 @@ class CallController extends ChangeNotifier {
   void open() {
     final p = place;
     final b = brief;
-    if (p == null || b == null) return;
+    if (p == null || b == null || !isCallBriefReady(b)) return;
     final photo = b.photo;
     pictureWord = photo;
     pictureShown = photo != null && course.pairFor(photo) != null;
@@ -289,7 +293,8 @@ class CallController extends ChangeNotifier {
         _closed ||
         _state != CallState.idle ||
         b == null ||
-        l == null) {
+        l == null ||
+        !isCallBriefReady(b)) {
       return;
     }
     _locked = true;
@@ -618,6 +623,15 @@ class CallController extends ChangeNotifier {
     } catch (_) {}
   }
 
+  void _markCallDone() {
+    if (_t0 == null) return;
+    final id = brief?.id.trim();
+    if (id == null || id.isEmpty) return;
+    try {
+      progress.markCallDone(id);
+    } catch (_) {}
+  }
+
   double _elapsed() {
     final t0 = _t0;
     return t0 == null ? 0 : (_now() - t0) / 1000;
@@ -639,6 +653,7 @@ class CallController extends ChangeNotifier {
     _live = false;
     if (wasLive) _endSession();
     _cuenta(secs);
+    _markCallDone();
     _locked = false;
     _noteUntil = null;
     if (_closed) return;

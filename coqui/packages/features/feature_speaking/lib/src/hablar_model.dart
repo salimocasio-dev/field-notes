@@ -2,8 +2,10 @@
 ///
 /// Supplies:
 /// - reached place stops and the single next locked place,
-/// - structured calls from `course.callsFor(place.id)` when present (falling
-///   back to the local catalog + `course.callFor(place.id)`),
+/// - structured calls from `course.callsFor(place.id)` (falling back to the
+///   single legacy Spanish `casa` title/job when `datos/llamadas.json` is still
+///   on the legacy single-object format, and a placeholder card for places
+///   without course calls yet),
 /// - per-story unlock thresholds in unlock order (smaller calls first, then the
 ///   place's main call),
 /// - a featured next call plus other calls per reached place, and
@@ -12,6 +14,7 @@ library;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:feature_speaking/src/call_catalog.dart';
+import 'package:feature_speaking/src/call_controller.dart';
 import 'package:feature_speaking/src/call_text.dart';
 import 'package:feature_speaking/src/entitlements_hook.dart';
 
@@ -56,7 +59,7 @@ class HablarCallItem {
   final int placeNumber;
   final HablarCallState state;
 
-  /// Short plain-English status line (e.g. "About 5 min", "Opens when you finish La casa").
+  /// Short plain-English status line (e.g. "About 5 min", "Opens when you finish this place").
   final String statusLine;
 
   /// Story count in [place] after which this call unlocks (0 when place has no stories).
@@ -70,7 +73,8 @@ class HablarCallItem {
 
   /// Compact meta line shown on secondary call cards.
   String get cardMetaLine {
-    if (canStart) return '${spec.minutes} min · open';
+    if (state == HablarCallState.done) return '${spec.minutes} min · done';
+    if (state == HablarCallState.ready) return '${spec.minutes} min · open';
     if (state == HablarCallState.upcoming && unlockAfterStory > 0) {
       return '${spec.minutes} min · after story $unlockAfterStory';
     }
@@ -238,8 +242,8 @@ class HablarSnapshot {
 /// optional [entitlement], optional [completedCallIds], and [shortCallsEnabled].
 ///
 /// `callsAvailable` is read lazily and only when at least one startable call
-/// meets its story threshold, is backed by course data, and is entitled —
-/// preserving the lazy voice-library preload behaviour.
+/// meets its story threshold, has an authored opening prompt ([isCallBriefReady]),
+/// and is entitled — preserving the lazy voice-library preload behaviour.
 ///
 /// [shortCallsEnabled] defaults to `false` until `coqui/app/lib/src/addresses.dart`
 /// preserves `CallRoute.callId` (see `106-feature-speaking-needs-app-call-id-address.md`),
@@ -279,6 +283,7 @@ HablarSnapshot buildHablarSnapshot({
     }
   }
 
+  final doneCallIds = <String>{...completedCallIds};
   final stops = <PlaceJourneyStop>[];
   for (var i = 0; i < places.length; i++) {
     final place = places[i];
@@ -288,24 +293,22 @@ HablarSnapshot buildHablarSnapshot({
     final playedCount = place.stories.where(progress.played).length;
 
     final courseCalls = course.callsFor(place.id);
-    final localCatalog = callsForPlace(place.id);
-    final localById = {for (final s in localCatalog) s.id: s};
-    final localMain = mainCallForPlace(place.id);
-
     final resolved = <(HablarCallSpec, bool)>[];
     if (courseCalls.isNotEmpty) {
-      final seenIds = <String>{};
-      var hasCourseSmall = false;
       for (final c in courseCalls) {
-        final fallback = localById[c.id] ?? (c.isMain ? localMain : null);
-        final title = c.title.isNotEmpty
+        final liveReady = isCallBriefReady(c);
+        final isLegacySpanishCasa =
+            course.language.code == Language.spanish.code &&
+            c.placeId == 'casa' &&
+            c.isMain;
+        final title = c.title.trim().isNotEmpty
             ? c.title
-            : (fallback?.titleEs ?? place.name);
-        final rawJob = c.jobEn.isNotEmpty
+            : (isLegacySpanishCasa ? legacySpanishCasaTitle : place.name);
+        final rawJob = c.jobEn.trim().isNotEmpty
             ? c.jobEn
-            : (fallback?.jobEn ?? c.job);
+            : (isLegacySpanishCasa ? legacySpanishCasaJobEn : c.job);
         final spec = HablarCallSpec(
-          id: c.id == place.id && fallback != null ? fallback.id : c.id,
+          id: c.id,
           placeId: c.placeId,
           titleEs: title,
           jobEn: rawJob.replaceAll('{partner}', partnerName),
@@ -313,43 +316,20 @@ HablarSnapshot buildHablarSnapshot({
           isMain: c.isMain,
           pixelAsset: c.photo,
         );
-        if (!spec.isMain) hasCourseSmall = true;
-        seenIds.add(spec.id);
-        resolved.add((spec, true));
-      }
-      // Legacy single-call catalog: list local smaller calls as unbacked (`soon`).
-      if (!hasCourseSmall) {
-        for (final local in localCatalog) {
-          if (local.isMain || seenIds.contains(local.id)) continue;
-          resolved.add((
-            HablarCallSpec(
-              id: local.id,
-              placeId: local.placeId,
-              titleEs: local.titleEs,
-              jobEn: local.jobFor(partnerName),
-              minutes: local.minutes,
-              isMain: false,
-              pixelAsset: local.pixelAsset,
-            ),
-            false,
-          ));
-        }
+        resolved.add((spec, liveReady));
       }
     } else {
-      for (final spec in localCatalog) {
-        resolved.add((
-          HablarCallSpec(
-            id: spec.id,
-            placeId: spec.placeId,
-            titleEs: spec.titleEs,
-            jobEn: spec.jobFor(partnerName),
-            minutes: spec.minutes,
-            isMain: spec.isMain,
-            pixelAsset: spec.pixelAsset,
-          ),
-          false,
-        ));
-      }
+      resolved.add((
+        HablarCallSpec(
+          id: place.id,
+          placeId: place.id,
+          titleEs: place.name,
+          jobEn: '',
+          minutes: 5,
+          isMain: true,
+        ),
+        false,
+      ));
     }
 
     final smalls = [
@@ -365,7 +345,7 @@ HablarSnapshot buildHablarSnapshot({
 
     final items = <HablarCallItem>[];
     var smallIndex = 0;
-    for (final (spec, backedByCourse) in ordered) {
+    for (final (spec, liveReady) in ordered) {
       final int unlockAfter;
       if (!spec.isMain) {
         unlockAfter = totalStories == 0
@@ -380,6 +360,7 @@ HablarSnapshot buildHablarSnapshot({
 
       final thresholdMet = totalStories > 0 && playedCount >= unlockAfter;
       final canStartKind = spec.isMain || shortCallsEnabled;
+      final backedAndEnabled = liveReady && canStartKind;
 
       final HablarCallState itemState;
       final String itemStatus;
@@ -388,7 +369,7 @@ HablarSnapshot buildHablarSnapshot({
         itemStatus = unlockAfter > 0 && unlockAfter < totalStories
             ? 'Opens after story $unlockAfter'
             : 'Opens when you finish ${place.name}';
-      } else if (!backedByCourse || !canStartKind) {
+      } else if (!backedAndEnabled) {
         itemState = HablarCallState.soon;
         itemStatus = 'Coming soon · ${place.name}';
       } else if (entitlement == CallEntitlement.upgradeRequired) {
@@ -400,6 +381,7 @@ HablarSnapshot buildHablarSnapshot({
       } else {
         final done =
             completedCallIds.contains(spec.id) || progress.callDone(spec.id);
+        if (done) doneCallIds.add(spec.id);
         itemState = done ? HablarCallState.done : HablarCallState.ready;
         itemStatus = CallTexts.durationLine(spec.minutes);
       }
@@ -412,7 +394,7 @@ HablarSnapshot buildHablarSnapshot({
           state: itemState,
           statusLine: itemStatus,
           unlockAfterStory: unlockAfter,
-          backedByCourse: backedByCourse && canStartKind,
+          backedByCourse: backedAndEnabled,
         ),
       );
     }
@@ -441,7 +423,7 @@ HablarSnapshot buildHablarSnapshot({
     stops: stops,
     openWords: wordsOpenForSpeaking(progress),
     entitlement: entitlement,
-    completedCount: completedCallIds.length,
+    completedCount: doneCallIds.length,
   );
 }
 

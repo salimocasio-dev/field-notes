@@ -3,11 +3,13 @@
 //
 // The call's clock is a FakeClock the test moves together with the fake call's own timers (CallRig.elapse).
 import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:coqui_testing/coqui_testing.dart';
 import 'package:feature_speaking/src/call_controller.dart';
 import 'package:feature_speaking/src/call_text.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'support/call_rig.dart';
+import 'support/scripted_call.dart';
 
 // The seven words of La casa in the stub's three learner lines, in the order the page records them
 // (the order of the place's words: "Hola. Bien, gracias." gives hola, gracias, bien, and so on).
@@ -830,4 +832,253 @@ void main() {
       rig.dispose();
     });
   });
+
+  group('persisted call completion and readiness', () {
+    testWidgets(
+      'finish marks legacy main call id done on fin, closeX while live, disc, and max, and persists across export/import',
+      (tester) async {
+        // 1. Natural fin
+        final rigFin = await opened();
+        rigFin.controller.start();
+        await rigFin.until(
+          tester,
+          () => rigFin.controller.state == CallState.done,
+        );
+        expect(rigFin.controller.why, 'fin');
+        expect(rigFin.progress.callDone('casa'), isTrue);
+        final restored = FakeProgressStore(json: rigFin.progress.export());
+        expect(restored.callDone('casa'), isTrue);
+        rigFin.dispose();
+
+        // 2. closeX while live
+        final rigX = await opened(stub: {'manual', 'nofin'});
+        rigX.controller.start();
+        await tester.pump();
+        rigX.call
+          ..go('connect')
+          ..go('danny1')
+          ..go('you1');
+        await rigX.elapse(tester, 500);
+        rigX.controller.closeX();
+        expect(rigX.controller.why, 'x');
+        expect(rigX.progress.callDone('casa'), isTrue);
+        rigX.dispose();
+
+        // 3. Disconnect while live
+        final rigDisc = await opened(stub: {'manual'});
+        rigDisc.controller.start();
+        await tester.pump();
+        rigDisc.call
+          ..go('connect')
+          ..go('danny1');
+        await rigDisc.elapse(tester, 300);
+        rigDisc.call.go('end');
+        await rigDisc.elapse(tester, 100);
+        expect(rigDisc.controller.why, 'disc');
+        expect(rigDisc.progress.callDone('casa'), isTrue);
+        rigDisc.dispose();
+
+        // 4. Max time
+        final rigMax = await opened(stub: {'manual', 'nofin'});
+        rigMax.controller.start();
+        await tester.pump();
+        rigMax.call
+          ..go('connect')
+          ..go('danny1');
+        await rigMax.elapse(tester, 100);
+        rigMax.clock.advance(const Duration(seconds: 421));
+        rigMax.controller.tick();
+        expect(rigMax.controller.why, 'max');
+        expect(rigMax.progress.callDone('casa'), isTrue);
+        rigMax.dispose();
+      },
+    );
+
+    testWidgets(
+      'finish marks CallsCatalog callId done and persists across export/import',
+      (tester) async {
+        final course = _CallsCatalogCourse(
+          places: [
+            Place(
+              id: 'cocina',
+              n: 1,
+              name: 'La cocina',
+              en: 'The kitchen',
+              stories: const ['cocina-1'],
+            ),
+          ],
+          callsByPlace: {
+            'cocina': [
+              CallBrief(
+                id: 'cocina_tomar',
+                placeId: 'cocina',
+                title: '¿Qué quieres tomar?',
+                jobEn: 'Say what you want to drink.',
+                minutes: 2,
+                job: 'Drink',
+                opening: 'Hola',
+                isMain: false,
+              ),
+            ],
+          },
+        );
+        await course.load();
+        final clock = FakeClock();
+        final progress = RecordingProgress(clock: clock);
+        final session = ScriptedCall(stub: {'manual'});
+        final c = CallController(
+          session: session,
+          clock: clock,
+          course: course,
+          progress: progress,
+          placeId: 'cocina',
+          callId: 'cocina_tomar',
+        );
+        expect(c.available, isTrue);
+        c.open();
+        c.start();
+        await tester.pump();
+        session
+          ..go('connect')
+          ..go('danny1');
+        await tester.pump();
+        clock.advance(const Duration(milliseconds: 500));
+        c.tick();
+        c.finish('fin');
+        expect(progress.callDone('cocina_tomar'), isTrue);
+        final restored = FakeProgressStore(json: progress.export());
+        expect(restored.callDone('cocina_tomar'), isTrue);
+        c.dispose();
+        session.dispose();
+      },
+    );
+
+    testWidgets(
+      'failed start and closeX while connecting do not mark the call done',
+      (tester) async {
+        // Mic error
+        final rigMic = await opened(stub: {'mic'});
+        rigMic.controller.start();
+        await rigMic.until(
+          tester,
+          () => rigMic.controller.state == CallState.err,
+          maxMs: 3000,
+        );
+        expect(rigMic.progress.callDone('casa'), isFalse);
+        rigMic.dispose();
+
+        // Failed start
+        final rigFail = await opened(stub: {'fail'});
+        rigFail.controller.start();
+        await rigFail.until(
+          tester,
+          () => rigFail.controller.state == CallState.err,
+          maxMs: 3000,
+        );
+        expect(rigFail.progress.callDone('casa'), isFalse);
+        rigFail.dispose();
+
+        // closeX while connecting (_t0 == null)
+        final rigConn = await opened(stub: {'manual'});
+        rigConn.controller.start();
+        await tester.pump();
+        expect(rigConn.controller.state, CallState.connecting);
+        rigConn.controller.closeX();
+        expect(rigConn.progress.callDone('casa'), isFalse);
+        rigConn.dispose();
+      },
+    );
+
+    testWidgets(
+      'CallBrief with empty or whitespace opening has available == false and open/start are no-ops',
+      (tester) async {
+        for (final opening in ['', '   ', '\n\t']) {
+          final course = _CallsCatalogCourse(
+            places: [
+              Place(
+                id: 'parque',
+                n: 1,
+                name: 'El parque',
+                en: 'The park',
+                stories: const ['la-lluvia'],
+              ),
+            ],
+            callsByPlace: {
+              'parque': [
+                CallBrief(
+                  id: 'parque_main',
+                  placeId: 'parque',
+                  title: 'El perro en el parque',
+                  jobEn: 'Describe the park.',
+                  minutes: 5,
+                  job: 'Describe the park.',
+                  opening: opening,
+                  isMain: true,
+                ),
+              ],
+            },
+          );
+          await course.load();
+          final clock = FakeClock();
+          final progress = RecordingProgress(clock: clock);
+          final session = ScriptedCall();
+          final c = CallController(
+            session: session,
+            clock: clock,
+            course: course,
+            progress: progress,
+            placeId: 'parque',
+            callId: 'parque_main',
+          );
+          expect(c.brief, isNotNull);
+          expect(c.available, isFalse);
+          c.open();
+          expect(c.dannyLine, isEmpty);
+          expect(c.libraryReadyAtOpen, isFalse);
+          await c.start();
+          expect(c.state, CallState.idle);
+          expect(session.starts, 0);
+          expect(progress.callDone('parque_main'), isFalse);
+          c.dispose();
+          session.dispose();
+        }
+      },
+    );
+  });
+}
+
+class _CallsCatalogCourse extends FixtureCourse {
+  _CallsCatalogCourse({required List<Place> places, required this.callsByPlace})
+    : _customPlaces = places;
+
+  final List<Place> _customPlaces;
+  final Map<String, List<CallBrief>> callsByPlace;
+
+  @override
+  List<Place> get places => _customPlaces;
+
+  @override
+  Future<Map<String, dynamic>> story(String id) async {
+    if (id == 'cocina-1') {
+      return {
+        'id': 'cocina-1',
+        'place': 'La cocina',
+        'focus_words': ['agua', 'jugo'],
+      };
+    }
+    return super.story(id);
+  }
+
+  @override
+  List<CallBrief> callsFor(String placeId) => callsByPlace[placeId] ?? const [];
+
+  @override
+  CallBrief? callFor(String placeId) {
+    final list = callsFor(placeId);
+    if (list.isEmpty) return null;
+    for (final c in list) {
+      if (c.isMain) return c;
+    }
+    return list.first;
+  }
 }

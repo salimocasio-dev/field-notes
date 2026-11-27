@@ -3,7 +3,8 @@
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
-import 'package:feature_speaking/src/call_catalog.dart';
+import 'package:feature_speaking/feature_speaking.dart';
+import 'package:feature_speaking/src/call_controller.dart';
 import 'package:feature_speaking/src/call_text.dart';
 import 'package:feature_speaking/src/entitlements_hook.dart';
 import 'package:feature_speaking/src/hablar_model.dart';
@@ -29,6 +30,25 @@ class CountingCall extends ScriptedCall {
   }
 }
 
+class _CallsCourse extends FixtureCourse {
+  _CallsCourse({required this.callsByPlace});
+
+  final Map<String, List<CallBrief>> callsByPlace;
+
+  @override
+  List<CallBrief> callsFor(String placeId) => callsByPlace[placeId] ?? const [];
+
+  @override
+  CallBrief? callFor(String placeId) {
+    final list = callsFor(placeId);
+    if (list.isEmpty) return null;
+    for (final c in list) {
+      if (c.isMain) return c;
+    }
+    return list.first;
+  }
+}
+
 /// The note is read after the first frame and shown on the next: two frames.
 Future<void> settle(WidgetTester tester) async {
   await tester.pump();
@@ -42,6 +62,7 @@ Widget tab(
   bool note = false,
   CallEntitlementCheck entitlementCheck = defaultCallEntitlement,
   Set<String> completedCallIds = const {},
+  bool shortCallsEnabled = false,
 }) => w.app(
   HablarTab(
     key: UniqueKey(), // a new tab each time: the note is read when the tab is made
@@ -51,48 +72,295 @@ Widget tab(
     showSpeechNote: note,
     entitlementCheck: entitlementCheck,
     completedCallIds: completedCallIds,
+    shortCallsEnabled: shortCallsEnabled,
   ),
 );
 
 void main() {
   setUp(resetSpeechNoteDay);
 
-  group('call catalog: titles and rules', () {
-    test('every place has a main call plus 2-3 smaller calls, 31 total', () {
-      expect(hablarCallCatalog.length, 10);
-      var total = 0;
-      for (final entry in hablarCallCatalog.entries) {
-        final mains = entry.value.where((c) => c.isMain).toList();
-        final smalls = entry.value.where((c) => !c.isMain).toList();
-        expect(mains.length, 1, reason: entry.key);
-        expect(smalls.length, inInclusiveRange(2, 3), reason: entry.key);
-        for (final c in entry.value) {
-          expect(c.placeId, entry.key, reason: c.id);
-          expect(c.titleEs.trim(), isNotEmpty);
-          expect(c.jobEn.trim(), isNotEmpty);
-          expect(c.titleEs.toLowerCase(), isNot(contains('call danny')));
-          expect(c.titleEs.toLowerCase(), isNot(contains('llamar a danny')));
-          expect(
-            c.pixelAsset,
-            isNull,
-          ); // none until original pixel art is drawn
-          total++;
+  group(
+    'CallsCatalog wiring, readiness gating, and persisted call completion',
+    () {
+      test('reads id, title, jobEn ({partner}), minutes, isMain, and nullable photo from course.callsFor', () async {
+        final course = _CallsCourse(
+          callsByPlace: {
+            'casa': [
+              CallBrief(
+                id: 'casa_agua',
+                placeId: 'casa',
+                title: 'Un vaso de agua',
+                jobEn: 'Ask {partner} for water and say thanks.',
+                minutes: 2,
+                job: 'Ask for water',
+                opening: '¡Hola! ¿Quieres agua?',
+                isMain: false,
+              ),
+              CallBrief(
+                id: 'casa_main',
+                placeId: 'casa',
+                title: 'De visita en la casa',
+                jobEn:
+                    'Greet {partner}, introduce yourself, and accept a drink.',
+                minutes: 5,
+                job: 'Greet and accept a drink',
+                opening: '¡Hola! Soy Danny.',
+                photo: 'casa_pixel',
+                isMain: true,
+              ),
+            ],
+          },
+        );
+        await course.load();
+        final p = RecordingProgress();
+        for (final id in course.places.first.stories) {
+          p.storyFinished(StoryResult(id: id));
         }
-      }
-      expect(total, 31);
-      final ids = [
-        for (final l in hablarCallCatalog.values)
-          for (final c in l) c.id,
-      ];
-      expect(ids.toSet().length, ids.length, reason: 'call ids are unique');
-    });
 
-    test('the catalog names the course\'s places, in its order', () async {
-      final course = FixtureCourse();
-      await course.load();
-      expect(hablarCallCatalog.keys, [for (final l in course.places) l.id]);
-    });
-  });
+        final snap = buildHablarSnapshot(
+          course: course,
+          progress: p,
+          callsAvailable: () => true,
+          shortCallsEnabled: true,
+        );
+        final casa = snap.stops.first;
+        expect(casa.calls.length, 2);
+
+        final agua = casa.smallerCalls.single;
+        expect(agua.spec.id, 'casa_agua');
+        expect(agua.spec.titleEs, 'Un vaso de agua');
+        expect(agua.spec.jobEn, 'Ask Danny for water and say thanks.');
+        expect(agua.spec.minutes, 2);
+        expect(agua.spec.isMain, isFalse);
+        expect(agua.spec.pixelAsset, isNull);
+        expect(agua.state, HablarCallState.ready);
+
+        final main = casa.mainCall!;
+        expect(main.spec.id, 'casa_main');
+        expect(main.spec.titleEs, 'De visita en la casa');
+        expect(
+          main.spec.jobEn,
+          'Greet Danny, introduce yourself, and accept a drink.',
+        );
+        expect(main.spec.minutes, 5);
+        expect(main.spec.isMain, isTrue);
+        expect(main.spec.pixelAsset, 'casa_pixel');
+        expect(main.state, HablarCallState.ready);
+      });
+
+      test('gating on authored opening: empty/whitespace opening stays soon and blocks SpeakingModule and CallController', () async {
+        final course = _CallsCourse(
+          callsByPlace: {
+            'casa': [
+              CallBrief(
+                id: 'casa_agua',
+                placeId: 'casa',
+                title: 'Un vaso de agua',
+                jobEn: 'Ask for water.',
+                minutes: 2,
+                job: 'Ask for water',
+                opening: '',
+                isMain: false,
+              ),
+              CallBrief(
+                id: 'casa_main',
+                placeId: 'casa',
+                title: 'De visita en la casa',
+                jobEn: 'Greet {partner}.',
+                minutes: 5,
+                job: 'Visit',
+                opening: '¡Hola! Soy Danny.',
+                isMain: true,
+              ),
+            ],
+            'parque': [
+              CallBrief(
+                id: 'parque_main',
+                placeId: 'parque',
+                title: 'El perro en el parque',
+                jobEn: 'Describe the park.',
+                minutes: 5,
+                job: 'Park',
+                opening: '   ',
+                isMain: true,
+              ),
+            ],
+          },
+        );
+        await course.load();
+        final p = RecordingProgress();
+        for (final place in course.places) {
+          for (final id in place.stories) {
+            p.storyFinished(StoryResult(id: id));
+          }
+        }
+
+        final snap = buildHablarSnapshot(
+          course: course,
+          progress: p,
+          callsAvailable: () => true,
+          shortCallsEnabled: true,
+        );
+        final casa = snap.stopById('casa')!;
+        expect(casa.mainCall!.state, HablarCallState.ready);
+        expect(casa.mainCall!.canStart, isTrue);
+
+        final agua = casa.smallerCalls.single;
+        expect(agua.state, HablarCallState.soon);
+        expect(agua.canStart, isFalse);
+        expect(agua.statusLine, 'Coming soon · La casa');
+        expect(agua.cardMetaLine, '2 min · coming soon');
+
+        final parque = snap.stopById('parque')!;
+        expect(parque.mainCall!.state, HablarCallState.soon);
+        expect(parque.mainCall!.canStart, isFalse);
+        expect(parque.mainCall!.statusLine, 'Coming soon · El parque');
+
+        final call = ScriptedCall();
+        final services = fakeServices(progress: p, course: course, call: call);
+        const module = SpeakingModule(shortCallsEnabled: true);
+        expect(module.screenFor(const CallRoute('casa'), services), isNotNull);
+        expect(
+          module.screenFor(
+            const CallRoute('casa', callId: 'casa_main'),
+            services,
+          ),
+          isNotNull,
+        );
+        expect(
+          module.screenFor(
+            const CallRoute('casa', callId: 'casa_agua'),
+            services,
+          ),
+          isNull,
+        );
+        expect(module.screenFor(const CallRoute('parque'), services), isNull);
+
+        final unreadyCtrl = CallController(
+          session: call,
+          clock: FakeClock(),
+          course: course,
+          progress: p,
+          placeId: 'casa',
+          callId: 'casa_agua',
+        );
+        expect(unreadyCtrl.available, isFalse);
+        unreadyCtrl.dispose();
+        call.dispose();
+      });
+
+      testWidgets(
+        'progress.callDone persists across restarts, updates completedCount/meta/featuredCall, and keeps done main call replayable',
+        (tester) async {
+          final course = _CallsCourse(
+            callsByPlace: {
+              'casa': [
+                CallBrief(
+                  id: 'casa_agua',
+                  placeId: 'casa',
+                  title: 'Un vaso de agua',
+                  jobEn: 'Ask for water.',
+                  minutes: 2,
+                  job: 'Ask for water',
+                  opening: '¡Hola! ¿Agua?',
+                  isMain: false,
+                ),
+                CallBrief(
+                  id: 'casa_saludo',
+                  placeId: 'casa',
+                  title: '¿Cómo estás?',
+                  jobEn: 'Say how you are doing.',
+                  minutes: 2,
+                  job: 'Greet',
+                  opening: '¡Hola! ¿Cómo estás?',
+                  isMain: false,
+                ),
+                CallBrief(
+                  id: 'casa_main',
+                  placeId: 'casa',
+                  title: 'De visita en la casa',
+                  jobEn: 'Greet {partner} and accept a drink.',
+                  minutes: 5,
+                  job: 'Visit',
+                  opening: '¡Hola! Soy Danny.',
+                  isMain: true,
+                ),
+              ],
+            },
+          );
+          await course.load();
+          final p1 = RecordingProgress();
+          for (final id in course.places.first.stories) {
+            p1.storyFinished(StoryResult(id: id));
+          }
+
+          // Complete the first smaller call and simulate app restart via export/import.
+          p1.markCallDone('casa_agua');
+          final p2 = FakeProgressStore(json: p1.export());
+          expect(p2.callDone('casa_agua'), isTrue);
+
+          final snapAfterOne = buildHablarSnapshot(
+            course: course,
+            progress: p2,
+            callsAvailable: () => true,
+            shortCallsEnabled: true,
+          );
+          expect(snapAfterOne.completedCount, 1);
+          final casa1 = snapAfterOne.stopById('casa')!;
+          expect(casa1.featuredCall!.spec.id, 'casa_saludo');
+          final aguaItem = casa1.calls.firstWhere(
+            (c) => c.spec.id == 'casa_agua',
+          );
+          expect(aguaItem.state, HablarCallState.done);
+          expect(aguaItem.cardMetaLine, '2 min · done');
+
+          // Complete remaining calls too; main call stays replayable in HablarTab.
+          p2.markCallDone('casa_saludo');
+          p2.markCallDone('casa_main');
+          final p3 = FakeProgressStore(json: p2.export());
+          final snapAllDone = buildHablarSnapshot(
+            course: course,
+            progress: p3,
+            callsAvailable: () => true,
+            shortCallsEnabled: true,
+          );
+          expect(snapAllDone.completedCount, 3);
+          final casaAll = snapAllDone.stopById('casa')!;
+          expect(casaAll.featuredCall!.spec.id, 'casa_main');
+          expect(casaAll.featuredCall!.state, HablarCallState.done);
+          expect(casaAll.otherCalls.map((c) => c.cardMetaLine).toList(), [
+            '2 min · done',
+            '2 min · done',
+          ]);
+
+          Phone.android.use(tester);
+          final call = ScriptedCall();
+          final nav = FakeNavigator();
+          final services = fakeServices(
+            progress: p3,
+            course: course,
+            call: call,
+            nav: nav,
+          );
+          await tester.pumpWidget(
+            MaterialApp(
+              debugShowCheckedModeBanner: false,
+              theme: coquiTheme(),
+              home: Scaffold(
+                body: HablarTab(services: services, shortCallsEnabled: true),
+              ),
+            ),
+          );
+          expect(find.text('2 min · done'), findsNWidgets(2));
+          expect(find.byKey(const Key('speak-call-disc')), findsOneWidget);
+          await tester.tap(find.byKey(const Key('speak-call-disc')));
+          await tester.pump();
+          expect(nav.routes, [const CallRoute('casa')]);
+          call.dispose();
+        },
+      );
+    },
+  );
 
   group('hablar: the snapshot without a widget', () {
     test('the old rule on a plain store, by place', () async {
@@ -122,21 +390,18 @@ void main() {
       ]);
       expect(s.stops[1].statusLine, 'Coming soon · El parque');
       expect(s.stops[3].statusLine, 'Opens when you finish El colmado');
-      expect(s.nextCall!.spec.id, 'casa_main');
+      expect(s.nextCall!.spec.id, 'casa');
       expect(s.nextCall!.spec.minutes, course.callFor('casa')!.minutes);
       expect(s.completedCount, 0);
-      // the smaller calls of an open place are not backed by course data in FixtureCourse yet
-      expect(s.stops.first.smallerCalls, isNotEmpty);
-      for (final c in s.stops.first.smallerCalls) {
-        expect(c.state, HablarCallState.soon, reason: c.spec.id);
-        expect(c.canStart, isFalse, reason: c.spec.id);
-        expect(c.statusLine, 'Coming soon · La casa');
-        expect(c.cardMetaLine, '2 min · coming soon');
-      }
+      // FixtureCourse only supplies legacy casa, so places without calls get a single placeholder card
+      expect(s.stops.first.smallerCalls, isEmpty);
+      expect(s.stops[1].mainCall!.spec.titleEs, 'El parque');
+      expect(s.stops[1].mainCall!.spec.jobEn, isEmpty);
+      expect(s.stops[1].mainCall!.state, HablarCallState.soon);
       // once the main call is done it is offered again
-      final again = snap(done: const {'casa_main'});
+      final again = snap(done: const {'casa'});
       expect(again.stops.first.state, HablarCallState.done);
-      expect(again.nextCall!.spec.id, 'casa_main');
+      expect(again.nextCall!.spec.id, 'casa');
       expect(again.nextCall!.state, HablarCallState.done);
       expect(again.completedCount, 1);
     });
@@ -206,7 +471,7 @@ void main() {
     );
 
     testWidgets(
-      'other calls show below the featured card; unbacked smaller calls stay locked and tapping a reached place switches the card',
+      'reached places without course calls show coming soon placeholder and tapping a reached place switches the card',
       (tester) async {
         Phone.android.use(tester);
         final w = await World.create(seed: 'todo');
@@ -219,19 +484,13 @@ void main() {
           findsOneWidget,
         );
 
-        // Smaller unbacked calls of La casa show below the featured card and do not start
-        expect(find.text('Un vaso de agua'), findsOneWidget);
-        expect(find.text('¿Cómo estás?'), findsOneWidget);
-        expect(find.text('Nos vemos'), findsOneWidget);
-        expect(find.text('2 min · coming soon'), findsNWidgets(3));
-        await tester.tap(find.text('Un vaso de agua'));
-        await tester.pump();
-        expect(w.nav.routes, isEmpty);
+        // FixtureCourse only provides legacy casa; no hardcoded smaller calls appear.
+        expect(find.text('Un vaso de agua'), findsNothing);
 
-        // Tapping another reached place switches the featured call card
+        // Tapping another reached place switches to its coming-soon placeholder card.
         await tester.tap(find.text('El parque'));
         await tester.pump();
-        expect(find.text('El perro en el parque'), findsOneWidget);
+        expect(find.text('Coming soon · El parque'), findsOneWidget);
         w.dispose();
       },
     );
@@ -278,7 +537,7 @@ void main() {
     testWidgets('a done main call is offered again', (tester) async {
       Phone.android.use(tester);
       final w = await World.create(seed: 'todo');
-      await tester.pumpWidget(tab(w, completedCallIds: const {'casa_main'}));
+      await tester.pumpWidget(tab(w, completedCallIds: const {'casa'}));
       expect(find.byKey(const Key('speak-call-disc')), findsOneWidget);
       await tester.tap(find.byKey(const Key('speak-call-disc')));
       await tester.pump();

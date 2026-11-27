@@ -42,7 +42,7 @@ class HablarTab extends StatefulWidget {
   /// Subscription tier check hook for live calls.
   final CallEntitlementCheck entitlementCheck;
 
-  /// Completed call IDs (temporary until `ProgressStore` tracks completed calls).
+  /// Additional completed call IDs merged with persisted `progress.callDone(callId)`.
   final Set<String> completedCallIds;
 
   /// Enables starting smaller calls via `CallRoute(placeId, callId:)` once
@@ -372,12 +372,14 @@ class _HablarTabState extends State<HablarTab> {
               locale: courseLocale,
               style: titleStyle,
             ),
-            const SizedBox(height: 8),
-            Text(
-              featured.spec.jobEn,
-              textDirection: TextDirection.ltr,
-              style: NocheType.bodyLarge.copyWith(color: NocheColors.label),
-            ),
+            if (featured.spec.jobEn.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              Text(
+                featured.spec.jobEn,
+                textDirection: TextDirection.ltr,
+                style: NocheType.bodyLarge.copyWith(color: NocheColors.label),
+              ),
+            ],
             if (previewWords.isNotEmpty) ...[
               const SizedBox(height: 16),
               Text(

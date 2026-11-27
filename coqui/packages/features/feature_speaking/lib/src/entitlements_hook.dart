@@ -1,8 +1,7 @@
 /// Subscription tier hook for live calls.
 ///
-/// Live voice calls belong to the top subscription tier. Until `Entitlements`
-/// lands in `coqui_contracts` (see
-/// `coqui/requests/25-feature-speaking-needs-coqui-contracts-call-titles.md`),
+/// Live voice calls belong to the top subscription tier. Until `Services.entitlements`
+/// lands (see `coqui/requests/5-coqui-contracts-needs-coqui-ui-services-entitlements.md`),
 /// callers pass a [CallEntitlementCheck] into `SpeakingModule` or `HablarTab`.
 library;
 

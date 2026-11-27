@@ -134,8 +134,123 @@ class _SpeakRig {
       ),
     ];
 
+    const testSpanishCalls = <String, List<HablarCallSpec>>{
+      'casa': [
+        HablarCallSpec(
+          id: 'casa_main',
+          placeId: 'casa',
+          titleEs: 'De visita en la casa',
+          jobEn: 'Greet {partner}, introduce yourself, and accept a drink.',
+          minutes: 5,
+          isMain: true,
+        ),
+        HablarCallSpec(
+          id: 'casa_agua',
+          placeId: 'casa',
+          titleEs: 'Un vaso de agua',
+          jobEn: 'Ask for a drink and say thanks.',
+          minutes: 2,
+          isMain: false,
+        ),
+        HablarCallSpec(
+          id: 'casa_saludo',
+          placeId: 'casa',
+          titleEs: '¿Cómo estás?',
+          jobEn: 'Greet {partner} and say how you are doing.',
+          minutes: 2,
+          isMain: false,
+        ),
+        HablarCallSpec(
+          id: 'casa_despedida',
+          placeId: 'casa',
+          titleEs: 'Nos vemos',
+          jobEn: 'Wrap up a quick visit and say goodbye.',
+          minutes: 2,
+          isMain: false,
+        ),
+      ],
+      'parque': [
+        HablarCallSpec(
+          id: 'parque_main',
+          placeId: 'parque',
+          titleEs: 'El perro en el parque',
+          jobEn: 'Describe the park, its colours, and what the dog does.',
+          minutes: 5,
+          isMain: true,
+        ),
+        HablarCallSpec(
+          id: 'parque_colores',
+          placeId: 'parque',
+          titleEs: '¿De qué color es?',
+          jobEn: 'Name the colours of things around the park.',
+          minutes: 2,
+          isMain: false,
+        ),
+        HablarCallSpec(
+          id: 'parque_perro',
+          placeId: 'parque',
+          titleEs: 'Mira el perro',
+          jobEn: 'Say what the dog is doing right now.',
+          minutes: 2,
+          isMain: false,
+        ),
+      ],
+      'cocina': [
+        HablarCallSpec(
+          id: 'cocina_main',
+          placeId: 'cocina',
+          titleEs: 'Tengo hambre',
+          jobEn: 'Say you are hungry, what you want, and what you like.',
+          minutes: 5,
+          isMain: true,
+        ),
+        HablarCallSpec(
+          id: 'cocina_tomar',
+          placeId: 'cocina',
+          titleEs: '¿Qué quieres tomar?',
+          jobEn: 'Say what you want to drink.',
+          minutes: 2,
+          isMain: false,
+        ),
+        HablarCallSpec(
+          id: 'cocina_comer',
+          placeId: 'cocina',
+          titleEs: '¿Qué te gusta comer?',
+          jobEn: 'Say which foods you like and do not like.',
+          minutes: 2,
+          isMain: false,
+        ),
+      ],
+      'colmado': [
+        HablarCallSpec(
+          id: 'colmado_main',
+          placeId: 'colmado',
+          titleEs: 'Tres cosas del colmado',
+          jobEn: 'Ask for three things, ask the price, and pay.',
+          minutes: 5,
+          isMain: true,
+        ),
+        HablarCallSpec(
+          id: 'colmado_precio',
+          placeId: 'colmado',
+          titleEs: '¿Cuánto es?',
+          jobEn: 'Ask how much two items cost together.',
+          minutes: 2,
+          isMain: false,
+        ),
+        HablarCallSpec(
+          id: 'colmado_pagar',
+          placeId: 'colmado',
+          titleEs: 'Quiero esto, por favor',
+          jobEn: 'Pick one item and pay at the counter.',
+          minutes: 2,
+          isMain: false,
+        ),
+      ],
+    };
+
     List<CallBrief> fromCatalog(String placeId) => [
-      for (final s in callsForPlace(placeId))
+      for (final s in testSpanishCalls[placeId] ?? const <HablarCallSpec>[])
         CallBrief(
           id: s.id,
           placeId: placeId,
@@ -676,7 +791,8 @@ void main() {
         shortCallsEnabled: true,
       );
       final cocina = snap.stops.single;
-      expect(cocina.mainCall!.spec.titleEs, 'Tengo hambre');
+      expect(cocina.mainCall!.spec.titleEs, 'La cocina');
+      expect(cocina.mainCall!.spec.jobEn, 'Main job');
       expect(cocina.mainCall!.canStart, isTrue);
       expect(cocina.smallerCalls.single.spec.id, 'cocina_tomar');
       expect(cocina.smallerCalls.single.canStart, isTrue);
