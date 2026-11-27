@@ -20,8 +20,8 @@ import 'package:material_ui/material_ui.dart';
 ///   they come from somewhere, `VoiceTestRoute` is not answered;
 /// - [voiceTestEntry]: the title of the entry to the voice test on the Hablar tab; with none there is no entry.
 ///
-/// Order 25 adds two stand-ins until the contracts carry them (coqui/requests/25-feature-speaking-needs-coqui-contracts-call-titles.md):
-/// [entitlementCheck] (the live-calls plan) and [completedCallIds] (until `ProgressStore` keeps the calls done).
+/// [entitlementCheck] lets callers gate live calls by plan, and
+/// [completedCallIds] merges optional overrides with `ProgressStore.callDone`.
 class SpeakingModule implements FeatureModule {
   const SpeakingModule({
     this.callsLater,
@@ -45,7 +45,8 @@ class SpeakingModule implements FeatureModule {
   /// Subscription tier check hook for live calls.
   final CallEntitlementCheck entitlementCheck;
 
-  /// Completed call IDs (temporary until `ProgressStore` tracks completed calls).
+  /// Optional override/test set of completed call IDs, merged with
+  /// `ProgressStore.callDone`.
   final Set<String> completedCallIds;
 
   /// Enables starting smaller calls via `CallRoute(placeId, callId:)` once

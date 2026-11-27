@@ -3,11 +3,13 @@
 //
 // The call's clock is a FakeClock the test moves together with the fake call's own timers (CallRig.elapse).
 import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:coqui_testing/coqui_testing.dart';
 import 'package:feature_speaking/src/call_controller.dart';
 import 'package:feature_speaking/src/call_text.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'support/call_rig.dart';
+import 'support/scripted_call.dart';
 
 // The seven words of La casa in the stub's three learner lines, in the order the page records them
 // (the order of the place's words: "Hola. Bien, gracias." gives hola, gracias, bien, and so on).
@@ -830,4 +832,255 @@ void main() {
       rig.dispose();
     });
   });
+
+  group('call completion persistence and live-readiness gating', () {
+    testWidgets(
+      'natural finish calls progress.markCallDone and persists across export/import',
+      (tester) async {
+        final rig = await opened();
+        final c = rig.controller;
+        expect(rig.progress.callDone('casa'), isFalse);
+        c.start();
+        await rig.until(tester, () => c.state == CallState.done);
+        expect(c.why, 'fin');
+        expect(rig.progress.callDone('casa'), isTrue);
+
+        final restored = FakeProgressStore(json: rig.progress.export());
+        expect(restored.callDone('casa'), isTrue);
+        rig.dispose();
+      },
+    );
+
+    testWidgets(
+      'ending a live call with X after a learner turn marks the call done; instant X, mid-call drop, abort, and failed start do not',
+      (tester) async {
+        // X after a learner turn (Heard transcript) marks the call done.
+        final engaged = await opened(stub: {'manual'});
+        engaged.controller.start();
+        await tester.pump();
+        engaged.call
+          ..go('connect')
+          ..go('danny1')
+          ..go('you1');
+        await engaged.elapse(tester, 200);
+        engaged.call.emit(const Heard('Hola.'));
+        await tester.pump();
+        engaged.controller.closeX();
+        expect(engaged.controller.state, CallState.done);
+        expect(engaged.controller.why, 'x');
+        expect(engaged.progress.callDone('casa'), isTrue);
+        engaged.dispose();
+
+        // X after mic speech onset (_Turn.spoke) also marks the call done.
+        final spokeMic = await opened(stub: {'manual'});
+        spokeMic.controller.start();
+        await tester.pump();
+        spokeMic.call
+          ..go('connect')
+          ..go('danny1')
+          ..go('you1');
+        await spokeMic.elapse(tester, 100);
+        spokeMic.call.go('talk1');
+        await spokeMic.elapse(tester, 200);
+        spokeMic.controller.closeX();
+        expect(spokeMic.controller.why, 'x');
+        expect(spokeMic.progress.callDone('casa'), isTrue);
+        spokeMic.dispose();
+
+        // Instant X ~200 ms after connect with zero learner turns does NOT mark done.
+        final instantX = await opened(stub: {'manual'});
+        instantX.controller.start();
+        await tester.pump();
+        instantX.call
+          ..go('connect')
+          ..go('danny1');
+        await instantX.elapse(tester, 200);
+        instantX.controller.closeX();
+        expect(instantX.controller.state, CallState.done);
+        expect(instantX.controller.why, 'x');
+        expect(instantX.progress.callDone('casa'), isFalse);
+        instantX.dispose();
+
+        // Mid-call session error + disconnect (why == 'disc') does NOT mark done
+        // even when the learner spoke earlier.
+        final dropped = await opened(stub: {'manual'});
+        dropped.controller.start();
+        await tester.pump();
+        dropped.call
+          ..go('connect')
+          ..go('danny1')
+          ..go('you1');
+        await dropped.elapse(tester, 200);
+        dropped.call.emit(const Heard('Hola.'));
+        await tester.pump();
+        dropped.call.emit(const CallError('socket closed'));
+        dropped.call.emit(const Ended('agent'));
+        await tester.pump();
+        expect(dropped.controller.state, CallState.done);
+        expect(dropped.controller.why, 'disc');
+        expect(dropped.progress.callDone('casa'), isFalse);
+        dropped.dispose();
+
+        // Aborting before connect does NOT mark done.
+        final aborted = await opened(stub: {'manual'});
+        aborted.controller.start();
+        await tester.pump();
+        aborted.controller.closeX();
+        expect(aborted.progress.callDone('casa'), isFalse);
+        aborted.dispose();
+
+        // Failed start does NOT mark done.
+        final failed = await opened(stub: {'mic'});
+        failed.controller.start();
+        await failed.until(
+          tester,
+          () => failed.controller.state == CallState.err,
+          maxMs: 3000,
+        );
+        expect(failed.progress.callDone('casa'), isFalse);
+        failed.dispose();
+      },
+    );
+
+    testWidgets('explicit callId marks only that callId done in CallsCatalog', (
+      tester,
+    ) async {
+      final course = _MultiCallCourse();
+      await course.load();
+      final clock = FakeClock();
+      final progress = RecordingProgress(clock: clock);
+      final call = ScriptedCall(stub: {'manual'});
+      final controller = CallController(
+        session: call,
+        clock: clock,
+        course: course,
+        progress: progress,
+        placeId: 'cocina',
+        callId: 'cocina_tomar',
+      )..open();
+      controller.start();
+      await tester.pump();
+      call
+        ..go('connect')
+        ..go('danny1')
+        ..go('you1');
+      clock.advance(const Duration(milliseconds: 200));
+      await tester.pump(const Duration(milliseconds: 200));
+      controller.tick();
+      call.emit(const Heard('Quiero agua.'));
+      await tester.pump();
+      controller.finish('fin');
+      expect(progress.callDone('cocina_tomar'), isTrue);
+      expect(progress.callDone('cocina_main'), isFalse);
+      controller.dispose();
+      call.dispose();
+    });
+
+    test('isCallBriefLive and resolveCallBrief reject empty or whitespace openings', () async {
+      final course = _MultiCallCourse();
+      await course.load();
+      expect(
+        isCallBriefLive(
+          CallBrief(
+            id: 'empty',
+            placeId: 'casa',
+            minutes: 2,
+            job: 'Job',
+            opening: '',
+          ),
+        ),
+        isFalse,
+      );
+      expect(
+        isCallBriefLive(
+          CallBrief(
+            id: 'blank',
+            placeId: 'casa',
+            minutes: 2,
+            job: 'Job',
+            opening: '   \n\t  ',
+          ),
+        ),
+        isFalse,
+      );
+      expect(
+        resolveCallBrief(course, 'cocina', 'cocina_tomar')?.id,
+        'cocina_tomar',
+      );
+      expect(resolveCallBrief(course, 'cocina', 'cocina_unauthored'), isNull);
+      expect(resolveCallBrief(course, 'parque'), isNull);
+    });
+  });
+}
+
+class _MultiCallCourse extends FixtureCourse implements CallsCatalog {
+  @override
+  Future<Map<String, dynamic>> story(String id) async {
+    if (places.any((p) => p.id == 'cocina' && p.stories.contains(id))) {
+      return const {
+        'place': 'La cocina',
+        'focus_words': ['agua', 'jugo'],
+      };
+    }
+    return super.story(id);
+  }
+
+  final Map<String, List<CallBrief>> _calls = {
+    'cocina': [
+      CallBrief(
+        id: 'cocina_tomar',
+        placeId: 'cocina',
+        title: '¿Qué quieres tomar?',
+        jobEn: 'Say what you want to drink.',
+        minutes: 2,
+        job: 'Ask for a drink.',
+        opening: '¡Hola! ¿Qué quieres tomar?',
+        isMain: false,
+      ),
+      CallBrief(
+        id: 'cocina_unauthored',
+        placeId: 'cocina',
+        title: '¿Qué te gusta comer?',
+        jobEn: 'Say what you like.',
+        minutes: 2,
+        job: 'Say what you like.',
+        opening: '   ',
+        isMain: false,
+      ),
+      CallBrief(
+        id: 'cocina_main',
+        placeId: 'cocina',
+        title: 'Tengo hambre',
+        jobEn: 'Order food.',
+        minutes: 5,
+        job: 'Order food.',
+        opening: '¡Hola! ¿Tienes hambre?',
+        isMain: true,
+      ),
+    ],
+    'parque': [
+      CallBrief(
+        id: 'parque_main',
+        placeId: 'parque',
+        title: 'El perro en el parque',
+        jobEn: 'Talk about the park.',
+        minutes: 5,
+        job: 'Talk about the park.',
+        opening: '',
+        isMain: true,
+      ),
+    ],
+  };
+
+  @override
+  List<CallBrief> callsFor(String placeId) => _calls[placeId] ?? const [];
+
+  @override
+  CallBrief? callFor(String placeId) {
+    final list = callsFor(placeId);
+    for (final c in list) {
+      if (c.isMain) return c;
+    }
+    return list.isEmpty ? null : list.first;
+  }
 }

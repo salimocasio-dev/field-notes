@@ -87,14 +87,13 @@ class PlaceScreen extends StatefulWidget {
     super.key,
     required this.placeId,
     required this.services,
-    this.entitlements = const AllowAllEntitlements(),
+    required this.entitlements,
   });
 
   final String placeId;
   final Services services;
 
-  /// Injected entitlements until `Services.entitlements` lands in `coqui_ui`
-  /// (see `coqui/requests/5-coqui-contracts-needs-coqui-ui-services-entitlements.md`).
+  /// Explicit plan entitlements used to gate places beyond the free plan.
   final Entitlements entitlements;
 
   @override

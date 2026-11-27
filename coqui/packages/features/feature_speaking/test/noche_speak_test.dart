@@ -767,6 +767,186 @@ void main() {
         expect(c.state, HablarCallState.upcoming);
       }
     });
+
+    test('31-call CallsCatalog keeps empty/whitespace-opening calls in soon and skips callsAvailable', () {
+      final places = [
+        Place(
+          id: 'casa',
+          n: 1,
+          name: 'La casa',
+          en: "Grandma's house",
+          stories: const ['c1', 'c2'],
+        ),
+        Place(
+          id: 'parque',
+          n: 2,
+          name: 'El parque',
+          en: 'The park',
+          stories: const ['p1', 'p2'],
+        ),
+      ];
+
+      // First test when no place has an authored opening.
+      final unauthoredCourse = _StructuredCourse(
+        places: places,
+        callsByPlace: {
+          'casa': [
+            CallBrief(
+              id: 'casa_agua',
+              placeId: 'casa',
+              title: 'Un vaso de agua',
+              jobEn: 'Ask for a drink and say thanks.',
+              minutes: 2,
+              job: 'Ask for a drink.',
+              opening: '',
+              isMain: false,
+            ),
+            CallBrief(
+              id: 'casa_main',
+              placeId: 'casa',
+              title: 'De visita en la casa',
+              jobEn: 'Greet {partner}.',
+              minutes: 5,
+              job: 'Greet Danny.',
+              opening: '   ',
+              isMain: true,
+            ),
+          ],
+          'parque': [
+            CallBrief(
+              id: 'parque_main',
+              placeId: 'parque',
+              title: 'El perro en el parque',
+              jobEn: 'Describe the park.',
+              minutes: 5,
+              job: 'Describe the park.',
+              opening: '',
+              isMain: true,
+            ),
+          ],
+        },
+      );
+      final p = RecordingProgress();
+      for (final pl in places) {
+        for (final id in pl.stories) {
+          p.storyFinished(StoryResult(id: id));
+        }
+      }
+      var asked = 0;
+      final unauthoredSnap = buildHablarSnapshot(
+        course: unauthoredCourse,
+        progress: p,
+        callsAvailable: () {
+          asked++;
+          return true;
+        },
+        shortCallsEnabled: true,
+      );
+      expect(asked, 0);
+      for (final stop in unauthoredSnap.stops) {
+        for (final c in stop.calls) {
+          expect(c.state, HablarCallState.soon, reason: c.spec.id);
+          expect(c.backedByCourse, isFalse, reason: c.spec.id);
+          expect(c.canStart, isFalse, reason: c.spec.id);
+        }
+      }
+
+      // Now give casa_main a live opening while smaller calls & parque remain unauthored.
+      final mixedCourse = _StructuredCourse(
+        places: places,
+        callsByPlace: {
+          'casa': [
+            CallBrief(
+              id: 'casa_agua',
+              placeId: 'casa',
+              title: 'Un vaso de agua',
+              jobEn: 'Ask for a drink and say thanks.',
+              minutes: 2,
+              job: 'Ask for a drink.',
+              opening: '',
+              isMain: false,
+            ),
+            CallBrief(
+              id: 'casa_main',
+              placeId: 'casa',
+              title: 'De visita en la casa',
+              jobEn: 'Greet {partner}.',
+              minutes: 5,
+              job: 'Greet Danny.',
+              opening: '¡Hola! Soy Danny. ¿Cómo estás?',
+              isMain: true,
+            ),
+          ],
+          'parque': unauthoredCourse.callsFor('parque'),
+        },
+      );
+      final mixedSnap = buildHablarSnapshot(
+        course: mixedCourse,
+        progress: p,
+        callsAvailable: () {
+          asked++;
+          return true;
+        },
+        shortCallsEnabled: true,
+      );
+      expect(asked, 1);
+      final casa = mixedSnap.stopById('casa')!;
+      expect(casa.smallerCalls.single.state, HablarCallState.soon);
+      expect(casa.smallerCalls.single.canStart, isFalse);
+      expect(casa.mainCall!.state, HablarCallState.ready);
+      expect(casa.mainCall!.backedByCourse, isTrue);
+      expect(
+        mixedSnap.stopById('parque')!.mainCall!.state,
+        HablarCallState.soon,
+      );
+
+      // SpeakingModule.screenFor also refuses unauthored calls.
+      const module = SpeakingModule(shortCallsEnabled: true);
+      final services = fakeServices(course: mixedCourse, progress: p);
+      expect(
+        module.screenFor(const CallRoute('casa'), services),
+        isA<CallScreen>(),
+      );
+      expect(
+        module.screenFor(
+          const CallRoute('casa', callId: 'casa_main'),
+          services,
+        ),
+        isA<CallScreen>(),
+      );
+      expect(
+        module.screenFor(
+          const CallRoute('casa', callId: 'casa_agua'),
+          services,
+        ),
+        isNull,
+      );
+      expect(module.screenFor(const CallRoute('parque'), services), isNull);
+    });
+
+    test('non-Spanish courses never fall back to Spanish local call catalog entries', () async {
+      final arabic = FakeCourseCatalog.arabic();
+      await arabic.load();
+      final p = RecordingProgress();
+      for (final id in arabic.places.first.stories) {
+        p.storyFinished(StoryResult(id: id));
+      }
+      final snap = buildHablarSnapshot(
+        course: arabic,
+        progress: p,
+        callsAvailable: () => true,
+        shortCallsEnabled: true,
+      );
+      expect(snap.stops.first.calls.length, 1);
+      expect(
+        snap.stops.first.calls.single.spec.titleEs,
+        arabic.places.first.name,
+      );
+      expect(snap.stops.first.smallerCalls, isEmpty);
+      for (final stop in snap.stops.skip(1)) {
+        expect(stop.calls, isEmpty, reason: stop.place.id);
+      }
+    });
   });
 
   group('N4.6 Speak: UI structure, semantics, and interactions', () {
@@ -976,6 +1156,66 @@ void main() {
         expect(lockedEyebrow.style?.color, NocheColors.label);
         expect(find.byKey(const Key('speak-call-disc')), findsNothing);
         lockedRig.dispose();
+      },
+    );
+
+    testWidgets(
+      'completing a short call via CallProgressStore updates HablarTab and persists across restart',
+      (tester) async {
+        tester.view.devicePixelRatio = 3.0;
+        tester.view.physicalSize = const Size(390, 844) * 3.0;
+        addTearDown(tester.view.reset);
+
+        final rig = _SpeakRig.spanish();
+        rig.progress.markCallDone('cocina_tomar');
+
+        // Re-import exported progress into a fresh store to simulate app restart.
+        final restoredProgress = RecordingProgress()
+          ..import(rig.progress.export());
+        final restoredServices = fakeServices(
+          progress: restoredProgress,
+          course: rig.course,
+          call: rig.call,
+          nav: rig.nav,
+          haptics: rig.haptics,
+        );
+
+        await tester.pumpWidget(
+          MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: coquiTheme(),
+            home: Scaffold(
+              backgroundColor: NocheColors.ground,
+              body: HablarTab(
+                services: restoredServices,
+                shortCallsEnabled: true,
+              ),
+            ),
+          ),
+        );
+
+        // Featured call advances to the next ready short call (cocina_comer),
+        // while completed cocina_tomar moves to otherCalls with "2 min · done".
+        expect(find.text('NEXT CALL WITH DANNY · 2 MIN'), findsOneWidget);
+        expect(find.text('¿Qué te gusta comer?'), findsOneWidget);
+        expect(
+          find.descendant(
+            of: find.byKey(const Key('speak-other-call-cocina_tomar')),
+            matching: find.text('2 min · done'),
+          ),
+          findsOneWidget,
+        );
+
+        // If all ready calls in cocina are done, the featured card shows DONE eyebrow.
+        restoredProgress.markCallDone('cocina_comer');
+        await tester.pump();
+        await tester.pump();
+        expect(find.text('CALL WITH DANNY · 2 MIN · DONE'), findsOneWidget);
+        final doneEyebrow = tester.widget<Text>(
+          find.text('CALL WITH DANNY · 2 MIN · DONE'),
+        );
+        expect(doneEyebrow.style?.color, NocheColors.label);
+        rig.dispose();
       },
     );
 

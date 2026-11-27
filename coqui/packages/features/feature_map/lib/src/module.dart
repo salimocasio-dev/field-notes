@@ -8,13 +8,9 @@ import 'package:material_ui/material_ui.dart';
 /// It owns the `map` tab and answers [PlaceRoute].
 ///
 /// [showPerf]: the map shows its bake time and frame times in a small corner chip (the app's `?perf=1`). Off by default.
-/// [entitlements]: injected plan entitlements until `Services.entitlements` lands
-/// in `coqui_ui` (see `coqui/requests/5-coqui-contracts-needs-coqui-ui-services-entitlements.md`).
+/// [entitlements]: explicit plan entitlements forwarded to [MapScreen] and [PlaceScreen].
 class MapModule implements FeatureModule {
-  const MapModule({
-    this.showPerf = false,
-    this.entitlements = const AllowAllEntitlements(),
-  });
+  const MapModule({this.showPerf = false, required this.entitlements});
 
   final bool showPerf;
   final Entitlements entitlements;
