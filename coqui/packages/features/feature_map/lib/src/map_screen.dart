@@ -533,6 +533,8 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     _unlockCrossfadeController.stop();
     _unlockCrossfadeController.value = 1.0;
     _map.FROG
+      ..path = null
+      ..onArrive = null
       ..opacity = 1.0
       ..hideArrow = false;
   }
@@ -688,9 +690,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     if (_map.STATE != oldState) {
       _map.setState(oldState);
     }
-    if (_map.FROG.at != from) {
-      _map.placeFrog(from);
-    }
+    _map.placeFrog(from);
     _redraw();
 
     final token = ++_tripToken;
@@ -802,6 +802,8 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
       return;
     }
     _map.FROG
+      ..path = null
+      ..onArrive = null
       ..opacity = 1.0
       ..hideArrow = false;
     _redraw();
@@ -883,6 +885,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     if (target != null) {
       _map.placeFrog(target);
       _map.FROG
+        ..onArrive = null
         ..opacity = 1.0
         ..hideArrow = false;
       _redraw();
@@ -1197,6 +1200,8 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
       return;
     }
     _map.FROG
+      ..path = null
+      ..onArrive = null
       ..opacity = 1.0
       ..hideArrow = false;
     _redraw();
