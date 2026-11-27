@@ -24,6 +24,7 @@ DIFF_EXCLUDES = [
     ":(exclude)coqui/ref/*",
     ":(exclude)historia/audio/*",
     ":(exclude)historia/libros/*",
+    ":(glob,exclude)coqui/packages/core/coqui_platform/assets/elevenlabs/*.worklet.js",
 ]
 
 SYSTEM_PROMPT = """You are an independent, read-only code and spec reviewer for Coqui (a Flutter language-learning app).

@@ -251,5 +251,71 @@ class ChunkHeaderAndPromptTests(unittest.TestCase):
         self.assertIn('literally "None"', cpr.SYSTEM_PROMPT)
 
 
+class DiffExcludesTests(unittest.TestCase):
+    def test_vendored_elevenlabs_worklet_excluded_narrowly(self) -> None:
+        import os
+        import subprocess
+        import tempfile
+        from pathlib import Path
+
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            env = {
+                **os.environ,
+                "GIT_AUTHOR_NAME": "Test",
+                "GIT_AUTHOR_EMAIL": "test@example.com",
+                "GIT_COMMITTER_NAME": "Test",
+                "GIT_COMMITTER_EMAIL": "test@example.com",
+            }
+            subprocess.run(["git", "init", "-q", "-b", "main"], cwd=repo, env=env, check=True)
+            (repo / "README.md").write_text("base\n", encoding="utf-8")
+            subprocess.run(["git", "add", "README.md"], cwd=repo, env=env, check=True)
+            subprocess.run(["git", "commit", "-q", "-m", "base"], cwd=repo, env=env, check=True)
+            base_sha = subprocess.check_output(
+                ["git", "rev-parse", "HEAD"], cwd=repo, text=True
+            ).strip()
+
+            files = {
+                "coqui/packages/core/coqui_platform/assets/elevenlabs/libsamplerate.worklet.js": "/* huge */\n",
+                "coqui/packages/core/coqui_platform/assets/elevenlabs/LICENSE": "MIT\n",
+                "coqui/packages/core/coqui_platform/assets/elevenlabs/sub/nested.worklet.js": "/* nested */\n",
+                "coqui/packages/core/coqui_platform/lib/src/web/el_conv.dart": "// dart\n",
+            }
+            for rel, content in files.items():
+                p = repo / rel
+                p.parent.mkdir(parents=True, exist_ok=True)
+                p.write_text(content, encoding="utf-8")
+            subprocess.run(["git", "add", "."], cwd=repo, env=env, check=True)
+            subprocess.run(["git", "commit", "-q", "-m", "head"], cwd=repo, env=env, check=True)
+            head_sha = subprocess.check_output(
+                ["git", "rev-parse", "HEAD"], cwd=repo, text=True
+            ).strip()
+
+            old_cwd = os.getcwd()
+            try:
+                os.chdir(repo)
+                chunks, _ = cpr.get_diff_chunks(base_sha, head_ref=head_sha)
+            finally:
+                os.chdir(old_cwd)
+
+            reviewed = [path for chunk_files, _ in chunks for path in chunk_files]
+            self.assertNotIn(
+                "coqui/packages/core/coqui_platform/assets/elevenlabs/libsamplerate.worklet.js",
+                reviewed,
+            )
+            self.assertIn(
+                "coqui/packages/core/coqui_platform/assets/elevenlabs/LICENSE",
+                reviewed,
+            )
+            self.assertIn(
+                "coqui/packages/core/coqui_platform/assets/elevenlabs/sub/nested.worklet.js",
+                reviewed,
+            )
+            self.assertIn(
+                "coqui/packages/core/coqui_platform/lib/src/web/el_conv.dart",
+                reviewed,
+            )
+
+
 if __name__ == "__main__":
     unittest.main()
