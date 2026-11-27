@@ -6,6 +6,7 @@ import 'dart:async';
 import 'package:app/src/addresses.dart';
 import 'package:app/src/content.dart';
 import 'package:app/src/modules.dart';
+import 'package:app/src/motion.dart';
 import 'package:app/src/navigator.dart';
 import 'package:app/src/platform.dart';
 import 'package:app/src/previa.dart';
@@ -34,6 +35,9 @@ const SystemUiOverlayStyle nocheSystemUiStyle = SystemUiOverlayStyle(
   systemNavigationBarContrastEnforced: false,
 );
 
+/// The line shown under the pulsing dots while the course loads.
+const String loadingCourseLine = 'Getting your course';
+
 /// The one line the app shows when the course cannot be loaded, over a "Try again" button.
 const String loadFailedLine = 'Coquí could not load. Check your connection.';
 
@@ -42,6 +46,15 @@ const String tryAgainLabel = 'Try again';
 
 /// Stable shell-owned key for the boot loading surface.
 const ValueKey<String> shellLoadingKey = ValueKey('shell-loading');
+
+/// Stable shell-owned key for the loading dots row on [_ShellLoading].
+const ValueKey<String> shellLoadingDotsKey = ValueKey('shell-loading-dots');
+
+/// Stable shell-owned key for the loading status line on [_ShellLoading].
+const ValueKey<String> shellLoadingLineKey = ValueKey('shell-loading-line');
+
+/// Stable shell-owned key for the course-turn opacity wrapper.
+const ValueKey<String> shellCourseTurnKey = ValueKey('shell-course-turn');
 
 /// Setting key used by language pickers to store the active language code.
 const String _languageSettingKey = 'idioma';
@@ -91,7 +104,7 @@ class CoquiApp extends StatefulWidget {
   State<CoquiApp> createState() => _CoquiAppState();
 }
 
-class _CoquiAppState extends State<CoquiApp> {
+class _CoquiAppState extends State<CoquiApp> with TickerProviderStateMixin {
   /// Mulberry32, seeded once from the clock at the start.
   late final Rng _rng = Mulberry32(widget.platform.clock.nowMs());
   late final ShellNavigator _nav = ShellNavigator(
@@ -102,6 +115,12 @@ class _CoquiAppState extends State<CoquiApp> {
     state: _Start.loading,
     generation: 0,
   ));
+  late final AnimationController _courseTurnController = AnimationController(
+    vsync: this,
+    value: 1.0,
+    animationBehavior: AnimationBehavior.preserve,
+  );
+  BuildContext? _innerContext;
   Future<AppStorage>? _storage;
   ProgressStores? _stores;
   StreamSubscription<void>? _storesChanges;
@@ -110,6 +129,7 @@ class _CoquiAppState extends State<CoquiApp> {
   Services? _services;
   List<FeatureModule>? _modules;
   bool _unlocked = false;
+  bool _animateInitialLoadArrival = false;
   int _generation = 0;
   int _loadTicket = 0;
   String? _requestedLanguageCode;
@@ -161,10 +181,25 @@ class _CoquiAppState extends State<CoquiApp> {
     _stores?.dispose();
     final clips = _loaded?.clips;
     if (clips != null) unawaited(clips.stop());
+    _courseTurnController.dispose();
     _nav.dispose();
     _router.dispose();
     _start.dispose();
     super.dispose();
+  }
+
+  NocheMotionData _currentMotion() {
+    final ctx = _innerContext;
+    if (ctx != null && ctx.mounted) {
+      return NocheMotion.of(ctx);
+    }
+    return WidgetsBinding
+            .instance
+            .platformDispatcher
+            .accessibilityFeatures
+            .disableAnimations
+        ? NocheMotion.reduced
+        : NocheMotion.normal;
   }
 
   Future<CourseCatalog> _loadCourse(String languageCode) async {
@@ -187,7 +222,19 @@ class _CoquiAppState extends State<CoquiApp> {
   Future<void> _load({bool goToMap = false}) async {
     final ticket = ++_loadTicket;
     _pendingGoToMap = _pendingGoToMap || goToMap;
-    _start.value = (state: _Start.loading, generation: _generation);
+    final isCourseTurn =
+        goToMap && _loaded != null && _start.value.state == _Start.ready;
+    Future<void>? fadeOutFuture;
+    if (isCourseTurn) {
+      final motion = _currentMotion();
+      fadeOutFuture = _courseTurnController
+          .animateTo(0.0, duration: motion.quick, curve: motion.exit)
+          .orCancel
+          .catchError((_) {});
+    } else {
+      _courseTurnController.value = 1.0;
+      _start.value = (state: _Start.loading, generation: _generation);
+    }
     try {
       final storage = await (_storage ??= widget.platform.storage());
       if (!mounted || ticket != _loadTicket) return;
@@ -222,6 +269,10 @@ class _CoquiAppState extends State<CoquiApp> {
       // CallSession is language-agnostic: each start(CallBrief) takes its agentId from the course.
       final call = _call ??= await widget.platform.call(widget.platform.info);
       if (!mounted || ticket != _loadTicket) return;
+      if (fadeOutFuture != null) {
+        await fadeOutFuture;
+        if (!mounted || ticket != _loadTicket) return;
+      }
       if (course.language.code != requestedCode) {
         _requestedLanguageCode = course.language.code;
         _syncingLanguageSetting = true;
@@ -251,6 +302,7 @@ class _CoquiAppState extends State<CoquiApp> {
         create: widget.platform.clipPlayer,
       );
       if (_unlocked) unawaited(clips.unlock());
+      _animateInitialLoadArrival = _loaded == null;
       _loaded = _Loaded(course, progress, clips, storage, call, voiceTest);
       _services = null;
       _modules = null;
@@ -264,8 +316,18 @@ class _CoquiAppState extends State<CoquiApp> {
         _nav.go(const TabRoute(startTab));
       }
       _start.value = (state: _Start.ready, generation: _generation);
+      if (isCourseTurn) {
+        final motion = _currentMotion();
+        unawaited(
+          _courseTurnController
+              .animateTo(1.0, duration: motion.move, curve: motion.enter)
+              .orCancel
+              .catchError((_) {}),
+        );
+      }
     } catch (_) {
       if (mounted && ticket == _loadTicket) {
+        _courseTurnController.value = 1.0;
         _start.value = (state: _Start.failed, generation: _generation);
       }
     }
@@ -362,62 +424,331 @@ class _CoquiAppState extends State<CoquiApp> {
       canvasColor: NocheColors.ground,
     ),
     routerConfig: _router,
-    builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
-      value: nocheSystemUiStyle,
-      // Android 16 enforces transparent system bars. Paint their background
-      // ourselves and keep legacy screens inside the system insets.
-      child: ColoredBox(
-        color: NocheColors.ground,
-        child: SafeArea(
-          child: Listener(
-            behavior: HitTestBehavior.translucent,
-            onPointerDown: _firstTap,
-            child: child,
+    builder: (context, child) {
+      _innerContext = context;
+      return AnnotatedRegion<SystemUiOverlayStyle>(
+        value: nocheSystemUiStyle,
+        // Android 16 enforces transparent system bars. Paint their background
+        // ourselves and keep legacy screens inside the system insets.
+        child: ColoredBox(
+          color: NocheColors.ground,
+          child: SafeArea(
+            child: Listener(
+              behavior: HitTestBehavior.translucent,
+              onPointerDown: _firstTap,
+              child: child,
+            ),
           ),
         ),
-      ),
-    ),
+      );
+    },
   );
 }
 
 /// The page for one address: the start's state, then the app.
-class _Screens extends StatelessWidget {
+class _Screens extends StatefulWidget {
   const _Screens({required this.app, required this.address});
 
   final _CoquiAppState app;
   final Uri address;
 
   @override
-  Widget build(BuildContext context) =>
-      ValueListenableBuilder<({_Start state, int generation})>(
-        valueListenable: app._start,
-        builder: (context, phase, _) => switch (phase.state) {
-          _Start.loading => const ColoredBox(
-            key: shellLoadingKey,
-            color: NocheColors.ground,
+  State<_Screens> createState() => _ScreensState();
+}
+
+class _ScreensState extends State<_Screens>
+    with SingleTickerProviderStateMixin {
+  final GlobalKey _loadingKey = GlobalKey();
+  final GlobalKey _failedKey = GlobalKey();
+
+  late ({_Start state, int generation}) _phase = widget.app._start.value;
+  _Start? _lastBuiltState;
+  _Start? _outgoingState;
+  NocheMotionData _outgoingMotion = NocheMotion.normal;
+
+  late final AnimationController _outgoingController = AnimationController(
+    vsync: this,
+    value: 1.0,
+    animationBehavior: AnimationBehavior.preserve,
+  )..addStatusListener(_handleOutgoingStatus);
+
+  @override
+  void initState() {
+    super.initState();
+    widget.app._start.addListener(_onStartChanged);
+  }
+
+  @override
+  void didUpdateWidget(_Screens oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.app != widget.app) {
+      oldWidget.app._start.removeListener(_onStartChanged);
+      widget.app._start.addListener(_onStartChanged);
+      _phase = widget.app._start.value;
+    }
+  }
+
+  @override
+  void dispose() {
+    widget.app._start.removeListener(_onStartChanged);
+    _outgoingController
+      ..removeStatusListener(_handleOutgoingStatus)
+      ..dispose();
+    super.dispose();
+  }
+
+  void _handleOutgoingStatus(AnimationStatus status) {
+    if (status == AnimationStatus.completed &&
+        _outgoingState != null &&
+        mounted) {
+      setState(() {
+        _outgoingState = null;
+      });
+    }
+  }
+
+  void _onStartChanged() {
+    if (!mounted) return;
+    final next = widget.app._start.value;
+    if (next == _phase) return;
+    setState(() {
+      final fromState = _lastBuiltState ?? _phase.state;
+      if (next.state != fromState &&
+          (fromState == _Start.loading || fromState == _Start.failed)) {
+        _outgoingState = fromState;
+        _outgoingMotion = NocheMotion.of(context);
+        _outgoingController.duration = _outgoingMotion.quick;
+        _outgoingController.forward(from: 0.0);
+      } else if (next.state == _outgoingState) {
+        _outgoingState = null;
+        _outgoingController.value = 1.0;
+      }
+      _phase = next;
+    });
+  }
+
+  Widget _buildSurface(_Start state, int generation) => switch (state) {
+    _Start.loading => _ShellLoading(key: _loadingKey),
+    _Start.failed => LoadFailed(
+      key: _failedKey,
+      onRetry: () => unawaited(widget.app._load()),
+    ),
+    _Start.ready => Builder(
+      builder: (context) {
+        final s = widget.app._servicesFor(context);
+        return AnimatedBuilder(
+          animation: widget.app._courseTurnController,
+          builder: (context, child) => Opacity(
+            key: shellCourseTurnKey,
+            opacity: widget.app._courseTurnController.value.clamp(0.0, 1.0),
+            child: child,
           ),
-          _Start.failed => LoadFailed(onRetry: () => unawaited(app._load())),
-          _Start.ready => Builder(
-            builder: (context) {
-              final s = app._servicesFor(context);
-              return Material(
-                type: MaterialType.transparency,
-                child: WelcomeGate(
-                  key: ValueKey('course:${phase.generation}'),
-                  services: s,
-                  child: AppShell(
-                    key: ValueKey('shell:${phase.generation}'),
-                    services: s,
-                    modules: app._modules!,
-                    nav: app._nav,
-                    route: routeOf(address) ?? const TabRoute(startTab),
+          child: Material(
+            type: MaterialType.transparency,
+            child: WelcomeGate(
+              key: ValueKey('course:$generation'),
+              services: s,
+              child: AppShell(
+                key: ValueKey('shell:$generation'),
+                services: s,
+                modules: widget.app._modules!,
+                nav: widget.app._nav,
+                route: routeOf(widget.address) ?? const TabRoute(startTab),
+                animateLoadArrival: widget.app._animateInitialLoadArrival,
+              ),
+            ),
+          ),
+        );
+      },
+    ),
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    _lastBuiltState = _phase.state;
+    final active = _buildSurface(_phase.state, _phase.generation);
+
+    return AnimatedBuilder(
+      animation: _outgoingController,
+      child: active,
+      builder: (context, activeChild) {
+        final outgoingState = _outgoingState;
+        final Widget? outgoing =
+            outgoingState != null && _outgoingController.value < 1.0
+            ? Positioned.fill(
+                child: IgnorePointer(
+                  child: ExcludeSemantics(
+                    child: Opacity(
+                      opacity:
+                          (1.0 -
+                                  _outgoingMotion.exit.transform(
+                                    _outgoingController.value,
+                                  ))
+                              .clamp(0.0, 1.0),
+                      child: _buildSurface(outgoingState, _phase.generation),
+                    ),
                   ),
                 ),
-              );
-            },
+              )
+            : null;
+        return Stack(fit: StackFit.expand, children: [activeChild!, ?outgoing]);
+      },
+    );
+  }
+}
+
+/// The boot loading surface: silent for [ShellMotion.loadSilentDelay], then
+/// fades in three staggered pulsing dots and [loadingCourseLine].
+class _ShellLoading extends StatefulWidget {
+  const _ShellLoading({super.key});
+
+  @override
+  State<_ShellLoading> createState() => _ShellLoadingState();
+}
+
+class _ShellLoadingState extends State<_ShellLoading>
+    with TickerProviderStateMixin {
+  late final AnimationController _enterController = AnimationController(
+    vsync: this,
+    animationBehavior: AnimationBehavior.preserve,
+  );
+  late final AnimationController _dotsController = AnimationController(
+    vsync: this,
+    duration: NocheMotion.thinkingCycle,
+    animationBehavior: AnimationBehavior.preserve,
+  );
+
+  late NocheMotionData _motion;
+  bool _started = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final nextMotion = NocheMotion.of(context);
+    if (!_started) {
+      _started = true;
+      _motion = nextMotion;
+      final total = ShellMotion.loadSilentDelay + _motion.move;
+      _enterController.duration = total;
+      _enterController.forward(from: 0.0);
+      if (_motion.loops) {
+        _dotsController.repeat();
+      } else {
+        _dotsController.value = 0.0;
+      }
+    } else if (_motion.loops != nextMotion.loops) {
+      _motion = nextMotion;
+      if (_motion.loops) {
+        _dotsController.repeat();
+      } else {
+        _dotsController
+          ..stop()
+          ..value = 0.0;
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _enterController.dispose();
+    _dotsController.dispose();
+    super.dispose();
+  }
+
+  double _enterOpacity() {
+    if (_enterController.isCompleted) return 1.0;
+    final totalUs = (ShellMotion.loadSilentDelay + _motion.move).inMicroseconds
+        .toDouble();
+    final elapsedUs = _enterController.value * totalUs;
+    final delayUs = ShellMotion.loadSilentDelay.inMicroseconds.toDouble();
+    if (elapsedUs <= delayUs) return 0.0;
+    final moveUs = _motion.move.inMicroseconds.toDouble();
+    if (moveUs <= 0) return 1.0;
+    final raw = ((elapsedUs - delayUs) / moveUs).clamp(0.0, 1.0);
+    return _motion.enter.transform(raw).clamp(0.0, 1.0);
+  }
+
+  double _dotOpacity(int index) {
+    if (!_motion.loops || _motion.reduced) return 1.0;
+    final cycleUs = NocheMotion.thinkingCycle.inMicroseconds.toDouble();
+    final staggerUs = ShellMotion.loadDotStagger.inMicroseconds.toDouble();
+    var phase = (_dotsController.value - (index * staggerUs) / cycleUs) % 1.0;
+    if (phase < 0) phase += 1.0;
+    if (phase <= 0.3) {
+      final t = (phase / 0.3).clamp(0.0, 1.0);
+      return 0.35 + 0.65 * _motion.travel.transform(t);
+    }
+    if (phase <= 0.6) {
+      final t = ((phase - 0.3) / 0.3).clamp(0.0, 1.0);
+      return 1.0 - 0.65 * _motion.travel.transform(t);
+    }
+    return 0.35;
+  }
+
+  @override
+  Widget build(BuildContext context) => ColoredBox(
+    key: shellLoadingKey,
+    color: NocheColors.ground,
+    child: SafeArea(
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsetsDirectional.symmetric(
+            horizontal: NocheSize.grid * 3,
           ),
-        },
-      );
+          child: AnimatedBuilder(
+            animation: _enterController,
+            builder: (context, child) =>
+                Opacity(opacity: _enterOpacity(), child: child),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ExcludeSemantics(
+                  key: shellLoadingDotsKey,
+                  child: AnimatedBuilder(
+                    animation: _dotsController,
+                    builder: (context, _) => Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        for (var i = 0; i < 3; i++) ...[
+                          if (i > 0)
+                            const SizedBox(width: ShellMotion.loadDotGap),
+                          Opacity(
+                            opacity: _dotOpacity(i),
+                            child: const DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: NocheColors.label,
+                                shape: BoxShape.circle,
+                              ),
+                              child: SizedBox(
+                                width: ShellMotion.loadDotSize,
+                                height: ShellMotion.loadDotSize,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: ShellMotion.loadLineGap),
+                Semantics(
+                  liveRegion: true,
+                  child: Text(
+                    loadingCourseLine,
+                    key: shellLoadingLineKey,
+                    style: NocheType.bodyLarge.copyWith(
+                      color: NocheColors.label,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
 /// The course could not be loaded (no network): one line and "Try again", on the page colour.
@@ -433,31 +764,34 @@ class LoadFailed extends StatelessWidget {
   final VoidCallback onRetry;
 
   @override
-  Widget build(BuildContext context) => ColoredBox(
-    key: screenKey,
-    color: NocheColors.ground,
-    child: SafeArea(
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsetsDirectional.all(NocheSize.grid * 3),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                loadFailedLine,
-                style: NocheType.bodyLarge.copyWith(color: NocheColors.text),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: NocheSize.grid * 2),
-              NochePrimaryButton(
+  Widget build(BuildContext context) {
+    final motion = NocheMotion.of(context);
+    return ColoredBox(
+      key: screenKey,
+      color: NocheColors.ground,
+      child: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsetsDirectional.all(NocheSize.grid * 3),
+            child: NocheArrive(
+              delay: motion.swapAfter,
+              nextSpacing: ShellMotion.loadLineGap,
+              next: NochePrimaryButton(
                 key: retryKey,
                 label: tryAgainLabel,
                 onPressed: onRetry,
               ),
-            ],
+              children: [
+                Text(
+                  loadFailedLine,
+                  style: NocheType.bodyLarge.copyWith(color: NocheColors.text),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
