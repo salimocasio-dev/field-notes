@@ -453,6 +453,8 @@ def _git(repo: Path, args: list[str]) -> subprocess.CompletedProcess[str]:
         ["git", "-C", str(repo), *args],
         capture_output=True,
         text=True,
+        encoding="utf-8",
+        errors="replace",
         check=False,
     )
 
@@ -515,7 +517,7 @@ def check_repo(
             "--diff-filter=AMCR",
             f"{diff_base}...HEAD",
             "--",
-            "coqui",
+            "*.dart",
         ],
     )
     if diff.returncode != 0:
