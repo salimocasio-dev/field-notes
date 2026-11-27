@@ -5,6 +5,7 @@ import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_library/feature_library.dart';
 import 'package:feature_library/src/import_screen.dart';
+import 'package:feature_library/src/motion.dart';
 import 'package:feature_library/src/reading.dart';
 import 'package:feature_library/src/reading_home.dart';
 import 'package:feature_library/src/text_reader.dart';
@@ -62,7 +63,9 @@ void main() {
     );
     await ready(tester);
     expect(find.byType(ReadingHome), findsOneWidget);
-    expect(find.text(LibraryWording.writeMyStory), findsOneWidget);
+    expect(find.byKey(const Key('library-home')), findsOneWidget);
+    expect(find.text(LibraryWording.newStoryLocked), findsOneWidget);
+    expect(find.byKey(const Key('library-write-story')), findsNothing);
     expect(find.text(LibraryWording.addYourOwnPill), findsOneWidget);
     expect(find.text('Uno'), findsNothing);
     expect(rig.course.bookAsked, isEmpty);
@@ -74,36 +77,57 @@ void main() {
     await tester.pumpWidget(devApp());
     await ready(tester);
     expect(find.byType(NocheTabBar), findsOneWidget);
-    await tester.tap(find.widgetWithText(NocheOutlineButton, 'Write my story'));
+    expect(find.byKey(const Key('library-home')), findsOneWidget);
+    await tester.tap(find.byKey(const Key('library-write-story')));
     await ready(tester);
     await tester.enterText(find.byType(TextFormField), 'jugo');
-    await tester.tap(find.widgetWithText(NochePrimaryButton, 'Write my story'));
+    await tester.tap(find.byKey(const Key('library-write-story-submit')));
+    await tester.pumpAndSettle();
+    await tester.pump(
+      LibraryMotion.shelfInsertAfter +
+          LibraryMotion.shelfInsertFadeDelay +
+          NocheMotion.move,
+    );
+    await tester.pumpAndSettle();
+
+    // New story lands on the shelf with a NEW tag; learner stays on Library.
+    expect(find.byType(ReadingHome), findsOneWidget);
+    expect(find.byType(NocheTabBar), findsOneWidget);
+    expect(find.byType(TextReader), findsNothing);
+    expect(find.text(LibraryWording.newStoryTag.toUpperCase()), findsOneWidget);
+
+    final newTagFinder = find.text(LibraryWording.newStoryTag.toUpperCase());
+    await tester.tap(newTagFinder);
     await ready(tester);
     expect(find.byType(TextReader), findsOneWidget);
     expect(find.byType(NocheTabBar), findsNothing);
     expect(find.byType(Image), findsNothing);
+    expect(find.byKey(const Key('reader-page-counter')), findsOneWidget);
 
-    await tester.tap(find.byTooltip(ReaderTexts.close));
+    await tester.tap(find.byKey(const Key('reader-close-button')));
     await ready(tester);
     expect(find.byType(NocheTabBar), findsOneWidget);
-    expect(find.text('Story'), findsOneWidget);
+    expect(find.text('STORIES'), findsOneWidget);
+    expect(find.text(LibraryWording.newStoryTag.toUpperCase()), findsNothing);
   });
 
-  testWidgets('reports when the generator has no vocabulary match', (
+  testWidgets('learner with no words sees locked slot and cannot open sheet', (
     tester,
   ) async {
     await tester.pumpWidget(devApp(options: const DevOptions(seed: 'vacio')));
     await ready(tester);
-    await tester.tap(find.widgetWithText(NocheOutlineButton, 'Write my story'));
+    expect(find.text(LibraryWording.newStoryLocked), findsOneWidget);
+    expect(find.byKey(const Key('library-write-story')), findsNothing);
+
+    await tester.tap(find.text(LibraryWording.newStoryLocked));
     await ready(tester);
-    await tester.tap(find.widgetWithText(NochePrimaryButton, 'Write my story'));
-    await ready(tester);
-    expect(find.textContaining('no new story that fits'), findsOneWidget);
+    expect(find.byType(TextFormField), findsNothing);
+    expect(find.text(LibraryWording.writeMyStory), findsNothing);
     expect(find.byType(TextReader), findsNothing);
   });
 
   testWidgets(
-    'a pre-stored book resumes its saved page before A2 via Continue reading and the shelf Book tile',
+    'a pre-stored book resumes its saved page before A2 via Continue reading and the shelf book cover',
     (tester) async {
       tester.view.devicePixelRatio = 1;
       tester.view.physicalSize = const Size(390, 844);
@@ -145,16 +169,18 @@ void main() {
         ),
       );
       await ready(tester);
-      expect(find.text('Book'), findsOneWidget);
+      final bookShelfKey = ValueKey('library-book:${book.id}');
+      expect(find.byKey(bookShelfKey), findsOneWidget);
       expect(find.text('Continue reading'), findsOneWidget);
 
-      await tester.ensureVisible(find.text('Book'));
-      await tester.tap(find.text('Book'));
+      await tester.ensureVisible(find.byKey(bookShelfKey));
+      await tester.tap(find.byKey(bookShelfKey));
       await ready(tester);
       expect(find.byType(TextReader), findsOneWidget);
       final totalPages = store.place(book.id).totalPages;
       expect(totalPages, isNotNull);
       expect(totalPages!, greaterThan(1));
+      expect(find.byKey(const Key('reader-page-counter')), findsOneWidget);
       expect(find.text('1 / $totalPages'), findsOneWidget);
 
       // Tap outer right fifth to advance to page 2.
@@ -163,11 +189,11 @@ void main() {
       await ready(tester);
       expect(find.text('2 / $totalPages'), findsOneWidget);
 
-      await tester.tap(find.byTooltip(ReaderTexts.close));
+      await tester.tap(find.byKey(const Key('reader-close-button')));
       await ready(tester);
 
       expect(find.byType(ReadingHome), findsOneWidget);
-      expect(find.text('Book'), findsOneWidget);
+      expect(find.byKey(bookShelfKey), findsOneWidget);
       expect(find.textContaining('Page 2 of $totalPages'), findsOneWidget);
       expect(store.place(book.id).words, isEmpty);
 
@@ -190,7 +216,7 @@ void main() {
       await ready(tester);
       expect(find.text(ReaderTexts.textUnavailable), findsOneWidget);
       expect(find.byType(CircularProgressIndicator), findsNothing);
-      await tester.tap(find.byTooltip(ReaderTexts.close));
+      await tester.tap(find.byKey(const Key('reader-close-button')));
       expect(rig.nav.routes, isEmpty);
       expect(rig.nav.backs, 1, reason: id);
     }

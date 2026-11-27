@@ -30,6 +30,17 @@ Palabras.
   today's rule. `test/repaso_count_test.dart`.
 - The dev entry is `tool/dev_main.dart` (below); `web/` is there for it.
 
+## Stable widget keys
+
+Keep these keys stable as shell and integration test contracts:
+
+- `Key('words-tab')` — root of `WordsTab`.
+- `Key('words-due-count')` — due-today count in the summary card.
+- `Key('words-review-button')` — primary review/practice action button.
+- `ValueKey('word-row:<word>')` — each word row in the skill list.
+
+Words tab copy assertions (due-words caption, "Start review" label, section headings, word detail sheets) are owned and verified in `feature_words/test/` rather than `app/test/`.
+
 ## Stand-ins
 
 What this package carries because the shared packages do not have it. The requests for them are answered (the files in `coqui/requests/` are gone); these stay in the package.

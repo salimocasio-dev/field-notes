@@ -12,6 +12,7 @@ import 'package:feature_story/src/screen/scene_frame.dart';
 import 'package:feature_story/src/screen/story_mic.dart';
 import 'package:feature_story/src/screen/story_not_ready.dart';
 import 'package:feature_story/src/screen/story_screen.dart';
+import 'package:feature_story/src/wording.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -283,9 +284,12 @@ void main() {
         await _answer(s, () => true);
         expect(s.runner.view.screen, StoryScreenState.end);
         expect(find.text('La lluvia'), findsOneWidget);
-        expect(find.text('Play again'), findsOneWidget);
-        expect(find.text('Map'), findsOneWidget);
-        expect(find.text('Next story'), findsOneWidget);
+        expect(find.text(StoryWording.playAgain), findsOneWidget);
+        expect(find.text(StoryWording.map), findsOneWidget);
+        expect(
+          find.text(StoryWording.nextStory('El bizcocho')),
+          findsOneWidget,
+        );
         final dashes = tester.widget<NocheDashes>(find.byType(NocheDashes));
         expect(dashes.states.every((d) => d == NocheDashState.done), isTrue);
         expect(s.services.progress.played('la-lluvia'), isTrue);
@@ -304,7 +308,10 @@ void main() {
           return !w;
         });
         expect(find.text('La lluvia'), findsOneWidget);
-        expect(find.text('Next story'), findsOneWidget);
+        expect(
+          find.text(StoryWording.nextStory('El bizcocho')),
+          findsOneWidget,
+        );
         expect(s.services.progress.story('la-lluvia')?.perdido, isNotNull);
       },
     );
@@ -315,21 +322,21 @@ void main() {
         final s = await openScreen(tester);
         await tester.tap(find.byType(NochePlayDisc));
         await _answer(s, () => true);
-        await tester.tap(find.text('Next story'));
+        await tester.tap(find.byKey(const Key('story-end-primary')));
         expect(s.nav.last, const StoryRoute('el-bizcocho'));
-        await tester.tap(find.text('Map'));
+        await tester.tap(find.byKey(const Key('story-end-map')));
         expect(s.nav.last, const TabRoute('map'));
-        await tester.tap(find.text('Play again'));
+        await tester.tap(find.byKey(const Key('story-end-replay')));
         await tester.pump();
         expect(s.runner.view.screen, StoryScreenState.play);
-        expect(find.text('Play again'), findsNothing);
+        expect(find.text(StoryWording.playAgain), findsNothing);
       },
     );
   });
 
   group('Next story only where the course names the story', () {
     testWidgets(
-      'a next the course does not name: no Next story, Map is the NochePrimaryButton, Play again is NocheOutlineButton',
+      'a next the course does not name: no Next story, Back to the map is the NochePrimaryButton, Play again is NocheOutlineButton',
       (tester) async {
         final s = await openScreen(
           tester,
@@ -342,12 +349,15 @@ void main() {
         await _answer(s, () => true);
         expect(s.runner.view.screen, StoryScreenState.end);
         expect(s.runner.S['next'], 'que-quieres');
-        expect(find.text('Next story'), findsNothing);
+        expect(find.text(StoryWording.nextStoryFallback), findsNothing);
         expect(find.byType(NocheOutlineButton), findsOneWidget);
         expect(find.byType(NochePrimaryButton), findsOneWidget);
-        expect(find.text('Play again'), findsOneWidget);
-        expect(find.widgetWithText(NochePrimaryButton, 'Map'), findsOneWidget);
-        await tester.tap(find.text('Map'));
+        expect(find.text(StoryWording.playAgain), findsOneWidget);
+        expect(
+          find.widgetWithText(NochePrimaryButton, StoryWording.backToMap),
+          findsOneWidget,
+        );
+        await tester.tap(find.byKey(const Key('story-end-primary')));
         expect(s.nav.routes, [const TabRoute('map')]);
       },
     );
@@ -363,11 +373,17 @@ void main() {
         expect(find.byType(NocheOutlineButton), findsNWidgets(2));
         expect(find.byType(NochePrimaryButton), findsOneWidget);
         expect(
-          find.widgetWithText(NochePrimaryButton, 'Next story'),
+          find.widgetWithText(
+            NochePrimaryButton,
+            StoryWording.nextStory('El bizcocho'),
+          ),
           findsOneWidget,
         );
-        expect(find.widgetWithText(NocheOutlineButton, 'Map'), findsOneWidget);
-        await tester.tap(find.text('Next story'));
+        expect(
+          find.widgetWithText(NocheOutlineButton, StoryWording.map),
+          findsOneWidget,
+        );
+        await tester.tap(find.byKey(const Key('story-end-primary')));
         expect(s.nav.routes, [const StoryRoute('el-bizcocho')]);
       },
     );
@@ -375,7 +391,7 @@ void main() {
 
   group('Listen mode', () {
     testWidgets(
-      'the story goes through by itself; at the end Play again and Map, no Next story',
+      'the story goes through by itself; at the end Play again and Back to the map, no Next story',
       (tester) async {
         final s = await openScreen(tester, listen: true);
         await tester.tap(find.byType(NochePlayDisc));
@@ -384,9 +400,9 @@ void main() {
           what: 'the end',
         );
         expect(s.runner.pendingNow, isNull);
-        expect(find.text('Play again'), findsOneWidget);
-        expect(find.text('Map'), findsOneWidget);
-        expect(find.text('Next story'), findsNothing);
+        expect(find.text(StoryWording.playAgain), findsOneWidget);
+        expect(find.text(StoryWording.backToMap), findsOneWidget);
+        expect(find.text(StoryWording.nextStory('El bizcocho')), findsNothing);
         expect(s.services.progress.raw['oidos'], isNotNull);
         expect(s.services.progress.played('la-lluvia'), isFalse);
       },

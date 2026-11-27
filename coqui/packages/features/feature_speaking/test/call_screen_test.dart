@@ -1,5 +1,5 @@
-// The call screen, state by state, as the reference pictures show each (coqui/ref/pantallas/*/102 to 119), on the
-// scripted fake call. The screen makes its own controller; the test moves the clock and the fake time together.
+// The call screen, state by state, on the scripted fake call.
+// The screen makes its own controller; the test moves the clock and the fake time together.
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
@@ -28,7 +28,7 @@ Future<World> pump(
 }
 
 Future<void> tapDisc(WidgetTester tester) async {
-  await tester.tap(find.byType(CallMicStage));
+  await tester.tap(find.byKey(const Key('call-mic-stage')));
   await tester.pump();
 }
 
@@ -42,6 +42,16 @@ bool helpVisible(WidgetTester tester) {
     find.ancestor(of: find.text('Help'), matching: find.byType(Visibility)),
   );
   return v.visible;
+}
+
+double averageBarHeight(WidgetTester tester, String sidePrefix) {
+  var total = 0.0;
+  for (var i = 0; i < NocheMic.barsPerSide; i++) {
+    total += tester
+        .getSize(find.byKey(ValueKey('noche_mic_bar_${sidePrefix}_$i')))
+        .height;
+  }
+  return total / NocheMic.barsPerSide;
 }
 
 /// The call up to the learner's turn: connected, Danny's line, his turn.
@@ -58,33 +68,30 @@ Future<void> toYourTurn(WidgetTester tester, World w) async {
 void main() {
   group('idle: before the tap', () {
     testWidgets(
-      'dark #1B1B1F screen, label Start call, X 48 px, timer 12 px, disc 72 px, Help hidden, the dialog is named Call Danny',
+      'Noche lessonGround screen, label Start call, X 48 px, timer 12 px, NocheMic 96 px disc, Help hidden, the dialog is named Call Danny',
       (tester) async {
         final handle = tester.ensureSemantics();
         final w = await pump(tester);
+        expect(find.byKey(const Key('call-screen')), findsOneWidget);
         expect(
           find.byWidgetPredicate(
-            (x) => x is ColoredBox && x.color == const Color(0xFF1B1B1F),
+            (x) => x is ColoredBox && x.color == NocheColors.lessonGround,
           ),
           findsWidgets,
         );
         expect(find.text('Start call'), findsOneWidget);
         expect(
-          tester.getSize(find.byType(LessonCloseButton)),
+          tester.getSize(find.byKey(const Key('call-close'))),
           const Size(48, 48),
         );
         expect(styleOf(tester, '00:00').fontSize, 12);
         expect(styleOf(tester, '00:00').color, CallColors.grey);
-        expect(tester.getSize(find.byType(CallMicStage)), const Size(96, 96));
-        final disc = tester.getSize(
-          find
-              .descendant(
-                of: find.byType(CallMicStage),
-                matching: find.byType(AnimatedContainer),
-              )
-              .last,
+        final mic = tester.widget<NocheMic>(find.byType(NocheMic));
+        expect(mic.state, NocheMicState.ready);
+        expect(
+          tester.getSize(find.byKey(const ValueKey('noche_mic_disc'))),
+          const Size(NocheSize.mic, NocheSize.mic),
         );
-        expect(disc, const Size(72, 72));
         expect(helpVisible(tester), isFalse);
         expect(find.bySemanticsLabel(RegExp('Call Danny')), findsWidgets);
         handle.dispose();
@@ -123,9 +130,9 @@ void main() {
           final parts = <String, Rect>{
             'picture': rectOf(tester, find.byType(PictureFrame)),
             'line': rectOf(tester, find.text('La casa · about 5 min')),
-            'mic': rectOf(tester, find.byType(CallMicStage)),
+            'mic': rectOf(tester, find.byKey(const Key('call-mic-stage'))),
             'label': rectOf(tester, find.text('Start call')),
-            'x': rectOf(tester, find.byType(LessonCloseButton)),
+            'x': rectOf(tester, find.byKey(const Key('call-close'))),
             'timer': rectOf(tester, find.text('00:00')),
           };
           parts.forEach((k, r) {
@@ -157,9 +164,8 @@ void main() {
       (tester) async {
         final w = await pump(tester, phone: Phone.side);
         final pic = rectOf(tester, find.byType(PictureFrame));
-        final mic = rectOf(tester, find.byType(CallMicStage));
+        final mic = rectOf(tester, find.byKey(const Key('call-mic-stage')));
         final line = rectOf(tester, find.text('La casa · about 5 min'));
-        // the picture's column is as wide as the picture and its two 16 px margins (grid-template-columns: auto ...)
         expect(pic.left, 16);
         expect(pic.right, lessThan(16 + 196 * 7 / 3 + 1));
         expect(mic.left, greaterThan(pic.right));
@@ -172,7 +178,7 @@ void main() {
       'the X before the call closes the screen (back), the call was never started',
       (tester) async {
         final w = await pump(tester);
-        await tester.tap(find.byType(LessonCloseButton));
+        await tester.tap(find.byKey(const Key('call-close')));
         await tester.pump();
         expect(w.nav.backs, 1);
         expect(w.call.starts, 0);
@@ -183,56 +189,59 @@ void main() {
 
   group('the states of the call', () {
     testWidgets(
-      'connecting: shows within 200 ms, label Calling…, the disc pulses (not when motion is off)',
+      'connecting: shows within 200 ms, label Calling…, NocheMic thinking dots pulse when motion is on',
       (tester) async {
         final w = await pump(tester, reduce: false);
         await tapDisc(tester);
         await tester.pump(const Duration(milliseconds: 100));
         expect(find.text('Calling…'), findsOneWidget);
-        final scales = <double>{};
-        for (var i = 0; i < 12; i++) {
-          await w.elapse(tester, 75);
-          final t = tester.widget<Transform>(
+        expect(
+          tester.widget<NocheMic>(find.byType(NocheMic)).state,
+          NocheMicState.thinking,
+        );
+        await w.elapse(tester, 200);
+        final opacities = <double>{};
+        for (var i = 0; i < 8; i++) {
+          await w.elapse(tester, 100);
+          final dotOpacity = tester.widget<Opacity>(
             find
-                .descendant(
-                  of: find.byType(CallMicStage),
-                  matching: find.byType(Transform),
+                .ancestor(
+                  of: find.byKey(const ValueKey('noche_mic_thinking_dot_0')),
+                  matching: find.byType(Opacity),
                 )
                 .first,
           );
-          scales.add(
-            double.parse(t.transform.getMaxScaleOnAxis().toStringAsFixed(3)),
-          );
+          opacities.add(double.parse(dotOpacity.opacity.toStringAsFixed(3)));
         }
-        expect(scales.length, greaterThan(3), reason: 'it pulses');
-        expect(
-          scales.reduce((a, b) => a > b ? a : b),
-          lessThanOrEqualTo(1.1001),
-        );
+        expect(opacities.length, greaterThan(3), reason: 'thinking dots pulse');
         expect(helpVisible(tester), isFalse);
         await w.close(tester);
       },
     );
 
-    testWidgets('connecting with motion off: the disc does not pulse', (
+    testWidgets('connecting with motion off: thinking dots stay still', (
       tester,
     ) async {
       final w = await pump(tester, reduce: true);
       await tapDisc(tester);
       await w.elapse(tester, 400);
       expect(find.text('Calling…'), findsOneWidget);
-      expect(
-        find.descendant(
-          of: find.byType(CallMicStage),
-          matching: find.byType(Transform),
-        ),
-        findsNothing,
-      );
+      for (var i = 0; i < 3; i++) {
+        final dotOpacity = tester.widget<Opacity>(
+          find
+              .ancestor(
+                of: find.byKey(ValueKey('noche_mic_thinking_dot_$i')),
+                matching: find.byType(Opacity),
+              )
+              .first,
+        );
+        expect(dotOpacity.opacity, 1.0);
+      }
       await w.close(tester);
     });
 
     testWidgets(
-      'danny: label Danny, blue rings #3B5BDB spread from the disc with motion; Danny\'s line white 18 px, two lines at most; Help visible, 48 px; the timer 00:00 at the start',
+      'danny: label Danny, NocheMic theySpeak with 5+5 plum bars; Danny\'s line NocheColors.text 18 px, two lines at most; Help visible, 48 px; the timer 00:00 at the start',
       (tester) async {
         final w = await pump(tester, reduce: false);
         await tapDisc(tester);
@@ -240,20 +249,30 @@ void main() {
         await w.elapse(tester, 120);
         expect(find.text('Danny'), findsOneWidget);
         expect(find.text('00:00'), findsOneWidget);
-        await w.elapse(tester, 1500);
-        final rings = find.byWidgetPredicate(
-          (x) =>
-              x is Container &&
-              x.decoration is BoxDecoration &&
-              (x.decoration! as BoxDecoration).border?.top.color ==
-                  CoquiColors.lessonBlue,
+        expect(
+          tester.widget<NocheMic>(find.byType(NocheMic)).state,
+          NocheMicState.theySpeak,
         );
-        expect(rings, findsNWidgets(3));
+        expect(
+          find.byKey(const ValueKey('noche_mic_bars_start')),
+          findsOneWidget,
+        );
+        expect(
+          find.byKey(const ValueKey('noche_mic_bars_end')),
+          findsOneWidget,
+        );
+        final bar = tester.widget<Container>(
+          find.descendant(
+            of: find.byKey(const ValueKey('noche_mic_bar_start_0')),
+            matching: find.byType(Container),
+          ),
+        );
+        expect((bar.decoration! as BoxDecoration).color, NocheColors.other);
         w.call.go('danny1');
         await w.elapse(tester, 200);
         final s = styleOf(tester, '¡Hola! Soy Danny. ¿Cómo estás?');
         expect(s.fontSize, 18);
-        expect(s.color, const Color(0xFFFFFFFF));
+        expect(s.color, NocheColors.text);
         expect(
           tester
               .widget<Text>(find.text('¡Hola! Soy Danny. ¿Cómo estás?'))
@@ -261,58 +280,58 @@ void main() {
           2,
         );
         expect(helpVisible(tester), isTrue);
-        expect(tester.getSize(find.byType(LessonButton)).height, 48);
+        expect(tester.getSize(find.byType(NocheOutlineButton)).height, 48);
         await w.close(tester);
       },
     );
 
-    testWidgets('danny with motion off: no rings', (tester) async {
+    testWidgets('danny with motion off: theySpeak bars stand still', (
+      tester,
+    ) async {
       final w = await pump(tester, reduce: true);
       await tapDisc(tester);
       w.call.go('connect');
-      await w.elapse(tester, 1500);
-      final rings = find.byWidgetPredicate(
-        (x) =>
-            x is Container &&
-            x.decoration is BoxDecoration &&
-            (x.decoration! as BoxDecoration).border?.top.color ==
-                CoquiColors.lessonBlue,
-      );
-      expect(rings, findsNothing);
+      await w.elapse(tester, 200);
+      final before = averageBarHeight(tester, 'start');
+      await w.elapse(tester, 400);
+      final after = averageBarHeight(tester, 'start');
+      expect(after, closeTo(before, 0.001));
       await w.close(tester);
     });
 
     testWidgets(
-      'your turn: green ring (#3FAE6B) thicker as he talks; label Your turn; Help 48 px',
+      'your turn: NocheMic listening with sky-blue bars that grow as the learner talks; label Your turn; Help 48 px',
       (tester) async {
         final w = await pump(tester);
         await toYourTurn(tester, w);
         expect(find.text('Your turn'), findsOneWidget);
-        double ring() {
-          final c = tester.widget<AnimatedContainer>(
-            find
-                .descendant(
-                  of: find.byType(CallMicStage),
-                  matching: find.byType(AnimatedContainer),
-                )
-                .first,
-          );
-          final shadows = (c.decoration! as BoxDecoration).boxShadow!;
-          expect(shadows.single.color, CallColors.levelRing);
-          return shadows.single.spreadRadius;
-        }
-
-        expect(ring(), 3);
+        expect(
+          tester.widget<NocheMic>(find.byType(NocheMic)).state,
+          NocheMicState.listening,
+        );
+        final bar = tester.widget<Container>(
+          find.descendant(
+            of: find.byKey(const ValueKey('noche_mic_bar_start_0')),
+            matching: find.byType(Container),
+          ),
+        );
+        expect((bar.decoration! as BoxDecoration).color, NocheColors.listening);
+        final quietLevel = tester.widget<NocheMic>(find.byType(NocheMic)).level;
+        expect(quietLevel, closeTo(0.0, 0.01));
         w.call.go('talk1');
         await w.elapse(tester, 600);
-        expect(ring(), greaterThan(5));
-        expect(tester.getSize(find.byType(LessonButton)).height, 48);
+        final talkingLevel = tester
+            .widget<NocheMic>(find.byType(NocheMic))
+            .level;
+        expect(talkingLevel, greaterThan(0.2));
+        expect(averageBarHeight(tester, 'start'), greaterThan(14));
+        expect(tester.getSize(find.byType(NocheOutlineButton)).height, 48);
         await w.close(tester);
       },
     );
 
     testWidgets(
-      'one moment: three dots, label One moment, no ring; what the app heard in #9AD5A8, 16 px',
+      'one moment: NocheMic thinking with three dots, label One moment, no bars; what the app heard in NocheColors.right, 16 px',
       (tester) async {
         final w = await pump(tester);
         await toYourTurn(tester, w);
@@ -321,18 +340,25 @@ void main() {
         w.call.go('quiet1');
         await w.elapse(tester, 800);
         expect(find.text('One moment'), findsOneWidget);
-        final dots = find.byWidgetPredicate(
-          (x) =>
-              x is Container &&
-              x.constraints?.maxWidth == 9 &&
-              x.constraints?.maxHeight == 9,
+        expect(
+          tester.widget<NocheMic>(find.byType(NocheMic)).state,
+          NocheMicState.thinking,
         );
-        expect(dots, findsNWidgets(3));
+        expect(
+          find.byKey(const ValueKey('noche_mic_bars_start')),
+          findsNothing,
+        );
+        for (var i = 0; i < 3; i++) {
+          expect(
+            find.byKey(ValueKey('noche_mic_thinking_dot_$i')),
+            findsOneWidget,
+          );
+        }
         w.call.go('heard1');
         await w.elapse(tester, 100);
         final s = styleOf(tester, 'Hola. Bien, gracias.');
         expect(s.fontSize, 16);
-        expect(s.color, CoquiColors.heard);
+        expect(s.color, NocheColors.right);
         await w.close(tester);
       },
     );
@@ -383,35 +409,43 @@ void main() {
 
   group('the end', () {
     testWidgets(
-      'the X ends a live call with the summary: Call done, N min · M words said, the words as chips, a blue Back to Hablar of at least 48 px that goes back',
+      'the X ends a live call with the summary: Call done, N min · M words said, the words as 40-high outline pills, a primary Back to Hablar of at least 48 px that goes back',
       (tester) async {
         final w = await pump(tester);
         await toYourTurn(tester, w);
         w.call.emit(const Heard('Hola. Bien, gracias.'));
         await w.elapse(tester, 100);
-        await tester.tap(find.byType(LessonCloseButton));
-        await w.elapse(tester, 100);
+        await tester.tap(find.byKey(const Key('call-close')));
+        await w.elapse(tester, 200);
         expect(find.text('Call done'), findsOneWidget);
         expect(find.text('1 min · 3 words said'), findsOneWidget);
         for (final word in ['hola', 'gracias', 'bien']) {
           expect(find.text(word), findsOneWidget);
         }
-        // each word is a pill as wide as its word, side by side (not one full-width bar for each)
-        Rect chip(String w) => rectOf(
-          tester,
-          find.ancestor(of: find.text(w), matching: find.byType(DecoratedBox)),
-        );
-        expect(chip('hola').width, lessThan(100));
-        expect(chip('hola').height, 32);
+        // each word is a 40-high outline pill with lessonBorder, side by side
+        final pill0Finder = find.byKey(const ValueKey('call-done-word-0'));
+        final pill1Finder = find.byKey(const ValueKey('call-done-word-1'));
+        expect(pill0Finder, findsOneWidget);
+        expect(pill1Finder, findsOneWidget);
+        final pill0 = tester.widget<Container>(pill0Finder);
+        final pill0Dec = pill0.decoration! as BoxDecoration;
         expect(
-          (chip('hola').center.dy - chip('gracias').center.dy).abs(),
-          lessThan(2),
+          (pill0Dec.border! as Border).top.color,
+          NocheColors.lessonBorder,
         );
+        final r0 = rectOf(tester, pill0Finder);
+        final r1 = rectOf(tester, pill1Finder);
+        expect(r0.width, lessThan(120));
+        expect(r0.height, 40);
+        expect((r0.center.dy - r1.center.dy).abs(), lessThan(2));
         expect(find.text('Start call'), findsNothing);
         expect(find.text('Help'), findsNothing);
-        final back = find.widgetWithText(LessonButton, 'Back to Hablar');
+        final back = find.byKey(const Key('call-end-back'));
         expect(back, findsOneWidget);
-        expect(tester.widget<LessonButton>(back).kind, LessonButtonKind.blue);
+        expect(
+          find.widgetWithText(NochePrimaryButton, 'Back to Hablar'),
+          findsOneWidget,
+        );
         expect(tester.getSize(back).height, greaterThanOrEqualTo(48));
         expect(w.call.ended, isTrue);
         expect(w.nav.backs, 0);
@@ -433,13 +467,10 @@ void main() {
         await toYourTurn(tester, w);
         w.call.emit(const Heard('Hola. Bien, gracias.'));
         await w.elapse(tester, 100);
-        await tester.tap(find.byType(LessonCloseButton));
+        await tester.tap(find.byKey(const Key('call-close')));
         await w.elapse(tester, 100);
         expect(tester.takeException(), isNull, reason: phone.name);
-        final back = rectOf(
-          tester,
-          find.widgetWithText(LessonButton, 'Back to Hablar'),
-        );
+        final back = rectOf(tester, find.byKey(const Key('call-end-back')));
         expect(
           back.bottom,
           lessThanOrEqualTo(phone.height),
@@ -476,10 +507,10 @@ void main() {
           find.text('The microphone is off. Allow it in your browser to call.'),
           findsOneWidget,
         );
-        expect(find.byType(LessonCloseButton), findsOneWidget);
+        expect(find.byKey(const Key('call-close')), findsOneWidget);
         expect(find.text('00:00'), findsOneWidget);
         expect(find.byType(CallMicStage), findsNothing);
-        await tester.tap(find.byType(LessonCloseButton));
+        await tester.tap(find.byKey(const Key('call-close')));
         await tester.pump();
         expect(w.nav.backs, 1);
         await w.close(tester);

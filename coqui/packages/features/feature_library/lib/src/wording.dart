@@ -10,26 +10,21 @@ abstract final class LibraryWording {
   // Library home (`ReadingHome`).
   static const String libraryTitle = 'Library';
   static const String addYourOwnPill = '+ Add your own';
-  static const String writeStorySection =
-      'A new story at your level · about what?';
+  static const String storiesSection = 'Stories';
+  static const String booksSection = 'Books';
+  static const String newStoryLocked = 'Come back when you learn more words.';
+  static const String newStoryOpen = 'A new story at your level';
   static const String writeMyStory = 'Write my story';
-  static const String noStoryMatchEmpty =
-      'There’s no new story that fits your known words yet.';
+  static const String writingStoryTitle = 'Writing your story';
+  static const String writingStorySubtitle = 'With the words you know.';
+  static const String newStoryTag = 'New';
   static const String noStoryMatchFocused =
       'There’s no new story that fits both your practice words and your current level.';
+  static const String storyWriteFailed =
+      'The story couldn’t be written. Try again.';
   static const String storySaveFailed =
       'The story couldn’t be saved. Try again.';
-  static const String yourShelf = 'Your shelf';
-  static const String yourShelfBeforeA2 = 'Your shelf · reading counts from A2';
-  static const String filterAll = 'All';
-  static const String filterStories = 'Stories';
-  static const String filterBooks = 'Books';
-  static const String emptyShelfAll =
-      'Stories you make and books you add appear here.';
-  static const String emptyShelfStories = 'No stories on your shelf yet.';
   static const String emptyShelfBooks = 'No books on your shelf yet.';
-  static const String typeStory = 'Story';
-  static const String typeBook = 'Book';
   static const String continueReading = 'Continue reading';
   static const String practiceWordsLabel = 'Practice words (optional)';
   static const String practiceWordsHelper =

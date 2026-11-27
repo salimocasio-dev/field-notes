@@ -1,5 +1,5 @@
-// The voice test (habla-prueba.html): the rule for "heard right", its states, its count and result, what it keeps, and
-// its screen in the states of the reference pictures 120 to 129.
+// The voice test: the rule for "heard right", its states, its count and result,
+// what it keeps, and its Noche screen.
 import 'dart:convert';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
@@ -356,18 +356,21 @@ void main() {
     }
 
     Future<void> tapMic(WidgetTester tester, World w, {int ms = 700}) async {
-      await tester.tap(
-        find.byWidgetPredicate(
-          (x) => x is Semantics && x.properties.label == 'Micrófono',
-        ),
-      );
+      await tester.tap(find.byKey(const Key('voice-test-mic')));
       await w.elapse(tester, ms);
     }
 
     testWidgets(
-      'line 1, before the mic: the instruction, 1 / 12, the line, a mic disc, no state label',
+      'line 1, before the mic: Noche lessonGround, instruction, 1 / 12, line, NocheMic ready, NocheDashes, no state label',
       (tester) async {
         final w = await pump(tester);
+        expect(find.byKey(const Key('voice-test-screen')), findsOneWidget);
+        expect(
+          tester
+              .widget<ColoredBox>(find.byKey(const Key('voice-test-screen')))
+              .color,
+          NocheColors.lessonGround,
+        );
         expect(
           find.text('Tap the mic and say each Spanish line.'),
           findsOneWidget,
@@ -377,46 +380,72 @@ void main() {
         expect(find.text('Escuchando…'), findsNothing);
         expect(find.text('Un momento…'), findsNothing);
         expect(find.text('Sí'), findsNothing);
+        expect(
+          tester
+              .widget<NocheMic>(find.byKey(const Key('voice-test-mic')))
+              .state,
+          NocheMicState.ready,
+        );
+        expect(find.byType(NocheDashes), findsOneWidget);
         await w.close(tester);
       },
     );
 
     testWidgets(
-      'listening says Escuchando…, thinking says Un momento… in a blue disc, then the result with a tick in green',
+      'listening uses NocheMic listening + Escuchando…, thinking uses NocheMic thinking + Un momento…, then NocheMic right + heard in NocheColors.right',
       (tester) async {
         final w = await pump(tester);
-        await tester.tap(
-          find.byWidgetPredicate(
-            (x) => x is Semantics && x.properties.label == 'Micrófono',
-          ),
-        );
+        await tester.tap(find.byKey(const Key('voice-test-mic')));
         await w.elapse(tester, 100);
         expect(find.text('Escuchando…'), findsOneWidget);
+        expect(
+          tester
+              .widget<NocheMic>(find.byKey(const Key('voice-test-mic')))
+              .state,
+          NocheMicState.listening,
+        );
         await w.elapse(tester, 250);
         expect(find.text('Un momento…'), findsOneWidget);
+        expect(
+          tester
+              .widget<NocheMic>(find.byKey(const Key('voice-test-mic')))
+              .state,
+          NocheMicState.thinking,
+        );
         await w.elapse(tester, 200);
         expect(find.text('Un momento…'), findsNothing);
+        expect(
+          tester
+              .widget<NocheMic>(find.byKey(const Key('voice-test-mic')))
+              .state,
+          NocheMicState.right,
+        );
         final heard = find.text('hola abuela');
         expect(heard, findsOneWidget);
-        expect(tester.widget<Text>(heard).style!.color, CoquiColors.heard);
+        expect(tester.widget<Text>(heard).style!.color, NocheColors.right);
         await w.close(tester);
       },
     );
 
     testWidgets(
-      'nothing heard: a dash, and the next arrow; the bar has one green dash and the line he is on lighter',
+      'nothing heard: em dash, NocheMic notYet (calm, no red), NocheDashes progress, and primary Next button',
       (tester) async {
         final w = await pump(tester);
         await tapMic(tester, w);
-        await tester.tap(
-          find.byWidgetPredicate(
-            (x) => x is Semantics && x.properties.label == 'Siguiente',
-          ),
-        );
+        await tester.tap(find.byKey(const Key('voice-test-next')));
         await w.elapse(tester, 100);
         expect(find.text('2 / 12'), findsOneWidget);
+        final dashes = tester.widget<NocheDashes>(find.byType(NocheDashes));
+        expect(dashes.states[0], NocheDashState.done);
+        expect(dashes.states[1], NocheDashState.current);
         await tapMic(tester, w, ms: 900);
         expect(find.text('—'), findsOneWidget);
+        expect(
+          tester
+              .widget<NocheMic>(find.byKey(const Key('voice-test-mic')))
+              .state,
+          NocheMicState.notYet,
+        );
         await w.close(tester);
       },
     );
@@ -425,11 +454,7 @@ void main() {
       final w = await pump(tester, stub: 'x|x|x|x|x|x|x|x|x');
       for (var k = 0; k < 9; k++) {
         await tapMic(tester, w, ms: 900);
-        await tester.tap(
-          find.byWidgetPredicate(
-            (x) => x is Semantics && x.properties.label == 'Siguiente',
-          ),
-        );
+        await tester.tap(find.byKey(const Key('voice-test-next')));
         await w.elapse(tester, 100);
       }
       expect(find.text('10 / 12'), findsOneWidget);
@@ -444,14 +469,11 @@ void main() {
         final w = await pump(tester);
         for (var k = 0; k < 12; k++) {
           await tapMic(tester, w, ms: 900);
-          await tester.tap(
-            find.byWidgetPredicate(
-              (x) => x is Semantics && x.properties.label == 'Siguiente',
-            ),
-          );
+          await tester.tap(find.byKey(const Key('voice-test-next')));
           await w.elapse(tester, 100);
         }
         expect(find.text('Heard right: 10 of 12'), findsOneWidget);
+        expect(find.byKey(const Key('voice-test-again')), findsOneWidget);
         expect(find.text('Otra vez'), findsOneWidget);
         expect(find.text('Hola, abuela'), findsOneWidget);
         expect(find.text('hola abuela'), findsOneWidget);
@@ -459,7 +481,7 @@ void main() {
         expect(tester.widget<Text>(find.text('nó')).style!.fontSize, 12);
         expect(find.text('El micrófono no está disponible.'), findsNothing);
         // Otra vez: line 1 again
-        await tester.tap(find.text('Otra vez'));
+        await tester.tap(find.byKey(const Key('voice-test-again')));
         await w.elapse(tester, 100);
         expect(find.text('1 / 12'), findsOneWidget);
         await w.close(tester);
@@ -478,20 +500,30 @@ void main() {
       },
     );
 
-    testWidgets('at the sizes of the old checks nothing overflows', (
-      tester,
-    ) async {
-      for (final phone in [
-        Phone.android,
-        Phone.iphone,
-        Phone.small,
-        Phone.side,
-      ]) {
-        final w = await pump(tester, phone: phone);
-        expect(tester.takeException(), isNull, reason: phone.name);
-        await w.close(tester);
-      }
-    });
+    testWidgets(
+      'at all four phone sizes nothing overflows across ready, listen, and done',
+      (tester) async {
+        for (final phone in [
+          Phone.android,
+          Phone.iphone,
+          Phone.small,
+          Phone.side,
+        ]) {
+          final w = await pump(tester, phone: phone);
+          expect(tester.takeException(), isNull, reason: '${phone.name} ready');
+          await tester.tap(find.byKey(const Key('voice-test-mic')));
+          await w.elapse(tester, 100);
+          expect(
+            tester.takeException(),
+            isNull,
+            reason: '${phone.name} listen',
+          );
+          await w.elapse(tester, 700);
+          expect(tester.takeException(), isNull, reason: '${phone.name} done');
+          await w.close(tester);
+        }
+      },
+    );
   });
 }
 

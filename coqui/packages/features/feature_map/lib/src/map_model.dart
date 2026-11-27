@@ -5,6 +5,7 @@ import 'dart:math' as math;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:feature_map/src/map_picture.dart';
+import 'package:feature_map/src/wording.dart';
 
 // app.html: AJ().todo is 0 or 1 ("Open every place"); JavaScript treats 0 as false
 bool _truthy(Object? v) => v is num ? v != 0 : v == true;
@@ -76,7 +77,7 @@ class TodayEntry {
   final TodayEntryKind kind;
 
   /// app.html, `hud`: `p[0].d + " · " + p[0].m + " min"`
-  String get subtitle => '$line · $minutes min';
+  String get subtitle => MapWording.lineWithMinutes(line, minutes);
 }
 
 /// app.html: plan. Today's plan: returns first, then new stories (up to three a day, each twice), then replays,
@@ -106,7 +107,7 @@ List<TodayEntry> todayPlan({
     final reviewMinutes = math.min(6, 2 + (nd / 3).ceil());
     out.add(
       TodayEntry(
-        line: '$nd word${nd > 1 ? 's' : ''} coming back',
+        line: MapWording.wordsComingBack(nd),
         minutes: reviewMinutes,
         route: const ReviewRoute(),
         review: true,
@@ -140,7 +141,7 @@ List<TodayEntry> todayPlan({
     out.add(
       TodayEntry(
         title: x.title,
-        line: secondPlay ? 'Second play' : 'New story · play it twice',
+        line: secondPlay ? MapWording.secondPlay : MapWording.newStoryPlayTwice,
         minutes: m,
         route: StoryRoute(c),
         kind: secondPlay ? TodayEntryKind.secondPlay : TodayEntryKind.newStory,
@@ -162,7 +163,7 @@ List<TodayEntry> todayPlan({
     out.add(
       TodayEntry(
         title: x.title,
-        line: 'Listen again',
+        line: MapWording.listenAgain,
         minutes: x.minutes,
         route: StoryRoute(c, listen: true),
         kind: TodayEntryKind.listenAgain,
@@ -174,7 +175,7 @@ List<TodayEntry> todayPlan({
   if (out.isEmpty) {
     out.add(
       const TodayEntry(
-        line: 'All your words',
+        line: MapWording.allYourWords,
         minutes: 3,
         route: ReviewRoute(),
         review: true,
@@ -187,18 +188,19 @@ List<TodayEntry> todayPlan({
 
 /// Short kind label shown in the Noche Up next card (`"<kind> · <N> min"`).
 String upNextKind(TodayEntry entry) => switch (entry.kind) {
-  TodayEntryKind.newStory => 'New story',
-  TodayEntryKind.secondPlay => 'Second play',
-  TodayEntryKind.listenAgain => 'Listen again',
+  TodayEntryKind.newStory => MapWording.newStory,
+  TodayEntryKind.secondPlay => MapWording.secondPlay,
+  TodayEntryKind.listenAgain => MapWording.listenAgain,
   TodayEntryKind.review || TodayEntryKind.call => entry.line,
 };
 
 /// Step label used in the `"Then <step1>, then <step2>"` line of the Noche Up next card.
 String? planStepLabel(TodayEntry entry) => switch (entry.kind) {
-  TodayEntryKind.review => 'review',
-  TodayEntryKind.call => 'a call',
-  TodayEntryKind.newStory => 'a new story',
-  TodayEntryKind.secondPlay || TodayEntryKind.listenAgain => 'listening',
+  TodayEntryKind.review => MapWording.stepReview,
+  TodayEntryKind.call => MapWording.stepCall,
+  TodayEntryKind.newStory => MapWording.stepNewStory,
+  TodayEntryKind.secondPlay ||
+  TodayEntryKind.listenAgain => MapWording.stepListening,
 };
 
 /// Formats `"Then <step1>, then <step2>"` from the entries of [plan] after the first.
@@ -214,8 +216,8 @@ String? upNextThenLine(List<TodayEntry> plan) {
     }
   }
   if (steps.isEmpty) return null;
-  if (steps.length == 1) return 'Then ${steps[0]}';
-  return 'Then ${steps[0]}, then ${steps[1]}';
+  if (steps.length == 1) return MapWording.thenOne(steps[0]);
+  return MapWording.thenTwo(steps[0], steps[1]);
 }
 
 /// Index in [places] of the place whose `stories` contains [storyId], or `null`.

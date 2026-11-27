@@ -20,6 +20,10 @@ abstract final class SpeakWording {
   static String lockedPlaceLabel(String placeName) =>
       '$placeName, not reached yet';
 
+  static const afterPrefix = 'After ';
+
+  static String afterPlace(String placeName) => '$afterPrefix$placeName';
+
   static String nextCallEyebrow(String partnerName, int minutes) =>
       'Next call with $partnerName · $minutes min';
 
@@ -37,11 +41,16 @@ abstract final class SpeakWording {
 
   static String callPartner(String partnerName) => 'Call $partnerName';
 
+  static String callingPartner(String partnerName) => 'Calling $partnerName';
+
   static String callDiscSemantic(String partnerName, String callTitle) =>
       '${callPartner(partnerName)}: $callTitle';
 
   static String otherCallSemantic(String callTitle, String metaLine) =>
       '$callTitle, $metaLine';
+
+  static String lockedOtherCallSemantic(String callTitle, String metaLine) =>
+      '$callTitle, locked: $metaLine';
 
   static String minutesOnly(int minutes) => '$minutes min';
 
@@ -68,4 +77,14 @@ abstract final class SpeakWording {
       'Calls with $partnerName open later.';
 
   static String durationLine(int minutes) => 'About $minutes min';
+
+  static String backToSpeak(String speakTabName) => 'Back to $speakTabName';
+
+  static String voiceTestInstruction(String languageName) =>
+      'Tap the mic and say each $languageName line.';
+
+  static String voiceTestResult(int right, int total) =>
+      'Heard right: $right of $total';
+
+  static const emptyHeard = '—';
 }

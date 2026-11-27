@@ -1,5 +1,7 @@
 # A1 build log (the chat that took over from 07)
 
+> **Standing rules only:** Do not append per-ticket notes to this page; record what a ticket did in its PR body and its issue (see `coqui/AGENTS.md`).
+
 Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this page wins.
 
 ## Nov 25, part 33: La plaza plays (build 17)

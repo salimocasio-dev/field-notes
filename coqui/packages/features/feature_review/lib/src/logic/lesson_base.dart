@@ -6,6 +6,7 @@ library;
 import 'dart:async';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:feature_review/src/motion.dart';
 import 'package:flutter/foundation.dart';
 
 /// The host's `wait`: a future that completes after [d]. The widgets give it a timer they can cancel; the tests
@@ -149,7 +150,7 @@ abstract class LessonBase extends ChangeNotifier {
   // ---- time
 
   /// juego.js: sleep(ms): no check of runId.
-  Future<void> sleep(int ms) => wait(Duration(milliseconds: ms));
+  Future<void> sleep(int ms) => wait(ReviewMotion.ms(ms));
 
   /// juego.js: wait(ms): throws [SessionStopped] when the lesson was left meanwhile.
   Future<void> waitMs(int ms) async {

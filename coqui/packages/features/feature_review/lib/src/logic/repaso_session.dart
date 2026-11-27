@@ -16,6 +16,7 @@ import 'package:feature_review/src/logic/repaso_plan.dart';
 import 'package:feature_review/src/logic/review_session.dart'
     show OptionRing, ReviewOptions, reviewSilence;
 import 'package:feature_review/src/logic/word_picture.dart';
+import 'package:feature_review/src/motion.dart';
 
 /// The page's own English lines (menus and labels; nothing in a game is English but these).
 abstract final class RepasoStrings {
@@ -84,11 +85,20 @@ enum MicState { dead, ready, listening, processing, ok, missed }
 
 /// What the end screen lists for one word: the sentence it was asked in.
 class RepasoEndRow {
-  RepasoEndRow(this.word, this.clip, this.text, {required this.ok});
+  RepasoEndRow(
+    this.word,
+    this.clip,
+    this.text, {
+    required this.ok,
+    this.oldStage = 0,
+    this.newStage = 0,
+  });
   final String word;
   final String clip;
   final String text;
   final bool ok;
+  final int oldStage;
+  final int newStage;
 }
 
 class RepasoEndGroup {
@@ -105,12 +115,14 @@ class RepasoEnd {
     required this.practice,
     required this.summary,
     required this.groups,
+    required this.stageMax,
   });
   final int right;
   final int of;
   final bool practice;
   final String summary;
   final List<RepasoEndGroup> groups;
+  final int stageMax;
 }
 
 /// A scored answer (as the old session keeps them).
@@ -183,6 +195,7 @@ class RepasoSession extends LessonBase {
   final List<RepasoAnswer> answers = [];
   final List<RepasoAnswer> secondAnswers = [];
   RepasoEnd? end;
+  final Map<String, ({int before, int after})> _stages = {};
 
   /// How each planned item's first answer went (the bar's colours). Set once, at the item's first answer, and kept to
   /// the end: a return answers an item that is already marked and repaints nothing.
@@ -274,6 +287,9 @@ class RepasoSession extends LessonBase {
   String? _playingId;
   int _playTok = 0;
 
+  /// How many times the current item's sentence has replayed (triggers replay arrow spin).
+  int replayCount = 0;
+
   /// The item's sentence is sounding now.
   bool get sentencePlaying {
     final id = _playingId;
@@ -354,6 +370,7 @@ class RepasoSession extends LessonBase {
     running = true;
     _started = true;
     _t0 = clock.nowMs();
+    _stages.clear();
     setScreen(LessonScreen.play);
     showScreen('');
     _speechOk = await _speechAvailable();
@@ -448,6 +465,7 @@ class RepasoSession extends LessonBase {
     heard = '';
     heardRight = false;
     notHeard = false;
+    replayCount = 0;
     _praiseToken++;
     _onChoice = null;
     _onSpeaker = null;
@@ -497,6 +515,8 @@ class RepasoSession extends LessonBase {
 
     await quiet();
     if (p.isCompleted) return true;
+    replayCount++;
+    changed();
     await Future.any<void>([p.future, say(clip, 0)]);
     if (p.isCompleted) return true;
     await quiet();
@@ -510,8 +530,16 @@ class RepasoSession extends LessonBase {
     required int ms,
     bool auto = false,
   }) {
+    final before = progress.word(it.word)?.ear.etapa ?? 0;
     final due = progress.due(Skill.ear).contains(it.word);
-    progress.answer(it.word, Skill.ear, ok: ok, ms: ms, intro: !due);
+    final rec = progress.answer(
+      it.word,
+      Skill.ear,
+      ok: ok,
+      ms: ms,
+      intro: !due,
+    );
+    _stages[it.word] = (before: before, after: rec.etapa);
     if (it.clip != null) _last.write(it.word, it.clip!);
     answers.add(RepasoAnswer(it.word, it.kind, ok: ok, ms: ms, auto: auto));
   }
@@ -534,6 +562,7 @@ class RepasoSession extends LessonBase {
       if (j == k && !p.isCompleted) p.complete();
     };
     await p.future;
+    if (speaking > 0) hush();
     choices[k]
       ..sign = false
       ..ring = OptionRing.ok
@@ -594,6 +623,8 @@ class RepasoSession extends LessonBase {
     _onSentence = () {
       if (!ready()) return;
       if (silence) _lastSpeakerTap = clock.nowMs();
+      replayCount++;
+      changed();
       hush();
       unawaited(playClip(clip));
     };
@@ -661,7 +692,9 @@ class RepasoSession extends LessonBase {
       if (!auto) {
         sfxBonk();
         _markWrong(choices[got!]);
+        replayCount++;
         changed();
+        unawaited(playClip(it.clip));
         await waitMs(500);
       }
       await _touchShown(k);
@@ -745,7 +778,9 @@ class RepasoSession extends LessonBase {
       if (!auto) {
         sfxBonk();
         _markWrong(choices[got!]);
+        replayCount++;
         changed();
+        unawaited(playClip(it.clip));
         await waitMs(500);
       }
       await _touchShown(it.answer);
@@ -984,7 +1019,9 @@ class RepasoSession extends LessonBase {
       _wrong();
       sfxBonk();
       _markWrong(choices[got!]);
+      replayCount++;
       changed();
+      unawaited(playClip(it.clip));
       await waitMs(500);
       await _touchShown(answer);
       for (var k = 0; k < choices.length; k++) {
@@ -1043,7 +1080,7 @@ class RepasoSession extends LessonBase {
         SpeechResult r;
         final t = speech!.listen(
           locale: course.language.recognitionLocale,
-          limit: const Duration(seconds: 6),
+          limit: ReviewMotion.speechListenLimit,
           maxAlternatives: 5,
         );
         unawaited(
@@ -1160,7 +1197,16 @@ class RepasoSession extends LessonBase {
           break;
         }
       }
-      final row = RepasoEndRow(w.word, it!.clip!, it.text!, ok: a.ok);
+      final st = _stages[w.word];
+      final fallbackStage = progress.word(w.word)?.ear.etapa ?? 0;
+      final row = RepasoEndRow(
+        w.word,
+        it!.clip!,
+        it.text!,
+        ok: a.ok,
+        oldStage: st?.before ?? fallbackStage,
+        newStage: st?.after ?? fallbackStage,
+      );
       (a.ok ? ups : soon).add(row);
     }
     final pr = practice;
@@ -1170,6 +1216,7 @@ class RepasoSession extends LessonBase {
       of: total,
       practice: pr,
       summary: RepasoStrings.rightFirst(ups.length, total),
+      stageMax: progress.stageMax,
       // the words he missed come first: they are what the end screen is for
       groups: [
         if (soon.isNotEmpty)

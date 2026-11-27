@@ -46,32 +46,29 @@ class LanguageChip extends StatelessWidget {
     return Pressable(
       onPressed: onPressed,
       semanticLabel: semanticLabel,
-      builder: (context, pressed) => Transform.scale(
-        scale: pressed ? 0.98 : 1,
-        child: Container(
-          height: NocheSize.touch,
-          padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 12, 0),
-          decoration: BoxDecoration(
-            color: onPanel ? NocheColors.ground : NocheColors.panel,
-            border: Border.all(color: NocheColors.line, width: 1),
-            borderRadius: BorderRadius.circular(NocheSize.pillRadius),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(name, maxLines: 1, softWrap: false, style: nameStyle),
-              if (hasLevel) ...[
-                const SizedBox(width: NocheSize.grid),
-                Text(level!, maxLines: 1, softWrap: false, style: levelStyle),
-              ],
+      builder: (context, _) => Container(
+        height: NocheSize.touch,
+        padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 12, 0),
+        decoration: BoxDecoration(
+          color: onPanel ? NocheColors.ground : NocheColors.panel,
+          border: Border.all(color: NocheColors.line, width: 1),
+          borderRadius: BorderRadius.circular(NocheSize.pillRadius),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(name, maxLines: 1, softWrap: false, style: nameStyle),
+            if (hasLevel) ...[
               const SizedBox(width: NocheSize.grid),
-              const NocheIcon(
-                NocheIcons.chevronDown,
-                size: 16,
-                color: NocheColors.text,
-              ),
+              Text(level!, maxLines: 1, softWrap: false, style: levelStyle),
             ],
-          ),
+            const SizedBox(width: NocheSize.grid),
+            const NocheIcon(
+              NocheIcons.chevronDown,
+              size: 16,
+              color: NocheColors.text,
+            ),
+          ],
         ),
       ),
     );

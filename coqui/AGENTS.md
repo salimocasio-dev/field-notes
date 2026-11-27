@@ -94,6 +94,14 @@ The check script enforces these too, with the plan's rules 1 to 5.
 - Web builds always use `--no-web-resources-cdn`: CanvasKit comes from our own site, never from gstatic.
 - Builders push their lane branch and open a pull request, as the repo-root `AGENTS.md` says. Never to `main`.
 
+## Standing rules (docs, design, and wording)
+
+- **Package `AGENTS.md` holds standing rules only:** A package's `AGENTS.md` holds standing rules only; what a ticket did goes in its PR body and its issue. `tool/check_boundaries.dart` (`[i]`) fails any branch that adds a line containing an issue reference (`#<digits>`) to a package or app `AGENTS.md` (`coqui/**/AGENTS.md`, excluding `coqui/AGENTS.md`).
+- **Project pages hold standing rules only:** The same standing-rules-only policy applies to `docs/proyecto/13-flutter-orders.md`, `docs/proyecto/08-build-log-a1.md`, and `docs/proyecto/00-start-here.md`: do not append per-ticket notes there; put what a ticket did in its PR body and its issue.
+- **Design stories never edit a feature:** A design story never edits a feature. Using a new piece in a screen is a separate story in that feature's lane, and names the board it follows.
+- **Gallery and picture tests for `coqui_ui`:** Every new or changed piece in `coqui_ui` appears in the gallery (`coqui_ui/tool/gallery/`) with a picture test beside it.
+- **Feature screen wording:** A feature's screen wording lives in one file in that feature (`lib/src/wording.dart`); screens and that feature's tests both read from it; no other package's tests look for a feature's wording.
+
 ## Requests
 
 When you need something from a package you may not touch, or a package that is not in the list, you file a request and carry on with the fake or a local copy.

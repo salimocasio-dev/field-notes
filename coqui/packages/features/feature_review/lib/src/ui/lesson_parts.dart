@@ -6,6 +6,7 @@ import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_review/src/logic/review_session.dart' show OptionRing;
 import 'package:feature_review/src/ui/block_layout.dart';
 import 'package:feature_review/src/ui/noche_lesson_parts.dart';
+import 'package:flutter/rendering.dart' show ColorFilterLayer, RenderProxyBox;
 import 'package:material_ui/material_ui.dart';
 
 ChoiceRing choiceRing(OptionRing r) => switch (r) {
@@ -48,8 +49,9 @@ class PictureBlock extends StatelessWidget {
   );
 }
 
-/// One option: a picture that takes the touch the moment a finger goes down (cual.js: `pointerdown`).
-class OptionTouch extends StatelessWidget {
+/// One option: a picture that takes the touch the moment a finger goes down (cual.js: `pointerdown`),
+/// with Noche Rule 1 press feedback (`press` / `pressBack`, `pressScale`, `pressDim`).
+class OptionTouch extends StatefulWidget {
   const OptionTouch({
     super.key,
     required this.index,
@@ -62,18 +64,139 @@ class OptionTouch extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => Semantics(
-    button: true,
-    label: 'Picture ${index + 1}',
-    onTap: () => onTouch(index),
-    child: ExcludeSemantics(
-      child: Listener(
-        behavior: HitTestBehavior.opaque,
-        onPointerDown: (_) => onTouch(index),
-        child: child,
+  State<OptionTouch> createState() => _OptionTouchState();
+}
+
+class _OptionTouchState extends State<OptionTouch>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(vsync: this);
+
+  void _pressDown() {
+    final motion = NocheMotion.of(context);
+    _controller.animateTo(1.0, duration: motion.press, curve: motion.enter);
+    widget.onTouch(widget.index);
+  }
+
+  void _pressUp() {
+    if (!mounted) return;
+    final motion = NocheMotion.of(context);
+    _controller.animateTo(0.0, duration: motion.pressBack, curve: motion.enter);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final motion = NocheMotion.of(context);
+    return Semantics(
+      button: true,
+      label: 'Picture ${widget.index + 1}',
+      onTap: () => widget.onTouch(widget.index),
+      child: ExcludeSemantics(
+        child: Listener(
+          behavior: HitTestBehavior.opaque,
+          onPointerDown: (_) => _pressDown(),
+          onPointerUp: (_) => _pressUp(),
+          onPointerCancel: (_) => _pressUp(),
+          child: AnimatedBuilder(
+            animation: _controller,
+            child: widget.child,
+            builder: (context, child) {
+              final t = _controller.value;
+              final scale = 1.0 + (motion.pressScale - 1.0) * t;
+              final brightness = 1.0 - motion.pressDim * t;
+              return Transform.scale(
+                scale: scale,
+                child: _OptionDimFilter(brightness: brightness, child: child!),
+              );
+            },
+          ),
+        ),
       ),
-    ),
-  );
+    );
+  }
+}
+
+/// Permanent render wrapper that applies a brightness [ColorFilterLayer] only
+/// when [brightness] < 1.0, keeping the child element subtree intact and
+/// avoiding any saveLayer overhead at rest.
+class _OptionDimFilter extends SingleChildRenderObjectWidget {
+  const _OptionDimFilter({required this.brightness, super.child});
+
+  final double brightness;
+
+  @override
+  RenderObject createRenderObject(BuildContext context) =>
+      _RenderOptionDimFilter(brightness);
+
+  @override
+  void updateRenderObject(
+    BuildContext context,
+    _RenderOptionDimFilter renderObject,
+  ) {
+    renderObject.brightness = brightness;
+  }
+}
+
+class _RenderOptionDimFilter extends RenderProxyBox {
+  _RenderOptionDimFilter(this._brightness);
+
+  double _brightness;
+  double get brightness => _brightness;
+
+  set brightness(double value) {
+    if (_brightness == value) return;
+    final wasCompositing = _brightness < 1.0;
+    _brightness = value;
+    if (wasCompositing != (_brightness < 1.0)) {
+      markNeedsCompositingBitsUpdate();
+    }
+    markNeedsPaint();
+  }
+
+  @override
+  bool get alwaysNeedsCompositing => _brightness < 1.0;
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    if (_brightness >= 1.0) {
+      layer = null;
+      super.paint(context, offset);
+      return;
+    }
+    final b = _brightness;
+    layer = context.pushColorFilter(
+      offset,
+      ColorFilter.matrix(<double>[
+        b,
+        0,
+        0,
+        0,
+        0,
+        0,
+        b,
+        0,
+        0,
+        0,
+        0,
+        0,
+        b,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+      ]),
+      super.paint,
+      oldLayer: layer as ColorFilterLayer?,
+    );
+  }
 }
 
 /// What the page's `#main` is, for the layout: the screen less the top bar and the safe area.

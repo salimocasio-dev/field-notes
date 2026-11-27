@@ -53,6 +53,32 @@ class StoryGenerator {
     }
   }
 
+  Map<String, int>? _eligibleUnknown(
+    StoryDraft draft,
+    ReadingVocabulary vocabulary,
+    Set<String> previous,
+  ) {
+    if (previous.contains(draft.body)) return null;
+    final coverage = readingCoverage(draft.body, vocabulary);
+    final unknown = coverage.unknown;
+    if (!meetsReadingCoverage(coverage) ||
+        unknown.length > 3 ||
+        unknown.values.any((count) => count < 2)) {
+      return null;
+    }
+    return unknown;
+  }
+
+  /// True when [generate] with no practice words would return a story for
+  /// [vocabulary], [due], and [previous].
+  bool canWrite({
+    required ReadingVocabulary vocabulary,
+    required Iterable<String> due,
+    required Set<String> previous,
+  }) => _drafts().any(
+    (draft) => _eligibleUnknown(draft, vocabulary, previous) != null,
+  );
+
   StoryDraft? generate({
     required ReadingVocabulary vocabulary,
     required List<String> focus,
@@ -72,14 +98,8 @@ class StoryGenerator {
     final best = <StoryDraft>[];
     ({int review, int newWords})? bestScore;
     for (final draft in _drafts()) {
-      if (previous.contains(draft.body)) continue;
-      final coverage = readingCoverage(draft.body, vocabulary);
-      final unknown = coverage.unknown;
-      if (!meetsReadingCoverage(coverage) ||
-          unknown.length > 3 ||
-          unknown.values.any((count) => count < 2)) {
-        continue;
-      }
+      final unknown = _eligibleUnknown(draft, vocabulary, previous);
+      if (unknown == null) continue;
 
       final searchable = readingLines(draft.body)
           .map((line) => ' ${readingKey(line, language: language)} ')
@@ -107,4 +127,22 @@ class StoryGenerator {
     }
     return best.isEmpty ? null : best[(rng.next() * best.length).floor()];
   }
+
+  /// Async hook for writing a story (allows slow/async story generators in
+  /// production or tests while delegating to [generate] by default).
+  Future<StoryDraft?> writeStory({
+    required ReadingVocabulary vocabulary,
+    required List<String> focus,
+    required Iterable<String> due,
+    required Set<String> previous,
+    required Rng rng,
+  }) => Future.value(
+    generate(
+      vocabulary: vocabulary,
+      focus: focus,
+      due: due,
+      previous: previous,
+      rng: rng,
+    ),
+  );
 }

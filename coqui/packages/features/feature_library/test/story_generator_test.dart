@@ -110,4 +110,56 @@ void main() {
       expect(draft('libro'), isNull);
     },
   );
+
+  test('canWrite matches generate(focus: []) across empty, eligible, and exhausted states', () async {
+    final generator = await StoryGenerator.load();
+    final emptyVocab = ReadingVocabulary(const []);
+    expect(
+      generator.canWrite(
+        vocabulary: emptyVocab,
+        due: const [],
+        previous: const {},
+      ),
+      isFalse,
+    );
+    expect(
+      generator.generate(
+        vocabulary: emptyVocab,
+        focus: const [],
+        due: const [],
+        previous: const {},
+        rng: Mulberry32(4),
+      ),
+      isNull,
+    );
+
+    final fullVocab = ReadingVocabulary([
+      for (final plot in generator.plots)
+        for (final beat in plot.beats)
+          for (final option in beat)
+            for (final word in readingWords(option)) known(word),
+    ]);
+    final used = <String>{};
+    while (true) {
+      final can = generator.canWrite(
+        vocabulary: fullVocab,
+        due: const ['casa'],
+        previous: used,
+      );
+      final draft = generator.generate(
+        vocabulary: fullVocab,
+        focus: const [],
+        due: const ['casa'],
+        previous: used,
+        rng: Mulberry32(5),
+      );
+      expect(can, draft != null);
+      if (draft == null) break;
+      used.add(draft.body);
+    }
+    expect(
+      generator.canWrite(vocabulary: fullVocab, due: const [], previous: used),
+      isFalse,
+    );
+  });
 }

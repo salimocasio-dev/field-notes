@@ -1,13 +1,14 @@
 import 'dart:async';
+import 'dart:ui' as ui;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
+import 'package:feature_library/src/motion.dart';
 import 'package:feature_library/src/reading.dart';
 import 'package:feature_library/src/story_generator.dart';
 import 'package:feature_library/src/wording.dart';
+import 'package:feature_library/src/write_story_sheet.dart';
 import 'package:material_ui/material_ui.dart';
-
-enum _ShelfFilter { all, stories, books }
 
 class ReadingHome extends StatefulWidget {
   const ReadingHome({
@@ -16,6 +17,7 @@ class ReadingHome extends StatefulWidget {
     this.controller,
     this.showAddYourOwn = true,
     this.bottomClearance,
+    this.generator,
   });
 
   final Services services;
@@ -23,36 +25,143 @@ class ReadingHome extends StatefulWidget {
   final bool showAddYourOwn;
   final double? bottomClearance;
 
+  /// Optional pre-loaded generator (used in tests to inject deterministic plots).
+  final StoryGenerator? generator;
+
   @override
   State<ReadingHome> createState() => _ReadingHomeState();
 }
 
-class _ReadingHomeState extends State<ReadingHome> {
+class _ReadingHomeState extends State<ReadingHome>
+    with SingleTickerProviderStateMixin {
   Services get _s => widget.services;
-  late final _store = ReadingStore(_s.storage(ReadingStore.space));
-  late List<ReadingText> _texts = _store.texts();
+  ReadingStore get _store => ReadingStore(_s.storage(ReadingStore.space));
+
+  late List<ReadingText> _texts;
   StreamSubscription<void>? _changes;
   StoryGenerator? _generator;
-  _ShelfFilter _filter = _ShelfFilter.all;
+  bool? _canWrite;
   bool _busy = false;
-  String? _message;
+  bool _sheetOpen = false;
+  String? _pendingInsertStoryId;
+  String? _insertingStoryId;
+  Timer? _insertTimer;
+  late final AnimationController _insertController = AnimationController(
+    vsync: this,
+  )..addStatusListener(_handleInsertStatus);
+  final ScrollController _storiesScrollController = ScrollController();
+  NocheMotionData _insertMotion = NocheMotion.normal;
+
+  void _handleInsertStatus(AnimationStatus status) {
+    if (status == AnimationStatus.completed &&
+        _insertingStoryId != null &&
+        mounted) {
+      setState(() => _insertingStoryId = null);
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+    _texts = _store.texts();
+    _generator = widget.generator;
+    if (_generator != null) {
+      _canWrite = _evaluateCanWrite(_generator!);
+    } else {
+      unawaited(_loadGenerator());
+    }
+    _subscribeProgress();
+  }
+
+  void _subscribeProgress() {
+    unawaited(_changes?.cancel());
     _changes = _s.progress.changes.listen((_) {
-      if (mounted) setState(() => _texts = _store.texts());
+      if (!mounted) return;
+      _refreshState();
     });
+  }
+
+  Future<void> _loadGenerator() async {
+    try {
+      final loaded = await StoryGenerator.load();
+      if (!mounted) return;
+      // Ignore stale load if a newer generator was injected while loading.
+      if (_generator != null) return;
+      setState(() {
+        _generator = loaded;
+        _canWrite = _evaluateCanWrite(loaded);
+      });
+    } on Object {
+      if (!mounted) return;
+      setState(() => _canWrite ??= false);
+    }
+  }
+
+  bool _evaluateCanWrite(StoryGenerator generator) {
+    final lang = _s.course.language;
+    return generator.canWrite(
+      vocabulary: ReadingVocabulary(_s.progress.words, language: lang),
+      due: _s.progress.due(Skill.ear),
+      previous: {
+        for (final text in _texts.where((t) => t.generated)) text.body,
+      },
+    );
+  }
+
+  void _refreshState() {
+    final nextTexts = _store.texts();
+    final gen = _generator;
+    setState(() {
+      _texts = nextTexts;
+      if (gen != null) {
+        _canWrite = _evaluateCanWrite(gen);
+      }
+    });
+  }
+
+  @override
+  void didUpdateWidget(ReadingHome oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final servicesChanged = oldWidget.services != widget.services;
+    final generatorChanged = oldWidget.generator != widget.generator;
+    if (servicesChanged) {
+      _subscribeProgress();
+    }
+    if (generatorChanged) {
+      _generator = widget.generator;
+      if (_generator == null) {
+        _canWrite = null;
+        unawaited(_loadGenerator());
+      }
+    }
+    if (servicesChanged || generatorChanged) {
+      _texts = _store.texts();
+      final gen = _generator;
+      if (gen != null) {
+        _canWrite = _evaluateCanWrite(gen);
+      }
+    }
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (TickerMode.valuesOf(context).enabled) _texts = _store.texts();
+    if (TickerMode.valuesOf(context).enabled) {
+      _texts = _store.texts();
+      final gen = _generator;
+      if (gen != null) {
+        _canWrite = _evaluateCanWrite(gen);
+      }
+    }
   }
 
   @override
   void dispose() {
+    _insertTimer?.cancel();
+    _insertController
+      ..removeStatusListener(_handleInsertStatus)
+      ..dispose();
+    _storiesScrollController.dispose();
     unawaited(_changes?.cancel());
     super.dispose();
   }
@@ -64,70 +173,124 @@ class _ReadingHomeState extends State<ReadingHome> {
         .markOpened(text.id, _s.clock.nowMs())
         .catchError((Object _) {});
     if (!mounted) return;
-    setState(() => _texts = _store.texts());
+    _refreshState();
     _s.nav.go(BookRoute(text.id));
   }
 
-  Future<void> _save(
-    String title,
-    String body, {
-    required bool generated,
-  }) async {
-    final text = await _store.add(
-      now: _s.clock.nowMs(),
-      title: title,
-      body: body,
-      generated: generated,
-    );
-    if (!mounted) return;
-    setState(() => _texts = _store.texts());
-    await _open(text);
-  }
-
-  Future<void> _generate() async {
-    final lang = _s.course.language;
-    final input = await showNocheSheet<String>(
-      context,
-      title: LibraryWording.writeMyStory,
-      builder: (context, close) => _StoryPromptSheet(
-        language: lang,
-        onCancel: close,
-        onSubmit: (words) => Navigator.pop(context, words),
-      ),
-    );
-    if (input == null || !mounted || _busy) return;
-    setState(() {
-      _busy = true;
-      _message = null;
-    });
+  Future<WriteStoryResult> _submitStoryPrompt(
+    String input,
+    Language lang,
+  ) async {
+    if (_busy) return (text: null, error: null, close: false);
+    setState(() => _busy = true);
     try {
-      final generator = _generator ??= await StoryGenerator.load();
-      if (!mounted) return;
-      final story = generator.generate(
-        vocabulary: ReadingVocabulary(_s.progress.words, language: lang),
-        focus: input.split(RegExp(r'[,،]')),
-        due: _s.progress.due(Skill.ear),
-        previous: {
-          for (final text in _texts.where((t) => t.generated)) text.body,
-        },
-        rng: _s.rng,
-      );
-      if (story == null) {
-        setState(
-          () => _message = input.isEmpty
-              ? LibraryWording.noStoryMatchEmpty
-              : LibraryWording.noStoryMatchFocused,
+      final StoryGenerator generator;
+      final StoryDraft? story;
+      final trimmed = input.trim();
+      try {
+        generator = _generator ??= await StoryGenerator.load();
+        if (!mounted) return (text: null, error: null, close: true);
+        story = await generator.writeStory(
+          vocabulary: ReadingVocabulary(_s.progress.words, language: lang),
+          focus: trimmed.isEmpty ? const [] : trimmed.split(RegExp(r'[,،]')),
+          due: _s.progress.due(Skill.ear),
+          previous: {
+            for (final text in _texts.where((t) => t.generated)) text.body,
+          },
+          rng: _s.rng,
         );
-      } else {
-        await _save(story.title, story.body, generated: true);
+      } on Object {
+        return (
+          text: null,
+          error: LibraryWording.storyWriteFailed,
+          close: false,
+        );
       }
+      if (!mounted) return (text: null, error: null, close: true);
+      if (story == null) {
+        if (trimmed.isNotEmpty) {
+          return (
+            text: null,
+            error: LibraryWording.noStoryMatchFocused,
+            close: false,
+          );
+        }
+        if (mounted) _refreshState();
+        return (
+          text: null,
+          error: LibraryWording.storyWriteFailed,
+          close: false,
+        );
+      }
+      final saved = await _store.add(
+        now: _s.clock.nowMs(),
+        title: story.title,
+        body: story.body,
+        generated: true,
+        isNew: true,
+      );
+      if (!mounted) return (text: saved, error: null, close: true);
+      _pendingInsertStoryId = saved.id;
+      return (text: saved, error: null, close: true);
     } on Object {
-      if (mounted) {
-        setState(() => _message = LibraryWording.storySaveFailed);
-      }
+      return (text: null, error: LibraryWording.storySaveFailed, close: false);
     } finally {
       if (mounted) setState(() => _busy = false);
     }
+  }
+
+  void _beginStoryInsertion() {
+    if (!mounted) return;
+    final id = _pendingInsertStoryId;
+    _pendingInsertStoryId = null;
+    if (id == null) return;
+    if (_storiesScrollController.hasClients &&
+        _storiesScrollController.offset != 0) {
+      _storiesScrollController.jumpTo(0);
+    }
+    _insertMotion = NocheMotion.of(context);
+    final totalDuration = _insertMotion.reduced
+        ? _insertMotion.quick
+        : LibraryMotion.shelfInsertFadeDelay + _insertMotion.move;
+    setState(() {
+      _insertingStoryId = id;
+      _texts = _store.texts();
+      final gen = _generator;
+      if (gen != null) {
+        _canWrite = _evaluateCanWrite(gen);
+      }
+      _insertController.duration = totalDuration;
+    });
+    _insertController.forward(from: 0.0);
+  }
+
+  Future<void> _generate() async {
+    if (_busy ||
+        _sheetOpen ||
+        _pendingInsertStoryId != null ||
+        _insertingStoryId != null ||
+        _canWrite != true) {
+      return;
+    }
+    final lang = _s.course.language;
+    _sheetOpen = true;
+    final ReadingText? created;
+    try {
+      created = await showWriteStorySheet<ReadingText>(
+        context,
+        language: lang,
+        onSubmit: (words) => _submitStoryPrompt(words, lang),
+      );
+    } finally {
+      _sheetOpen = false;
+    }
+    if (!mounted) return;
+    if (created == null) {
+      _pendingInsertStoryId = null;
+      return;
+    }
+    _insertTimer?.cancel();
+    _insertTimer = Timer(LibraryMotion.shelfInsertAfter, _beginStoryInsertion);
   }
 
   ReviewPair? _storyPair(ReadingText text) {
@@ -145,14 +308,6 @@ class _ReadingHomeState extends State<ReadingHome> {
     return fallback;
   }
 
-  Widget _filterPill(String label, _ShelfFilter value) {
-    final selected = _filter == value;
-    void select() => setState(() => _filter = value);
-    return selected
-        ? NochePill.selected(label: label, onPressed: select)
-        : NochePill.outline(label: label, onPressed: select);
-  }
-
   @override
   Widget build(BuildContext context) {
     final lang = _s.course.language;
@@ -160,18 +315,13 @@ class _ReadingHomeState extends State<ReadingHome> {
         ? TextDirection.rtl
         : TextDirection.ltr;
     final pad = MediaQuery.paddingOf(context);
-    final tracked = tracksReading(_s.progress);
-    final ordered = sortShelfByRecent(_texts, _store.place);
-    final visible = switch (_filter) {
-      _ShelfFilter.all => ordered,
-      _ShelfFilter.stories => ordered.where((t) => t.generated).toList(),
-      _ShelfFilter.books => ordered.where((t) => !t.generated).toList(),
-    };
-    final emptyMessage = switch (_filter) {
-      _ShelfFilter.all => LibraryWording.emptyShelfAll,
-      _ShelfFilter.stories => LibraryWording.emptyShelfStories,
-      _ShelfFilter.books => LibraryWording.emptyShelfBooks,
-    };
+    final stories = _texts
+        .where((t) => t.generated && t.id != _pendingInsertStoryId)
+        .toList();
+    final books = sortShelfByRecent(
+      _texts.where((t) => !t.generated).toList(),
+      _store.place,
+    );
     final keepBook = keepReadingBook(_texts, _store.place, _s.progress.hasRead);
 
     final header = SizedBox(
@@ -210,9 +360,13 @@ class _ReadingHomeState extends State<ReadingHome> {
             ),
             if (widget.showAddYourOwn) ...[
               const SizedBox(width: 12),
-              NochePill.outline(
-                label: LibraryWording.addYourOwnPill,
-                onPressed: _busy ? null : () => _s.nav.go(const ImportRoute()),
+              NocheLtr(
+                child: NochePill.outline(
+                  label: LibraryWording.addYourOwnPill,
+                  onPressed: _busy
+                      ? null
+                      : () => _s.nav.go(const ImportRoute()),
+                ),
               ),
             ],
           ],
@@ -220,99 +374,123 @@ class _ReadingHomeState extends State<ReadingHome> {
       ),
     );
 
-    final storySection = Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 0),
+    final storiesShelf = Padding(
+      padding: EdgeInsetsDirectional.only(
+        start: 16,
+        top: keepBook != null ? 24 : 8,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const NocheSectionLabel(
-            LibraryWording.writeStorySection,
-            bottomGap: 16,
+          const NocheSectionLabel(LibraryWording.storiesSection, bottomGap: 12),
+          Stack(
+            alignment: AlignmentDirectional.topStart,
+            children: [
+              const PositionedDirectional(
+                start: 0,
+                end: 0,
+                top: 120,
+                child: _ShelfPlank(),
+              ),
+              ConstrainedBox(
+                constraints: const BoxConstraints(
+                  minWidth: double.infinity,
+                  minHeight: 132,
+                ),
+                child: SingleChildScrollView(
+                  controller: _storiesScrollController,
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsetsDirectional.only(end: 16),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _NewStorySlot(
+                        canWrite: _canWrite,
+                        onPressed: _busy ? null : _generate,
+                      ),
+                      for (final story in stories)
+                        if (story.id == _insertingStoryId)
+                          _InsertingStoryShelfItem(
+                            controller: _insertController,
+                            motion: _insertMotion,
+                            storyId: story.id,
+                            child: _StoryShelfItem(
+                              text: story,
+                              lang: lang,
+                              pair: _storyPair(story),
+                              pictures: _s.pictures,
+                              onPressed: _busy ? null : () => _open(story),
+                            ),
+                          )
+                        else ...[
+                          const SizedBox(width: 12),
+                          _StoryShelfItem(
+                            text: story,
+                            lang: lang,
+                            pair: _storyPair(story),
+                            pictures: _s.pictures,
+                            onPressed: _busy ? null : () => _open(story),
+                          ),
+                        ],
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
-          NocheOutlineButton(
-            label: LibraryWording.writeMyStory,
-            onPressed: _busy ? null : _generate,
-          ),
-          if (_message case final message?) ...[
-            const SizedBox(height: 12),
-            Semantics(
-              liveRegion: true,
-              child: Text(
-                message,
-                style: NocheType.body.copyWith(color: NocheColors.label),
+        ],
+      ),
+    );
+
+    final booksShelf = Padding(
+      padding: const EdgeInsetsDirectional.only(start: 16, top: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const NocheSectionLabel(LibraryWording.booksSection, bottomGap: 12),
+          if (books.isEmpty) ...[
+            Padding(
+              padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 16, 16),
+              child: Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: NocheLtr(
+                  child: Text(
+                    LibraryWording.emptyShelfBooks,
+                    style: NocheType.body.copyWith(color: NocheColors.label),
+                  ),
+                ),
               ),
             ),
+            const _ShelfPlank(),
+          ] else ...[
+            SizedBox(
+              height: 132,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsetsDirectional.only(end: 16),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    for (var i = 0; i < books.length; i++) ...[
+                      if (i > 0) const SizedBox(width: 12),
+                      _BookShelfItem(
+                        book: books[i],
+                        lang: lang,
+                        onPressed: _busy ? null : () => _open(books[i]),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+            const _ShelfPlank(),
           ],
         ],
       ),
     );
 
-    final shelfSection = Padding(
-      padding: const EdgeInsetsDirectional.only(top: 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
-            child: NocheSectionLabel(
-              tracked
-                  ? LibraryWording.yourShelf
-                  : LibraryWording.yourShelfBeforeA2,
-              bottomGap: 12,
-            ),
-          ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                _filterPill(LibraryWording.filterAll, _ShelfFilter.all),
-                const SizedBox(width: 8),
-                _filterPill(LibraryWording.filterStories, _ShelfFilter.stories),
-                const SizedBox(width: 8),
-                _filterPill(LibraryWording.filterBooks, _ShelfFilter.books),
-              ],
-            ),
-          ),
-          const SizedBox(height: 12),
-          if (visible.isEmpty)
-            Padding(
-              padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
-              child: NocheCard(
-                variant: NocheCardVariant.dashed,
-                child: Text(
-                  emptyMessage,
-                  style: NocheType.body.copyWith(color: NocheColors.label),
-                ),
-              ),
-            )
-          else
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  for (var i = 0; i < visible.length; i++) ...[
-                    if (i > 0) const SizedBox(width: 12),
-                    _ShelfTile(
-                      text: visible[i],
-                      lang: lang,
-                      pair: visible[i].generated
-                          ? _storyPair(visible[i])
-                          : null,
-                      pictures: _s.pictures,
-                      onPressed: _busy ? null : () => _open(visible[i]),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-        ],
-      ),
-    );
-
     return Directionality(
+      key: const Key('library-home'),
       textDirection: textDirection,
       child: ColoredBox(
         color: NocheColors.ground,
@@ -333,7 +511,19 @@ class _ReadingHomeState extends State<ReadingHome> {
                     controller: widget.controller,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [header, storySection, shelfSection],
+                      children: [
+                        header,
+                        if (keepBook != null)
+                          _ReadingNowShelf(
+                            book: keepBook,
+                            place: _store.place(keepBook.id),
+                            lang: lang,
+                            onContinue: _busy ? null : () => _open(keepBook),
+                          ),
+                        storiesShelf,
+                        booksShelf,
+                        const SizedBox(height: 16),
+                      ],
                     ),
                   ),
                 ),
@@ -345,11 +535,10 @@ class _ReadingHomeState extends State<ReadingHome> {
                       16,
                       0,
                     ),
-                    child: _KeepReadingCard(
-                      book: keepBook,
-                      place: _store.place(keepBook.id),
-                      lang: lang,
-                      onContinue: _busy ? null : () => _open(keepBook),
+                    child: NochePrimaryButton(
+                      label: LibraryWording.continueReading,
+                      small: true,
+                      onPressed: _busy ? null : () => _open(keepBook),
                     ),
                   ),
               ],
@@ -361,132 +550,43 @@ class _ReadingHomeState extends State<ReadingHome> {
   }
 }
 
-class _ShelfTile extends StatelessWidget {
-  const _ShelfTile({
-    required this.text,
-    required this.lang,
-    required this.pair,
-    required this.pictures,
-    required this.onPressed,
-  });
-
-  final ReadingText text;
-  final Language lang;
-  final ReviewPair? pair;
-  final PictureSource pictures;
-  final VoidCallback? onPressed;
+/// Bookcase shelf plank (`Noche-Biblioteca-Cerrado.dc.html`): 4 of `line` with
+/// top-start radius 2 on 8 of `chip` with bottom-start radius 4, running from
+/// 16 at the start to the screen's end edge.
+class _ShelfPlank extends StatelessWidget {
+  const _ShelfPlank();
 
   @override
-  Widget build(BuildContext context) {
-    final isStory = text.generated;
-    final subtitle = isStory
-        ? LibraryWording.typeStory
-        : LibraryWording.typeBook;
-    final locale = Locale(lang.code);
-    final titleStyle = NocheType.forScript(
-      NocheType.button.copyWith(height: 18 / 14),
-      lang.script,
-    ).copyWith(color: NocheColors.text);
-    final subtitleStyle = NocheType.bodySmall.copyWith(
-      fontSize: 12,
-      height: 16 / 12,
-      color: NocheColors.label,
-    );
-
-    final Widget visual;
-    if (isStory) {
-      final matchedPair = pair;
-      if (matchedPair != null) {
-        visual = ExcludeSemantics(
-          child: Directionality(
-            textDirection: TextDirection.ltr,
-            child: SizedBox(
-              width: 104,
-              height: 120,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(NocheSize.tileRadius),
-                child: ColoredBox(
-                  color: NocheColors.panel,
-                  child: OverflowBox(
-                    minWidth: 226,
-                    maxWidth: 226,
-                    minHeight: 120,
-                    maxHeight: 120,
-                    child: pictures.of(
-                      PictureRef.of(matchedPair, matchedPair.yes),
-                    ),
-                  ),
-                ),
-              ),
+  Widget build(BuildContext context) => ExcludeSemantics(
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          height: 4,
+          decoration: const BoxDecoration(
+            color: NocheColors.line,
+            borderRadius: BorderRadiusDirectional.only(
+              topStart: Radius.circular(2),
             ),
-          ),
-        );
-      } else {
-        visual = ExcludeSemantics(
-          child: Container(
-            width: 104,
-            height: 120,
-            decoration: BoxDecoration(
-              color: NocheColors.panel,
-              border: Border.all(color: NocheColors.line, width: 1),
-              borderRadius: BorderRadius.circular(NocheSize.tileRadius),
-            ),
-            alignment: AlignmentDirectional.center,
-            child: const NocheIcon(
-              NocheIcons.library,
-              size: 28,
-              color: NocheColors.label,
-            ),
-          ),
-        );
-      }
-    } else {
-      visual = NocheCover(
-        bookId: text.id,
-        title: text.title,
-        size: NocheCoverSize.regular,
-        script: lang.script,
-        locale: locale,
-      );
-    }
-
-    return Pressable(
-      onPressed: onPressed,
-      semanticLabel: '${text.title}, $subtitle',
-      builder: (context, pressed) => Transform.scale(
-        scale: pressed ? 0.98 : 1,
-        child: SizedBox(
-          width: isStory ? 104 : 90,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              visual,
-              const SizedBox(height: 8),
-              Text(
-                text.title,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                locale: locale,
-                style: titleStyle,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                subtitle,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: subtitleStyle,
-              ),
-            ],
           ),
         ),
-      ),
-    );
-  }
+        Container(
+          height: 8,
+          decoration: const BoxDecoration(
+            color: NocheColors.chip,
+            borderRadius: BorderRadiusDirectional.only(
+              bottomStart: Radius.circular(4),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
 }
 
-class _KeepReadingCard extends StatelessWidget {
-  const _KeepReadingCard({
+class _ReadingNowShelf extends StatelessWidget {
+  const _ReadingNowShelf({
     required this.book,
     required this.place,
     required this.lang,
@@ -502,199 +602,646 @@ class _KeepReadingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final prog = readingProgress(book, place, language: lang);
     final locale = Locale(lang.code);
-    return NocheCard(
-      padding: const EdgeInsetsDirectional.all(16),
+    final chapters = book.chapters;
+    final chapterCount = chapters != null && chapters.isNotEmpty
+        ? chapters.length
+        : 1;
+    final chapterNumber = chapterCount > 1
+        ? (place.chapterIndex ?? 0).clamp(0, chapterCount - 1) + 1
+        : 1;
+    final eyebrow = keepReadingEyebrow(
+      chapter: chapterNumber,
+      chapterCount: chapterCount,
+    );
+
+    return Padding(
+      padding: const EdgeInsetsDirectional.only(start: 16, top: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              NocheCover(
-                bookId: book.id,
-                title: book.title,
-                size: NocheCoverSize.small,
-                script: lang.script,
-                locale: locale,
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
+          Padding(
+            padding: const EdgeInsetsDirectional.only(end: 16),
+            child: Pressable(
+              onPressed: onContinue,
+              builder: (context, _) => ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: 126),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(
-                      keepReadingEyebrow().toUpperCase(),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: NocheType.label.copyWith(color: NocheColors.label),
+                    SizedBox(
+                      width: 90,
+                      height: 126,
+                      child: NocheCover(
+                        bookId: book.id,
+                        title: book.title,
+                        size: NocheCoverSize.regular,
+                        script: lang.script,
+                        locale: locale,
+                      ),
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      book.title,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      locale: locale,
-                      style: NocheType.forScript(
-                        NocheType.cardTitle.copyWith(
-                          fontSize: 20,
-                          height: 24 / 20,
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsetsDirectional.only(bottom: 14),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Align(
+                              alignment: AlignmentDirectional.centerStart,
+                              child: NocheLtr(
+                                child: Text(
+                                  eyebrow.toUpperCase(),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: NocheType.label.copyWith(
+                                    color: NocheColors.label,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              book.title,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              locale: locale,
+                              style: NocheType.forScript(
+                                NocheType.cardTitle.copyWith(
+                                  fontSize: 20,
+                                  height: 24 / 20,
+                                ),
+                                lang.script,
+                              ).copyWith(color: NocheColors.text),
+                            ),
+                            const SizedBox(height: 8),
+                            Align(
+                              alignment: AlignmentDirectional.centerStart,
+                              child: NocheLtr(
+                                child: Text(
+                                  LibraryWording.keepReadingPageProgress(
+                                    page: prog.page,
+                                    totalPages: prog.totalPages,
+                                    minutesLeft: prog.minutesLeft,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: NocheType.bodySmall.copyWith(
+                                    color: NocheColors.label,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            NocheProgressBar(
+                              value: prog.totalPages <= 1
+                                  ? 0.0
+                                  : (prog.page - 1) / prog.totalPages,
+                              color: NocheColors.text,
+                              semanticLabel:
+                                  LibraryWording.keepReadingPageSemantic(
+                                    page: prog.page,
+                                    totalPages: prog.totalPages,
+                                  ),
+                            ),
+                          ],
                         ),
-                        lang.script,
-                      ).copyWith(color: NocheColors.text),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      LibraryWording.keepReadingPageProgress(
-                        page: prog.page,
-                        totalPages: prog.totalPages,
-                        minutesLeft: prog.minutesLeft,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: NocheType.bodySmall.copyWith(
-                        color: NocheColors.label,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    NocheProgressBar(
-                      value: prog.totalPages <= 1
-                          ? 0.0
-                          : (prog.page - 1) / prog.totalPages,
-                      color: NocheColors.next,
-                      semanticLabel: LibraryWording.keepReadingPageSemantic(
-                        page: prog.page,
-                        totalPages: prog.totalPages,
                       ),
                     ),
                   ],
                 ),
               ),
-            ],
+            ),
           ),
-          const SizedBox(height: 16),
-          NochePrimaryButton(
-            label: LibraryWording.continueReading,
-            small: true,
-            onPressed: onContinue,
-          ),
+          const _ShelfPlank(),
         ],
       ),
     );
   }
 }
 
-class _StoryPromptSheet extends StatefulWidget {
-  const _StoryPromptSheet({
-    required this.language,
-    required this.onCancel,
-    required this.onSubmit,
+class _DashedSlotBorderPainter extends CustomPainter {
+  const _DashedSlotBorderPainter({
+    required this.color,
+    required this.textDirection,
   });
 
-  final Language language;
-  final VoidCallback onCancel;
-  final ValueChanged<String> onSubmit;
+  static const double _strokeWidth = 1;
+  static const double _dashLength = 4;
+  static const double _gapLength = 3;
+
+  final Color color;
+  final TextDirection textDirection;
 
   @override
-  State<_StoryPromptSheet> createState() => _StoryPromptSheetState();
+  void paint(Canvas canvas, Size size) {
+    const inset = _strokeWidth / 2;
+    final rect = Rect.fromLTWH(
+      inset,
+      inset,
+      (size.width - _strokeWidth).clamp(0, double.infinity),
+      (size.height - _strokeWidth).clamp(0, double.infinity),
+    );
+    const radius = BorderRadiusDirectional.only(
+      topStart: Radius.circular(12),
+      topEnd: Radius.circular(12),
+      bottomStart: Radius.circular(2),
+      bottomEnd: Radius.circular(2),
+    );
+    final rrect = radius.resolve(textDirection).toRRect(rect);
+    final source = Path()..addRRect(rrect);
+    final dashed = Path();
+    for (final ui.PathMetric metric in source.computeMetrics()) {
+      var dist = 0.0;
+      while (dist < metric.length) {
+        final next = (dist + _dashLength).clamp(0.0, metric.length);
+        dashed.addPath(metric.extractPath(dist, next), Offset.zero);
+        dist += _dashLength + _gapLength;
+      }
+    }
+    canvas.drawPath(
+      dashed,
+      Paint()
+        ..color = color
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = _strokeWidth,
+    );
+  }
+
+  @override
+  bool shouldRepaint(_DashedSlotBorderPainter old) =>
+      old.color != color || old.textDirection != textDirection;
 }
 
-class _StoryPromptSheetState extends State<_StoryPromptSheet> {
-  final _words = TextEditingController();
+class _NewStorySlot extends StatefulWidget {
+  const _NewStorySlot({required this.canWrite, required this.onPressed});
+
+  /// `null` while the initial `StoryGenerator` load is pending (rendered locked
+  /// and snaps directly without animation once resolved).
+  final bool? canWrite;
+  final VoidCallback? onPressed;
+
+  @override
+  State<_NewStorySlot> createState() => _NewStorySlotState();
+}
+
+class _NewStorySlotState extends State<_NewStorySlot>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    value: 1.0,
+  )..addStatusListener(_handleStatus);
+
+  bool _transitioning = false;
+  bool _fromOpen = false;
+  bool _toOpen = false;
+  NocheMotionData _activeMotion = NocheMotion.normal;
+
+  void _handleStatus(AnimationStatus status) {
+    if (status == AnimationStatus.completed && _transitioning && mounted) {
+      setState(() => _transitioning = false);
+    }
+  }
+
+  @override
+  void didUpdateWidget(_NewStorySlot oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final prev = oldWidget.canWrite;
+    final next = widget.canWrite;
+    if (prev != null && next != null && prev != next) {
+      _activeMotion = NocheMotion.of(context);
+      _fromOpen = prev;
+      _toOpen = next;
+      _transitioning = true;
+      _controller.duration = LibraryMotion.slotFade(_activeMotion);
+      _controller.forward(from: 0.0);
+    } else if (prev == null && next != null) {
+      _transitioning = false;
+      _fromOpen = next;
+      _toOpen = next;
+      _controller.value = 1.0;
+    }
+  }
 
   @override
   void dispose() {
-    _words.dispose();
+    _controller
+      ..removeStatusListener(_handleStatus)
+      ..dispose();
     super.dispose();
   }
 
-  void _submit() => widget.onSubmit(_words.text.trim());
+  Widget _buildLocked(TextDirection textDirection) => SizedBox(
+    key: const Key('library-slot-locked'),
+    width: 132,
+    height: 120,
+    child: CustomPaint(
+      painter: _DashedSlotBorderPainter(
+        color: NocheColors.line,
+        textDirection: textDirection,
+      ),
+      child: Padding(
+        padding: const EdgeInsetsDirectional.symmetric(horizontal: 12),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ExcludeSemantics(
+              child: NocheIcon(
+                NocheIcons.lock,
+                size: 22,
+                color: NocheColors.label,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Flexible(
+              child: NocheLtr(
+                child: Text(
+                  LibraryWording.newStoryLocked,
+                  textAlign: TextAlign.center,
+                  maxLines: 4,
+                  overflow: TextOverflow.ellipsis,
+                  style: NocheType.bodySmall.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: NocheColors.text,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+
+  Widget _buildOpen(TextDirection textDirection) => Pressable(
+    key: const Key('library-write-story'),
+    onPressed: widget.onPressed,
+    semanticLabel: LibraryWording.newStoryOpen,
+    builder: (context, _) => SizedBox(
+      width: 132,
+      height: 120,
+      child: CustomPaint(
+        painter: _DashedSlotBorderPainter(
+          color: NocheColors.label,
+          textDirection: textDirection,
+        ),
+        child: Padding(
+          padding: const EdgeInsetsDirectional.symmetric(horizontal: 12),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const ExcludeSemantics(
+                child: NocheIcon(
+                  NocheIcons.plus,
+                  size: 22,
+                  strokeWidth: 2.5,
+                  color: NocheColors.text,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Flexible(
+                child: NocheLtr(
+                  child: Text(
+                    LibraryWording.newStoryOpen,
+                    textAlign: TextAlign.center,
+                    maxLines: 4,
+                    overflow: TextOverflow.ellipsis,
+                    style: NocheType.bodySmall.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: NocheColors.text,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
-    final courseDirection = widget.language.direction == LanguageDirection.rtl
-        ? TextDirection.rtl
-        : TextDirection.ltr;
-    final border = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(NocheSize.tileRadius),
-      borderSide: const BorderSide(color: NocheColors.line),
-    );
-    final focusedBorder = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(NocheSize.tileRadius),
-      borderSide: const BorderSide(color: NocheColors.text),
-    );
+    final textDirection = Directionality.of(context);
+    final isOpen = widget.canWrite ?? false;
 
-    TextStyle fieldStyle(TextStyle base, Color color) =>
-        base.copyWith(color: color, textBaseline: TextBaseline.alphabetic);
-
-    return Material(
-      type: MaterialType.transparency,
-      child: Padding(
-        padding: EdgeInsetsDirectional.only(
-          bottom: MediaQuery.viewInsetsOf(context).bottom,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextFormField(
-              controller: _words,
-              minLines: 1,
-              maxLines: 2,
-              maxLength: 180,
-              cursorColor: NocheColors.next,
-              textDirection: courseDirection,
-              style: fieldStyle(
-                NocheType.forScript(NocheType.body, widget.language.script),
-                NocheColors.text,
+    if (!_transitioning) {
+      return SizedBox(
+        width: 132,
+        height: 120,
+        child: isOpen
+            ? Opacity(
+                key: const ValueKey('library-slot-open-opacity'),
+                opacity: 1.0,
+                child: _buildOpen(textDirection),
+              )
+            : Opacity(
+                key: const ValueKey('library-slot-locked-opacity'),
+                opacity: 1.0,
+                child: _buildLocked(textDirection),
               ),
-              textInputAction: TextInputAction.done,
-              onFieldSubmitted: (_) => _submit(),
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: NocheColors.ground,
-                labelText: LibraryWording.practiceWordsLabel,
-                labelStyle: fieldStyle(NocheType.body, NocheColors.label),
-                floatingLabelStyle: fieldStyle(
-                  NocheType.label,
-                  NocheColors.text,
+      );
+    }
+
+    return SizedBox(
+      width: 132,
+      height: 120,
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, _) {
+          final t = _controller.value.clamp(0.0, 1.0);
+          final outOpacity = (1.0 - _activeMotion.exit.transform(t)).clamp(
+            0.0,
+            1.0,
+          );
+          final inOpacity = _activeMotion.enter.transform(t).clamp(0.0, 1.0);
+
+          final lockedOpacity = _toOpen ? outOpacity : inOpacity;
+          final openOpacity = _toOpen ? inOpacity : outOpacity;
+
+          final lockedLayer = Positioned.fill(
+            child: IgnorePointer(
+              ignoring: _toOpen,
+              child: ExcludeSemantics(
+                excluding: _toOpen,
+                child: Opacity(
+                  key: const ValueKey('library-slot-locked-opacity'),
+                  opacity: lockedOpacity,
+                  child: _buildLocked(textDirection),
                 ),
-                helperText: LibraryWording.practiceWordsHelper,
-                helperStyle: fieldStyle(NocheType.bodySmall, NocheColors.label),
-                helperMaxLines: 3,
-                counterStyle: fieldStyle(
-                  NocheType.bodySmall,
-                  NocheColors.label,
-                ),
-                contentPadding: const EdgeInsetsDirectional.symmetric(
-                  horizontal: 16,
-                  vertical: 14,
-                ),
-                border: border,
-                enabledBorder: border,
-                focusedBorder: focusedBorder,
               ),
             ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                NocheOutlineButton(
-                  label: LibraryWording.cancel,
-                  expand: false,
-                  onPressed: widget.onCancel,
+          );
+
+          final openLayer = Positioned.fill(
+            child: IgnorePointer(
+              ignoring: !_toOpen,
+              child: ExcludeSemantics(
+                excluding: !_toOpen,
+                child: Opacity(
+                  key: const ValueKey('library-slot-open-opacity'),
+                  opacity: openOpacity,
+                  child: _buildOpen(textDirection),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: NochePrimaryButton(
-                    label: LibraryWording.writeMyStory,
-                    small: true,
-                    onPressed: _submit,
+              ),
+            ),
+          );
+
+          return Stack(
+            children: _fromOpen
+                ? [openLayer, lockedLayer]
+                : [lockedLayer, openLayer],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _InsertingStoryShelfItem extends StatelessWidget {
+  const _InsertingStoryShelfItem({
+    required this.controller,
+    required this.motion,
+    required this.storyId,
+    required this.child,
+  });
+
+  final Animation<double> controller;
+  final NocheMotionData motion;
+  final String storyId;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (context, builtChild) {
+        final double widthFactor;
+        final double opacity;
+        final t = controller.value.clamp(0.0, 1.0);
+
+        if (motion.reduced) {
+          widthFactor = 1.0;
+          opacity = motion.enter.transform(t).clamp(0.0, 1.0);
+        } else {
+          final totalUs = (LibraryMotion.shelfInsertFadeDelay + motion.move)
+              .inMicroseconds
+              .toDouble();
+          final elapsedUs = t * totalUs;
+          final moveUs = motion.move.inMicroseconds.toDouble();
+          final fadeDelayUs = LibraryMotion.shelfInsertFadeDelay.inMicroseconds
+              .toDouble();
+
+          final rawWidth = moveUs <= 0
+              ? 1.0
+              : (elapsedUs / moveUs).clamp(0.0, 1.0);
+          widthFactor = motion.travel.transform(rawWidth).clamp(0.0, 1.0);
+
+          if (elapsedUs <= fadeDelayUs) {
+            opacity = 0.0;
+          } else if (moveUs <= 0) {
+            opacity = 1.0;
+          } else {
+            final rawOpacity = ((elapsedUs - fadeDelayUs) / moveUs).clamp(
+              0.0,
+              1.0,
+            );
+            opacity = motion.enter.transform(rawOpacity).clamp(0.0, 1.0);
+          }
+        }
+
+        return ClipRect(
+          child: Align(
+            alignment: AlignmentDirectional.topStart,
+            widthFactor: widthFactor,
+            child: Padding(
+              padding: const EdgeInsetsDirectional.only(start: 12),
+              child: Opacity(
+                key: ValueKey('library-story-insert-opacity:$storyId'),
+                opacity: opacity,
+                child: builtChild,
+              ),
+            ),
+          ),
+        );
+      },
+      child: child,
+    );
+  }
+}
+
+class _StoryShelfItem extends StatelessWidget {
+  const _StoryShelfItem({
+    required this.text,
+    required this.lang,
+    required this.pair,
+    required this.pictures,
+    required this.onPressed,
+  });
+
+  final ReadingText text;
+  final Language lang;
+  final ReviewPair? pair;
+  final PictureSource pictures;
+  final VoidCallback? onPressed;
+
+  static const _pictureRadius = BorderRadiusDirectional.only(
+    topStart: Radius.circular(12),
+    topEnd: Radius.circular(12),
+    bottomStart: Radius.circular(2),
+    bottomEnd: Radius.circular(2),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    final locale = Locale(lang.code);
+    final titleStyle = NocheType.forScript(
+      NocheType.button.copyWith(height: 18 / 14),
+      lang.script,
+    ).copyWith(color: NocheColors.text);
+
+    final Widget visual;
+    final matchedPair = pair;
+    if (matchedPair != null) {
+      visual = ExcludeSemantics(
+        child: NocheLtr(
+          child: SizedBox(
+            width: 104,
+            height: 120,
+            child: ClipRRect(
+              borderRadius: _pictureRadius,
+              child: ColoredBox(
+                color: NocheColors.panel,
+                child: OverflowBox(
+                  minWidth: 226,
+                  maxWidth: 226,
+                  minHeight: 120,
+                  maxHeight: 120,
+                  child: pictures.of(
+                    PictureRef.of(matchedPair, matchedPair.yes),
                   ),
                 ),
-              ],
+              ),
+            ),
+          ),
+        ),
+      );
+    } else {
+      visual = ExcludeSemantics(
+        child: Container(
+          width: 104,
+          height: 120,
+          decoration: const BoxDecoration(
+            color: NocheColors.panel,
+            border: Border.fromBorderSide(
+              BorderSide(color: NocheColors.line, width: 1),
+            ),
+            borderRadius: _pictureRadius,
+          ),
+          alignment: AlignmentDirectional.center,
+          child: const NocheIcon(
+            NocheIcons.library,
+            size: 28,
+            color: NocheColors.label,
+          ),
+        ),
+      );
+    }
+
+    final tileVisual = Stack(
+      children: [
+        visual,
+        if (text.isNew)
+          PositionedDirectional(
+            start: 8,
+            top: 8,
+            child: ExcludeSemantics(
+              child: Container(
+                key: Key('library-story-new-tag:${text.id}'),
+                height: 24,
+                padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
+                alignment: AlignmentDirectional.center,
+                decoration: BoxDecoration(
+                  color: NocheColors.ground,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: NocheLtr(
+                  child: Text(
+                    LibraryWording.newStoryTag.toUpperCase(),
+                    maxLines: 1,
+                    softWrap: false,
+                    style: NocheType.labelStrong.copyWith(
+                      color: NocheColors.text,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+      ],
+    );
+
+    return Pressable(
+      key: ValueKey('library-book:${text.id}'),
+      onPressed: onPressed,
+      semanticLabel: text.isNew
+          ? '${text.title}, ${LibraryWording.newStoryTag}'
+          : text.title,
+      builder: (context, _) => SizedBox(
+        width: 104,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            tileVisual,
+            const SizedBox(height: 20),
+            Text(
+              text.title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              locale: locale,
+              style: titleStyle,
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _BookShelfItem extends StatelessWidget {
+  const _BookShelfItem({
+    required this.book,
+    required this.lang,
+    required this.onPressed,
+  });
+
+  final ReadingText book;
+  final Language lang;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final tall = nocheStableHash(book.id).isEven;
+    final width = tall ? 96.0 : 90.0;
+    final height = tall ? 132.0 : 120.0;
+    final locale = Locale(lang.code);
+
+    return Pressable(
+      key: ValueKey('library-book:${book.id}'),
+      onPressed: onPressed,
+      semanticLabel: book.title,
+      builder: (context, _) => SizedBox(
+        width: width,
+        height: height,
+        child: NocheCover(
+          bookId: book.id,
+          title: book.title,
+          size: NocheCoverSize.regular,
+          script: lang.script,
+          locale: locale,
         ),
       ),
     );

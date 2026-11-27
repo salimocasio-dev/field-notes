@@ -2,6 +2,8 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_map/src/map_screen.dart';
 import 'package:feature_map/src/place_screen.dart';
+import 'package:feature_map/src/wording.dart';
+import 'package:flutter/foundation.dart' show ValueListenable;
 import 'package:material_ui/material_ui.dart';
 
 /// feature_map's module: the home map, the Up next card, and the place screen.
@@ -9,11 +11,20 @@ import 'package:material_ui/material_ui.dart';
 ///
 /// [showPerf]: the map shows its bake time and frame times in a small corner chip (the app's `?perf=1`). Off by default.
 /// [entitlements]: explicit plan entitlements forwarded to [MapScreen] and [PlaceScreen].
+/// [overlayOpacity]: optional listenable (`0.0` to `1.0`) driven by the shell during a course language turn so map overlays fade while `PixelView` stays unfaded.
+/// [animateColdLoad]: whether [MapScreen] staggers its internal overlays on initial bake.
 class MapModule implements FeatureModule {
-  const MapModule({this.showPerf = false, required this.entitlements});
+  const MapModule({
+    this.showPerf = false,
+    required this.entitlements,
+    this.overlayOpacity,
+    this.animateColdLoad = false,
+  });
 
   final bool showPerf;
   final Entitlements entitlements;
+  final ValueListenable<double>? overlayOpacity;
+  final bool animateColdLoad;
 
   @override
   String get id => 'map';
@@ -25,9 +36,11 @@ class MapModule implements FeatureModule {
     icon: Icons.map,
     builder: (_) => MapScreen(
       services: s,
-      reviewTitle: 'Review',
+      reviewTitle: MapWording.reviewTitle,
       showPerf: showPerf,
       entitlements: entitlements,
+      overlayOpacity: overlayOpacity,
+      animateColdLoad: animateColdLoad,
     ),
   );
 

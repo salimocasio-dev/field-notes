@@ -6,18 +6,19 @@ library;
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_story/src/screen/story_header.dart';
+import 'package:feature_story/src/wording.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// The line the screen shows when the story's scene is not converted yet.
-const String storyNotReadyLine = 'This story is not in the new app yet.';
+const String storyNotReadyLine = StoryWording.notReadyLine;
 
 /// The line the screen shows when the story needs a newer app (unsupported
 /// `minApp` or an act the scene does not have).
-const String storyNeedsUpdateLine = 'Update the app to play this story';
+const String storyNeedsUpdateLine = StoryWording.needsUpdateLine;
 
 /// The button under [storyNotReadyLine] / [storyNeedsUpdateLine]: it does what
 /// the X does.
-const String storyNotReadyLabel = 'Back to the map';
+const String storyNotReadyLabel = StoryWording.backToMap;
 
 /// Full-screen Noche `lessonGround` frame with the 64-high close header, [line],
 /// and a [NochePrimaryButton] labelled [storyNotReadyLabel]. No dashes, no TXT
@@ -38,6 +39,7 @@ class StoryNotReady extends StatelessWidget {
   Widget build(BuildContext context) {
     final lang = language ?? Language.spanish;
     return ColoredBox(
+      key: const Key('story-unconverted'),
       color: NocheColors.lessonGround,
       child: SafeArea(
         child: Column(
@@ -69,6 +71,7 @@ class StoryNotReady extends StatelessWidget {
                         ),
                         const SizedBox(height: 24),
                         NochePrimaryButton(
+                          key: const Key('story-unconverted-back'),
                           label: storyNotReadyLabel,
                           onPressed: onClose,
                         ),

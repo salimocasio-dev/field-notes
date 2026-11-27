@@ -25,6 +25,10 @@
 //   [h] added lines in feature packages or coqui_ui introduce non-directional
 //       left/right Flutter layout calls (coqui_scenes and coqui_pixel are
 //       exempt; unchanged existing lines are not flagged)
+// Added in #257:
+//   [i] added lines in a package or app AGENTS.md (`coqui/**/AGENTS.md`,
+//       excluding `coqui/AGENTS.md`) contain an issue reference (`#<digits>`);
+//       unchanged existing lines are not flagged
 //
 // The tables below are data. They are copied from the plan, with the
 // orchestrator's changes of Nov 19, 2026 noted where they differ.
@@ -287,6 +291,7 @@ Future<List<String>> checkBoundaries(
   }
   problems.addAll(await _checkLane(root, branch: branch, base: base));
   problems.addAll(await _checkDirectional(root, base: base));
+  problems.addAll(await _checkAgentsIssueRefs(root, base: base));
   return problems;
 }
 
@@ -1126,6 +1131,84 @@ String _stripCommentsAndStrings(String source) {
   }
 
   return out.toString();
+}
+
+// --- [i]: package AGENTS.md holds standing rules only (#257) ----------------
+
+final _issueRefPattern = RegExp(r'(?<![&#])#[1-9]\d*(?![A-Za-z0-9_])');
+
+bool _isPackageAgentsPath(String relPath) {
+  if (!relPath.endsWith('/AGENTS.md')) return false;
+  for (final dir in skippedDirs) {
+    if (relPath == dir || relPath.startsWith('$dir/')) return false;
+  }
+  for (final seg in relPath.split('/')) {
+    if (seg.startsWith('.') || skippedNames.contains(seg)) return false;
+  }
+  return true;
+}
+
+Future<List<String>> _checkAgentsIssueRefs(
+  Directory root, {
+  String? base,
+}) async {
+  if (!_git(root, ['rev-parse', '--is-inside-work-tree']).ok) {
+    return const [];
+  }
+  final mb = _resolveMergeBase(root, base: base);
+  if (mb.commit == null) return const [];
+
+  final diff = _git(root, [
+    'diff',
+    '--name-only',
+    '--diff-filter=AM',
+    '--no-renames',
+    '-z',
+    '${mb.commit}..HEAD',
+  ]);
+  if (!diff.ok) return const [];
+
+  final prefix = _git(root, [
+    'rev-parse',
+    '--show-prefix',
+  ]).out; // "coqui/" or ""
+  final problems = <String>[];
+  for (final gitPath in diff.raw.split('\u0000')) {
+    if (gitPath.isEmpty) continue;
+    if (prefix.isNotEmpty && !gitPath.startsWith(prefix)) continue;
+    final relPath = prefix.isEmpty ? gitPath : gitPath.substring(prefix.length);
+    if (!_isPackageAgentsPath(relPath)) continue;
+
+    final patch = _git(root, [
+      'diff',
+      '--no-ext-diff',
+      '-U0',
+      '--no-renames',
+      '${mb.commit}..HEAD',
+      '--',
+      relPath,
+    ]);
+    if (!patch.ok) continue;
+    final addedLines = _addedLineNumbers(patch.raw);
+    if (addedLines.isEmpty) continue;
+
+    final show = _git(root, ['show', 'HEAD:$gitPath']);
+    if (!show.ok) continue;
+
+    final lines = show.raw.replaceAll('\r\n', '\n').split('\n');
+    final sortedLines = addedLines.toList()..sort();
+    for (final lineNo in sortedLines) {
+      if (lineNo < 1 || lineNo > lines.length) continue;
+      final match = _issueRefPattern.firstMatch(lines[lineNo - 1]);
+      if (match == null) continue;
+      problems.add(
+        '$relPath:$lineNo: [i] issue reference ${match.group(0)} in '
+        'package AGENTS.md: AGENTS.md holds standing rules only '
+        '(put ticket notes in the PR body and issue)',
+      );
+    }
+  }
+  return problems;
 }
 
 // --- Git helpers -------------------------------------------------------------

@@ -28,6 +28,10 @@ The story game: the step runner, the play screen, Listen mode, speaking turns.
 - Issue #65: `lib/feature_story.dart` also exports `play`, with `show`, for `coqui_story_checks` (every scene's play-every-path and sheet-rules checks moved from `feature_story` to `coqui/packages/coqui_story_checks/`).
 - Order 26: `StoryModule(showPerf: true)` (`StoryScreen.showPerf`) shows, in a small chip in a corner under the top bar, how long the bake of the scene's state now on screen took (`FrameRenderer` times each bake by its set key, as `SetBakes` does): the app's `?perf=1`. Off by default.
 - The runner, the no-screen player and the screen are under `lib/src/`: `runner/` (pure Dart: `StoryRunner`, a port of historia/juego.js and a `SceneHost`; `StoryTimers`, `StoryView`, `bubble_place.dart`), `play/` (pure Dart: `play(story, plan, draws, seed)`, the trace), `screen/` (Flutter: `StoryScreen` and its widgets).
+- Screen wording lives in `lib/src/wording.dart` (`StoryWording`), and screen-local motion waits and hero tags live in `lib/src/motion.dart` (`StoryMotion`, the only file under `lib/` allowed to call `NocheMotion.ms`).
+- Keep these widget keys stable as the shell and integration test contract: `Key('story-start-disc')`, `Key('story-close-button')`, `Key('story-end-primary')`, `Key('story-end-replay')`, `Key('story-end-map')`, `Key('story-unconverted')`, and `Key('story-unconverted-back')`. When the end screen's primary action itself returns to the map (listen mode or no next story/review), `Key('story-end-map')` wraps `Key('story-end-primary')` on that orange button instead of rendering a separate outline Map button.
+- The scene picture window is wrapped in `NocheWindow` with `StoryMotion.storyWindowTag(storyId)` (the story id) as its hero tag so the picture travels cleanly across map, place, and story lesson screens without changing its whole-number pixel scale.
+
 
 ## How it is built
 

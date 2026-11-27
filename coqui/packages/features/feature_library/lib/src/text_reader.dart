@@ -897,6 +897,7 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
     final backButton = Tooltip(
       message: ReaderTexts.close,
       child: Pressable(
+        key: const Key('reader-close-button'),
         onPressed: _close,
         semanticLabel: NocheA11y.label(
           NocheA11y.back,
@@ -1183,6 +1184,7 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
                 child: ExcludeSemantics(
                   child: Text(
                     '$current / $total',
+                    key: const Key('reader-page-counter'),
                     style: NocheType.bodySmall.copyWith(
                       fontWeight: FontWeight.w600,
                       color: palette.label,
