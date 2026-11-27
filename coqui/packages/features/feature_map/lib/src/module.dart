@@ -2,6 +2,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_map/src/map_screen.dart';
 import 'package:feature_map/src/place_screen.dart';
+import 'package:feature_map/src/wording.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// feature_map's module: the home map, the Up next card, and the place screen.
@@ -25,7 +26,7 @@ class MapModule implements FeatureModule {
     icon: Icons.map,
     builder: (_) => MapScreen(
       services: s,
-      reviewTitle: 'Review',
+      reviewTitle: MapWording.reviewTitle,
       showPerf: showPerf,
       entitlements: entitlements,
     ),

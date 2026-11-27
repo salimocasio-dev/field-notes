@@ -5,32 +5,40 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 
+List<String> _allLibDartFiles() {
+  final files =
+      Directory('lib')
+          .listSync(recursive: true)
+          .whereType<File>()
+          .where((f) => f.path.endsWith('.dart'))
+          .map((f) => f.path.replaceAll('\\', '/'))
+          .toList()
+        ..sort();
+  return files;
+}
+
+String _stripLineComments(String source) => source
+    .split('\n')
+    .map((l) => l.replaceFirst(RegExp(r'//.*$'), ''))
+    .join('\n');
+
 void main() {
-  const n41Files = [
+  const uiFiles = [
     'lib/src/map_screen.dart',
     'lib/src/map_perf.dart',
     'lib/src/module.dart',
+    'lib/src/motion.dart',
     'lib/src/place_screen.dart',
+    'lib/src/scene_window.dart',
+    'lib/src/wording.dart',
   ];
 
-  const allLibFiles = [
-    'lib/feature_map.dart',
-    'lib/src/map_layout.dart',
-    'lib/src/map_model.dart',
-    'lib/src/map_perf.dart',
-    'lib/src/map_picture.dart',
-    'lib/src/map_places.dart',
-    'lib/src/map_screen.dart',
-    'lib/src/module.dart',
-    'lib/src/place_screen.dart',
-  ];
-
-  test('no left/right layout APIs in N4.1 files', () {
+  test('no left/right layout APIs in UI files', () {
     final wordRe = RegExp(r'\b(left|right)\b', caseSensitive: false);
     final apiRe = RegExp(
       r'fromLTRB|topLeft|topRight|centerLeft|centerRight|bottomLeft|bottomRight',
     );
-    for (final path in n41Files) {
+    for (final path in uiFiles) {
       final content = File(path).readAsStringSync();
       expect(
         wordRe.allMatches(content),
@@ -50,7 +58,10 @@ void main() {
     () {
       final colorRe = RegExp(r'Color\s*\(\s*0x');
       final fontRe = RegExp(r'\bfontFamily\b');
-      for (final path in [...allLibFiles, 'test/support/map_dev_app.dart']) {
+      for (final path in [
+        ..._allLibDartFiles(),
+        'test/support/map_dev_app.dart',
+      ]) {
         final content = File(path).readAsStringSync();
         expect(
           colorRe.allMatches(content),
@@ -70,16 +81,59 @@ void main() {
     final spanishRe = RegExp(
       r'''(['"])([^'"]*(?:¿|¡|á|é|í|ó|ú|ñ|Mapa|Palabras|Biblioteca|Hablar|Cuál|Aquí)[^'"]*)\1''',
     );
-    for (final path in allLibFiles) {
-      // Strip comments so porting notes (`// app.html: aqui`) are not flagged.
-      final code = File(path)
-          .readAsLinesSync()
-          .map((l) => l.replaceFirst(RegExp(r'//.*$'), ''))
-          .join('\n');
+    for (final path in _allLibDartFiles()) {
+      final code = _stripLineComments(File(path).readAsStringSync());
       expect(
         spanishRe.allMatches(code).map((m) => m.group(0)).toList(),
         isEmpty,
         reason: '$path contains a Spanish string literal',
+      );
+    }
+  });
+
+  test(
+    'no Duration(, Curves., or Cubic( literals anywhere under feature_map lib/',
+    () {
+      final forbidden = RegExp(r'\bDuration\s*\(|\bCurves\.|\bCubic\s*\(');
+      for (final path in _allLibDartFiles()) {
+        final code = _stripLineComments(File(path).readAsStringSync());
+        expect(
+          forbidden.allMatches(code).map((m) => m.group(0)).toList(),
+          isEmpty,
+          reason: '$path contains a raw motion literal',
+        );
+      }
+    },
+  );
+
+  test('NocheMotion.ms( appears only in lib/src/motion.dart', () {
+    final msRe = RegExp(r'\bNocheMotion\.ms\s*\(');
+    for (final path in _allLibDartFiles()) {
+      final code = _stripLineComments(File(path).readAsStringSync());
+      if (path == 'lib/src/motion.dart') {
+        expect(
+          msRe.allMatches(code),
+          isNotEmpty,
+          reason: 'lib/src/motion.dart should declare screen-local waits',
+        );
+      } else {
+        expect(
+          msRe.allMatches(code).map((m) => m.group(0)).toList(),
+          isEmpty,
+          reason: '$path must not call NocheMotion.ms(',
+        );
+      }
+    }
+  });
+
+  test('no AllowAllEntitlements anywhere under feature_map lib/', () {
+    final allowAllRe = RegExp(r'\bAllowAllEntitlements\b');
+    for (final path in _allLibDartFiles()) {
+      final code = _stripLineComments(File(path).readAsStringSync());
+      expect(
+        allowAllRe.allMatches(code),
+        isEmpty,
+        reason: '$path must not reference AllowAllEntitlements',
       );
     }
   });

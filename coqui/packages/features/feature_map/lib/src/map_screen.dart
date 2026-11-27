@@ -7,6 +7,9 @@ import 'package:feature_map/src/map_layout.dart';
 import 'package:feature_map/src/map_model.dart';
 import 'package:feature_map/src/map_perf.dart';
 import 'package:feature_map/src/map_picture.dart';
+import 'package:feature_map/src/motion.dart';
+import 'package:feature_map/src/scene_window.dart';
+import 'package:feature_map/src/wording.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -397,6 +400,23 @@ class _MapScreenState extends State<MapScreen>
     );
   }
 
+  double _contentOpacity(Animation<double>? sec, NocheMotionData motion) {
+    if (sec == null) return 1.0;
+    return switch (sec.status) {
+      AnimationStatus.dismissed => 1.0,
+      AnimationStatus.forward => MapMotion.outgoingFadeOpacity(
+        routeValue: sec.value,
+        motion: motion,
+        totalDuration: motion.pageIn,
+      ),
+      AnimationStatus.completed => 0.0,
+      AnimationStatus.reverse => MapMotion.backReturnOpacity(
+        reverseProgress: 1.0 - sec.value,
+        motion: motion,
+      ),
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     final pad = MediaQuery.paddingOf(context);
@@ -404,62 +424,88 @@ class _MapScreenState extends State<MapScreen>
     final plan = _baked ? _plan() : const <TodayEntry>[];
     final lang = _s.course.language;
     final foot = NocheSize.aboveTabBar + pad.bottom;
+    final motion = MapMotion.resolve(
+      context,
+      serviceReduceMotion: _s.reduceMotion,
+    );
+    final secondaryAnimation = ModalRoute.of(context)?.secondaryAnimation;
+    final suppressHeroForServiceReduce =
+        _s.reduceMotion && !NocheMotion.of(context).reduced;
+    final Object? windowTag =
+        !suppressHeroForServiceReduce &&
+            TickerMode.valuesOf(context).enabled &&
+            plan.isNotEmpty &&
+            plan.first.route is StoryRoute
+        ? MapMotion.storyWindowTag((plan.first.route as StoryRoute).id)
+        : null;
 
-    return ColoredBox(
-      color: NocheColors.ground,
-      child: DefaultTextStyle.merge(
-        style: NocheType.body.copyWith(color: NocheColors.text),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            _mapViewport(context, foot),
+    final body = DefaultTextStyle.merge(
+      style: NocheType.body.copyWith(color: NocheColors.text),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          _mapViewport(context, foot),
+          PositionedDirectional(
+            top: pad.top + 16,
+            start: 16,
+            end: 16,
+            child: _TopChips(
+              languageName: lang.englishName,
+              // Level badge omitted until coqui/requests/101-feature-map-needs-coqui-contracts-story-scene-and-level.md lands.
+              streak: _s.progress.streak,
+              onLanguageTap: () {
+                _s.haptics.tick();
+                _s.nav.go(const LanguagesRoute());
+              },
+            ),
+          ),
+          if (widget.showPerf && _perf != null)
             PositionedDirectional(
-              top: pad.top + 16,
+              top: pad.top + 16 + NocheSize.touch + NocheSize.grid,
+              end: 16,
+              child: MapPerfChip(_perf),
+            ),
+          if (plan.isNotEmpty)
+            PositionedDirectional(
               start: 16,
               end: 16,
-              child: _TopChips(
-                languageName: lang.englishName,
-                // Level badge omitted until coqui/requests/101-feature-map-needs-coqui-contracts-story-scene-and-level.md lands.
-                streak: _s.progress.streak,
-                onLanguageTap: () {
+              bottom: foot,
+              child: _UpNextCard(
+                entry: plan.first,
+                thenLine: upNextThenLine(plan),
+                places: places,
+                language: lang,
+                reviewTitle: widget.reviewTitle,
+                pictures: _s.pictures,
+                pictureRef: _pictureRefFor(
+                  plan.first,
+                  plan.first.route is StoryRoute
+                      ? _placeFor((plan.first.route as StoryRoute).id, places)
+                      : null,
+                ),
+                windowTag: windowTag,
+                onPlay: () => _start(plan.first),
+                onOpenPlace: (placeIndex) {
                   _s.haptics.tick();
-                  _s.nav.go(const LanguagesRoute());
+                  _openPlace(placeIndex);
                 },
               ),
             ),
-            if (widget.showPerf && _perf != null)
-              PositionedDirectional(
-                top: pad.top + 16 + NocheSize.touch + NocheSize.grid,
-                end: 16,
-                child: MapPerfChip(_perf),
-              ),
-            if (plan.isNotEmpty)
-              PositionedDirectional(
-                start: 16,
-                end: 16,
-                bottom: foot,
-                child: _UpNextCard(
-                  entry: plan.first,
-                  thenLine: upNextThenLine(plan),
-                  places: places,
-                  language: lang,
-                  reviewTitle: widget.reviewTitle,
-                  pictures: _s.pictures,
-                  pictureRef: _pictureRefFor(
-                    plan.first,
-                    plan.first.route is StoryRoute
-                        ? _placeFor((plan.first.route as StoryRoute).id, places)
-                        : null,
-                  ),
-                  onPlay: () => _start(plan.first),
-                  onOpenPlace: (placeIndex) {
-                    _s.haptics.tick();
-                    _openPlace(placeIndex);
-                  },
-                ),
-              ),
-          ],
+        ],
+      ),
+    );
+
+    return ColoredBox(
+      key: const Key('map-screen'),
+      color: NocheColors.ground,
+      child: AnimatedBuilder(
+        animation: secondaryAnimation ?? kAlwaysDismissedAnimation,
+        builder: (context, child) => Opacity(
+          key: const Key('map-motion-content'),
+          opacity: _contentOpacity(secondaryAnimation, motion),
+          child: child,
         ),
+        child: body,
       ),
     );
   }
@@ -480,8 +526,7 @@ class _MapScreenState extends State<MapScreen>
         final contentW = math.max(_viewport.width, cam.mapWidth);
         final contentH = cam.mapHeight + _bottomPad;
 
-        return Directionality(
-          textDirection: TextDirection.ltr,
+        return NocheLtr(
           child: SingleChildScrollView(
             controller: _scrollV,
             child: SingleChildScrollView(
@@ -508,7 +553,7 @@ class _MapScreenState extends State<MapScreen>
                             height: mapH,
                             repaint: _frames,
                             onTapPixel: _onTapPixel,
-                            semanticLabel: 'Course map',
+                            semanticLabel: MapWording.courseMapSemantic,
                           ),
                         ),
                       ),
@@ -588,48 +633,46 @@ class _TopChips extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final streakLabel = MapWording.streakDays(streak);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Pressable(
           key: const Key('language-chip'),
           onPressed: onLanguageTap,
-          semanticLabel: '$languageName. Change language.',
-          builder: (context, pressed) => Transform.scale(
-            scale: pressed ? 0.98 : 1,
-            child: Container(
-              height: NocheSize.touch,
-              padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 12, 0),
-              decoration: BoxDecoration(
-                color: NocheColors.panel,
-                border: Border.all(color: NocheColors.line, width: 1),
-                borderRadius: BorderRadius.circular(NocheSize.pillRadius),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    languageName,
-                    maxLines: 1,
-                    softWrap: false,
-                    style: NocheType.buttonStrong.copyWith(
-                      color: NocheColors.text,
-                    ),
-                  ),
-                  const SizedBox(width: NocheSize.grid),
-                  const NocheIcon(
-                    NocheIcons.chevronDown,
-                    size: 16,
+          semanticLabel: MapWording.changeLanguageSemantic(languageName),
+          builder: (context, _) => Container(
+            height: NocheSize.touch,
+            padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 12, 0),
+            decoration: BoxDecoration(
+              color: NocheColors.panel,
+              border: Border.all(color: NocheColors.line, width: 1),
+              borderRadius: BorderRadius.circular(NocheSize.pillRadius),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  languageName,
+                  maxLines: 1,
+                  softWrap: false,
+                  style: NocheType.buttonStrong.copyWith(
                     color: NocheColors.text,
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(width: NocheSize.grid),
+                const NocheIcon(
+                  NocheIcons.chevronDown,
+                  size: 16,
+                  color: NocheColors.text,
+                ),
+              ],
             ),
           ),
         ),
         if (streak > 0)
           Semantics(
-            label: streak == 1 ? '1 day' : '$streak days',
+            label: streakLabel,
             readOnly: true,
             child: ExcludeSemantics(
               child: Container(
@@ -652,11 +695,15 @@ class _TopChips extends StatelessWidget {
                       color: NocheColors.next,
                     ),
                     const SizedBox(width: NocheSize.grid),
-                    Text(
-                      streak == 1 ? '1 day' : '$streak days',
-                      maxLines: 1,
-                      softWrap: false,
-                      style: NocheType.button.copyWith(color: NocheColors.text),
+                    NocheLtr(
+                      child: Text(
+                        streakLabel,
+                        maxLines: 1,
+                        softWrap: false,
+                        style: NocheType.button.copyWith(
+                          color: NocheColors.text,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -688,7 +735,7 @@ class _YouAreHerePill extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'You are here',
+                  MapWording.youAreHere,
                   maxLines: 1,
                   softWrap: false,
                   style: NocheType.buttonStrong.copyWith(
@@ -723,6 +770,7 @@ class _UpNextCard extends StatelessWidget {
     required this.reviewTitle,
     required this.pictures,
     required this.pictureRef,
+    required this.windowTag,
     required this.onPlay,
     required this.onOpenPlace,
   });
@@ -734,6 +782,7 @@ class _UpNextCard extends StatelessWidget {
   final String? reviewTitle;
   final PictureSource pictures;
   final PictureRef? pictureRef;
+  final Object? windowTag;
   final VoidCallback onPlay;
   final ValueChanged<int> onOpenPlace;
 
@@ -748,7 +797,7 @@ class _UpNextCard extends StatelessWidget {
     final place = placeIdx != null ? places[placeIdx] : null;
     final locale = Locale(language.code);
     final titleText = entry.review
-        ? (reviewTitle ?? 'Review')
+        ? (reviewTitle ?? MapWording.reviewTitle)
         : (entry.title ?? '');
     final titleStyle =
         (entry.review
@@ -762,15 +811,30 @@ class _UpNextCard extends StatelessWidget {
     );
     final metaText = entry.review
         ? entry.subtitle
-        : '${upNextKind(entry)} · ${entry.minutes} min';
+        : MapWording.lineWithMinutes(upNextKind(entry), entry.minutes);
 
     final details = Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        _SceneThumb(
-          pictures: pictures,
-          ref: pictureRef,
-          isReview: entry.review,
+        SizedBox.square(
+          dimension: _thumbSize,
+          child: MapSceneWindow(
+            key: const Key('up-next-window'),
+            pictures: pictures,
+            pictureRef: pictureRef,
+            borderRadius: NocheSize.tileRadius,
+            tag: windowTag,
+            placeholder: ColoredBox(
+              color: NocheColors.chip,
+              child: Center(
+                child: NocheIcon(
+                  entry.review ? NocheIcons.words : NocheIcons.map,
+                  size: 28,
+                  color: NocheColors.label,
+                ),
+              ),
+            ),
+          ),
         ),
         const SizedBox(width: 16),
         Expanded(
@@ -782,7 +846,9 @@ class _UpNextCard extends StatelessWidget {
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: place != null ? 'UP NEXT · ' : 'UP NEXT',
+                      text: place != null
+                          ? MapWording.upNextWithPlacePrefix
+                          : MapWording.upNext,
                       style: NocheType.label.copyWith(color: NocheColors.label),
                     ),
                     if (place != null)
@@ -823,9 +889,9 @@ class _UpNextCard extends StatelessWidget {
     final tappableDetails = placeIdx != null
         ? Pressable(
             key: const Key('up-next-place'),
+            scaleOnPress: false,
             onPressed: () => onOpenPlace(placeIdx),
-            builder: (context, pressed) =>
-                Opacity(opacity: pressed ? 0.85 : 1, child: details),
+            builder: (context, _) => details,
           )
         : details;
 
@@ -846,8 +912,8 @@ class _UpNextCard extends StatelessWidget {
                 size: NocheSize.disc,
                 onPressed: onPlay,
                 semanticLabel: entry.review
-                    ? 'Start review'
-                    : 'Play the story $titleText',
+                    ? MapWording.startReviewSemantic
+                    : MapWording.playStorySemantic(titleText),
               ),
             ],
           ),
@@ -870,52 +936,6 @@ class _UpNextCard extends StatelessWidget {
           ],
         ],
       ),
-    );
-  }
-}
-
-class _SceneThumb extends StatelessWidget {
-  const _SceneThumb({
-    required this.pictures,
-    required this.ref,
-    required this.isReview,
-  });
-
-  final PictureSource pictures;
-  final PictureRef? ref;
-  final bool isReview;
-
-  @override
-  Widget build(BuildContext context) {
-    final dpr =
-        MediaQuery.maybeDevicePixelRatioOf(context) ??
-        View.of(context).devicePixelRatio;
-    final scale = math.max(1, (dpr - 1e-6).ceil());
-    final avail = 72.0 * scale / dpr;
-    final child = ref != null
-        ? OverflowBox(
-            maxWidth: avail,
-            maxHeight: avail,
-            alignment: AlignmentDirectional.center,
-            child: pictures.of(
-              ref!,
-              width: _UpNextCard._thumbSize.toInt(),
-              height: _UpNextCard._thumbSize.toInt(),
-            ),
-          )
-        : ColoredBox(
-            color: NocheColors.chip,
-            child: Center(
-              child: NocheIcon(
-                isReview ? NocheIcons.words : NocheIcons.map,
-                size: 28,
-                color: NocheColors.label,
-              ),
-            ),
-          );
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(NocheSize.tileRadius),
-      child: SizedBox.square(dimension: _UpNextCard._thumbSize, child: child),
     );
   }
 }
