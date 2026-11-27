@@ -1,9 +1,7 @@
 /// Subscription tier hook for live calls.
 ///
-/// Live voice calls belong to the top subscription tier. Until `Entitlements`
-/// lands in `coqui_contracts` (see
-/// `coqui/requests/25-feature-speaking-needs-coqui-contracts-call-titles.md`),
-/// callers pass a [CallEntitlementCheck] into `SpeakingModule` or `HablarTab`.
+/// Live voice calls belong to the top subscription tier. Callers can pass a
+/// [CallEntitlementCheck] into `SpeakingModule` or `HablarTab` to gate them.
 library;
 
 /// Whether the current learner's subscription tier allows live voice calls.

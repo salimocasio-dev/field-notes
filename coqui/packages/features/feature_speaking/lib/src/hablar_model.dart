@@ -12,6 +12,7 @@ library;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:feature_speaking/src/call_catalog.dart';
+import 'package:feature_speaking/src/call_controller.dart' show isCallBriefLive;
 import 'package:feature_speaking/src/call_text.dart';
 import 'package:feature_speaking/src/entitlements_hook.dart';
 
@@ -70,6 +71,7 @@ class HablarCallItem {
 
   /// Compact meta line shown on secondary call cards.
   String get cardMetaLine {
+    if (state == HablarCallState.done) return '${spec.minutes} min · done';
     if (canStart) return '${spec.minutes} min · open';
     if (state == HablarCallState.upcoming && unlockAfterStory > 0) {
       return '${spec.minutes} min · after story $unlockAfterStory';
@@ -234,6 +236,29 @@ class HablarSnapshot {
   List<String> get previewWords => openWords.take(maxCallPreviewChips).toList();
 }
 
+bool _isCallDone({
+  required ProgressStore progress,
+  required Set<String> completedCallIds,
+  required HablarCallSpec spec,
+  required String? briefId,
+}) {
+  if (completedCallIds.contains(spec.id) || progress.callDone(spec.id)) {
+    return true;
+  }
+  if (briefId != null &&
+      briefId != spec.id &&
+      (completedCallIds.contains(briefId) || progress.callDone(briefId))) {
+    return true;
+  }
+  if (spec.isMain &&
+      spec.placeId != spec.id &&
+      (completedCallIds.contains(spec.placeId) ||
+          progress.callDone(spec.placeId))) {
+    return true;
+  }
+  return false;
+}
+
 /// Builds the [HablarSnapshot] from [course], [progress], lazy [callsAvailable],
 /// optional [entitlement], optional [completedCallIds], and [shortCallsEnabled].
 ///
@@ -279,6 +304,9 @@ HablarSnapshot buildHablarSnapshot({
     }
   }
 
+  final isSpanish = course.language.code == Language.spanish.code;
+  var completedCount = 0;
+  final countedIds = <String>{};
   final stops = <PlaceJourneyStop>[];
   for (var i = 0; i < places.length; i++) {
     final place = places[i];
@@ -292,16 +320,16 @@ HablarSnapshot buildHablarSnapshot({
     final localById = {for (final s in localCatalog) s.id: s};
     final localMain = mainCallForPlace(place.id);
 
-    final resolved = <(HablarCallSpec, bool)>[];
+    final resolved = <(HablarCallSpec, String?, bool)>[];
     if (courseCalls.isNotEmpty) {
       final seenIds = <String>{};
       var hasCourseSmall = false;
       for (final c in courseCalls) {
         final fallback = localById[c.id] ?? (c.isMain ? localMain : null);
-        final title = c.title.isNotEmpty
+        final title = c.title.trim().isNotEmpty
             ? c.title
-            : (fallback?.titleEs ?? place.name);
-        final rawJob = c.jobEn.isNotEmpty
+            : (isSpanish ? (fallback?.titleEs ?? place.name) : place.name);
+        final rawJob = c.jobEn.trim().isNotEmpty
             ? c.jobEn
             : (fallback?.jobEn ?? c.job);
         final spec = HablarCallSpec(
@@ -315,10 +343,10 @@ HablarSnapshot buildHablarSnapshot({
         );
         if (!spec.isMain) hasCourseSmall = true;
         seenIds.add(spec.id);
-        resolved.add((spec, true));
+        resolved.add((spec, c.id, isCallBriefLive(c)));
       }
       // Legacy single-call catalog: list local smaller calls as unbacked (`soon`).
-      if (!hasCourseSmall) {
+      if (!hasCourseSmall && isSpanish) {
         for (final local in localCatalog) {
           if (local.isMain || seenIds.contains(local.id)) continue;
           resolved.add((
@@ -331,11 +359,12 @@ HablarSnapshot buildHablarSnapshot({
               isMain: false,
               pixelAsset: local.pixelAsset,
             ),
+            null,
             false,
           ));
         }
       }
-    } else {
+    } else if (isSpanish) {
       for (final spec in localCatalog) {
         resolved.add((
           HablarCallSpec(
@@ -347,6 +376,7 @@ HablarSnapshot buildHablarSnapshot({
             isMain: spec.isMain,
             pixelAsset: spec.pixelAsset,
           ),
+          null,
           false,
         ));
       }
@@ -365,7 +395,7 @@ HablarSnapshot buildHablarSnapshot({
 
     final items = <HablarCallItem>[];
     var smallIndex = 0;
-    for (final (spec, backedByCourse) in ordered) {
+    for (final (spec, briefId, backedByCourse) in ordered) {
       final int unlockAfter;
       if (!spec.isMain) {
         unlockAfter = totalStories == 0
@@ -376,6 +406,19 @@ HablarSnapshot buildHablarSnapshot({
         smallIndex++;
       } else {
         unlockAfter = totalStories;
+      }
+
+      final done = _isCallDone(
+        progress: progress,
+        completedCallIds: completedCallIds,
+        spec: spec,
+        briefId: briefId,
+      );
+      if (done) {
+        completedCount++;
+        countedIds.add(spec.id);
+        if (briefId != null) countedIds.add(briefId);
+        if (spec.isMain) countedIds.add(place.id);
       }
 
       final thresholdMet = totalStories > 0 && playedCount >= unlockAfter;
@@ -398,8 +441,6 @@ HablarSnapshot buildHablarSnapshot({
         itemState = HablarCallState.later;
         itemStatus = laterLine;
       } else {
-        final done =
-            completedCallIds.contains(spec.id) || progress.callDone(spec.id);
         itemState = done ? HablarCallState.done : HablarCallState.ready;
         itemStatus = CallTexts.durationLine(spec.minutes);
       }
@@ -435,13 +476,17 @@ HablarSnapshot buildHablarSnapshot({
     );
   }
 
+  for (final id in completedCallIds) {
+    if (!countedIds.contains(id)) completedCount++;
+  }
+
   final next = _pickNextCall(stops);
   return HablarSnapshot(
     nextCall: next,
     stops: stops,
     openWords: wordsOpenForSpeaking(progress),
     entitlement: entitlement,
-    completedCount: completedCallIds.length,
+    completedCount: completedCount,
   );
 }
 
@@ -539,6 +584,8 @@ abstract final class HablarTexts {
       count == 1 ? '1 word ready to say' : '$count words ready to say';
   static String nextCallEyebrow(String partnerName, int minutes) =>
       'Next call with $partnerName · $minutes min';
+  static String doneCallEyebrow(String partnerName, int minutes) =>
+      'Call with $partnerName · $minutes min · done';
   static String lockedPlaceLabel(String placeName) =>
       '$placeName, not reached yet';
 

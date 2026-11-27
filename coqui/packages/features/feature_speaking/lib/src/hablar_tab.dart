@@ -42,7 +42,8 @@ class HablarTab extends StatefulWidget {
   /// Subscription tier check hook for live calls.
   final CallEntitlementCheck entitlementCheck;
 
-  /// Completed call IDs (temporary until `ProgressStore` tracks completed calls).
+  /// Optional override/test set of completed call IDs, merged with
+  /// `services.progress.callDone(callId)`.
   final Set<String> completedCallIds;
 
   /// Enables starting smaller calls via `CallRoute(placeId, callId:)` once
@@ -342,10 +343,18 @@ class _HablarTabState extends State<HablarTab> {
     Language lang,
     Locale courseLocale,
   ) {
-    final eyebrow = HablarTexts.nextCallEyebrow(
-      lang.partnerName,
-      featured.spec.minutes,
-    ).toUpperCase();
+    final isDone = featured.state == HablarCallState.done;
+    final eyebrow =
+        (isDone
+                ? HablarTexts.doneCallEyebrow(
+                    lang.partnerName,
+                    featured.spec.minutes,
+                  )
+                : HablarTexts.nextCallEyebrow(
+                    lang.partnerName,
+                    featured.spec.minutes,
+                  ))
+            .toUpperCase();
     final titleStyle = NocheType.forScript(
       NocheType.placeTitle.copyWith(height: 36 / 32),
       lang.script,
@@ -363,7 +372,9 @@ class _HablarTabState extends State<HablarTab> {
               eyebrow,
               textDirection: TextDirection.ltr,
               style: NocheType.label.copyWith(
-                color: featured.canStart ? NocheColors.next : NocheColors.label,
+                color: featured.state == HablarCallState.ready
+                    ? NocheColors.next
+                    : NocheColors.label,
               ),
             ),
             const SizedBox(height: 8),

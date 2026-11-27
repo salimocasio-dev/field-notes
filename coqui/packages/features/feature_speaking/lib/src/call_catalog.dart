@@ -1,9 +1,9 @@
-/// Temporary local catalog of call titles and smaller calls per place.
+/// Temporary local fallback catalog of call titles and smaller calls per place.
 ///
-/// Titles and call lists are course content, not code. This file is the local
-/// stand-in until `coqui_contracts` adds `title`, `jobEn`, `isMain`, and
-/// `CourseCatalog.callsFor(placeId)` and `coqui_content` supplies the data
-/// (see `coqui/requests/25-feature-speaking-needs-coqui-contracts-call-titles.md`).
+/// Titles and call lists are course content, not code. `hablar_model.dart` reads
+/// `course.callsFor(place.id)` (`CallsCatalog`) first and keeps this fallback for
+/// Spanish legacy single-call data until the 31-call `llamadas.json` is promoted
+/// (see `coqui/requests/6-coqui-content-needs-content-publish-llamadas-data.md`).
 ///
 /// Rules enforced here:
 /// - Short, beginner-readable Puerto Rican Spanish title (A1/A2).
