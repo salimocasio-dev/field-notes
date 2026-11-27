@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
-  "files": 1476,
-  "totalBytes": 91437965,
+  "files": 1524,
+  "totalBytes": 94341193,
   "entries": [
     {
       "path": "balcon/door-open-win-open/kinds.bin",
@@ -6812,6 +6812,246 @@
       "path": "sala/luz-1-fotos-111/zb.json",
       "bytes": 322,
       "sha256": "e5be005a94c312d3bcc4f2de1e37885fb76a4202c463f6b555b073a8f04d3e2d"
+    },
+    {
+      "path": "sombrilla/mediodia-circulo/kinds.bin",
+      "bytes": 51840,
+      "sha256": "79bc5cfd34935c2f8f2cc0af6bdec2db5a64c132ee835c1a92bab353949889b7"
+    },
+    {
+      "path": "sombrilla/mediodia-circulo/kinds.json",
+      "bytes": 305,
+      "sha256": "bbb753de9cce647a72bbc82547d82197c70df9a024c7503c7ea983d68aa4aefa"
+    },
+    {
+      "path": "sombrilla/mediodia-circulo/pix.bin",
+      "bytes": 207360,
+      "sha256": "bda1341b06ca30fa603693a89ef21f223ffeba7ec83916a420ca4671367cfb92"
+    },
+    {
+      "path": "sombrilla/mediodia-circulo/pix.json",
+      "bytes": 370,
+      "sha256": "b99d7412cfdcdec6f1b1a98e608e6303d94dc1010a41158a8d9d4eeb3e5930f2"
+    },
+    {
+      "path": "sombrilla/mediodia-circulo/pix.png",
+      "bytes": 15397,
+      "sha256": "0424ca49d050ea7a2a1fd54d2868d004d3d5250dd3fa790b5d8cf6d356ba3f60"
+    },
+    {
+      "path": "sombrilla/mediodia-circulo/state.json",
+      "bytes": 956,
+      "sha256": "527dc1bc378a6cc4209f1c30f74f0a6cd06a45ccfb9b048348767125a89e54e1"
+    },
+    {
+      "path": "sombrilla/mediodia-circulo/zb.bin",
+      "bytes": 207360,
+      "sha256": "dc8c859dab221a642b481d3016a37c50a91d5eda542ff23801fc8efce33aef04"
+    },
+    {
+      "path": "sombrilla/mediodia-circulo/zb.json",
+      "bytes": 322,
+      "sha256": "b26bce06283182b880f3b5b78cbbd8bd0217a30e6961396a370fe9c9f3c6aa57"
+    },
+    {
+      "path": "sombrilla/mediodia-figura/kinds.bin",
+      "bytes": 51840,
+      "sha256": "79bc5cfd34935c2f8f2cc0af6bdec2db5a64c132ee835c1a92bab353949889b7"
+    },
+    {
+      "path": "sombrilla/mediodia-figura/kinds.json",
+      "bytes": 305,
+      "sha256": "bbb753de9cce647a72bbc82547d82197c70df9a024c7503c7ea983d68aa4aefa"
+    },
+    {
+      "path": "sombrilla/mediodia-figura/pix.bin",
+      "bytes": 207360,
+      "sha256": "5ee6e740591d8c4b723e70d5c9f18a2db8e53e0f14c9ab76c63d6a8b03ed3b35"
+    },
+    {
+      "path": "sombrilla/mediodia-figura/pix.json",
+      "bytes": 370,
+      "sha256": "5ac0de19ac3ff4696548e7e802f6c7bbc9e078d5cd06730085d74e32d1ec7edb"
+    },
+    {
+      "path": "sombrilla/mediodia-figura/pix.png",
+      "bytes": 15543,
+      "sha256": "491ca62291950bc73f5bc26c20840e0bd771a25afefc904957a9790c64e00f40"
+    },
+    {
+      "path": "sombrilla/mediodia-figura/state.json",
+      "bytes": 954,
+      "sha256": "ea8f1e2cd7b1086bdced7073e4213c213806f849efe82e24aec1f2b9aa20a43f"
+    },
+    {
+      "path": "sombrilla/mediodia-figura/zb.bin",
+      "bytes": 207360,
+      "sha256": "dc8c859dab221a642b481d3016a37c50a91d5eda542ff23801fc8efce33aef04"
+    },
+    {
+      "path": "sombrilla/mediodia-figura/zb.json",
+      "bytes": 322,
+      "sha256": "b26bce06283182b880f3b5b78cbbd8bd0217a30e6961396a370fe9c9f3c6aa57"
+    },
+    {
+      "path": "sombrilla/sol-circulo/kinds.bin",
+      "bytes": 51840,
+      "sha256": "79bc5cfd34935c2f8f2cc0af6bdec2db5a64c132ee835c1a92bab353949889b7"
+    },
+    {
+      "path": "sombrilla/sol-circulo/kinds.json",
+      "bytes": 305,
+      "sha256": "bbb753de9cce647a72bbc82547d82197c70df9a024c7503c7ea983d68aa4aefa"
+    },
+    {
+      "path": "sombrilla/sol-circulo/pix.bin",
+      "bytes": 207360,
+      "sha256": "580d6b49e0e4314585b6e39d54876eacda8895c1ab405d6dfef68b9000a3a73c"
+    },
+    {
+      "path": "sombrilla/sol-circulo/pix.json",
+      "bytes": 370,
+      "sha256": "9bcd46f142d1087c59b750d33593c02ce9776f24edcfc27dfc55508b8d093f00"
+    },
+    {
+      "path": "sombrilla/sol-circulo/pix.png",
+      "bytes": 15352,
+      "sha256": "23b39f2c0f87f01a4894ac09f193dafcf72a515760e7e4fa3b5ec3ada4f47e9c"
+    },
+    {
+      "path": "sombrilla/sol-circulo/state.json",
+      "bytes": 946,
+      "sha256": "35f16539b1e52c8fd8a8b7c91e230bba7d7b16c1c8644ef4883d09e29189bb66"
+    },
+    {
+      "path": "sombrilla/sol-circulo/zb.bin",
+      "bytes": 207360,
+      "sha256": "dc8c859dab221a642b481d3016a37c50a91d5eda542ff23801fc8efce33aef04"
+    },
+    {
+      "path": "sombrilla/sol-circulo/zb.json",
+      "bytes": 322,
+      "sha256": "b26bce06283182b880f3b5b78cbbd8bd0217a30e6961396a370fe9c9f3c6aa57"
+    },
+    {
+      "path": "sombrilla/sol-figura/kinds.bin",
+      "bytes": 51840,
+      "sha256": "79bc5cfd34935c2f8f2cc0af6bdec2db5a64c132ee835c1a92bab353949889b7"
+    },
+    {
+      "path": "sombrilla/sol-figura/kinds.json",
+      "bytes": 305,
+      "sha256": "bbb753de9cce647a72bbc82547d82197c70df9a024c7503c7ea983d68aa4aefa"
+    },
+    {
+      "path": "sombrilla/sol-figura/pix.bin",
+      "bytes": 207360,
+      "sha256": "ba44aa924304193895b5308c672812033aea4308deba0cf1333f7d3458452e07"
+    },
+    {
+      "path": "sombrilla/sol-figura/pix.json",
+      "bytes": 370,
+      "sha256": "283ed0c290c2fbb9f954e6e78228c5d6df88990a6b0a3846479d2a25f40702a6"
+    },
+    {
+      "path": "sombrilla/sol-figura/pix.png",
+      "bytes": 15502,
+      "sha256": "7df68eafabdeb7a4271ecc55f154a92cf49dce8839b2cbfa7cad7abc373da394"
+    },
+    {
+      "path": "sombrilla/sol-figura/state.json",
+      "bytes": 944,
+      "sha256": "5dac5b12da4108fe35535d7514ef5965b68c7980e2caa7a10c900a9efacc5c93"
+    },
+    {
+      "path": "sombrilla/sol-figura/zb.bin",
+      "bytes": 207360,
+      "sha256": "dc8c859dab221a642b481d3016a37c50a91d5eda542ff23801fc8efce33aef04"
+    },
+    {
+      "path": "sombrilla/sol-figura/zb.json",
+      "bytes": 322,
+      "sha256": "b26bce06283182b880f3b5b78cbbd8bd0217a30e6961396a370fe9c9f3c6aa57"
+    },
+    {
+      "path": "sombrilla/tarde-circulo/kinds.bin",
+      "bytes": 51840,
+      "sha256": "79bc5cfd34935c2f8f2cc0af6bdec2db5a64c132ee835c1a92bab353949889b7"
+    },
+    {
+      "path": "sombrilla/tarde-circulo/kinds.json",
+      "bytes": 305,
+      "sha256": "bbb753de9cce647a72bbc82547d82197c70df9a024c7503c7ea983d68aa4aefa"
+    },
+    {
+      "path": "sombrilla/tarde-circulo/pix.bin",
+      "bytes": 207360,
+      "sha256": "55de34e2d70cb4c5686683cf44a7b1c3576ae09c11bcdbcba9ffd224ab170b44"
+    },
+    {
+      "path": "sombrilla/tarde-circulo/pix.json",
+      "bytes": 370,
+      "sha256": "54977e9343a12f5b222f0395aa995a5006bed40446750c8bed0bb5e33208d2e2"
+    },
+    {
+      "path": "sombrilla/tarde-circulo/pix.png",
+      "bytes": 15123,
+      "sha256": "36a65b8368f4c8003842a42bbe0fea44c457f77b485d07a994809a9ae2869bb0"
+    },
+    {
+      "path": "sombrilla/tarde-circulo/state.json",
+      "bytes": 950,
+      "sha256": "a032bab47003fbea0be5d8e657e1b2386ef8024536fe7a2ef37f808f3909a51b"
+    },
+    {
+      "path": "sombrilla/tarde-circulo/zb.bin",
+      "bytes": 207360,
+      "sha256": "dc8c859dab221a642b481d3016a37c50a91d5eda542ff23801fc8efce33aef04"
+    },
+    {
+      "path": "sombrilla/tarde-circulo/zb.json",
+      "bytes": 322,
+      "sha256": "b26bce06283182b880f3b5b78cbbd8bd0217a30e6961396a370fe9c9f3c6aa57"
+    },
+    {
+      "path": "sombrilla/tarde-figura/kinds.bin",
+      "bytes": 51840,
+      "sha256": "79bc5cfd34935c2f8f2cc0af6bdec2db5a64c132ee835c1a92bab353949889b7"
+    },
+    {
+      "path": "sombrilla/tarde-figura/kinds.json",
+      "bytes": 305,
+      "sha256": "bbb753de9cce647a72bbc82547d82197c70df9a024c7503c7ea983d68aa4aefa"
+    },
+    {
+      "path": "sombrilla/tarde-figura/pix.bin",
+      "bytes": 207360,
+      "sha256": "0789c49e5ec850aff3385302126a134056a9a6eb4cafbd4b5acd7e9a93cc3712"
+    },
+    {
+      "path": "sombrilla/tarde-figura/pix.json",
+      "bytes": 370,
+      "sha256": "295ece2a6ac495fb993cc3eca8bf02b1654e9091fe36d7253cc45805f5c83cb1"
+    },
+    {
+      "path": "sombrilla/tarde-figura/pix.png",
+      "bytes": 15271,
+      "sha256": "f2b83ca16b72c3f8689731e0e241f1ed0ab1ce24657958e1d33fbcb1bca9e67b"
+    },
+    {
+      "path": "sombrilla/tarde-figura/state.json",
+      "bytes": 948,
+      "sha256": "693e7cf311bbd1924e5c73bca1f42f4435409f5ea6af9f86dc5aa25f93ba498d"
+    },
+    {
+      "path": "sombrilla/tarde-figura/zb.bin",
+      "bytes": 207360,
+      "sha256": "dc8c859dab221a642b481d3016a37c50a91d5eda542ff23801fc8efce33aef04"
+    },
+    {
+      "path": "sombrilla/tarde-figura/zb.json",
+      "bytes": 322,
+      "sha256": "b26bce06283182b880f3b5b78cbbd8bd0217a30e6961396a370fe9c9f3c6aa57"
     },
     {
       "path": "tiendas/a-der-manana/kinds.bin",

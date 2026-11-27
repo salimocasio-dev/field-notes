@@ -1,0 +1,1019 @@
+{
+ "scene": "sombrilla",
+ "made": "node docs/proyecto/pixel/sombrilla-sheet-make.js, from sombrilla-set.html (window.SOMBRILLA.E and FACE_AT) and the design of La sombrilla (the orchestrator's p7-spec, section sombrilla). A new scene: no old scene, no remap.",
+ "S": 26,
+ "origin": {
+  "originX": 0,
+  "originY": -44
+ },
+ "picture": [240, 216],
+ "view": [196, 216],
+ "rules": {
+  "project": "pp-engine.js project(x, y, z) with S 26 and this origin: sx = OX + (x - y) / R2 * S, sy = OY + ((x + y) / R2 * .5 - z * COS) * S, depth d = (x + y) / R2 * COS + z * .5 (R2 = sqrt 2, COS = sqrt 3 / 2); OX = W / 2 + originX = 120, OY = H / 2 + originY = 64. A box is the screen bounding box of its projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]. screen is the projection rounded to whole pixels",
+  "uv": "the set is laid out square to the picture: a spot is given in (u, v, z), u across the picture (to the right), v down it (towards the camera), the water's edge at v 0; plaza-base.js PZ.xy(u, v) = ((u + v) / R2, (v - u) / R2) gives the world x, y (world is that). On the picture sx = OX + u * S = 120 + 26 u, and sy = OY + (v / 2 - z * COS) * S = 64 + 13 v - 22.5 z; the picture holds u from -4.62 to 4.62 and v (on the sand) from -4.92 to 11.69",
+  "spot": "a spot is a world point of the feet (z 0: the sand; the blanket's top is z .03, under 1 px: the spec's z 0 is kept) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite's bottom edge on sy, and its middle column on the column sx (rules.anchor). A small thing has a box (the spot's box): the bucket, the row of three spiral shells and the three things in the row have their bottom middle on the spot; a shell of the face is centred on its place (the touch box of the place is things.<name>, 14 x 10). The ball has no spot: it is held (the preview draws it at Luis's side). scale is the frog's: 1 everywhere",
+  "anchor": "the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 41 rows drawn standing for a child (Luis, Carmen); the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (row 25 of the canvas is on sy); abuela standing mkAbuela (48 x 51, engine.js): column 30; abuela sitting on the blanket: mkAbuelaS (52 x 50) with pies (her legs out in front, to the right), column 17 and her lowest drawn row on sy; abuela lying: a plain stand-in (52 x 18, no maker yet: the spec gives no size), her middle column on sx and her lowest row on sy, head at the left; Canelo mkPerro('husmea') (30 x 22), head down, sniffing or digging: column 15 and its bottom edge; a small thing: see spot. Nobody is turned (the makers draw them from the front)",
+  "view": "one window, wide, zoom 1: the 196 x 216 window over the 240 x 216 picture, x0 = its left edge (22 centres it). Never a fraction",
+  "depth": "a spot's depth is the engine's d of its world point; front.plane turns it into the depth of each row of a character",
+  "face": "ojo_izq, ojo_der, nariz, boca: 14 x 10 boxes centred on SOMBRILLA.FACE_AT (the eyes at u 0.43 and 1.67, v 4.05; the nose v 4.7; the mouth v 5.45): the box is [sx - 7, sy - 5, 14, 10]; a shell is 5 px, centred on the point",
+  "figure": "cabeza and cara are the boxes of their circles; brazo_izq / brazo_der: from the body to the hand along the arms' line, 6 px high; mano_izq / mano_der: 12 x 10, inner edge at the arm's end, going outward; pies: two 12 x 8 boxes, inner edge at the leg's end (u 0.5 and 1.6 at v 7.6), going outward. izq is the one at the left of the picture"
+ },
+ "setKey": {
+  "params": {
+   "hora": {
+    "values": ["mediodia", "tarde", "sol"],
+    "note": "75 mediodia, 76 tarde, 77 sol (the hottest hour, hard and bright light)"
+   },
+   "dibujo": {
+    "values": ["circulo", "figura"],
+    "note": "what is drawn on the damp sand: 75 circulo (the big circle), 76 and 77 figura (head, arms, hands, body, legs, feet)"
+   }
+  },
+  "key": "hora + dibujo, e.g. \"mediodia-circulo\"",
+  "used": ["?hora=mediodia&dibujo=circulo", "?hora=tarde&dibujo=figura", "?hora=sol&dibujo=figura"],
+  "baked": ["?hora=mediodia&dibujo=circulo", "?hora=tarde&dibujo=circulo", "?hora=sol&dibujo=circulo", "?hora=mediodia&dibujo=figura", "?hora=tarde&dibujo=figura", "?hora=sol&dibujo=figura"]
+ },
+ "things": {
+  "cara": {
+   "set": true,
+   "uv": [-0.55, 3, 0, 2.65, 6.2, 0],
+   "world": [1.7324, 0.2475, 0, 6.2579, 4.773, 0],
+   "box": [105, 103, 84, 42],
+   "what": "the circle drawn on the damp sand (dibujo circulo): the box of its circle, middle (u 1.05, v 4.6), radius 1.6; a poke"
+  },
+  "ojo_izq": {
+   "set": true,
+   "uv": [0.1538, 3.6923, 0, 0.6923, 4.4615, 0],
+   "world": [2.7196, 2.1213, 0, 3.6443, 3.046, 0],
+   "box": [124, 112, 14, 10],
+   "what": "the place of the face's left eye: a 14 x 10 px box centred on SOMBRILLA.FACE_AT.ojo_izq (u 0.43, v 4.05); a poke",
+   "place": true,
+   "screen": [131, 117],
+   "size": [14, 10]
+  },
+  "ojo_der": {
+   "set": true,
+   "uv": [1.3846, 3.6923, 0, 1.9231, 4.4615, 0],
+   "world": [3.5899, 1.251, 0, 4.5146, 2.1757, 0],
+   "box": [156, 112, 14, 10],
+   "what": "the place of the face's right eye: a 14 x 10 px box centred on SOMBRILLA.FACE_AT.ojo_der (u 1.67, v 4.05); a poke",
+   "place": true,
+   "screen": [163, 117],
+   "size": [14, 10]
+  },
+  "nariz": {
+   "set": true,
+   "uv": [0.7692, 4.3077, 0, 1.3077, 5.0769, 0],
+   "world": [3.5899, 2.1213, 0, 4.5146, 3.046, 0],
+   "box": [140, 120, 14, 10],
+   "what": "the place of the face's nose: a 14 x 10 px box centred on SOMBRILLA.FACE_AT.nariz (u 1.05, v 4.7); a poke",
+   "place": true,
+   "screen": [147, 125],
+   "size": [14, 10]
+  },
+  "boca": {
+   "set": true,
+   "uv": [0.7692, 5.0769, 0, 1.3077, 5.8462, 0],
+   "world": [4.1339, 2.6652, 0, 5.0585, 3.5899, 0],
+   "box": [140, 130, 14, 10],
+   "what": "the place of the face's mouth: a 14 x 10 px box centred on SOMBRILLA.FACE_AT.boca (u 1.05, v 5.45); a poke",
+   "place": true,
+   "screen": [147, 135],
+   "size": [14, 10]
+  },
+  "cabeza": {
+   "set": true,
+   "uv": [0.15, 2.15, 0, 1.95, 3.95, 0],
+   "world": [1.6263, 0.1414, 0, 4.1719, 2.687, 0],
+   "box": [123, 91, 48, 25],
+   "what": "the figure's head (dibujo figura): the box of its circle, middle (u 1.05, v 3.05), radius 0.9; a poke"
+  },
+  "brazo_izq": {
+   "set": true,
+   "uv": [-0.4615, 4.3077, 0, 1.0385, 4.7692, 0],
+   "world": [2.7196, 2.3117, 0, 4.1067, 3.6987, 0],
+   "box": [108, 120, 39, 6],
+   "what": "the figure's left arm (the one at the left of the picture): the line from the body (u 1.05) to its hand (u -0.45) at v 4.5, a box 6 px high centred on it; a poke"
+  },
+  "brazo_der": {
+   "set": true,
+   "uv": [1.0385, 4.3077, 0, 2.5385, 4.7692, 0],
+   "world": [3.7803, 1.251, 0, 5.1673, 2.6381, 0],
+   "box": [147, 120, 39, 6],
+   "what": "the figure's right arm: the line from the body (u 1.05) to its hand (u 2.55) at v 4.5, a box 6 px high centred on it; a poke"
+  },
+  "mano_izq": {
+   "set": true,
+   "uv": [-0.9231, 4.1538, 0, -0.4615, 4.9231, 0],
+   "world": [2.2845, 3.2636, 0, 3.1548, 4.1339, 0],
+   "box": [96, 118, 12, 10],
+   "what": "the figure's left hand: a 12 x 10 px box with its inner edge at the arm's end (u -0.45), going outward, centred on the arm's line; a poke"
+  },
+  "mano_der": {
+   "set": true,
+   "uv": [2.5385, 4.1538, 0, 3, 4.9231, 0],
+   "world": [4.7322, 0.8159, 0, 5.6025, 1.6862, 0],
+   "box": [186, 118, 12, 10],
+   "what": "the figure's right hand: a 12 x 10 px box with its inner edge at the arm's end (u 2.55), going outward, centred on the arm's line; a poke"
+  },
+  "pies": {
+   "set": true,
+   "uv": [0.0385, 7.3077, 0, 2.0769, 7.9231, 0],
+   "world": [5.1945, 3.6987, 0, 7.0711, 5.5753, 0],
+   "box": [121, 159, 53, 8],
+   "what": "the figure's two feet at the legs' ends (u 0.5 and 1.6, v 7.6): one thing, two 12 x 8 px boxes (boxes), each with its inner edge at the leg's end, going outward; box is the two together; a poke",
+   "boxes": [
+    [121, 159, 12, 8],
+    [162, 159, 12, 8]
+   ]
+  },
+  "sombreros": "sprite",
+  "gafas": "sprite",
+  "chancletas": "sprite",
+  "caracoles": "sprite",
+  "luis": "sprite",
+  "carmen": "sprite",
+  "abuela": "sprite",
+  "coqui": "sprite",
+  "perro": "sprite",
+  "bola": "sprite"
+ },
+ "blanket": {
+  "set": true,
+  "uv": [-2.75, 1.2, 0.03, -0.35, 2.9, 0.03],
+  "world": [-1.096, 1.096, 0.03, 1.8031, 3.9952, 0.03],
+  "box": [48, 78, 63, 24],
+  "what": "the blanket in the umbrella's shade (E.BLANKET: u -2.75 to -0.35, v 1.2 to 2.9, its top at z .03): not a thing he touches; abuela's place (manta) is inside it"
+ },
+ "spots": {
+  "manta": {
+   "world": [0.3182, 2.5102, 0],
+   "uv": [-1.55, 2, 0],
+   "screen": [80, 90],
+   "depth": 1.7321,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "abuela, lying or sitting, on the blanket in the umbrella's shade (stories 75 to 77)",
+   "sprite": "abuelaP",
+   "sprites": ["abuelaP", "abuelaL"],
+   "who": "adulto"
+  },
+  "manta2": {
+   "world": [0.601, 3.0759, 0],
+   "uv": [-1.75, 2.6, 0],
+   "screen": [75, 98],
+   "depth": 2.2517,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a second place for abuela on the blanket in the shade (77 ending: she lies here, out of the game)",
+   "sprite": "abuelaP",
+   "sprites": ["abuelaP", "abuelaL"],
+   "who": "adulto"
+  },
+  "manta3": {
+   "world": [1.2374, 2.3688, 0],
+   "uv": [-0.8, 2.55, 0],
+   "screen": [99, 97],
+   "depth": 2.2084,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a third place for abuela on the blanket in the shade",
+   "sprite": "abuelaP",
+   "sprites": ["abuelaP", "abuelaL"],
+   "who": "adulto"
+  },
+  "luis.cara": {
+   "world": [2.7931, 4.4194, 0],
+   "uv": [-1.15, 5.1, 0],
+   "screen": [90, 130],
+   "depth": 4.4167,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Luis, left of the circle (75)",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "carmen.cara": {
+   "world": [5.9397, 1.2728, 0],
+   "uv": [3.3, 5.1, 0],
+   "screen": [206, 130],
+   "depth": 4.4167,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Carmen, right of the circle (75)",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "coqui.cara": {
+   "world": [6.1872, 4.7023, 0],
+   "uv": [1.05, 7.7, 0],
+   "screen": [147, 164],
+   "depth": 6.6684,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog, below the circle (75)",
+   "sprite": "coqui",
+   "who": "coqui"
+  },
+  "cubo75": {
+   "world": [6.9296, 3.8184, 0],
+   "uv": [2.2, 7.6, 0],
+   "screen": [177, 163],
+   "depth": 6.5818,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "his bucket of shells (a 12 x 12 px stand-in)",
+   "box": [171, 151, 12, 12],
+   "anchor": "bottom"
+  },
+  "ojo_izq": {
+   "world": [3.1678, 2.5597, 0],
+   "uv": [0.43, 4.05, 0],
+   "screen": [131, 117],
+   "depth": 3.5074,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the place of the face's left eye (SOMBRILLA.FACE_AT.ojo_izq): a 5 x 5 px shell is pressed in here, centred on the point; the touch box is things.ojo_izq",
+   "box": [129, 115, 5, 5],
+   "anchor": "centre"
+  },
+  "ojo_der": {
+   "world": [4.0447, 1.6829, 0],
+   "uv": [1.67, 4.05, 0],
+   "screen": [163, 117],
+   "depth": 3.5074,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the place of the face's right eye (SOMBRILLA.FACE_AT.ojo_der): a 5 x 5 px shell is pressed in here, centred on the point; the touch box is things.ojo_der",
+   "box": [161, 115, 5, 5],
+   "anchor": "centre"
+  },
+  "nariz": {
+   "world": [4.0659, 2.5809, 0],
+   "uv": [1.05, 4.7, 0],
+   "screen": [147, 125],
+   "depth": 4.0703,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the place of the face's nose (SOMBRILLA.FACE_AT.nariz): a 5 x 5 px shell is pressed in here, centred on the point; the touch box is things.nariz",
+   "box": [145, 123, 5, 5],
+   "anchor": "centre"
+  },
+  "boca": {
+   "world": [4.5962, 3.1113, 0],
+   "uv": [1.05, 5.45, 0],
+   "screen": [147, 135],
+   "depth": 4.7198,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the place of the face's mouth (SOMBRILLA.FACE_AT.boca): a 5 x 5 px shell is pressed in here, centred on the point; the touch box is things.boca",
+   "box": [145, 133, 5, 5],
+   "anchor": "centre"
+  },
+  "luis.figura": {
+   "world": [1.9092, 2.3335, 0],
+   "uv": [-0.3, 3, 0],
+   "screen": [112, 103],
+   "depth": 2.5981,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Luis, behind the figure's head, left (76)",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "carmen.figura": {
+   "world": [3.677, 0, 0],
+   "uv": [2.6, 2.6, 0],
+   "screen": [188, 98],
+   "depth": 2.2517,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Carmen, behind the figure's head, right (76)",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "coqui.figura": {
+   "world": [4.5962, 6.4347, 0],
+   "uv": [-1.3, 7.8, 0],
+   "screen": [86, 165],
+   "depth": 6.755,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog, below the figure at the left (76)",
+   "sprite": "coqui",
+   "who": "coqui"
+  },
+  "caracoles": {
+   "world": [3.3234, 5.0205, 0],
+   "uv": [-1.2, 5.9, 0],
+   "screen": [89, 141],
+   "depth": 5.1095,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the three spiral shells in a row (8 px each, centres 10 px apart: a 28 x 8 px row, its bottom middle on the point; the spec gives no gap: mine)",
+   "box": [75, 133, 28, 8],
+   "anchor": "bottom"
+  },
+  "perro": {
+   "world": [2.9698, 5.9397, 0],
+   "uv": [-2.1, 6.3, 0],
+   "screen": [65, 146],
+   "depth": 5.456,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Canelo, sniffing at the row of spiral shells (76)",
+   "sprite": "perro",
+   "who": "perro"
+  },
+  "hoyo": {
+   "world": [2.9698, 7.2125, 0],
+   "uv": [-3, 7.2, 0],
+   "screen": [42, 158],
+   "depth": 6.2354,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Canelo digging (76 after a miss)",
+   "sprite": "perro",
+   "who": "perro"
+  },
+  "sol1": {
+   "world": [6.364, 7.2125, 0],
+   "uv": [-0.6, 9.6, 0],
+   "screen": [104, 189],
+   "depth": 8.3138,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "player 1 in the sun (abuela, 77 opening)",
+   "sprite": "abuela",
+   "who": "adulto"
+  },
+  "sol2": {
+   "world": [8.0257, 6.5407, 0],
+   "uv": [1.05, 10.3, 0],
+   "screen": [147, 198],
+   "depth": 8.9201,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "player 2 in the sun (Luis, with the ball)",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "sol3": {
+   "world": [8.6974, 4.879, 0],
+   "uv": [2.7, 9.6, 0],
+   "screen": [190, 189],
+   "depth": 8.3138,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "player 3 in the sun (Carmen)",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "coqui.bolsa": {
+   "world": [3.9598, 7.3539, 0],
+   "uv": [-2.4, 8, 0],
+   "screen": [58, 168],
+   "depth": 6.9282,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog, beside abuela's bag (77)",
+   "sprite": "coqui",
+   "who": "coqui"
+  },
+  "sombreros": {
+   "world": [2.4042, 6.0811, 0],
+   "uv": [-2.6, 6, 0],
+   "screen": [52, 142],
+   "depth": 5.1962,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the sun hats: one of the three things in a row on the sand in front of the bag (a 16 x 12 px stand-in, its bottom middle on the point)",
+   "box": [44, 130, 16, 12],
+   "anchor": "bottom"
+  },
+  "gafas": {
+   "world": [2.8991, 5.5861, 0],
+   "uv": [-1.9, 6, 0],
+   "screen": [71, 142],
+   "depth": 5.1962,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the dark glasses: one of the three things in a row on the sand in front of the bag (a 16 x 12 px stand-in, its bottom middle on the point)",
+   "box": [63, 130, 16, 12],
+   "anchor": "bottom"
+  },
+  "chancletas": {
+   "world": [3.3941, 5.0912, 0],
+   "uv": [-1.2, 6, 0],
+   "screen": [89, 142],
+   "depth": 5.1962,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the sandals: one of the three things in a row on the sand in front of the bag (a 16 x 12 px stand-in, its bottom middle on the point)",
+   "box": [81, 130, 16, 12],
+   "anchor": "bottom"
+  }
+ },
+ "groups": {
+  "manta": ["manta", "manta2", "manta3"],
+  "cara": ["luis.cara", "carmen.cara", "coqui.cara", "cubo75"],
+  "cara_lugares": ["ojo_izq", "ojo_der", "nariz", "boca"],
+  "figura": ["luis.figura", "carmen.figura", "coqui.figura", "caracoles", "perro", "hoyo"],
+  "sol": ["sol1", "sol2", "sol3", "coqui.bolsa"],
+  "fila": ["sombreros", "gafas", "chancletas"]
+ },
+ "notes": [
+  "every number of a spot is the orchestrator's (the p7-spec, \"sombrilla\"), given in (u, v, z); the blanket, the face (FACE_AT) and the figure (FIG) are read from the set",
+  "the spec gives no size for abuela lying (a plain 52 x 18 stand-in used), no gap for the three spiral shells (8 px each, centres 10 px apart: a 28 x 8 row), no size for the ball (the cielo's 9 x 9) and no spot for it (the preview holds it at Luis's side), no place for the frog in moment 6 (coqui.bolsa used) and no shadow radii (El cruce's: frog .45, grown-ups .35, children .28, the dog .3): open points",
+  "izq / der of the arms, hands and eyes are the left and the right of the PICTURE; a hand's and a foot's box lies outward of the arm's or leg's end (the spec gives the size, not which side of the end)",
+  "abuela sitting on the blanket is mkAbuelaS with her legs out in front (pies): the maker's only pose for sitting on the ground; abuela lying is a stand-in",
+  "the view's x0: the x0 that holds every spot (a person with his sprite whole, a small thing with its box), the one nearest the window centred on the picture (views.wide.what; check views-x0)"
+ ],
+ "views": {
+  "wide": {
+   "world": [2.3933, 2.3933, 0],
+   "uv": [0, 3.3846, 0],
+   "screen": [120, 108],
+   "zoom": 1,
+   "x0": 22,
+   "region": [22, 0, 196, 216],
+   "stories": [75, 76, 77],
+   "holds": ["manta", "manta2", "manta3", "luis.cara", "carmen.cara", "coqui.cara", "cubo75", "ojo_izq", "ojo_der", "nariz", "boca", "luis.figura", "carmen.figura", "coqui.figura", "caracoles", "perro", "hoyo", "sol1", "sol2", "sol3", "coqui.bolsa", "sombreros", "gafas", "chancletas"],
+   "extent": [27, 217],
+   "x0Range": [22, 27],
+   "what": "the one view of stories 75, 76 and 77: the 196 x 216 window over the 240 x 216 picture. The spec: every spot of every moment is inside it (a person with his sprite whole, a small thing with its box whole). x0 22 to 27 hold them all; x0 22 is the one nearest 22, the window centred on the picture (the spots held span columns 27 to 217). The window's point is the ground point under its middle column at the picture's middle row"
+  }
+ },
+ "front": {
+  "list": null,
+  "how": "no list. A character is hidden by every set pixel that is nearer the camera than the character's feet (depth test against the baked depth, with the feet's depth plus 0.3): the umbrella's canopy hides whoever is behind it. Nothing in this set sways (no palm, no frond), so the baked depth is the whole depth.",
+  "bias": 0.3,
+  "plane": "for the character's pixel on picture row r (r = 0 at the top): depth(r) = d + (sy - (r + .5)) * tan(30 deg) / S, where d is the spot's depth and sy its screen row; the pixel is hidden where bakedZ[r * 240 + x] > depth(r) + bias (bakedZ: window.DEPTH.z of the set page). The same rule as La plaza's sheets: the upright plane through the feet",
+  "sprites": "between two sprites the nearer pixel wins: the same depth(r), no bias; two planes within 0.001 are a tie and the later layer is drawn"
+ },
+ "shadows": {
+  "radius": {
+   "coqui": 0.45,
+   "adultos": 0.35,
+   "ninos": 0.28,
+   "perro": 0.3
+  },
+  "byCharacter": {
+   "coqui": 0.45,
+   "abuela": 0.35,
+   "luis": 0.28,
+   "carmen": 0.28,
+   "perro": 0.3
+  },
+  "at": "castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the sand (z 0). The spec gives no radius: these are El cruce's (frog .45, grown-ups .35, children .28, the dog .3) (open point)",
+  "none": [],
+  "lying": "abuela lying casts none of her own: she is in the umbrella's shade"
+ },
+ "checks": {
+  "results": [
+   {
+    "name": "views-x0",
+    "ok": true,
+    "lines": [
+     "views-x0: wide: x0 22 (window columns 22 to 217); the 24 spots held span columns 27 to 217 (191 of the window's 196); x0 that hold them all: 22 to 27 (the one nearest 22, the window centred on the picture)",
+     "       the set's own parts against the window (info, not a check): sombrilla columns 7 to 74 (cut 15 px at the left); cubo columns 205 to 214 (whole); manta columns 49 to 110 (whole); algas columns 198 to 223 (cut 6 px at the right); bolsa columns 50 to 70 (whole)"
+    ],
+    "x0": {
+     "wide": 22
+    }
+   },
+   {
+    "name": "spots-in-view",
+    "ok": true,
+    "lines": [
+     "spots-in-view: 24 spots (persons with their sprite, small things with their box) inside the 240 x 216 picture and the window (x0 22)",
+     "       the people's drawn silhouettes (info, not a check): manta 80,90: abuelaP drawn columns 70 to 114, rows 49 to 89; abuelaL drawn columns 54 to 105, rows 75 to 89; manta2 75,98: abuelaP drawn columns 65 to 109, rows 57 to 97; abuelaL drawn columns 49 to 100, rows 83 to 97; manta3 99,97: abuelaP drawn columns 89 to 133, rows 56 to 96; abuelaL drawn columns 73 to 124, rows 82 to 96; luis.cara 90,130: nino drawn columns 79 to 100, rows 89 to 129; carmen.cara 206,130: nino drawn columns 195 to 216, rows 89 to 129; coqui.cara 147,164: coqui drawn columns 132 to 161, rows 140 to 163; luis.figura 112,103: nino drawn columns 101 to 122, rows 62 to 102; carmen.figura 188,98: nino drawn columns 177 to 198, rows 57 to 97; coqui.figura 86,165: coqui drawn columns 71 to 100, rows 141 to 164; perro 65,146: perro drawn columns 50 to 79, rows 127 to 145; hoyo 42,158: perro drawn columns 27 to 56, rows 139 to 157; sol1 104,189: abuela drawn columns 91 to 116, rows 139 to 188; sol2 147,198: nino drawn columns 136 to 157, rows 157 to 197; sol3 190,189: nino drawn columns 179 to 200, rows 148 to 188; coqui.bolsa 58,168: coqui drawn columns 43 to 72, rows 144 to 167"
+    ],
+    "cut": []
+   },
+   {
+    "name": "spots-on-ground",
+    "ok": true,
+    "lines": [
+     "spots-on-ground: 24 spots: abuela's three places (manta, manta2, manta3) are on the blanket (part manta); every other spot is on the sand, on no part of the set (the pixel at the spot and the one above it)",
+     "       the blanket's top is z .03 (under 1 px): the spots stay at the spec's z 0"
+    ]
+   },
+   {
+    "name": "things-in-view",
+    "ok": true,
+    "lines": [
+     "things-in-view: the boxes of cara, ojo_izq, ojo_der, nariz, boca, cabeza, brazo_izq, brazo_der, mano_izq, mano_der and pies are inside the window [22, 218) and the picture (cara [105,103,84,42], ojo_izq [124,112,14,10], ojo_der [156,112,14,10], nariz [140,120,14,10], boca [140,130,14,10], cabeza [123,91,48,25], brazo_izq [108,120,39,6], brazo_der [147,120,39,6], mano_izq [96,118,12,10], mano_der [186,118,12,10], pies[0] [121,159,12,8], pies[1] [162,159,12,8], pies [121,159,53,8])"
+    ]
+   },
+   {
+    "name": "sprites-apart",
+    "ok": true,
+    "lines": [
+     "sprites-apart: 44 pairs in the 6 moments of the preview (m1 (manta, luis.cara, carmen.cara, coqui.cara); m2 (manta, luis.cara, carmen.cara, coqui.cara); m3 (manta, luis.figura, carmen.figura, coqui.figura, perro); m4 (manta, luis.figura, carmen.figura, coqui.figura, hoyo); m5 (coqui.bolsa, sol1, sol2, sol3); m6 (manta2, coqui.bolsa, sol2, sol3)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 manta ~ luis.cara (10 across, 40 down), m2 manta ~ luis.cara (10 across, 40 down), m3 manta ~ coqui.figura (6 across, 75 down), m3 manta ~ perro (15 across, 56 down), m3 luis.figura ~ coqui.figura (26 across, 62 down), m3 coqui.figura ~ perro (21 across, 19 down), m4 manta ~ coqui.figura (6 across, 75 down), m4 luis.figura ~ coqui.figura (26 across, 62 down), m6 manta2 ~ coqui.bolsa (17 across, 70 down)",
+     "       closest pair in each moment (px across / px down): m1 manta ~ luis.cara 10/40 (needs 24 across or 12 down); m2 manta ~ luis.cara 10/40 (needs 24 across or 12 down); m3 manta ~ coqui.figura 6/75 (needs 28 across or 12 down); m4 manta ~ coqui.figura 6/75 (needs 28 across or 12 down); m5 coqui.bolsa ~ sol1 46/21 (needs 28 across or 12 down); m6 manta2 ~ coqui.bolsa 17/70 (needs 28 across or 12 down)"
+    ],
+    "pairs": [
+     {
+      "moment": 1,
+      "a": "manta",
+      "b": "luis.cara",
+      "across": 10,
+      "down": 40,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "manta",
+      "b": "carmen.cara",
+      "across": 126,
+      "down": 40,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "manta",
+      "b": "coqui.cara",
+      "across": 67,
+      "down": 74,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "luis.cara",
+      "b": "carmen.cara",
+      "across": 116,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "luis.cara",
+      "b": "coqui.cara",
+      "across": 57,
+      "down": 34,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "carmen.cara",
+      "b": "coqui.cara",
+      "across": 59,
+      "down": 34,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "manta",
+      "b": "luis.cara",
+      "across": 10,
+      "down": 40,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "manta",
+      "b": "carmen.cara",
+      "across": 126,
+      "down": 40,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "manta",
+      "b": "coqui.cara",
+      "across": 67,
+      "down": 74,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "luis.cara",
+      "b": "carmen.cara",
+      "across": 116,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "luis.cara",
+      "b": "coqui.cara",
+      "across": 57,
+      "down": 34,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "carmen.cara",
+      "b": "coqui.cara",
+      "across": 59,
+      "down": 34,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "manta",
+      "b": "luis.figura",
+      "across": 32,
+      "down": 13,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "manta",
+      "b": "carmen.figura",
+      "across": 108,
+      "down": 8,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "manta",
+      "b": "coqui.figura",
+      "across": 6,
+      "down": 75,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "manta",
+      "b": "perro",
+      "across": 15,
+      "down": 56,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "luis.figura",
+      "b": "carmen.figura",
+      "across": 76,
+      "down": 5,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "luis.figura",
+      "b": "coqui.figura",
+      "across": 26,
+      "down": 62,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "luis.figura",
+      "b": "perro",
+      "across": 47,
+      "down": 43,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "carmen.figura",
+      "b": "coqui.figura",
+      "across": 102,
+      "down": 67,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "carmen.figura",
+      "b": "perro",
+      "across": 123,
+      "down": 48,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "coqui.figura",
+      "b": "perro",
+      "across": 21,
+      "down": 19,
+      "needAcross": 30,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "manta",
+      "b": "luis.figura",
+      "across": 32,
+      "down": 13,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "manta",
+      "b": "carmen.figura",
+      "across": 108,
+      "down": 8,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "manta",
+      "b": "coqui.figura",
+      "across": 6,
+      "down": 75,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "manta",
+      "b": "hoyo",
+      "across": 38,
+      "down": 68,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "luis.figura",
+      "b": "carmen.figura",
+      "across": 76,
+      "down": 5,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "luis.figura",
+      "b": "coqui.figura",
+      "across": 26,
+      "down": 62,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "luis.figura",
+      "b": "hoyo",
+      "across": 70,
+      "down": 55,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "carmen.figura",
+      "b": "coqui.figura",
+      "across": 102,
+      "down": 67,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "carmen.figura",
+      "b": "hoyo",
+      "across": 146,
+      "down": 60,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "coqui.figura",
+      "b": "hoyo",
+      "across": 44,
+      "down": 7,
+      "needAcross": 30,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "coqui.bolsa",
+      "b": "sol1",
+      "across": 46,
+      "down": 21,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "coqui.bolsa",
+      "b": "sol2",
+      "across": 89,
+      "down": 30,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "coqui.bolsa",
+      "b": "sol3",
+      "across": 132,
+      "down": 21,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "sol1",
+      "b": "sol2",
+      "across": 43,
+      "down": 9,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "sol1",
+      "b": "sol3",
+      "across": 86,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "sol2",
+      "b": "sol3",
+      "across": 43,
+      "down": 9,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "manta2",
+      "b": "coqui.bolsa",
+      "across": 17,
+      "down": 70,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "manta2",
+      "b": "sol2",
+      "across": 72,
+      "down": 100,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "manta2",
+      "b": "sol3",
+      "across": 115,
+      "down": 91,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "coqui.bolsa",
+      "b": "sol2",
+      "across": 89,
+      "down": 30,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "coqui.bolsa",
+      "b": "sol3",
+      "across": 132,
+      "down": 21,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "sol2",
+      "b": "sol3",
+      "across": 43,
+      "down": 9,
+      "needAcross": 24,
+      "ok": true
+     }
+    ]
+   },
+   {
+    "name": "frog-seen",
+    "ok": true,
+    "lines": [
+     "frog-seen: the frog is seen whole in all 6 moments (0 px covered by anything): m1 coqui.cara 147,164: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m2 coqui.cara 147,164: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m3 coqui.figura 86,165: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m4 coqui.figura 86,165: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m5 coqui.bolsa 58,168: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m6 coqui.bolsa 58,168: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them"
+    ]
+   },
+   {
+    "name": "no-seat",
+    "ok": true,
+    "lines": [
+     "no-seat: no seat in this scene: every spot is on the sand (z 0), none above it; abuela sits or lies on the blanket (its top is z .03)"
+    ]
+   },
+   {
+    "name": "face-clear",
+    "ok": true,
+    "lines": [
+     "face-clear: in moments 1 and 2 nobody (abuela, Luis, Carmen, the frog) covers a pixel of the four face boxes (ojo_izq [124,112,14,10], ojo_der [156,112,14,10], nariz [140,120,14,10], boca [140,130,14,10]); the nearest anyone comes: 1 px (coqui.cara, moment 1)",
+     "       per person (info): m1 manta (abuelaL): 0 px in the four boxes; nearest shown pixel 26 px from a box; m1 luis.cara (luis): 0 px in the four boxes; nearest shown pixel 24 px from a box; m1 carmen.cara (carmen): 0 px in the four boxes; nearest shown pixel 26 px from a box; m1 coqui.cara (coqui): 0 px in the four boxes; nearest shown pixel 1 px from a box; m2 manta (abuelaP): 0 px in the four boxes; nearest shown pixel 23 px from a box; m2 luis.cara (luis): 0 px in the four boxes; nearest shown pixel 24 px from a box; m2 carmen.cara (carmen): 0 px in the four boxes; nearest shown pixel 26 px from a box; m2 coqui.cara (coqui): 0 px in the four boxes; nearest shown pixel 1 px from a box"
+    ]
+   },
+   {
+    "name": "figure-clear",
+    "ok": true,
+    "lines": [
+     "figure-clear: in moments 3 and 4 nobody (abuela, Luis, Carmen, the frog, Canelo) covers the head, an arm or a hand (cabeza [123,91,48,25], brazo_izq [108,120,39,6], brazo_der [147,120,39,6], mano_izq [96,118,12,10], mano_der [186,118,12,10]); the nearest anyone comes: 2 px (luis.figura, moment 3)",
+     "       per person (info): m3 manta (abuelaP): 0 px; nearest 9 px; m3 luis.figura (luis): 0 px; nearest 2 px; m3 carmen.figura (carmen): 0 px; nearest 7 px; m3 coqui.figura (coqui): 0 px; nearest 14 px; m3 perro (perro): 0 px; nearest 17 px; m4 manta (abuelaP): 0 px; nearest 9 px; m4 luis.figura (luis): 0 px; nearest 2 px; m4 carmen.figura (carmen): 0 px; nearest 7 px; m4 coqui.figura (coqui): 0 px; nearest 14 px; m4 hoyo (perro): 0 px; nearest 40 px"
+    ]
+   },
+   {
+    "name": "feet-things-clear",
+    "ok": true,
+    "lines": [
+     "feet-things-clear: in moment 5 nobody (abuela at sol1, Luis at sol2, Carmen at sol3, the frog) covers a pixel of the figure's feet (the boxes [121,159,12,8], [162,159,12,8]) or of the three things (sombreros, gafas, chancletas: every drawn pixel shown, none covered); the nearest anyone comes to the feet: 5 px (sol1)",
+     "       info, not a check: coqui.bolsa (coqui): 0 px in the left foot box [121,159,12,8], 0 in the right [162,159,12,8]; nearest 49 px; sol1 (abuela): 0 px in the left foot box [121,159,12,8], 0 in the right [162,159,12,8]; nearest 5 px; sol2 (luis): 0 px in the left foot box [121,159,12,8], 0 in the right [162,159,12,8]; nearest 8 px; sol3 (carmen): 0 px in the left foot box [121,159,12,8], 0 in the right [162,159,12,8]; nearest 6 px; sombreros 52,142 box [44,131,16,11]: 114 px, 0 covered, 0 hidden by the set; gafas 71,142 box [63,131,16,11]: 130 px, 0 covered, 0 hidden by the set; chancletas 89,142 box [81,132,15,10]: 124 px, 0 covered, 0 hidden by the set"
+    ]
+   },
+   {
+    "name": "players-whole",
+    "ok": true,
+    "lines": [
+     "players-whole: the players at sol1, sol2, sol3 are whole in the picture and the window in moments 5 and 6 (none outside, none hidden by the set): m5 sol1 104,189 (abuela): columns 91 to 116, rows 139 to 188 of 0 to 215; 0 px outside the picture, 0 hidden by the set, 0 cut by the window; m5 sol2 147,198 (luis): columns 136 to 157, rows 157 to 197 of 0 to 215; 0 px outside the picture, 0 hidden by the set, 0 cut by the window, 32 under sol2 (bola) 32; m5 sol3 190,189 (carmen): columns 179 to 200, rows 148 to 188 of 0 to 215; 0 px outside the picture, 0 hidden by the set, 0 cut by the window; m6 sol2 147,198 (luis): columns 136 to 157, rows 157 to 197 of 0 to 215; 0 px outside the picture, 0 hidden by the set, 0 cut by the window; m6 sol3 190,189 (carmen): columns 179 to 200, rows 148 to 188 of 0 to 215; 0 px outside the picture, 0 hidden by the set, 0 cut by the window"
+    ]
+   },
+   {
+    "name": "abuela-manta",
+    "ok": true,
+    "lines": [
+     "abuela-manta: abuela at manta is inside the blanket (u -2.75 to -0.35, v 1.2 to 2.9; box [48,78,63,24]): her 24 px box (the spec's grown-up width) is inside the blanket's box; the drawn stand-ins, wider or narrower, are listed below (info)",
+     "       manta 80,90: the 24 px box is columns 68 to 91 against the blanket's 48 to 110 (inside)",
+     "       info, not a check:  the stand-in abuelaP at manta drawn columns 70 to 114: 4 px over its right edge",
+     "       info, not a check:  the stand-in abuelaL at manta drawn columns 54 to 105: inside",
+     "       info, not a check: manta2 75,98: the 24 px box is columns 63 to 86 against the blanket's 48 to 110 (inside) (not a check: the spec asks it of manta)",
+     "       info, not a check:  the stand-in abuelaP at manta2 drawn columns 65 to 109: inside",
+     "       info, not a check:  the stand-in abuelaL at manta2 drawn columns 49 to 100: inside",
+     "       info, not a check: manta3 99,97: the 24 px box is columns 87 to 110 against the blanket's 48 to 110 (inside) (not a check: the spec asks it of manta)",
+     "       info, not a check:  the stand-in abuelaP at manta3 drawn columns 89 to 133: 23 px over its right edge",
+     "       info, not a check:  the stand-in abuelaL at manta3 drawn columns 73 to 124: 14 px over its right edge",
+     "       info, not a check: m1 manta (abuelaL): 550 px, 0 hidden by the umbrella's canopy, 435 of the 550 shown (79%) in the umbrella's cast shade",
+     "       info, not a check: m2 manta (abuelaP): 853 px, 0 hidden by the umbrella's canopy, 797 of the 853 shown (93%) in the umbrella's cast shade",
+     "       info, not a check: m3 manta (abuelaP): 853 px, 0 hidden by the umbrella's canopy, 797 of the 853 shown (93%) in the umbrella's cast shade",
+     "       info, not a check: m4 manta (abuelaP): 853 px, 0 hidden by the umbrella's canopy, 797 of the 853 shown (93%) in the umbrella's cast shade",
+     "       info, not a check: m6 manta2 (abuelaL): 550 px, 0 hidden by the umbrella's canopy, 550 of the 550 shown (100%) in the umbrella's cast shade"
+    ]
+   },
+   {
+    "name": "info-covers",
+    "ok": true,
+    "lines": [
+     "info-covers: not a check. What is under a nearer sprite, or hidden by the set, in the six moments (everything not listed is seen whole): m3 manta: 102 of its 853 px under luis.figura 102; m3 caracoles (caracoles3): 11 of its 120 px under perro 11; m3 perro: 17 of its 368 px under coqui.figura 17; m4 manta: 102 of its 853 px under luis.figura 102; m5 sol2: 32 of its 600 px under sol2 (bola) 32",
+     "       abuela's head: m1 manta (abuelaL): 0 of her 166 head px covered; m2 manta (abuelaP): 0 of her 206 head px covered; m3 manta (abuelaP): 0 of her 206 head px covered; m4 manta (abuelaP): 0 of her 206 head px covered; m6 manta2 (abuelaL): 0 of her 166 head px covered",
+     "       nearest that leaves manta whole, moment 3: luis.figura -0.3,3,0: u -0.3 -> 0.22 (+0.52); v 3 -> 2 (-1)",
+     "       nearest that leaves caracoles (caracoles3) whole, moment 3: perro -2.1,6.3,0: u -2.1 -> -2.18 (-0.08); v 6.3 -> 5.9 (-0.4)",
+     "       nearest that leaves perro whole, moment 3: coqui.figura -1.3,7.8,0: u -1.3 -> -1.13 (+0.17); v 7.8 -> 8.04 (+0.24)",
+     "       nearest that leaves manta whole, moment 4: luis.figura -0.3,3,0: u -0.3 -> 0.22 (+0.52); v 3 -> 2 (-1)"
+    ]
+   }
+  ]
+ }
+}

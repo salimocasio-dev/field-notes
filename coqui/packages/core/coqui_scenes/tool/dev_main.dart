@@ -41,6 +41,7 @@ import 'package:coqui_scenes/src/reloj/reloj_set.dart';
 import 'package:coqui_scenes/src/quiosco/quiosco_set.dart';
 import 'package:coqui_scenes/src/calendario/calendario_set.dart';
 import 'package:coqui_scenes/src/orilla/orilla_set.dart';
+import 'package:coqui_scenes/src/sombrilla/sombrilla_set.dart';
 import 'package:coqui_scenes/src/sheet_cache.dart' show sceneSheetOf;
 import 'package:coqui_scenes/src/patio/patio_set.dart';
 import 'package:coqui_scenes/src/sala/sala_set.dart';
@@ -357,7 +358,8 @@ class _BakePageState extends State<BakePage> {
               id == 'reloj' ||
               id == 'quiosco' ||
               id == 'calendario' ||
-              id == 'orilla'
+              id == 'orilla' ||
+              id == 'sombrilla'
           ? sceneSheetOf(id)
           : null;
       final queries = news != null
@@ -394,6 +396,7 @@ class _BakePageState extends State<BakePage> {
           'quiosco' => QuioscoState.fromQuery(b.query).key,
           'calendario' => CalendarioState.fromQuery(b.query).key,
           'orilla' => OrillaState.fromQuery(b.query).key,
+          'sombrilla' => SombrillaState.fromQuery(b.query).key,
           _ => FrenteState.fromQuery(b.query).key,
         };
         bakes.bakeKey(key);
