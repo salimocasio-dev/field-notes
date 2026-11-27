@@ -11,6 +11,10 @@ void main() {
     'lib/src/reader_page.dart',
     'lib/src/reader_settings_sheet.dart',
     'lib/src/book_coverage.dart',
+    'lib/src/wording.dart',
+    'lib/src/book_importer.dart',
+    'lib/src/import_screen.dart',
+    'lib/src/reading.dart',
   ];
 
   final forbidden = <String, RegExp>{

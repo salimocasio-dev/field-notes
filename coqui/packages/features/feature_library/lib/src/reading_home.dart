@@ -4,6 +4,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_library/src/reading.dart';
 import 'package:feature_library/src/story_generator.dart';
+import 'package:feature_library/src/wording.dart';
 import 'package:material_ui/material_ui.dart';
 
 enum _ShelfFilter { all, stories, books }
@@ -13,7 +14,7 @@ class ReadingHome extends StatefulWidget {
     super.key,
     required this.services,
     this.controller,
-    this.showAddYourOwn = false,
+    this.showAddYourOwn = true,
     this.bottomClearance,
   });
 
@@ -87,7 +88,7 @@ class _ReadingHomeState extends State<ReadingHome> {
     final lang = _s.course.language;
     final input = await showNocheSheet<String>(
       context,
-      title: 'Write my story',
+      title: LibraryWording.writeMyStory,
       builder: (context, close) => _StoryPromptSheet(
         language: lang,
         onCancel: close,
@@ -114,15 +115,15 @@ class _ReadingHomeState extends State<ReadingHome> {
       if (story == null) {
         setState(
           () => _message = input.isEmpty
-              ? 'There’s no new story that fits your known words yet.'
-              : 'There’s no new story that fits both your practice words and your current level.',
+              ? LibraryWording.noStoryMatchEmpty
+              : LibraryWording.noStoryMatchFocused,
         );
       } else {
         await _save(story.title, story.body, generated: true);
       }
     } on Object {
       if (mounted) {
-        setState(() => _message = 'The story couldn’t be saved. Try again.');
+        setState(() => _message = LibraryWording.storySaveFailed);
       }
     } finally {
       if (mounted) setState(() => _busy = false);
@@ -167,9 +168,9 @@ class _ReadingHomeState extends State<ReadingHome> {
       _ShelfFilter.books => ordered.where((t) => !t.generated).toList(),
     };
     final emptyMessage = switch (_filter) {
-      _ShelfFilter.all => 'Stories you make and books you add appear here.',
-      _ShelfFilter.stories => 'No stories on your shelf yet.',
-      _ShelfFilter.books => 'No books on your shelf yet.',
+      _ShelfFilter.all => LibraryWording.emptyShelfAll,
+      _ShelfFilter.stories => LibraryWording.emptyShelfStories,
+      _ShelfFilter.books => LibraryWording.emptyShelfBooks,
     };
     final keepBook = keepReadingBook(_texts, _store.place, _s.progress.hasRead);
 
@@ -196,7 +197,7 @@ class _ReadingHomeState extends State<ReadingHome> {
                   Semantics(
                     header: true,
                     child: Text(
-                      'Library',
+                      LibraryWording.libraryTitle,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: NocheType.pageTitle.copyWith(
@@ -210,7 +211,7 @@ class _ReadingHomeState extends State<ReadingHome> {
             if (widget.showAddYourOwn) ...[
               const SizedBox(width: 12),
               NochePill.outline(
-                label: '+ Add your own',
+                label: LibraryWording.addYourOwnPill,
                 onPressed: _busy ? null : () => _s.nav.go(const ImportRoute()),
               ),
             ],
@@ -225,11 +226,11 @@ class _ReadingHomeState extends State<ReadingHome> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const NocheSectionLabel(
-            'A new story at your level · about what?',
+            LibraryWording.writeStorySection,
             bottomGap: 16,
           ),
           NocheOutlineButton(
-            label: 'Write my story',
+            label: LibraryWording.writeMyStory,
             onPressed: _busy ? null : _generate,
           ),
           if (_message case final message?) ...[
@@ -254,7 +255,9 @@ class _ReadingHomeState extends State<ReadingHome> {
           Padding(
             padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
             child: NocheSectionLabel(
-              tracked ? 'Your shelf' : 'Your shelf · reading counts from A2',
+              tracked
+                  ? LibraryWording.yourShelf
+                  : LibraryWording.yourShelfBeforeA2,
               bottomGap: 12,
             ),
           ),
@@ -263,11 +266,11 @@ class _ReadingHomeState extends State<ReadingHome> {
             padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
             child: Row(
               children: [
-                _filterPill('All', _ShelfFilter.all),
+                _filterPill(LibraryWording.filterAll, _ShelfFilter.all),
                 const SizedBox(width: 8),
-                _filterPill('Stories', _ShelfFilter.stories),
+                _filterPill(LibraryWording.filterStories, _ShelfFilter.stories),
                 const SizedBox(width: 8),
-                _filterPill('Books', _ShelfFilter.books),
+                _filterPill(LibraryWording.filterBooks, _ShelfFilter.books),
               ],
             ),
           ),
@@ -376,7 +379,9 @@ class _ShelfTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isStory = text.generated;
-    final subtitle = isStory ? 'Story' : 'Book';
+    final subtitle = isStory
+        ? LibraryWording.typeStory
+        : LibraryWording.typeBook;
     final locale = Locale(lang.code);
     final titleStyle = NocheType.forScript(
       NocheType.button.copyWith(height: 18 / 14),
@@ -541,7 +546,11 @@ class _KeepReadingCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Page ${prog.page} of ${prog.totalPages} · ${prog.minutesLeft} min left in the chapter',
+                      LibraryWording.keepReadingPageProgress(
+                        page: prog.page,
+                        totalPages: prog.totalPages,
+                        minutesLeft: prog.minutesLeft,
+                      ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: NocheType.bodySmall.copyWith(
@@ -554,7 +563,10 @@ class _KeepReadingCard extends StatelessWidget {
                           ? 0.0
                           : (prog.page - 1) / prog.totalPages,
                       color: NocheColors.next,
-                      semanticLabel: 'Page ${prog.page} of ${prog.totalPages}',
+                      semanticLabel: LibraryWording.keepReadingPageSemantic(
+                        page: prog.page,
+                        totalPages: prog.totalPages,
+                      ),
                     ),
                   ],
                 ),
@@ -563,7 +575,7 @@ class _KeepReadingCard extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           NochePrimaryButton(
-            label: 'Continue reading',
+            label: LibraryWording.continueReading,
             small: true,
             onPressed: onContinue,
           ),
@@ -642,13 +654,13 @@ class _StoryPromptSheetState extends State<_StoryPromptSheet> {
               decoration: InputDecoration(
                 filled: true,
                 fillColor: NocheColors.ground,
-                labelText: 'Practice words (optional)',
+                labelText: LibraryWording.practiceWordsLabel,
                 labelStyle: fieldStyle(NocheType.body, NocheColors.label),
                 floatingLabelStyle: fieldStyle(
                   NocheType.label,
                   NocheColors.text,
                 ),
-                helperText: 'Separate words or phrases with commas. Leave blank for review.',
+                helperText: LibraryWording.practiceWordsHelper,
                 helperStyle: fieldStyle(NocheType.bodySmall, NocheColors.label),
                 helperMaxLines: 3,
                 counterStyle: fieldStyle(
@@ -668,14 +680,14 @@ class _StoryPromptSheetState extends State<_StoryPromptSheet> {
             Row(
               children: [
                 NocheOutlineButton(
-                  label: 'Cancel',
+                  label: LibraryWording.cancel,
                   expand: false,
                   onPressed: widget.onCancel,
                 ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: NochePrimaryButton(
-                    label: 'Write my story',
+                    label: LibraryWording.writeMyStory,
                     small: true,
                     onPressed: _submit,
                   ),

@@ -2,12 +2,12 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_library/src/reader_model.dart';
 import 'package:feature_library/src/reading.dart';
+import 'package:feature_library/src/wording.dart';
 import 'package:material_ui/material_ui.dart';
 
-const String coveragePhraseStretch =
-    'A stretch for now. Reading gets easy near 98%.';
-const String coveragePhraseClose = 'Close. Reading gets easy near 98%.';
-const String coveragePhraseEasy = 'Easy to read now.';
+const String coveragePhraseStretch = LibraryWording.coveragePhraseStretch;
+const String coveragePhraseClose = LibraryWording.coveragePhraseClose;
+const String coveragePhraseEasy = LibraryWording.coveragePhraseEasy;
 
 /// Returns the Noche encouragement phrase for a coverage percentage.
 String coveragePhrase(int percent) {
@@ -30,7 +30,7 @@ class BookCoverage {
 
   String get phrase => coveragePhrase(percent);
 
-  String get headline => "You've heard $percent% of its words.";
+  String get headline => LibraryWording.coverageHeadline(percent);
 
   @override
   bool operator ==(Object other) =>
@@ -131,7 +131,7 @@ class BookCoverageSummary extends StatelessWidget {
         NocheProgressBar(
           value: coverage.ratio,
           color: NocheColors.listening,
-          semanticLabel: 'You know ${coverage.percent} percent of its words',
+          semanticLabel: LibraryWording.coverageSemanticLabel(coverage.percent),
         ),
         const SizedBox(height: 8),
         Text.rich(
