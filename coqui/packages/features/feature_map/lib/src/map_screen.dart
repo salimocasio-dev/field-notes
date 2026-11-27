@@ -3,7 +3,6 @@ import 'dart:math' as math;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
-import 'package:feature_map/src/map_arrival_scope.dart';
 import 'package:feature_map/src/map_layout.dart';
 import 'package:feature_map/src/map_model.dart';
 import 'package:feature_map/src/map_perf.dart';
@@ -11,6 +10,7 @@ import 'package:feature_map/src/map_picture.dart';
 import 'package:feature_map/src/motion.dart';
 import 'package:feature_map/src/scene_window.dart';
 import 'package:feature_map/src/wording.dart';
+import 'package:flutter/foundation.dart' show ValueListenable;
 import 'package:flutter/scheduler.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -102,6 +102,8 @@ class MapScreen extends StatefulWidget {
     this.onPicture,
     this.onCamera,
     required this.entitlements,
+    this.overlayOpacity,
+    this.animateColdLoad = false,
   });
 
   final Services services;
@@ -126,6 +128,13 @@ class MapScreen extends StatefulWidget {
 
   /// Explicit plan entitlements used to gate places and Up next stories.
   final Entitlements entitlements;
+
+  /// Optional shell-driven opacity (`0.0` to `1.0`) applied to map overlays
+  /// during a course language turn while keeping `PixelView` unfaded.
+  final ValueListenable<double>? overlayOpacity;
+
+  /// Whether to stagger internal overlays on initial bake (`Noche-Motion-Carga`).
+  final bool animateColdLoad;
 
   @override
   State<MapScreen> createState() => _MapScreenState();
@@ -243,6 +252,10 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     super.initState();
     _cameraController.addListener(_onCameraTick);
     _frogFadeController.addListener(_onFrogFadeTick);
+    if (widget.animateColdLoad) {
+      _coldLoadPending = true;
+      _coldLoadController.value = 0.0;
+    }
     _map = MapPicture(still: _s.reduceMotion, onHop: _hopSound);
     widget.onPicture?.call(_map);
     _changes = _s.progress.changes.listen((_) => _progressChanged());
@@ -251,18 +264,6 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     });
     final gen = _serviceGen;
     WidgetsBinding.instance.addPostFrameCallback((_) => _bake(gen));
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (!_coldLoadStarted && !_baked) {
-      final scope = MapArrivalScope.maybeOf(context);
-      if (scope?.animateColdLoad == true) {
-        _coldLoadPending = true;
-        _coldLoadController.value = 0.0;
-      }
-    }
   }
 
   @override
@@ -373,8 +374,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
   void _maybeStartColdLoad() {
     if (_coldLoadStarted) return;
     _coldLoadStarted = true;
-    final scope = MapArrivalScope.maybeOf(context);
-    if (scope?.animateColdLoad != true) {
+    if (!widget.animateColdLoad) {
       _coldLoadPending = false;
       _coldLoadActive = false;
       _coldLoadController.value = 1.0;
@@ -451,6 +451,9 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     _tripDelayController.stop();
     _cameraController.stop();
     _frogFadeController.stop();
+    _map.FROG
+      ..opacity = 1.0
+      ..hideArrow = false;
   }
 
   void _clearLockPill() {
@@ -663,8 +666,9 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     }
     final hadLock = _lockPlaceIndex != null;
     _clearLockPill();
+    final isPlanLocked = !placeInPlan(places[k], places, widget.entitlements);
     if (k == _map.FROG.at) {
-      if (_focusedPlaceIndex == k) {
+      if (isPlanLocked || _focusedPlaceIndex == k) {
         if (hadLock) setState(() {});
         _openPlace(k);
       } else {
@@ -690,7 +694,11 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
         _destController.value = 0.0;
       });
       _centerOnStop(k);
-      _switchCardToPlace(k);
+      if (isPlanLocked) {
+        _openPlace(k);
+      } else {
+        _switchCardToPlace(k);
+      }
       return;
     }
     unawaited(_runTrip(k, motion));
@@ -809,7 +817,16 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     _hereController.stop();
     _hereController.duration = MapMotion.hereRiseAfter + motion.move;
     unawaited(_hereController.forward(from: 0.0));
-    _switchCardToPlace(k);
+    final places = _s.course.places;
+    final isPlanLocked =
+        k >= 0 &&
+        k < places.length &&
+        !placeInPlan(places[k], places, widget.entitlements);
+    if (isPlanLocked) {
+      _openPlace(k);
+    } else {
+      _switchCardToPlace(k);
+    }
   }
 
   void _showLockPill(int k) {
@@ -1236,6 +1253,9 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     );
   }
 
+  double _currentOverlayOpacity() =>
+      (widget.overlayOpacity?.value ?? 1.0).clamp(0.0, 1.0);
+
   @override
   Widget build(BuildContext context) {
     final pad = MediaQuery.paddingOf(context);
@@ -1248,8 +1268,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
       serviceReduceMotion: _s.reduceMotion,
     );
     final secondaryAnimation = ModalRoute.of(context)?.secondaryAnimation;
-    final scope = MapArrivalScope.maybeOf(context);
-    final scopeOpacity = (scope?.overlayOpacity ?? 1.0).clamp(0.0, 1.0);
+    final overlayListenable = widget.overlayOpacity;
     final suppressHeroForServiceReduce =
         _s.reduceMotion && !NocheMotion.of(context).reduced;
     final allowHero =
@@ -1282,21 +1301,26 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
             places: places,
             lang: lang,
             motion: motion,
-            scopeOpacity: scopeOpacity,
+            overlayListenable: overlayListenable,
           ),
           PositionedDirectional(
             top: pad.top + 16,
             start: 16,
             end: 16,
             child: AnimatedBuilder(
-              animation: _coldLoadController,
+              animation: overlayListenable == null
+                  ? _coldLoadController
+                  : Listenable.merge([_coldLoadController, overlayListenable]),
               builder: (context, child) {
                 final slot = _coldSlotMotion(motion, MapMotion.loadChipsAfter);
                 return Transform.translate(
                   key: const Key('map-load-chips'),
                   offset: Offset(0, slot.dy),
                   child: Opacity(
-                    opacity: (scopeOpacity * slot.opacity).clamp(0.0, 1.0),
+                    opacity: (_currentOverlayOpacity() * slot.opacity).clamp(
+                      0.0,
+                      1.0,
+                    ),
                     child: child,
                   ),
                 );
@@ -1327,6 +1351,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                 animation: Listenable.merge([
                   _cardController,
                   _coldLoadController,
+                  ?overlayListenable,
                 ]),
                 builder: (context, _) {
                   final coldCard = _coldSlotMotion(
@@ -1389,10 +1414,8 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                     key: const Key('map-load-card'),
                     offset: Offset(0, coldCard.dy),
                     child: Opacity(
-                      opacity: (scopeOpacity * coldCard.opacity).clamp(
-                        0.0,
-                        1.0,
-                      ),
+                      opacity: (_currentOverlayOpacity() * coldCard.opacity)
+                          .clamp(0.0, 1.0),
                       child: content,
                     ),
                   );
@@ -1430,7 +1453,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     required List<Place> places,
     required Language lang,
     required NocheMotionData motion,
-    required double scopeOpacity,
+    required ValueListenable<double>? overlayListenable,
   }) {
     final ambientDir = Directionality.of(context);
     final minPillTop = pad.top + 16 + NocheSize.touch + NocheSize.grid;
@@ -1501,6 +1524,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                               animation: Listenable.merge([
                                 _hereController,
                                 _coldLoadController,
+                                ?overlayListenable,
                               ]),
                               builder: (context, child) {
                                 final here = _herePillMotion(motion);
@@ -1509,7 +1533,9 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                                   MapMotion.loadHereAfter,
                                 );
                                 final op =
-                                    (scopeOpacity * cold.opacity * here.opacity)
+                                    (_currentOverlayOpacity() *
+                                            cold.opacity *
+                                            here.opacity)
                                         .clamp(0.0, 1.0);
                                 return ExcludeSemantics(
                                   excluding: op == 0.0,
@@ -1544,13 +1570,17 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                           child: Directionality(
                             textDirection: ambientDir,
                             child: AnimatedBuilder(
-                              animation: _destController,
+                              animation: overlayListenable == null
+                                  ? _destController
+                                  : Listenable.merge([
+                                      _destController,
+                                      overlayListenable,
+                                    ]),
                               builder: (context, child) {
                                 final dest = _destPillMotion(motion);
-                                final op = (scopeOpacity * dest.opacity).clamp(
-                                  0.0,
-                                  1.0,
-                                );
+                                final op =
+                                    (_currentOverlayOpacity() * dest.opacity)
+                                        .clamp(0.0, 1.0);
                                 return ExcludeSemantics(
                                   excluding: op == 0.0,
                                   child: Transform.scale(
@@ -1586,13 +1616,17 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                           child: Directionality(
                             textDirection: ambientDir,
                             child: AnimatedBuilder(
-                              animation: _lockController,
+                              animation: overlayListenable == null
+                                  ? _lockController
+                                  : Listenable.merge([
+                                      _lockController,
+                                      overlayListenable,
+                                    ]),
                               builder: (context, child) {
                                 final lock = _lockPillMotion(motion);
-                                final op = (scopeOpacity * lock.opacity).clamp(
-                                  0.0,
-                                  1.0,
-                                );
+                                final op =
+                                    (_currentOverlayOpacity() * lock.opacity)
+                                        .clamp(0.0, 1.0);
                                 return ExcludeSemantics(
                                   excluding: op == 0.0,
                                   child: Transform.translate(

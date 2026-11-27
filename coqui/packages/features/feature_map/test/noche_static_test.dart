@@ -24,7 +24,6 @@ String _stripLineComments(String source) => source
 
 void main() {
   const uiFiles = [
-    'lib/src/map_arrival_scope.dart',
     'lib/src/map_screen.dart',
     'lib/src/map_perf.dart',
     'lib/src/module.dart',

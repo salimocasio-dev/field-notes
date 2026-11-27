@@ -805,31 +805,20 @@ void main() {
       await tester.pump();
       expect(fCurso.nav.routes, [const PlaceRoute('parque')]);
 
-      // Tapping place 2 on map focuses its card; play disc still gates to PlaceRoute; tapping again opens PlaceRoute
+      // Tapping plan-locked place 2 on map preserves N3.4: opens PlaceRoute('parque') directly
       await tapStop(tester, 1);
       await run(tester, 400);
-      expect(find.byKey(const Key('map-place-card')), findsOneWidget);
-      expect(find.text('El parque'), findsOneWidget);
-      expect(fCurso.nav.routes, [const PlaceRoute('parque')]);
-      await tester.tap(find.byKey(const Key('up-next-play')));
-      await tester.pump();
       expect(fCurso.nav.routes, [
-        const PlaceRoute('parque'),
-        const PlaceRoute('parque'),
-      ]);
-      await tapStop(tester, 1);
-      expect(fCurso.nav.routes, [
-        const PlaceRoute('parque'),
         const PlaceRoute('parque'),
         const PlaceRoute('parque'),
       ]);
 
-      // Upgrading to Plan.course restores direct StoryRoute playback for the focused place's next unheard story
+      // Upgrading to Plan.course restores direct StoryRoute playback from Up next
       entitlements.plan = Plan.course;
       await tester.pump();
       await tester.tap(find.byKey(const Key('up-next-play')));
       await tester.pump();
-      expect(fCurso.nav.routes.last, const StoryRoute('arriba-abajo'));
+      expect(fCurso.nav.routes.last, const StoryRoute('la-bola'));
     },
   );
 

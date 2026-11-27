@@ -292,8 +292,7 @@ class _MapMotionHarness extends StatefulWidget {
     this.reduceMotion = false,
     this.disableAnimations = false,
     this.textDirection = TextDirection.ltr,
-    this.useArrivalScope = false,
-    this.overlayOpacity = 1.0,
+    this.overlayOpacity,
     this.animateColdLoad = false,
     this.onPicture,
     this.onCamera,
@@ -309,8 +308,7 @@ class _MapMotionHarness extends StatefulWidget {
   final bool reduceMotion;
   final bool disableAnimations;
   final TextDirection textDirection;
-  final bool useArrivalScope;
-  final double overlayOpacity;
+  final ValueNotifier<double>? overlayOpacity;
   final bool animateColdLoad;
   final void Function(MapPicture picture)? onPicture;
   final void Function(MapCamera camera)? onCamera;
@@ -415,21 +413,15 @@ class _MapMotionHarnessState extends State<_MapMotionHarness> {
               onGenerateRoute: (_) => buildNocheMapRoute<void>(
                 context: navContext,
                 serviceReduceMotion: widget.reduceMotion,
-                builder: (_) {
-                  final map = MapScreen(
-                    services: _services,
-                    reviewTitle: MapWording.reviewTitle,
-                    entitlements: widget.entitlements,
-                    onPicture: widget.onPicture,
-                    onCamera: widget.onCamera,
-                  );
-                  if (!widget.useArrivalScope) return map;
-                  return MapArrivalScope(
-                    overlayOpacity: widget.overlayOpacity,
-                    animateColdLoad: widget.animateColdLoad,
-                    child: map,
-                  );
-                },
+                builder: (_) => MapScreen(
+                  services: _services,
+                  reviewTitle: MapWording.reviewTitle,
+                  entitlements: widget.entitlements,
+                  overlayOpacity: widget.overlayOpacity,
+                  animateColdLoad: widget.animateColdLoad,
+                  onPicture: widget.onPicture,
+                  onCamera: widget.onCamera,
+                ),
               ),
             ),
           ),
@@ -1660,12 +1652,33 @@ void main() {
     );
 
     mapTest(
-      '8. MapArrivalScope: overlayOpacity fades overlays while PixelView stays unfaded; animateColdLoad staggers chips/here/card/play disc',
+      '8. MapModule arrival hooks: overlayOpacity fades overlays while PixelView stays unfaded; animateColdLoad staggers chips/here/card/play disc',
       (tester) async {
         _phone(tester, size: const Size(390, 844), dpr: 3.0);
         final f = fixture(seed: 'vacio', reduceMotion: true);
+        final opacity = ValueNotifier<double>(0.35);
+        addTearDown(opacity.dispose);
 
-        // (a) overlayOpacity = 0.35 fades overlays but NEVER PixelView.
+        // (a) MapModule forwards overlayOpacity and animateColdLoad to MapScreen.
+        final module = MapModule(
+          entitlements: const AllowAllEntitlements(),
+          overlayOpacity: opacity,
+          animateColdLoad: true,
+        );
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: coquiTheme(),
+            home: Scaffold(
+              body: Builder(builder: module.tab(f.services)!.builder),
+            ),
+          ),
+        );
+        final mapWidget = tester.widget<MapScreen>(find.byType(MapScreen));
+        expect(mapWidget.overlayOpacity, same(opacity));
+        expect(mapWidget.animateColdLoad, isTrue);
+        await tester.pumpWidget(const SizedBox.shrink());
+
+        // (b) overlayOpacity = 0.35 fades overlays (including dynamic updates & clamping) but NEVER PixelView.
         await tester.pumpWidget(
           _MapMotionHarness(
             course: f.services.course,
@@ -1674,8 +1687,7 @@ void main() {
             pictures: _pixelPictures(),
             entitlements: const AllowAllEntitlements(),
             reduceMotion: true,
-            useArrivalScope: true,
-            overlayOpacity: 0.35,
+            overlayOpacity: opacity,
           ),
         );
         await _pumpMapReady(tester);
@@ -1704,7 +1716,15 @@ void main() {
           expect(op.opacity, 1.0, reason: 'PixelView must stay unfaded');
         }
 
-        // (b) animateColdLoad = true staggers chips (180), here (210), card (240), play (400).
+        // Dynamic out-of-range value is clamped safely to [0.0, 1.0].
+        opacity.value = 1.5;
+        await tester.pump();
+        expect(_slotOpacity(tester, const Key('map-load-chips')), 1.0);
+        opacity.value = -0.2;
+        await tester.pump();
+        expect(_slotOpacity(tester, const Key('map-load-chips')), 0.0);
+
+        // (c) animateColdLoad = true staggers chips (180), here (210), card (240), play (400).
         await tester.pumpWidget(const SizedBox.shrink());
         final fCold = fixture(seed: 'vacio');
         await tester.pumpWidget(
@@ -1714,7 +1734,6 @@ void main() {
             clock: fCold.clock,
             pictures: _pixelPictures(),
             entitlements: const AllowAllEntitlements(),
-            useArrivalScope: true,
             animateColdLoad: true,
           ),
         );
@@ -1774,7 +1793,7 @@ void main() {
           expect(_slotDy(tester, key), 0.0, reason: '$key dy settled');
         }
 
-        // (c) animateColdLoad under reduced motion collapses to quick fade in place (dy == 0).
+        // (d) animateColdLoad under reduced motion collapses to quick fade in place (dy == 0).
         await tester.pumpWidget(const SizedBox.shrink());
         final fReduced = fixture(seed: 'vacio');
         await tester.pumpWidget(
@@ -1785,7 +1804,6 @@ void main() {
             pictures: _pixelPictures(),
             entitlements: const AllowAllEntitlements(),
             disableAnimations: true,
-            useArrivalScope: true,
             animateColdLoad: true,
           ),
         );
@@ -1865,6 +1883,42 @@ void main() {
         expect(picture.FROG.path, isNull);
         expect(picture.FROG.at, 3);
         expect(clips.tones, hasLength(6));
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+
+    mapTest(
+      '10. Plan-locked stop on Plan.free preserves N3.4: tapping place 2 hops and opens PlaceRoute(parque) with plan card',
+      (tester) async {
+        _phone(tester, size: const Size(390, 844), dpr: 3.0);
+        final entitlements = FakeEntitlements(plan: Plan.free);
+        addTearDown(entitlements.dispose);
+        final f = fixture(seed: 'vacio');
+        late MapPicture picture;
+        late _FlowNavigator nav;
+
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: f.services.course,
+            progress: f.progress,
+            clock: f.clock,
+            pictures: _pixelPictures(),
+            entitlements: entitlements,
+            onPicture: (p) => picture = p,
+            onNavReady: (n, _) => nav = n,
+          ),
+        );
+        await _pumpMapReady(tester);
+        expect(picture.FROG.at, 0);
+
+        await _tapStopOnMap(tester, 1);
+        // 90 ms delay + 1200 ms (6 hops) + 250 ms settle + PlaceScreen arrival
+        await _runFrames(tester, 2200, step: 50);
+        expect(picture.FROG.at, 1);
+        expect(nav.routes, [const PlaceRoute('parque')]);
+        expect(find.byKey(const Key('place-plan-card')), findsOneWidget);
+        expect(find.byKey(const Key('place-see-plans')), findsOneWidget);
 
         await tester.pumpWidget(const SizedBox.shrink());
       },
