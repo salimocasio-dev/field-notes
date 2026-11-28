@@ -269,6 +269,8 @@ extension _SalaDiaActs on SalaDia {
         W['libroVis'] = 1;
         W['libroOpen'] = 1;
         W['libroScribbled'] = 0;
+        W['libroCon'] = quien;
+        if (W['papelCon'] == quien) W['papelCon'] = null;
         await bounceFrog(dx: 3, dy: -4, ms: 120);
         W['leeFx'] = {'quien': quien, 'kind': 'barco'};
         await wait(200);
@@ -280,6 +282,8 @@ extension _SalaDiaActs on SalaDia {
       'escribe102': (o) => run(o, () async {
         final quien = (o['quien'] as String?) ?? 'carmen';
         W['papelVis'] = 1;
+        W['papelCon'] = quien;
+        if (W['libroCon'] == quien) W['libroCon'] = null;
         await bounceFrog(dx: 3, dy: -4, ms: 120);
         W['escribeFx'] = {'quien': quien, 'nombres': false};
         await wait(260);
@@ -317,12 +321,16 @@ extension _SalaDiaActs on SalaDia {
           if (que == 'libro') {
             W['libroOpen'] = 1;
             W['libroScribbled'] = 0;
+            W['libroCon'] = a;
+            if (W['papelCon'] == a) W['papelCon'] = null;
             W['leeFx'] = {'quien': a, 'kind': 'barco'};
             await wait(180);
             W['leeFx'] = {'quien': a, 'kind': 'estrella'};
             await wait(180);
             W['leeFx'] = null;
           } else {
+            W['papelCon'] = a;
+            if (W['libroCon'] == a) W['libroCon'] = null;
             W['escribeFx'] = {'quien': a, 'nombres': false};
             await wait(260);
             W['escribeFx'] = null;
@@ -331,6 +339,7 @@ extension _SalaDiaActs on SalaDia {
           if (que == 'papel') {
             // Wrong: clean sheet given to a reader -> folded into a paper plane that flies out the window!
             // OPEN: sala_dia-sheet.json has no flight path; animate plane from above child (y=64) to window (108, 22).
+            if (W['papelCon'] == a) W['papelCon'] = null;
             final child = _gente[a] as Map<String, dynamic>?;
             final startX = child != null ? _round(_atOf(child).sx) : 120;
             final win = _p.box('ventana');
@@ -346,12 +355,15 @@ extension _SalaDiaActs on SalaDia {
             W['avionFx'] = null;
           } else {
             // Wrong: book given to a writer -> scribbled in; Carmen tears a clean sheet to patch the page.
+            final prevLibroCon = W['libroCon'];
             W['libroOpen'] = 1;
             W['libroScribbled'] = 1;
             W['libroPatched'] = 0;
+            W['libroCon'] = a;
             await wait(200);
             W['libroScribbled'] = 0;
             W['libroPatched'] = 1;
+            W['libroCon'] = prevLibroCon;
             await wait(180);
           }
         }
@@ -384,6 +396,7 @@ extension _SalaDiaActs on SalaDia {
         W['telefonoLit'] = 1;
         W['telefonoRing'] = 1;
         W['telefonoHolder'] = 'mesa';
+        W['telefonoDonde'] = null;
         await wait(320);
         W['telefonoRing'] = 0;
       }),
@@ -391,6 +404,7 @@ extension _SalaDiaActs on SalaDia {
       'oido103': (o) => run(o, () async {
         W['telefonoLit'] = 1;
         W['telefonoHolder'] = 'abuela';
+        W['telefonoDonde'] = null;
         W['abuelaPhone'] = 'ear';
         await wait(260);
       }),
@@ -398,6 +412,7 @@ extension _SalaDiaActs on SalaDia {
       'boca103': (o) => run(o, () async {
         W['telefonoLit'] = 1;
         W['telefonoHolder'] = 'abuela';
+        W['telefonoDonde'] = null;
         W['abuelaPhone'] = 'mouth';
         await wait(260);
         W['abuelaPhone'] = null;
@@ -416,6 +431,7 @@ extension _SalaDiaActs on SalaDia {
         W['abueloDoze'] = 0;
         W['telefonoLit'] = 1;
         W['telefonoHolder'] = 'coqui';
+        W['telefonoDonde'] = donde;
         await bounceFrog(dx: 3, dy: -3, ms: 110);
         if (ok) {
           if (donde == 'oreja_abuelo') {
@@ -452,6 +468,7 @@ extension _SalaDiaActs on SalaDia {
         final n = _n(o['n']).clamp(1, 3);
         W['abueloHoldPhone'] = 1;
         W['telefonoHolder'] = 'abuelo';
+        W['telefonoDonde'] = null;
         if (n >= 3) {
           // Three bars: sings twice; mamá's laugh comes out as hearts + stars!
           for (var i = 0; i < 2; i++) {

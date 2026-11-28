@@ -136,6 +136,47 @@ void main() {
       isFalse,
     );
     expect(_same(mkFoto('luis_computadora'), mkFoto('abuela_libro')), isFalse);
+    expect(
+      _same(
+        mkAbueloSalaDia('idle', false, phone: 'ear'),
+        mkAbueloSalaDia('idle', false, phone: 'mouth'),
+      ),
+      isFalse,
+    );
+    expect(
+      _same(
+        mkNinoSalaDia(FAM['hermano']!, 'idle', false, reads: true),
+        mkNinoSalaDia(FAM['hermano']!, 'idle', false, sheet: true),
+      ),
+      isFalse,
+    );
+    expect(
+      _same(
+        mkNinoSalaDia(FAM['hermana']!, 'idle', false),
+        mkNinoSalaDia(FAM['hermana']!, 'idle', false, reads: true),
+      ),
+      isFalse,
+    );
+    expect(
+      _same(mkRelojManecillas(hour: 3), mkRelojManecillas(hour: 6)),
+      isFalse,
+    );
+    expect(
+      _same(mkRelojManecillas(hour: 3), mkRelojManecillas(hour: 9)),
+      isFalse,
+    );
+    expect(
+      _same(mkRelojManecillas(hour: 3), mkRelojManecillas(hour: 12)),
+      isFalse,
+    );
+    expect(
+      _same(mkRelojManecillas(hour: 10), mkRelojManecillas(hour: 14)),
+      isFalse,
+    );
+    expect(
+      _same(mkRelojManecillas(hour: 14), mkRelojManecillas(hour: 17)),
+      isFalse,
+    );
     expect(_same(mkDibujoRana(1), mkDibujoRana(2)), isFalse);
     expect(_same(mkDibujoRana(2), mkDibujoRana(3)), isFalse);
     expect(_same(mkPortadaAlbum(3), mkPortadaAlbum(2)), isFalse);

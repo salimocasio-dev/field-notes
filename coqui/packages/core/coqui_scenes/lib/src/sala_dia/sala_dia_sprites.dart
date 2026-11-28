@@ -79,7 +79,8 @@ Sprite mkAbuelaSalaDia(
 }
 
 /// Seated abuelo (`mkPersona(FAM['abuelo']!, ..., sent = true)`) with optional story overlays: dozing eyes,
-/// cupping a hand behind his ear (`oreja`), smiling, nodding, or holding the telephone out to the frog.
+/// cupping a hand behind his ear (`cupEar`), smiling, nodding, holding the telephone out (`holdPhone`), or the
+/// telephone held at his ear/mouth (`phone`: `'ear'` | `'mouth'`).
 Sprite mkAbueloSalaDia(
   String pose,
   bool open, {
@@ -88,9 +89,12 @@ Sprite mkAbueloSalaDia(
   bool smile = false,
   bool nod = false,
   bool holdPhone = false,
+  String? phone,
 }) {
   final base = mkPersona(FAM['abuelo']!, pose, open, true);
-  if (!doze && !cupEar && !smile && !nod && !holdPhone) return base;
+  if (!doze && !cupEar && !smile && !nod && !holdPhone && phone == null) {
+    return base;
+  }
   return _overlayOn(base, (b) {
     if (doze) {
       // Closed sleepy eyes over the head row (~10) and tiny 'z' accent beside temple (staying inside head box).
@@ -117,10 +121,22 @@ Sprite mkAbueloSalaDia(
       b.rect(13, 25, 4, 2, _h('#9CCBDE'));
       b.px(16, 25, _h('#FFE070'));
     }
+    if (phone == 'ear') {
+      // Lit telephone held at abuelo's left ear (inside oreja_abuelo box: cols 14..16, rows 10..15).
+      b.rect(14, 10, 3, 6, _h('#2C2E38'));
+      b.rect(15, 11, 1, 4, _h('#9CCBDE'));
+      b.px(15, 11, _h('#FFE070'));
+    } else if (phone == 'mouth') {
+      // Lit telephone held before abuelo's mouth (inside boca_abuelo box: cols 18..23, rows 15..18).
+      b.rect(18, 15, 6, 4, _h('#2C2E38'));
+      b.rect(19, 16, 4, 2, _h('#9CCBDE'));
+      b.px(22, 16, _h('#FFE070'));
+    }
   });
 }
 
-/// Seated child (`luis` or `carmen`) with optional small prop in hand (notebook, ball, pencil/writing).
+/// Seated child (`luis` or `carmen`) with optional small prop in hand (notebook, ball, pencil/writing, open book,
+/// or clean writing sheet).
 Sprite mkNinoSalaDia(
   Who w,
   String pose,
@@ -128,10 +144,26 @@ Sprite mkNinoSalaDia(
   bool notebook = false,
   bool ball = false,
   bool writes = false,
+  bool reads = false,
+  bool sheet = false,
 }) {
   final base = mkPersona(w, pose, open, true);
-  if (!notebook && !ball && !writes) return base;
+  if (!notebook && !ball && !writes && !reads && !sheet) return base;
   return _overlayOn(base, (b) {
+    if (reads) {
+      // Open red book held on chest/lap (cols 19..28, rows 20..24 — strictly above low-table row 25 cutoff).
+      b.rect(19, 20, 10, 5, _h('#9E2D1D'));
+      b.rect(20, 21, 3, 3, _h('#FFFBEA'));
+      b.rect(25, 21, 3, 3, _h('#FFF7DC'));
+      b.rect(23, 21, 2, 3, _h('#C8B890'));
+    }
+    if (sheet) {
+      // Clean white paper sheet held on chest/lap (cols 20..27, rows 20..24 — above low-table row 25 cutoff).
+      b.rect(20, 20, 8, 5, _h('#D8D8E4'));
+      b.rect(21, 20, 6, 4, _h('#FFFFFF'));
+      b.rect(22, 21, 4, 1, _h('#7A9AD0'));
+      b.rect(22, 23, 3, 1, _h('#9CB4DE'));
+    }
     if (notebook) {
       // Small pale notebook on lap/hand (cols 27..33, rows 24..29).
       b.rect(27, 24, 6, 5, _h('#3868A8'));
@@ -388,20 +420,55 @@ Sprite mkFoto(String que, {bool torn = false}) => _mk(10, 8, (b) {
 /// Default: 3:00 (afternoon, Story 104: "Son las tres de la tarde").
 Sprite mkRelojManecillas({int hour = 3}) => _mk(11, 11, (b) {
   final col = _h('#2A2226');
-  // Centre pin at (5, 5)
-  b.px(5, 5, _h('#B8382A'));
   // Minute hand pointing to 12 (up: rows 1..4)
   b.rect(5, 1, 1, 4, col);
-  // Hour hand: 3 -> right (cols 6..8); 9 -> left; 6 -> down; 12 -> up
-  if (hour == 3) {
-    b.rect(6, 5, 3, 1, col);
-  } else if (hour == 9) {
-    b.rect(2, 5, 3, 1, col);
-  } else if (hour == 6) {
-    b.rect(5, 6, 1, 3, col);
-  } else {
-    b.rect(6, 5, 3, 1, col);
+  // Hour hand from centre (5, 5) for all 12 positions (hour % 12)
+  final h = ((hour % 12) + 12) % 12;
+  switch (h) {
+    case 0: // 12 o'clock (up, slightly wider/shorter than minute hand)
+      b.rect(5, 2, 1, 3, col);
+      b.px(4, 3, col);
+    case 1: // 1 o'clock
+      b.px(6, 4, col);
+      b.px(6, 3, col);
+      b.px(7, 2, col);
+    case 2: // 2 o'clock (14:00)
+      b.px(6, 4, col);
+      b.px(7, 4, col);
+      b.px(8, 3, col);
+    case 3: // 3 o'clock (15:00)
+      b.rect(6, 5, 3, 1, col);
+    case 4: // 4 o'clock (16:00)
+      b.px(6, 6, col);
+      b.px(7, 6, col);
+      b.px(8, 7, col);
+    case 5: // 5 o'clock (17:00)
+      b.px(6, 6, col);
+      b.px(6, 7, col);
+      b.px(7, 8, col);
+    case 6: // 6 o'clock (18:00)
+      b.rect(5, 6, 1, 3, col);
+    case 7: // 7 o'clock
+      b.px(4, 6, col);
+      b.px(4, 7, col);
+      b.px(3, 8, col);
+    case 8: // 8 o'clock
+      b.px(4, 6, col);
+      b.px(3, 6, col);
+      b.px(2, 7, col);
+    case 9: // 9 o'clock
+      b.rect(2, 5, 3, 1, col);
+    case 10: // 10 o'clock
+      b.px(4, 4, col);
+      b.px(3, 4, col);
+      b.px(2, 3, col);
+    case 11: // 11 o'clock
+      b.px(4, 4, col);
+      b.px(4, 3, col);
+      b.px(3, 2, col);
   }
+  // Centre pin at (5, 5)
+  b.px(5, 5, _h('#B8382A'));
 }, outline: false);
 
 /// Small floating picture from reading the book (`lee102`): `'barco'` (boat) or `'estrella'` (star), 10 × 8.
@@ -621,7 +688,11 @@ List<(String, Sprite)> salaDiaSpritesSheet() => [
   ('abuelo_smile', mkAbueloSalaDia('idle', false, smile: true)),
   ('abuelo_nod', mkAbueloSalaDia('idle', false, nod: true)),
   ('abuelo_phone', mkAbueloSalaDia('idle', false, holdPhone: true)),
+  ('abuelo_phone_ear', mkAbueloSalaDia('idle', false, phone: 'ear')),
+  ('abuelo_phone_mouth', mkAbueloSalaDia('idle', false, phone: 'mouth')),
   ('luis_idle', mkNinoSalaDia(FAM['hermano']!, 'idle', false)),
+  ('luis_reads', mkNinoSalaDia(FAM['hermano']!, 'idle', false, reads: true)),
+  ('luis_sheet', mkNinoSalaDia(FAM['hermano']!, 'idle', false, sheet: true)),
   (
     'luis_notebook',
     mkNinoSalaDia(FAM['hermano']!, 'idle', false, notebook: true),
@@ -629,6 +700,8 @@ List<(String, Sprite)> salaDiaSpritesSheet() => [
   ('luis_ball', mkNinoSalaDia(FAM['hermano']!, 'idle', false, ball: true)),
   ('luis_writes', mkNinoSalaDia(FAM['hermano']!, 'idle', false, writes: true)),
   ('carmen_idle', mkNinoSalaDia(FAM['hermana']!, 'idle', false)),
+  ('carmen_reads', mkNinoSalaDia(FAM['hermana']!, 'idle', false, reads: true)),
+  ('carmen_sheet', mkNinoSalaDia(FAM['hermana']!, 'idle', false, sheet: true)),
   (
     'carmen_writes',
     mkNinoSalaDia(FAM['hermana']!, 'idle', false, writes: true),
@@ -665,6 +738,9 @@ List<(String, Sprite)> salaDiaSpritesSheet() => [
   ('foto_abuela_juega', mkFoto('abuela_juega')),
   ('foto_torn', mkFoto('abuelo_lee', torn: true)),
   ('reloj_3', mkRelojManecillas()),
+  ('reloj_6', mkRelojManecillas(hour: 6)),
+  ('reloj_9', mkRelojManecillas(hour: 9)),
+  ('reloj_12', mkRelojManecillas(hour: 12)),
   ('lee_barco', mkLeePic('barco')),
   ('lee_estrella', mkLeePic('estrella')),
   ('hoja_escrita', mkHojaEscrita()),

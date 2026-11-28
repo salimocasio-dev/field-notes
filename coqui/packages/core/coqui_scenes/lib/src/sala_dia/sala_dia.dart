@@ -227,6 +227,8 @@ class SalaDia extends Escena implements SetScene, SetOverSprites {
       'hojas': 5,
       'miniFrog': 0,
       'abuelaHarina': 0,
+      'libroCon': null, // null | 'luis' | 'carmen'
+      'papelCon': null, // null | 'luis' | 'carmen'
       'leeFx': null, // {quien: 'luis'|'carmen', kind: 'barco'|'estrella'}
       'escribeFx': null, // {quien: 'luis'|'carmen', nombres: bool}
       'avionFx': null, // {x: int, y: int}
@@ -238,6 +240,7 @@ class SalaDia extends Escena implements SetScene, SetOverSprites {
       'bateria': 3,
       'bateriaBlink': 0,
       'telefonoHolder': 'mesa', // 'mesa' | 'abuela' | 'coqui' | 'abuelo'
+      'telefonoDonde': null, // null | 'oreja_abuelo' | 'boca_abuelo'
       'abuelaPhone': null, // null | 'ear' | 'mouth'
       'abuelaSilencio': 0,
       'abueloDoze': is103 ? 1 : 0,
@@ -370,8 +373,14 @@ class SalaDia extends Escena implements SetScene, SetOverSprites {
       final smile = _n(w['abueloSmile']) == 1;
       final nod = _n(w['abueloNod']) == 1;
       final holdPhone = _n(w['abueloHoldPhone']) == 1;
+      final donde = w['telefonoDonde'] as String?;
+      final phone = switch (donde) {
+        'oreja_abuelo' => 'ear',
+        'boca_abuelo' => 'mouth',
+        _ => null,
+      };
       final s = _spr(
-        'sd_abo_${kp}_${open}_${doze}_${cupEar}_${smile}_${nod}_$holdPhone',
+        'sd_abo_${kp}_${open}_${doze}_${cupEar}_${smile}_${nod}_${holdPhone}_$phone',
         () => mkAbueloSalaDia(
           kp,
           open,
@@ -380,6 +389,7 @@ class SalaDia extends Escena implements SetScene, SetOverSprites {
           smile: smile,
           nod: nod,
           holdPhone: holdPhone,
+          phone: phone,
         ),
       );
       return (s: s, ax: PX, ay: salaDiaSeatedLap(FAM['abuelo']!));
@@ -387,10 +397,12 @@ class SalaDia extends Escena implements SetScene, SetOverSprites {
     if (id == 'luis') {
       final nb = _n(w['luisNotebook']) == 1;
       final ball = _n(w['luisBall']) == 1;
+      final reads = w['libroCon'] == 'luis';
+      final sheet = w['papelCon'] == 'luis';
       final writes =
           w['escribeFx'] is Map && (w['escribeFx'] as Map)['quien'] == 'luis';
       final s = _spr(
-        'sd_luis_${kp}_${open}_${sent}_${nb}_${ball}_$writes',
+        'sd_luis_${kp}_${open}_${sent}_${nb}_${ball}_${writes}_${reads}_$sheet',
         () => sent
             ? mkNinoSalaDia(
                 FAM['hermano']!,
@@ -399,6 +411,8 @@ class SalaDia extends Escena implements SetScene, SetOverSprites {
                 notebook: nb,
                 ball: ball,
                 writes: writes,
+                reads: reads,
+                sheet: sheet,
               )
             : mkPersona(FAM['hermano']!, kp, open, false),
       );
@@ -409,12 +423,21 @@ class SalaDia extends Escena implements SetScene, SetOverSprites {
       );
     }
     // carmen
+    final reads = w['libroCon'] == 'carmen';
+    final sheet = w['papelCon'] == 'carmen';
     final writes =
         w['escribeFx'] is Map && (w['escribeFx'] as Map)['quien'] == 'carmen';
     final s = _spr(
-      'sd_car_${kp}_${open}_${sent}_$writes',
+      'sd_car_${kp}_${open}_${sent}_${writes}_${reads}_$sheet',
       () => sent
-          ? mkNinoSalaDia(FAM['hermana']!, kp, open, writes: writes)
+          ? mkNinoSalaDia(
+              FAM['hermana']!,
+              kp,
+              open,
+              writes: writes,
+              reads: reads,
+              sheet: sheet,
+            )
           : mkPersona(FAM['hermana']!, kp, open, false),
     );
     return (
@@ -496,8 +519,9 @@ class SalaDia extends Escena implements SetScene, SetOverSprites {
       );
     }
 
-    // 3. Story 103 table prop: telefono
-    if (_n(w['telefonoVis']) == 1) {
+    // 3. Story 103 table prop: telefono (drawn on the low table until picked up by abuela, coquí, or abuelo)
+    if (_n(w['telefonoVis']) == 1 &&
+        (w['telefonoHolder'] ?? 'mesa') == 'mesa') {
       final at = _p.at('telefono');
       final lit = _n(w['telefonoLit']) == 1;
       final ring = _n(w['telefonoRing']) == 1;
@@ -909,6 +933,11 @@ class SalaDia extends Escena implements SetScene, SetOverSprites {
           return [_round(at.sx) - 6, _round(at.sy) - 42];
         }
       } else if (holder == 'coqui' || holder == 'abuelo') {
+        final donde = W['telefonoDonde'] as String?;
+        if (donde == 'oreja_abuelo' || donde == 'boca_abuelo') {
+          final b = _p.box(donde!);
+          return [b[0] + b[2] ~/ 2, b[1] - 4];
+        }
         final at = _p.at('brazo_coqui');
         return [_round(at.sx), _round(at.sy) - 28];
       }
@@ -996,7 +1025,9 @@ class SalaDia extends Escena implements SetScene, SetOverSprites {
     ),
     Thing(
       id: 'telefono',
-      si: (w) => _n(w['telefonoVis']) == 1,
+      si: (w) =>
+          _n(w['telefonoVis']) == 1 &&
+          (w['telefonoHolder'] ?? 'mesa') == 'mesa',
       box: (w) => _spriteBox(w, 'cosa:telefono') ?? _p.spotBox('telefono'),
     ),
     for (var i = 1; i <= 3; i++)

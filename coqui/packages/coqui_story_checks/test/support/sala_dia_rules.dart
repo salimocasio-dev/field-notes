@@ -83,7 +83,7 @@ class SalaDiaRules {
 
   double? _cachedS;
   double? _cachedBias;
-  int? _cachedX0;
+  List<int>? _cachedView;
   List<int>? _cachedCompu;
   List<int>? _cachedOreja;
   List<int>? _cachedBoca;
@@ -144,9 +144,11 @@ class SalaDiaRules {
     final key = scene.setKey(w);
     final S = _cachedS ??= scene.projection.S;
     final bias = _cachedBias ??= _m.places.bias as double;
-    final x0 = _cachedX0 ??= ((_m.places.view('wide') as List)[0] as num)
-        .toInt();
-    final x1 = x0 + 196;
+    final view = _cachedView ??= [
+      for (final n in (_m.places.view('wide') as List)) (n as num).toInt(),
+    ];
+    final x0 = view[0];
+    final x1 = x0 + view[2];
     final compu = _cachedCompu ??= (_m.places.box('computadora') as List<int>);
     final oreja = _cachedOreja ??= (_m.places.box('oreja_abuelo') as List<int>);
     final boca = _cachedBoca ??= (_m.places.box('boca_abuelo') as List<int>);
@@ -155,7 +157,7 @@ class SalaDiaRules {
     final gente = (w['gente'] as Map?) ?? const {};
     final luisSpot = (gente['luis'] as Map?)?['spot'] as String? ?? '';
     final carmenSpot = (gente['carmen'] as Map?)?['spot'] as String? ?? '';
-    final abueloVis = ((gente['abuelo'] as Map?)?['vis'] ?? 0) != 0;
+    final abueloVis = jsTruthy((gente['abuelo'] as Map?)?['vis']);
     final cqMap = w['cq'] as Map?;
     final cqVis = cqMap != null && jsTruthy(cqMap['vis']);
     final cqSpot = (cqMap?['spot'] as String?) ?? '';
@@ -201,7 +203,7 @@ class SalaDiaRules {
         frameBreaches.add((rule: rule, what: what));
 
     final zb = _zbOf(key);
-    const w0 = 240, h0 = 216;
+    final w0 = scene.SW, h0 = view[3];
     final topZ = Float32List(w0 * h0)..fillRange(0, w0 * h0, -1e9);
     final topIdx = Int32List(w0 * h0)..fillRange(0, w0 * h0, -1);
 
@@ -241,11 +243,12 @@ class SalaDiaRules {
         final left = it.left as int, top = it.top as int;
         final sy = it.sy as num;
         final d = it.d as double;
+        final overlay = it.overlay as bool;
         var hidden = 0, covered = 0, outWin = 0;
         var coverOreja = 0, coverBoca = 0;
         for (var py = 0; py < sp.h; py++) {
           final Y = top + py;
-          final plane = d + (sy - (Y + .5)) * _t30 / S;
+          final plane = overlay ? d : d + (sy - (Y + .5)) * _t30 / S;
           for (var px = 0; px < sp.w; px++) {
             if (sp.px[py * sp.w + px] >>> 24 == 0) continue;
             final X = left + px;
@@ -254,7 +257,7 @@ class SalaDiaRules {
               continue;
             }
             final i = Y * w0 + X;
-            if (zb[i] > plane + bias) {
+            if (!overlay && zb[i] > plane + bias) {
               hidden++;
               continue;
             }
