@@ -1,0 +1,684 @@
+{
+ "id": "todos-en-la-foto",
+ "title": "Todos en la foto",
+ "place": "El fuerte",
+ "scene": "muralla",
+ "next": "por-que-no-bailas",
+ "goal": "Open the sentry-box door with somebody behind it, as Luis says who is behind which door, so that abuela's three lanterns stay lit over the family photo: a door opened on an empty box lets the sleeping pigeons burst out and knock a lantern off the line, and a photo with fewer lanterns is darker.",
+ "stake": {
+  "thing": "faroles",
+  "steps": 3
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "todos",
+  "nadie",
+  "alguien"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "puerta",
+  "rojo",
+  "azul",
+  "detrás",
+  "hay",
+  "no hay",
+  "falta",
+  "aquí",
+  "¿dónde está?",
+  "pájaro",
+  "luz",
+  "viento",
+  "cuidado",
+  "otra vez",
+  "ahora",
+  "uno",
+  "dos",
+  "tres",
+  "por favor",
+  "sí",
+  "no"
+ ],
+ "also_heard": [],
+ "names": {
+  "abuela": "abuela",
+  "abuelo": "n_abuelo",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "senor": "b_n_senor",
+  "senora": "b_n_senora",
+  "piraguero": "b_n_piraguero",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {},
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "b_n_piraguero": {
+   "who": "narr",
+   "text": "Es el piragüero."
+  },
+  "c117_ab_foto": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Una foto! ¡Todos aquí, por favor!"
+  },
+  "c117_ab_faltan": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Uno, dos, tres... No están todos. Falta alguien."
+  },
+  "c117_l_shh": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Shh! Detrás de la puerta roja hay alguien."
+  },
+  "c117_ca_aqui_estoy": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Aquí estoy!"
+  },
+  "c117_ab_azul": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Y detrás de la puerta azul? ¿Hay alguien?"
+  },
+  "c117_l_no_nadie": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: No. Aquí no hay nadie."
+  },
+  "c117_ca_nadie": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Nadie! Hay un pájaro."
+  },
+  "c117_ab_ahora_si": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Puerta roja, nadie. Puerta azul, nadie. ¡Ahora sí están todos!"
+  },
+  "c117_ab_donde": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, ¿dónde estás?"
+  },
+  "c117_cq_aqui": {
+   "who": "tu",
+   "text": "¡Aquí!",
+   "tu_turno": [
+    {
+     "palabra": "aquí",
+     "formas": [
+      "aquí",
+      "aqui",
+      "estoy aquí",
+      "estoy aqui"
+     ]
+    }
+   ]
+  },
+  "c117_ab_otra_vez": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Ay! Otra vez falta alguien."
+  },
+  "c117_ab_uno_dos": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Ahora sí. Uno, dos..."
+  },
+  "c117_cq_tres": {
+   "who": "tu",
+   "text": "¡Tres!",
+   "tu_turno": [
+    {
+     "palabra": "tres",
+     "formas": [
+      "tres",
+      "y tres"
+     ]
+    }
+   ]
+  },
+  "c117_fin": {
+   "who": "narr",
+   "text": "En la foto están todos. No falta nadie."
+  },
+  "c117_l_roja_alguien": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Detrás de la puerta roja, alguien."
+  },
+  "c117_no_roja_alguien": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡No, Coquí! Detrás de la puerta roja, alguien."
+  },
+  "c117_l_roja_nadie": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Detrás de la puerta roja, nadie."
+  },
+  "c117_no_roja_nadie": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡No, Coquí! Detrás de la puerta roja, nadie."
+  },
+  "c117_l_azul_alguien": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Detrás de la puerta azul, alguien."
+  },
+  "c117_no_azul_alguien": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡No, Coquí! Detrás de la puerta azul, alguien."
+  },
+  "c117_l_azul_nadie": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Detrás de la puerta azul, nadie."
+  },
+  "c117_no_azul_nadie": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡No, Coquí! Detrás de la puerta azul, nadie."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "noche"
+   }
+  },
+  {
+   "act": "faroles",
+   "n": 3
+  },
+  {
+   "act": "llega",
+   "quien": "abuela",
+   "a": "camara_abuela"
+  },
+  {
+   "act": "llega",
+   "quien": "abuelo",
+   "a": "centro1",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "luis",
+   "a": "centro2",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "pepe",
+   "a": "centro3",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "maestra",
+   "a": "centro4",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "piraguero",
+   "a": "centro5",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "senor",
+   "a": "centro6",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "senora",
+   "a": "centro7",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "carmen",
+   "a": "dentro_roja",
+   "suelto": 1
+  },
+  {
+   "act": "ir",
+   "a": "junto_camara",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c117_ab_foto",
+  {
+   "act": "cuenta117",
+   "suelto": 1
+  },
+  "c117_ab_faltan",
+  {
+   "act": "ya"
+  },
+  {
+   "dots": 2
+  },
+  {
+   "ask": "puerta_roja",
+   "lead": [],
+   "line": "c117_l_shh",
+   "then": [],
+   "after": [
+    {
+     "act": "abre117",
+     "cual": "puerta_roja",
+     "ok": 1,
+     "suelto": 1
+    },
+    "c117_ca_aqui_estoy",
+    {
+     "act": "ya"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "ask": "puerta_azul",
+   "lead": [],
+   "line": "c117_ab_azul",
+   "then": [],
+   "after": [
+    {
+     "act": "paloma117"
+    }
+   ]
+  },
+  "c117_l_no_nadie",
+  "c117_ca_nadie",
+  {
+   "dots": 4
+  },
+  {
+   "act": "cuenta117"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "si"
+  },
+  "c117_ab_ahora_si",
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "mira",
+   "a": "junto_camara"
+  },
+  "c117_ab_donde",
+  "c117_cq_aqui",
+  {
+   "act": "ir",
+   "a": "ante_todos"
+  },
+  {
+   "dots": 5
+  },
+  {
+   "reparte": [
+    "pa",
+    "pb"
+   ],
+   "options": [
+    "pepe",
+    "maestra",
+    "piraguero",
+    "senor",
+    "senora"
+   ]
+  },
+  {
+   "draw": "ha",
+   "options": [
+    "roja",
+    "azul"
+   ]
+  },
+  {
+   "draw": "na",
+   "options": [
+    "roja",
+    "azul"
+   ]
+  },
+  {
+   "calc": "sa",
+   "cond": "na=$ha",
+   "then": "alguien",
+   "else": "nadie"
+  },
+  {
+   "calc": "da",
+   "cond": "ha=roja",
+   "then": "puerta_roja",
+   "else": "puerta_azul"
+  },
+  {
+   "act": "viento117",
+   "quien": "$pa",
+   "donde": "$da"
+  },
+  {
+   "act": "cuenta117"
+  },
+  "c117_ab_otra_vez",
+  {
+   "act": "mira117"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "decide": "do",
+   "options": [
+    "puerta_roja",
+    "puerta_azul"
+   ],
+   "pick": "$da",
+   "tests": "$sa",
+   "lock": true,
+   "lead": [],
+   "line": "c117_l_$na_$sa",
+   "right": [
+    {
+     "act": "abre117",
+     "cual": "$da",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "abre117",
+     "cual": "$x",
+     "ok": 0
+    },
+    "c117_no_$na_$sa",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "faroles",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "faroles",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "hb",
+   "options": [
+    "roja",
+    "azul"
+   ]
+  },
+  {
+   "draw": "nb",
+   "options": [
+    "roja",
+    "azul"
+   ]
+  },
+  {
+   "calc": "sb",
+   "cond": "nb=$hb",
+   "then": "alguien",
+   "else": "nadie"
+  },
+  {
+   "calc": "db",
+   "cond": "hb=roja",
+   "then": "puerta_roja",
+   "else": "puerta_azul"
+  },
+  {
+   "act": "viento117",
+   "quien": "$pb",
+   "donde": "$db"
+  },
+  {
+   "act": "mira117"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "puerta_roja",
+    "puerta_azul"
+   ],
+   "pick": "$db",
+   "tests": "$sb",
+   "lock": true,
+   "lead": [],
+   "line": "c117_l_$nb_$sb",
+   "right": [
+    {
+     "act": "abre117",
+     "cual": "$db",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "abre117",
+     "cual": "$x",
+     "ok": 0
+    },
+    "c117_no_$nb_$sb",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "faroles",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "faroles",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final117",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final117",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final117",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 9
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "cuenta",
+   "suelto": 1
+  },
+  "c117_ab_uno_dos",
+  {
+   "act": "ya"
+  },
+  "c117_cq_tres",
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "foto117",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "foto117",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "foto117",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  "c117_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c117_ab_foto",
+  "c117_ab_faltan",
+  "c117_l_shh",
+  "c117_ca_aqui_estoy",
+  "c117_ab_azul",
+  "c117_l_no_nadie",
+  "c117_ca_nadie",
+  "c117_ab_ahora_si",
+  "c117_ab_donde",
+  "c117_cq_aqui",
+  "c117_ab_otra_vez",
+  "c117_l_roja_nadie",
+  "c117_no_roja_nadie",
+  "c117_l_azul_alguien",
+  "c117_ab_uno_dos",
+  "c117_cq_tres",
+  "c117_fin"
+ ]
+}

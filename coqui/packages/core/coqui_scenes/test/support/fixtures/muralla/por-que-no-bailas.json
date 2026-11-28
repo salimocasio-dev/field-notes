@@ -1,0 +1,672 @@
+{
+ "id": "por-que-no-bailas",
+ "title": "¿Por qué no bailas?",
+ "place": "El fuerte",
+ "scene": "muralla",
+ "next": "nos-vemos",
+ "goal": "Take each guest who is not dancing the thing that answers why not (the juice, the plate or the chair), so that the tall candle in the glass keeps its three red rings for the last song: a wrong thing carried to the guest and back is time, and the candle burns down a ring.",
+ "stake": {
+  "thing": "aros",
+  "steps": 3
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "¿por qué?",
+  "porque",
+  "pero"
+ ],
+ "formas_foco": {
+  "baila": [
+   "bailas"
+  ],
+  "cansado": [
+   "cansada"
+  ]
+ },
+ "back_again": [
+  "baila",
+  "música",
+  "canción",
+  "tengo sed",
+  "tengo hambre",
+  "cansado",
+  "quiero",
+  "me gusta",
+  "jugo",
+  "silla",
+  "feliz",
+  "contento",
+  "¿cómo estás?",
+  "ahora",
+  "tú",
+  "gracias",
+  "sí",
+  "no"
+ ],
+ "also_heard": [],
+ "names": {
+  "abuela": "abuela",
+  "abuelo": "n_abuelo",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "piraguero": "b_n_piraguero",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {},
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "b_n_piraguero": {
+   "who": "narr",
+   "text": "Es el piragüero."
+  },
+  "c118_ca_por_que_no": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Abuelo, ¿por qué no bailas?"
+  },
+  "c118_abo_cansado": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Porque estoy cansado."
+  },
+  "db18": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Gracias, Coquí."
+  },
+  "c118_ab_luis": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Luis, ¿por qué no bailas?"
+  },
+  "c118_l_sed": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Porque tengo sed."
+  },
+  "c118_ab_pepe": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Pepe, ¿y tú? ¿Por qué no?"
+  },
+  "c118_dp_hambre": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Quiero bailar, pero tengo hambre."
+  },
+  "c118_abo_pero": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Estoy cansado, pero quiero bailar."
+  },
+  "c118_ca_por_que": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¿Por qué, abuelo?"
+  },
+  "c118_abo_musica": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¡Porque me gusta la música!"
+  },
+  "c118_ab_tu_cansado": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, ¿tú estás cansado?"
+  },
+  "cq_no": {
+   "who": "tu",
+   "text": "¡No!",
+   "tu_turno": [
+    {
+     "palabra": "no",
+     "formas": [
+      "no",
+      "yo no"
+     ]
+    }
+   ]
+  },
+  "c118_ab_cansada": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Yo estoy cansada, pero contenta."
+  },
+  "c118_ab_maestra": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Maestra, ¿y tú? ¿No bailas?"
+  },
+  "c118_ab_piraguero": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Y tú? ¿Por qué no bailas?"
+  },
+  "c118_ab_noche": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Qué noche! Coquí, ¿cómo estás?"
+  },
+  "c118_cq_feliz": {
+   "who": "tu",
+   "text": "¡Feliz!",
+   "tu_turno": [
+    {
+     "palabra": "feliz",
+     "formas": [
+      "feliz",
+      "muy feliz"
+     ]
+    }
+   ]
+  },
+  "c118_fin": {
+   "who": "narr",
+   "text": "¿Por qué baila la gente? Porque está feliz."
+  },
+  "c118_ma_sed": {
+   "who": "narr",
+   "habla": "maestra",
+   "text": "La maestra dice: No, porque tengo sed."
+  },
+  "c118_no_ma_sed": {
+   "who": "narr",
+   "habla": "maestra",
+   "text": "La maestra dice: No, Coquí. Tengo sed."
+  },
+  "c118_pi_sed": {
+   "who": "narr",
+   "habla": "piraguero",
+   "text": "El piragüero dice: Quiero bailar, pero tengo sed."
+  },
+  "c118_no_pi_sed": {
+   "who": "narr",
+   "habla": "piraguero",
+   "text": "El piragüero dice: No, Coquí. Tengo sed."
+  },
+  "c118_ma_hambre": {
+   "who": "narr",
+   "habla": "maestra",
+   "text": "La maestra dice: No, porque tengo hambre."
+  },
+  "c118_no_ma_hambre": {
+   "who": "narr",
+   "habla": "maestra",
+   "text": "La maestra dice: No, Coquí. Tengo hambre."
+  },
+  "c118_pi_hambre": {
+   "who": "narr",
+   "habla": "piraguero",
+   "text": "El piragüero dice: Quiero bailar, pero tengo hambre."
+  },
+  "c118_no_pi_hambre": {
+   "who": "narr",
+   "habla": "piraguero",
+   "text": "El piragüero dice: No, Coquí. Tengo hambre."
+  },
+  "c118_ma_cansado": {
+   "who": "narr",
+   "habla": "maestra",
+   "text": "La maestra dice: No, porque estoy cansada."
+  },
+  "c118_no_ma_cansado": {
+   "who": "narr",
+   "habla": "maestra",
+   "text": "La maestra dice: No, Coquí. Estoy cansada."
+  },
+  "c118_pi_cansado": {
+   "who": "narr",
+   "habla": "piraguero",
+   "text": "El piragüero dice: Quiero bailar, pero estoy cansado."
+  },
+  "c118_no_pi_cansado": {
+   "who": "narr",
+   "habla": "piraguero",
+   "text": "El piragüero dice: No, Coquí. Estoy cansado."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "noche"
+   }
+  },
+  {
+   "act": "aros",
+   "n": 3
+  },
+  {
+   "act": "llega",
+   "quien": "musico1",
+   "a": "banco1",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "musico2",
+   "a": "banco2",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "abuelo",
+   "a": "muro1",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "abuela",
+   "a": "baile1",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "carmen",
+   "a": "baile2",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "luis",
+   "a": "muro2",
+   "suelto": 1
+  },
+  {
+   "act": "ir",
+   "a": "mesa_coqui",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c118_ca_por_que_no",
+  {
+   "ask": "silla",
+   "lead": [],
+   "line": "c118_abo_cansado",
+   "then": [],
+   "after": [
+    {
+     "act": "trae118",
+     "que": "silla",
+     "a": "abuelo",
+     "ok": 1
+    }
+   ]
+  },
+  "db18",
+  {
+   "dots": 2
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "lengua"
+  },
+  "c118_ab_luis",
+  {
+   "ask": "jugo",
+   "lead": [],
+   "line": "c118_l_sed",
+   "then": [],
+   "after": [
+    {
+     "act": "trae118",
+     "que": "jugo",
+     "a": "luis",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "llega",
+   "quien": "pepe",
+   "a": "muro2"
+  },
+  {
+   "act": "gesto",
+   "quien": "pepe",
+   "que": "barriga"
+  },
+  "c118_ab_pepe",
+  {
+   "ask": "plato",
+   "lead": [],
+   "line": "c118_dp_hambre",
+   "then": [],
+   "after": [
+    {
+     "act": "trae118",
+     "que": "plato",
+     "a": "pepe",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  "c118_abo_pero",
+  "c118_ca_por_que",
+  "c118_abo_musica",
+  {
+   "act": "llega",
+   "quien": "abuelo",
+   "a": "baile3"
+  },
+  {
+   "act": "repone118"
+  },
+  "c118_ab_tu_cansado",
+  "cq_no",
+  "c118_ab_cansada",
+  {
+   "dots": 5
+  },
+  {
+   "act": "cancion118"
+  },
+  {
+   "act": "llega",
+   "quien": "maestra",
+   "a": "muro1",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "piraguero",
+   "a": "muro2",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "reparte": [
+    "ra",
+    "rb"
+   ],
+   "options": [
+    "sed",
+    "hambre",
+    "cansado"
+   ]
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "calc": "ta",
+   "cond": "ra=sed",
+   "then": "jugo",
+   "else": "silla"
+  },
+  {
+   "calc": "ta",
+   "cond": "ra=hambre",
+   "then": "plato",
+   "else": "$ta"
+  },
+  "c118_ab_maestra",
+  {
+   "decide": "do",
+   "options": [
+    "jugo",
+    "plato",
+    "silla"
+   ],
+   "pick": "$ta",
+   "tests": "porque",
+   "lock": true,
+   "lead": [],
+   "line": "c118_ma_$ra",
+   "right": [
+    {
+     "act": "trae118",
+     "que": "$ta",
+     "a": "maestra",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "trae118",
+     "que": "$x",
+     "a": "maestra",
+     "ok": 0
+    },
+    "c118_no_ma_$ra",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "aros",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "aros",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "calc": "tb",
+   "cond": "rb=sed",
+   "then": "jugo",
+   "else": "silla"
+  },
+  {
+   "calc": "tb",
+   "cond": "rb=hambre",
+   "then": "plato",
+   "else": "$tb"
+  },
+  {
+   "calc": "oa",
+   "cond": "ta=jugo",
+   "then": "plato",
+   "else": "jugo"
+  },
+  {
+   "calc": "ob",
+   "cond": "ta=silla",
+   "then": "plato",
+   "else": "silla"
+  },
+  "c118_ab_piraguero",
+  {
+   "decide": "do",
+   "options": [
+    "$oa",
+    "$ob"
+   ],
+   "pick": "$tb",
+   "tests": "pero",
+   "lock": true,
+   "lead": [],
+   "line": "c118_pi_$rb",
+   "right": [
+    {
+     "act": "trae118",
+     "que": "$tb",
+     "a": "piraguero",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "trae118",
+     "que": "$x",
+     "a": "piraguero",
+     "ok": 0
+    },
+    "c118_no_pi_$rb",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "aros",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "aros",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final118",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final118",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final118",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 9
+  },
+  {
+   "act": "aros",
+   "n": 0
+  },
+  "c118_ab_noche",
+  "c118_cq_feliz",
+  "c118_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c118_ca_por_que_no",
+  "c118_abo_cansado",
+  "db18",
+  "c118_ab_luis",
+  "c118_l_sed",
+  "c118_ab_pepe",
+  "c118_dp_hambre",
+  "c118_abo_pero",
+  "c118_ca_por_que",
+  "c118_abo_musica",
+  "c118_ab_tu_cansado",
+  "cq_no",
+  "c118_ab_cansada",
+  "c118_ab_maestra",
+  "c118_ma_sed",
+  "c118_ab_piraguero",
+  "c118_pi_hambre",
+  "c118_ab_noche",
+  "c118_cq_feliz",
+  "c118_fin"
+ ]
+}
