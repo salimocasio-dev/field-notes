@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
-  "files": 1764,
-  "totalBytes": 108673114,
+  "files": 1772,
+  "totalBytes": 109144726,
   "entries": [
     {
       "path": "balcon/door-open-win-open/kinds.bin",
@@ -442,6 +442,46 @@
       "path": "banco/luz-tarde-luna-0-carro-abierto/zb.json",
       "bytes": 322,
       "sha256": "779a301e4177572c76159be04e6f52d6ea0602656183be976e787b524953667b"
+    },
+    {
+      "path": "bano/dia/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "bano/dia/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "bano/dia/pix.bin",
+      "bytes": 207360,
+      "sha256": "da6cce192c56bd509d830b3f03b0801c6a28feb73c3a87e9862ee073e6c737a2"
+    },
+    {
+      "path": "bano/dia/pix.json",
+      "bytes": 370,
+      "sha256": "1b8057aa14cf7993060e9f6ea606a7fa8515d79831df8784f3b50146e09df5ac"
+    },
+    {
+      "path": "bano/dia/pix.png",
+      "bytes": 3141,
+      "sha256": "6b44a51de9cf998c59b423ef0c0882801b32eb6f6b13fab8adf6beaada67f241"
+    },
+    {
+      "path": "bano/dia/state.json",
+      "bytes": 914,
+      "sha256": "b11787ef54a2f0e8b1b901a7dcf1ebb6fbea5ca2f8cab83896988639d4f44e7e"
+    },
+    {
+      "path": "bano/dia/zb.bin",
+      "bytes": 207360,
+      "sha256": "1a67f4c8539a4c29d7c0aa88821fdd1f7c98391722a9539b11a7d6f9ade57944"
+    },
+    {
+      "path": "bano/dia/zb.json",
+      "bytes": 322,
+      "sha256": "6173b33834a53c770c05d201640da99e743b9f04a8670743d5c17c1135328a22"
     },
     {
       "path": "caja/hora-manana/kinds.bin",
