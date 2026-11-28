@@ -187,6 +187,11 @@ void main(List<String> args) {
       constant: 'nocheSetRefs',
       what: "noche's baked states",
     ),
+    'musica': (
+      file: 'musica_set_refs.dart',
+      constant: 'musicaSetRefs',
+      what: "musica's baked states",
+    ),
     'regalos': (
       file: 'regalos_set_refs.dart',
       constant: 'regalosSetRefs',
