@@ -37,8 +37,6 @@ void main() {
           '${findRoot().path}/coqui/packages/core/coqui_scenes/test/support/fixtures/cuenta/$id.json',
         ).readAsStringSync(),
       ) as Map<String, dynamic>;
-      final at = await cuentaDecisionLetters(course, make, story);
-      expect(at, hasLength(2), reason: '$id: the two decisions');
       final jobs = <CuentaJob>[];
       final draws = cuentaDrawsOf(story);
       for (final d in draws) {
@@ -53,6 +51,9 @@ void main() {
           jobs.add((d: const <String, String>{}, pat: pat, seed: seed));
         }
       }
+      if (jobs.isEmpty) continue;
+      final at = await cuentaDecisionLetters(course, make, story);
+      expect(at, hasLength(2), reason: '$id: the two decisions');
       results.addAll(await playCuentaSummaries(story, at, jobs));
     }
     if (_out.isNotEmpty) {

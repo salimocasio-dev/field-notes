@@ -279,4 +279,53 @@ void main() {
   test('every thing in cuenta.md Needs list answered a touch (23 of 23)', () {
     expect(answered, containsAll(needs));
   });
+
+  test('story 93 seats drawn guests (ga/gb) at otra_mesa before their request plays', () async {
+    final story = _story('el-postre');
+    final scene = createCuenta() as Cuenta;
+    final host = StillHost(scene);
+    host.S = story;
+    host.W = {
+      ...host.W,
+      'lost': 0,
+      'resp': null,
+      'twinkle': null,
+      ...scene.fresh(story),
+    };
+    await scene.acts['carrito93']!({'a': 'otra_mesa'});
+    // Simulate `reparte` dealing senora and joven before round A's request plays
+    host.V['ga'] = 'senora';
+    host.V['gb'] = 'joven';
+    host.TALK = 'senora';
+
+    final talkPt = scene.talkAt('senora', host.W);
+    expect(talkPt, isNotNull);
+    final silentItems = scene.items(host.W, 0);
+    final speakingItems = scene.items(host.W, 1);
+
+    final senoraSilent = silentItems.firstWhere(
+      (it) => it.tag == 'persona:senora',
+    );
+    final senoraSpeaking = speakingItems.firstWhere(
+      (it) => it.tag == 'persona:senora',
+    );
+    expect(
+      speakingItems.any((it) => it.tag == 'persona:joven'),
+      isTrue,
+      reason: 'both drawn guests must be visibly seated at otra_mesa',
+    );
+    expect(
+      speakingItems.any((it) => it.tag == 'persona:senor'),
+      isFalse,
+      reason: 'default placeholder senor must be replaced before request',
+    );
+    expect(
+      identical(senoraSilent.s, senoraSpeaking.s),
+      isFalse,
+      reason: 'speaking drawn guest must animate mouth on odd frame',
+    );
+    final gente = host.W['gente'] as Map<String, dynamic>;
+    expect((gente['senora'] as Map)['spot'], 'otra_mesa1');
+    expect((gente['joven'] as Map)['spot'], 'otra_mesa2');
+  });
 }

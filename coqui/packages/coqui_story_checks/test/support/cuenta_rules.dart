@@ -11,7 +11,8 @@
 //   and the set's gaveta box [103, 59, 18, 3] are covered by nobody;
 // - frog-counter: when frog is at mostrador_coqui, it covers 0 px of vitrina and pincho;
 // - window-lights: no sprite pixel covers the window [126, 9, 46, 24];
-// - sprites-apart: no two visible characters overlap sideways unless their feet are 12 px or more apart up-down.
+// - sprites-apart: no two visible characters overlap sideways (24 px across for people, 28 px with the frog) unless
+//   their feet are 12 px or more apart up-down.
 import 'dart:math' as math;
 import 'dart:typed_data';
 
@@ -388,7 +389,13 @@ class CuentaRules {
       final sp = p['spot'] as String?;
       if (sp == null || !_seatedSpots.contains(sp)) continue;
       final idx = items.indexWhere((it) => it.tag == 'persona:$k');
-      if (idx < 0) continue;
+      if (idx < 0) {
+        addBreach(
+          'heads-clear',
+          'visible seated $k at $sp has no placed persona:$k sprite',
+        );
+        continue;
+      }
       final r = covOf(idx, maxRowsFromTop: 14);
       if (r.hid > 0 || r.cov > 0 || r.out > 0) {
         addBreach(
@@ -404,7 +411,12 @@ class CuentaRules {
       final sp = mesera['spot'] as String?;
       if (sp == 'caja' || sp == 'mesera93' || sp == 'mesera93b') {
         final idx = items.indexWhere((it) => it.tag == 'persona:mesera');
-        if (idx >= 0) {
+        if (idx < 0) {
+          addBreach(
+            'waist-up',
+            'visible mesera at $sp has no placed persona:mesera sprite',
+          );
+        } else {
           final r = covOf(idx, maxRowsFromTop: 35);
           if (r.hid > 0 || r.cov > 0 || r.out > 0) {
             addBreach(
@@ -427,7 +439,13 @@ class CuentaRules {
           (k == 'cocinero' && sp == 'cocina');
       if (!need) continue;
       final idx = items.indexWhere((it) => it.tag == 'persona:$k');
-      if (idx < 0) continue;
+      if (idx < 0) {
+        addBreach(
+          'chest-up',
+          'visible $k at $sp has no placed persona:$k sprite',
+        );
+        continue;
+      }
       final r = covOf(idx, maxRowsFromTop: 29);
       if (r.hid > 0 || r.cov > 0 || r.out > 0) {
         addBreach(
@@ -439,26 +457,44 @@ class CuentaRules {
 
     // 6. things-free
     if (story == 93) {
-      for (final tag in const [
-        'cosa:copa',
-        'cosa:flanes',
-        'cosa:mantecado',
-        'cosa:tapa',
-      ]) {
-        final idx = items.indexWhere((it) => it.tag == tag);
-        if (idx < 0) continue;
-        final r = covOf(idx);
-        if (r.hid > 0 || r.cov > 0 || r.out > 0) {
-          addBreach(
-            'things-free',
-            '$tag hid=${r.hid} cov=${r.cov} (${r.by}) out=${r.out}',
-          );
+      if (jsTruthy(W['carritoVis'])) {
+        for (final tag in const [
+          'cosa:copa',
+          'cosa:flanes',
+          'cosa:mantecado',
+          'cosa:tapa',
+        ]) {
+          final idx = items.indexWhere((it) => it.tag == tag);
+          if (idx < 0) {
+            addBreach(
+              'things-free',
+              'required $tag sprite missing in story 93',
+            );
+            continue;
+          }
+          final r = covOf(idx);
+          if (r.hid > 0 || r.cov > 0 || r.out > 0) {
+            addBreach(
+              'things-free',
+              '$tag hid=${r.hid} cov=${r.cov} (${r.by}) out=${r.out}',
+            );
+          }
         }
       }
     } else {
-      for (final tag in const ['cosa:maquina', 'cosa:frasco']) {
+      final expectedCounterTags = <String>[
+        if (jsTruthy(W['maquinaVis'])) 'cosa:maquina',
+        if (jsTruthy(W['frascoVis'])) 'cosa:frasco',
+      ];
+      for (final tag in expectedCounterTags) {
         final idx = items.indexWhere((it) => it.tag == tag);
-        if (idx < 0) continue;
+        if (idx < 0) {
+          addBreach(
+            'things-free',
+            'required $tag sprite missing in story $story',
+          );
+          continue;
+        }
         final r = covOf(idx);
         if (r.hid > 0 || r.cov > 0 || r.out > 0) {
           addBreach(

@@ -400,8 +400,96 @@ class Cuenta extends Escena implements SetScene, SetOverSprites {
     }
   }
 
+  Map<String, dynamic>? _vars() {
+    try {
+      return host.V;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  void _seatGuestIn(Map<String, dynamic> gente, String guest, String spot) {
+    for (final g in _GUESTS) {
+      if (g == guest) continue;
+      final gm = gente[g];
+      if (gm is Map<String, dynamic> && gm['vis'] != 0 && gm['spot'] == spot) {
+        gm['vis'] = 0;
+      }
+    }
+    final cur = gente[guest];
+    if (cur is Map<String, dynamic> &&
+        cur['vis'] != 0 &&
+        cur['spot'] == spot &&
+        _n(cur['sent']) == 1) {
+      return;
+    }
+    gente[guest] = _person(spot, sent: 1);
+  }
+
+  void _ensureOtraMesaGuestIn(Map<String, dynamic> w, String guest) {
+    if (!_GUESTS.contains(guest) ||
+        _n(w['story']) != 93 ||
+        w['carritoEn'] != 'otra_mesa') {
+      return;
+    }
+    final gente = w['gente'];
+    if (gente is! Map<String, dynamic>) return;
+    final cur = gente[guest];
+    if (cur is Map &&
+        cur['vis'] != 0 &&
+        (cur['spot'] == 'otra_mesa1' || cur['spot'] == 'otra_mesa2')) {
+      w['otraLast'] ??= guest;
+      return;
+    }
+    final last = w['otraLast'] as String?;
+    var targetSpot = 'otra_mesa1';
+    if (last != null) {
+      final lp = gente[last];
+      if (lp is Map && lp['vis'] != 0 && lp['spot'] == 'otra_mesa1') {
+        targetSpot = 'otra_mesa2';
+      }
+    }
+    _seatGuestIn(gente, guest, targetSpot);
+    w['otraLast'] ??= guest;
+  }
+
+  /// Syncs story 93's next-table guests with `host.V` (`ga`, `gb` dealt by `reparte`) and `host.TALK`
+  /// so the drawn guests are visibly seated before their dessert request line plays.
+  void _syncOtraMesaGuests(Map<String, dynamic> w) {
+    if (_n(w['story']) != 93 || w['carritoEn'] != 'otra_mesa') return;
+    final gente = w['gente'];
+    if (gente is! Map<String, dynamic>) return;
+    final v = _vars();
+    final ga = v?['ga'];
+    final gb = v?['gb'];
+    if (ga is String && _GUESTS.contains(ga)) {
+      _seatGuestIn(gente, ga, 'otra_mesa1');
+      if (gb is String && _GUESTS.contains(gb) && gb != ga) {
+        _seatGuestIn(gente, gb, 'otra_mesa2');
+      } else {
+        final hasSecond = _GUESTS.any((g) {
+          final m = gente[g];
+          return g != ga &&
+              m is Map &&
+              m['vis'] != 0 &&
+              m['spot'] == 'otra_mesa2';
+        });
+        if (!hasSecond) {
+          final fallback = _GUESTS.firstWhere((g) => g != ga);
+          _seatGuestIn(gente, fallback, 'otra_mesa2');
+        }
+      }
+      return;
+    }
+    final talk = _talker();
+    if (talk is String && _GUESTS.contains(talk)) {
+      _ensureOtraMesaGuestIn(w, talk);
+    }
+  }
+
   /// Every sprite of the frame [w] as it is placed, except the frog. The rules' tests read it; [draw] draws it.
   List<CuentaItem> items(Map<String, dynamic> w, int a) {
+    _syncOtraMesaGuests(w);
     final out = <CuentaItem>[];
     final talk = _talker();
     final gente = (w['gente'] as Map<String, dynamic>?) ?? const {};
@@ -880,6 +968,7 @@ class Cuenta extends Escena implements SetScene, SetOverSprites {
 
   @override
   List<ShadowCast> shadows(Map<String, dynamic> W) {
+    _syncOtraMesaGuests(W);
     final out = <ShadowCast>[];
     final gente = (W['gente'] as Map<String, dynamic>?) ?? const {};
     for (final en in gente.entries) {
@@ -920,6 +1009,12 @@ class Cuenta extends Escena implements SetScene, SetOverSprites {
       final b = host.frogBox(q);
       return [b.x + b.w / 2, b.y - 4];
     }
+    _syncOtraMesaGuests(W);
+    if (_GUESTS.contains(who) &&
+        _n(W['story']) == 93 &&
+        W['carritoEn'] == 'otra_mesa') {
+      _ensureOtraMesaGuestIn(W, who);
+    }
     final gente = (W['gente'] as Map<String, dynamic>?) ?? const {};
     final p = gente[who] as Map<String, dynamic>?;
     if (p != null && p['vis'] != 0) {
@@ -928,15 +1023,6 @@ class Cuenta extends Escena implements SetScene, SetOverSprites {
       final isKid = who == 'luis' || who == 'carmen';
       final dy = sent ? (isKid ? 34 : 42) : (isKid ? 42 : 52);
       return [_round(at.sx), _round(at.sy) - dy];
-    }
-    // OPEN: in story 93 gen_cuenta.py speaks a drawn guest's line before sirve93 names them;
-    // return the next table's seat position so the talk bubble always has an anchor.
-    if (_GUESTS.contains(who) &&
-        _n(W['story']) == 93 &&
-        W['carritoEn'] == 'otra_mesa') {
-      final spot = W['otraLast'] == null ? 'otra_mesa1' : 'otra_mesa2';
-      final at = _p.at(spot);
-      return [_round(at.sx), _round(at.sy) - 42];
     }
     return null;
   }
@@ -1037,6 +1123,7 @@ class Cuenta extends Escena implements SetScene, SetOverSprites {
 
   @override
   String? hit(num x, num y, Map<String, dynamic> w) {
+    _syncOtraMesaGuests(w);
     // Check frog first when visible so nothing steals a frog tap.
     final q = w['cq'] as Map<String, dynamic>?;
     if (q != null && jsTruthy(q['vis'])) {
@@ -1077,34 +1164,10 @@ class Cuenta extends Escena implements SetScene, SetOverSprites {
 
   /* ---------- helpers for story 93 guests & story 94/95 arrivals ---------- */
 
-  void _ensureOtraMesaGuest(String guest) {
-    if (!_GUESTS.contains(guest) || W['carritoEn'] != 'otra_mesa') return;
-    final cur = _gente[guest];
-    if (cur is Map &&
-        cur['vis'] != 0 &&
-        (cur['spot'] == 'otra_mesa1' || cur['spot'] == 'otra_mesa2')) {
-      W['otraLast'] ??= guest;
-      return;
-    }
-    // OPEN: gen_cuenta.py issues no `llega` in story 93 for the two drawn guests at otra_mesa;
-    // swap the named guest cleanly into the available chair (otra_mesa1 for round A, otra_mesa2 for round B).
-    final last = W['otraLast'] as String?;
-    String targetSpot = 'otra_mesa1';
-    if (last != null) {
-      final lp = _gente[last];
-      if (lp is Map && lp['vis'] != 0 && lp['spot'] == 'otra_mesa1') {
-        targetSpot = 'otra_mesa2';
-      }
-    }
-    for (final en in _gente.entries) {
-      final m = en.value as Map<String, dynamic>;
-      if (m['vis'] != 0 && m['spot'] == targetSpot) {
-        m['vis'] = 0;
-      }
-    }
-    _placePerson(guest, targetSpot);
-    W['otraLast'] ??= guest;
-  }
+  // OPEN: gen_cuenta.py issues no `llega` in story 93 for the two drawn guests at otra_mesa;
+  // `_syncOtraMesaGuests` seats `host.V['ga']`/`host.V['gb']` (or the active speaker) ahead of
+  // the request line, and `_ensureOtraMesaGuest` ensures any guest named by `sirve93`/`gesto`.
+  void _ensureOtraMesaGuest(String guest) => _ensureOtraMesaGuestIn(W, guest);
 
   Future<void> _moveFrogTo(String spot) async {
     if (!_p.hasWorld(spot)) return;
