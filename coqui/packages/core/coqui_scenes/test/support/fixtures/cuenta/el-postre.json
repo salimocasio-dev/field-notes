@@ -1,0 +1,739 @@
+{
+ "id": "el-postre",
+ "title": "El postre",
+ "place": "La fonda",
+ "scene": "cuenta",
+ "next": "la-cuenta-por-favor",
+ "goal": "Serve each guest at the next table the dessert he asks for (flan, ice cream, or nothing more) so that the little cup of three scoops of ice cream the mesera filled for him stays full: the night is warm, and every mix-up lets a scoop melt away.",
+ "stake": {
+  "thing": "copa",
+  "steps": 3
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "postre",
+  "flan",
+  "mantecado",
+  "nada más"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "delicioso",
+  "rico",
+  "para mí",
+  "lleno",
+  "mesera",
+  "quiere",
+  "también",
+  "hay",
+  "toca",
+  "come",
+  "después",
+  "¿algo más?",
+  "por favor",
+  "gracias",
+  "no"
+ ],
+ "also_heard": [
+  "usted",
+  "estoy lleno"
+ ],
+ "names": {
+  "abuela": "abuela",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui",
+  "senor": "b_n_senor",
+  "senora": "b_n_senora",
+  "joven": "b_n_joven",
+  "mujer": "b_n_mujer"
+ },
+ "palabras": {
+  "nada": "nada más"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "b_n_joven": {
+   "who": "narr",
+   "text": "Es un joven."
+  },
+  "b_n_mujer": {
+   "who": "narr",
+   "text": "Es una mujer."
+  },
+  "c93_me_postre": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: ¿Postre? Hay flan y hay mantecado."
+  },
+  "c93_donde_flan": {
+   "who": "narr",
+   "text": "¿Dónde está el flan?"
+  },
+  "c93_l_postre": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Postre! ¡Mantecado, por favor!"
+  },
+  "c93_donde_mantecado": {
+   "who": "narr",
+   "text": "Luis quiere mantecado. ¿Dónde está?"
+  },
+  "c93_ca_flan": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: De postre, flan, por favor."
+  },
+  "c93_ab_flan": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y para mí, flan también."
+  },
+  "c93_me_usted": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: ¿Y para usted? ¿Flan o mantecado?"
+  },
+  "c93_abo_nada": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Para mí, nada más. Estoy lleno."
+  },
+  "c93_me_nada": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: ¿Nada más?"
+  },
+  "c93_toca_tapa": {
+   "who": "narr",
+   "text": "Abuelo no quiere nada más. ¿Qué toca Coquí?"
+  },
+  "c93_me_algo_mas": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: Mantecado para Luis y flan para Carmen. ¿Algo más?"
+  },
+  "c93_ab_nada_gracias": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Nada más, gracias."
+  },
+  "c93_cq_para_mi": {
+   "who": "tu",
+   "text": "¿Y para mí?",
+   "tu_turno": [
+    {
+     "palabra": "para mí",
+     "formas": [
+      "y para mí",
+      "y para mi",
+      "para mí",
+      "para mi"
+     ]
+    }
+   ]
+  },
+  "c93_me_para_ti": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: Mantecado para ti, Coquí. Después."
+  },
+  "c93_me_como": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: ¿Cómo está el mantecado, Coquí?"
+  },
+  "c93_cq_delicioso": {
+   "who": "tu",
+   "text": "¡Delicioso!",
+   "tu_turno": [
+    {
+     "palabra": "delicioso",
+     "formas": [
+      "delicioso",
+      "está delicioso",
+      "esta delicioso"
+     ]
+    }
+   ]
+  },
+  "c93_fin": {
+   "who": "narr",
+   "text": "Coquí come mantecado. ¡Qué rico!"
+  },
+  "c93_senor_flan": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Para mí, flan."
+  },
+  "c93_no_senor_flan": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: No, Coquí. Flan."
+  },
+  "c93_senor_mantecado": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Para mí, mantecado."
+  },
+  "c93_no_senor_mantecado": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: No, Coquí. Mantecado."
+  },
+  "c93_senor_nada": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Para mí, nada más."
+  },
+  "c93_no_senor_nada": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: No, Coquí. Nada más."
+  },
+  "c93_senora_flan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Para mí, flan."
+  },
+  "c93_no_senora_flan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Flan."
+  },
+  "c93_senora_mantecado": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Para mí, mantecado."
+  },
+  "c93_no_senora_mantecado": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Mantecado."
+  },
+  "c93_senora_nada": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Para mí, nada más."
+  },
+  "c93_no_senora_nada": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Nada más."
+  },
+  "c93_joven_flan": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: Para mí, flan."
+  },
+  "c93_no_joven_flan": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: No, Coquí. Flan."
+  },
+  "c93_joven_mantecado": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: Para mí, mantecado."
+  },
+  "c93_no_joven_mantecado": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: No, Coquí. Mantecado."
+  },
+  "c93_joven_nada": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: Para mí, nada más."
+  },
+  "c93_no_joven_nada": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: No, Coquí. Nada más."
+  },
+  "c93_mujer_flan": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: Para mí, flan."
+  },
+  "c93_no_mujer_flan": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: No, Coquí. Flan."
+  },
+  "c93_mujer_mantecado": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: Para mí, mantecado."
+  },
+  "c93_no_mujer_mantecado": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: No, Coquí. Mantecado."
+  },
+  "c93_mujer_nada": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: Para mí, nada más."
+  },
+  "c93_no_mujer_nada": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: No, Coquí. Nada más."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "noche",
+    "sillas": "abajo",
+    "guagua": "no"
+   }
+  },
+  {
+   "act": "copa",
+   "n": 0
+  },
+  {
+   "act": "carrito93",
+   "a": "carrito"
+  },
+  {
+   "act": "ir",
+   "a": "carrito_coqui"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c93_me_postre",
+  {
+   "ask": "flanes",
+   "lead": [],
+   "line": "c93_donde_flan",
+   "then": [],
+   "after": []
+  },
+  "c93_l_postre",
+  {
+   "ask": "mantecado",
+   "lead": [],
+   "line": "c93_donde_mantecado",
+   "then": [],
+   "after": [
+    {
+     "act": "sirve93",
+     "que": "mantecado",
+     "a": "luis",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  "c93_ca_flan",
+  {
+   "act": "sirve93",
+   "que": "flan",
+   "a": "carmen",
+   "ok": 1
+  },
+  "c93_ab_flan",
+  {
+   "act": "sirve93",
+   "que": "flan",
+   "a": "abuela",
+   "ok": 1
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "gesto",
+   "quien": "mesera",
+   "que": "mira",
+   "a": "abuelo"
+  },
+  "c93_me_usted",
+  {
+   "act": "gesto",
+   "quien": "abuelo",
+   "que": "barriga"
+  },
+  "c93_abo_nada",
+  "c93_me_nada",
+  {
+   "ask": "tapa",
+   "lead": [],
+   "line": "c93_toca_tapa",
+   "then": [],
+   "after": [
+    {
+     "act": "sirve93",
+     "que": "nada",
+     "a": "abuelo",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  "c93_me_algo_mas",
+  "c93_ab_nada_gracias",
+  "c93_cq_para_mi",
+  {
+   "act": "gesto",
+   "quien": "mesera",
+   "que": "rie"
+  },
+  {
+   "act": "copa",
+   "n": 1
+  },
+  {
+   "act": "copa",
+   "n": 2
+  },
+  {
+   "act": "copa",
+   "n": 3
+  },
+  "c93_me_para_ti",
+  {
+   "dots": 5
+  },
+  {
+   "act": "carrito93",
+   "a": "otra_mesa"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "reparte": [
+    "ga",
+    "gb"
+   ],
+   "options": [
+    "senor",
+    "senora",
+    "joven",
+    "mujer"
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "da",
+   "options": [
+    "flan",
+    "mantecado",
+    "nada"
+   ]
+  },
+  {
+   "calc": "ka",
+   "cond": "da=flan",
+   "then": "flanes",
+   "else": "tapa"
+  },
+  {
+   "calc": "ka",
+   "cond": "da=mantecado",
+   "then": "mantecado",
+   "else": "$ka"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "flanes",
+    "mantecado",
+    "tapa"
+   ],
+   "pick": "$ka",
+   "tests": "$da",
+   "lock": true,
+   "lead": [],
+   "line": "c93_$ga_$da",
+   "right": [
+    {
+     "act": "sirve93",
+     "que": "$da",
+     "a": "$ga",
+     "ok": 1
+    },
+    {
+     "if": "da=nada",
+     "then": [
+      {
+       "act": "gesto",
+       "quien": "$ga",
+       "que": "barriga"
+      }
+     ]
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "calc": "xq",
+     "cond": "x=flanes",
+     "then": "flan",
+     "else": "nada"
+    },
+    {
+     "calc": "xq",
+     "cond": "x=mantecado",
+     "then": "mantecado",
+     "else": "$xq"
+    },
+    {
+     "act": "sirve93",
+     "que": "$xq",
+     "a": "$ga",
+     "ok": 0
+    },
+    "c93_no_$ga_$da",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "copa",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "copa",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "db",
+   "options": [
+    "flan",
+    "mantecado",
+    "nada"
+   ]
+  },
+  {
+   "calc": "kb",
+   "cond": "db=flan",
+   "then": "flanes",
+   "else": "tapa"
+  },
+  {
+   "calc": "kb",
+   "cond": "db=mantecado",
+   "then": "mantecado",
+   "else": "$kb"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "flanes",
+    "mantecado",
+    "tapa"
+   ],
+   "pick": "$kb",
+   "tests": "$db",
+   "lock": true,
+   "lead": [],
+   "line": "c93_$gb_$db",
+   "right": [
+    {
+     "act": "sirve93",
+     "que": "$db",
+     "a": "$gb",
+     "ok": 1
+    },
+    {
+     "if": "db=nada",
+     "then": [
+      {
+       "act": "gesto",
+       "quien": "$gb",
+       "que": "barriga"
+      }
+     ]
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "calc": "xq",
+     "cond": "x=flanes",
+     "then": "flan",
+     "else": "nada"
+    },
+    {
+     "calc": "xq",
+     "cond": "x=mantecado",
+     "then": "mantecado",
+     "else": "$xq"
+    },
+    {
+     "act": "sirve93",
+     "que": "$xq",
+     "a": "$gb",
+     "ok": 0
+    },
+    "c93_no_$gb_$db",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "copa",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "copa",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final93",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final93",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final93",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 9
+  },
+  "c93_me_como",
+  "c93_cq_delicioso",
+  "c93_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c93_me_postre",
+  "c93_donde_flan",
+  "c93_l_postre",
+  "c93_donde_mantecado",
+  "c93_ca_flan",
+  "c93_ab_flan",
+  "c93_me_usted",
+  "c93_abo_nada",
+  "c93_me_nada",
+  "c93_toca_tapa",
+  "c93_me_algo_mas",
+  "c93_ab_nada_gracias",
+  "c93_cq_para_mi",
+  "c93_me_para_ti",
+  "c93_senor_mantecado",
+  "c93_mujer_nada",
+  "c93_me_como",
+  "c93_cq_delicioso",
+  "c93_fin"
+ ]
+}
