@@ -127,6 +127,8 @@ Sprite mkMusicaPersona(
   bool eat = false,
   bool coverEars = false,
   bool fan = false,
+  bool dance = false,
+  int danceStep = 0,
 }) {
   if (id == 'abuela') {
     final base = sent ? mkAbuelaS(pose, open, pies) : mkAbuela(pose, open);
@@ -149,7 +151,8 @@ Sprite mkMusicaPersona(
       !yawn &&
       !eat &&
       !coverEars &&
-      !fan) {
+      !fan &&
+      !dance) {
     return base;
   }
 
@@ -197,6 +200,32 @@ Sprite mkMusicaPersona(
     // Hat / fan held alongside face
     _fillBox(s, X - 12, 12, 5, 7, _h('#E2A85A'));
     _fillBox(s, X - 12, 14, 5, 1, _h('#A82A26'));
+  }
+  if (dance && !sent) {
+    // Dancing: raised alternating arms + lifted step cue + small rhythm accents
+    final skin = who.piel[1];
+    final shirt = who.ropa[1];
+    final step = danceStep % 2;
+    if (step == 0) {
+      // Right arm raised high, left arm out to side, left foot stepped up
+      _fillBox(s, X + 7, 13, 3, 6, shirt);
+      _fillBox(s, X + 8, 10, 3, 3, skin);
+      _fillBox(s, X + 8, 9, 3, 1, OUT);
+      _fillBox(s, X - 10, 19, 3, 3, shirt);
+      _fillBox(s, X - 11, 22, 2, 2, skin);
+      _fillBox(s, X - 6, 39, 4, 2, _h('#4A2E1A'));
+    } else {
+      // Left arm raised high, right arm out to side, right foot stepped up
+      _fillBox(s, X - 10, 13, 3, 6, shirt);
+      _fillBox(s, X - 11, 10, 3, 3, skin);
+      _fillBox(s, X - 11, 9, 3, 1, OUT);
+      _fillBox(s, X + 7, 19, 3, 3, shirt);
+      _fillBox(s, X + 9, 22, 2, 2, skin);
+      _fillBox(s, X + 2, 39, 4, 2, _h('#4A2E1A'));
+    }
+    // Rhythm accent pixels beside shoulders
+    final noteCol = _h('#FFE070');
+    _fillBox(s, step == 0 ? X - 10 : X + 8, 8, 2, 2, noteCol);
   }
 
   return s;

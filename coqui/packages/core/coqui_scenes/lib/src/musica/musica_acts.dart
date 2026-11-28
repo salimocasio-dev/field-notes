@@ -79,6 +79,7 @@ extension _MusicaActs on Musica {
       ..['sing'] = 0
       ..['coverEars'] = 0
       ..['fan'] = 0
+      ..['dance'] = 0
       ..['rondaRole'] = null;
   }
 
@@ -412,6 +413,7 @@ extension _MusicaActs on Musica {
       if (ok) {
         final target = _pickDanceSpot(quien);
         _placePerson(p, target);
+        p['dance'] = 1;
         W['notasFloat'] = 1;
         for (final dy in const [-2, 0, -2, 0]) {
           p['dy'] = dy;
@@ -557,6 +559,7 @@ extension _MusicaActs on Musica {
       W['camaraCoqui'] = 1;
       W['micVis'] = 1;
       W['micMode'] = 'up';
+      W['badFoto'] = 0;
 
       // OPEN: gen_musica.py passes `que: "rie,canta,bosteza,baila,come"`, whereas musica-sheet.json assigns
       // each action to its own fixed spot (`baila`->`ronda1`, `canta`->`ante_micro`, `come`->`banco3`,
@@ -578,7 +581,7 @@ extension _MusicaActs on Musica {
           case 'come':
             p['eat'] = 1;
           case 'baila':
-            p['pose'] = 'offer';
+            p['dance'] = 1;
           case 'canta':
             p['sing'] = 1;
             W['micMode'] = who == 'carmen' || who == 'luis' ? 'low' : 'high';
@@ -595,6 +598,7 @@ extension _MusicaActs on Musica {
       }
       W['flashFx'] = 1;
       W['fotoFx'] = ok ? 1 : 2;
+      W['badFoto'] = ok ? 0 : 1;
       await wait(180);
       W['flashFx'] = 0;
       if (target != null) {
@@ -606,6 +610,7 @@ extension _MusicaActs on Musica {
     'final113': (o) => _run(o, () async {
       final n = _n(o['n']).clamp(1, 3);
       W['camaraCoqui'] = 0;
+      W['badFoto'] = 0;
       W['hojas'] = n;
       W['corazonFx'] = n == 3 ? 1 : 0;
       W['estrellaFx'] = n == 3 ? 1 : 0;

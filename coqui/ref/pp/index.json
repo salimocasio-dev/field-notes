@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
-  "files": 1764,
-  "totalBytes": 108676467,
+  "files": 1780,
+  "totalBytes": 109622374,
   "entries": [
     {
       "path": "balcon/door-open-win-open/kinds.bin",
@@ -8012,6 +8012,86 @@
       "path": "sala/luz-1-fotos-111/zb.json",
       "bytes": 322,
       "sha256": "e5be005a94c312d3bcc4f2de1e37885fb76a4202c463f6b555b073a8f04d3e2d"
+    },
+    {
+      "path": "sala_dia/0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "sala_dia/0/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "sala_dia/0/pix.bin",
+      "bytes": 207360,
+      "sha256": "4296ce85c2481e3af630f0c10b497c2de6205acc8db870e3fca416b9968c2bd6"
+    },
+    {
+      "path": "sala_dia/0/pix.json",
+      "bytes": 370,
+      "sha256": "6139645f19816042bd2d3ef62cf505fac7c36f3952ca3ee99daea42f8e2469a9"
+    },
+    {
+      "path": "sala_dia/0/pix.png",
+      "bytes": 4475,
+      "sha256": "ede9c8f06adf99f7600734fd6494ca97bacb93c50989440a679de68d1036e66d"
+    },
+    {
+      "path": "sala_dia/0/state.json",
+      "bytes": 921,
+      "sha256": "dd12b969fd7d318b2e55498f14484bf70030000b546b129885efb93f4379a48b"
+    },
+    {
+      "path": "sala_dia/0/zb.bin",
+      "bytes": 207360,
+      "sha256": "7a2c037eb0e45e940e15104f3836f56da9f5577f16875f52efdf867d2ea93700"
+    },
+    {
+      "path": "sala_dia/0/zb.json",
+      "bytes": 322,
+      "sha256": "67d03106f6b7285fb4575b9aa6e9a74bfa8b30e772321857f91c2b2ab8ec6bbd"
+    },
+    {
+      "path": "sala_dia/1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "sala_dia/1/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "sala_dia/1/pix.bin",
+      "bytes": 207360,
+      "sha256": "a249b133c4d93de2e355c12f5fa2ea4f1013d82959043213d915d701ba385538"
+    },
+    {
+      "path": "sala_dia/1/pix.json",
+      "bytes": 370,
+      "sha256": "bf32f7887181ab8a1a052966f76f99ccf422009e0839f000da45739d598fdc3c"
+    },
+    {
+      "path": "sala_dia/1/pix.png",
+      "bytes": 4476,
+      "sha256": "125eaf911cb4730c4ee369fb62001ef034afea78a754f91e2e601155120b2252"
+    },
+    {
+      "path": "sala_dia/1/state.json",
+      "bytes": 921,
+      "sha256": "351517272f97bbc0905d763ea9f90cf84ca2c10e53dc4099a1cc6270c33d3d25"
+    },
+    {
+      "path": "sala_dia/1/zb.bin",
+      "bytes": 207360,
+      "sha256": "7a2c037eb0e45e940e15104f3836f56da9f5577f16875f52efdf867d2ea93700"
+    },
+    {
+      "path": "sala_dia/1/zb.json",
+      "bytes": 322,
+      "sha256": "67d03106f6b7285fb4575b9aa6e9a74bfa8b30e772321857f91c2b2ab8ec6bbd"
     },
     {
       "path": "sombrilla/mediodia-circulo/kinds.bin",

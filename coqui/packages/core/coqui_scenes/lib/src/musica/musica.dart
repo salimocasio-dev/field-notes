@@ -192,6 +192,7 @@ class Musica extends Escena implements SetScene, SetOverSprites {
       'sing': 0,
       'coverEars': 0,
       'fan': 0,
+      'dance': 0,
       'rondaRole': null,
     };
   }
@@ -250,6 +251,8 @@ class Musica extends Escena implements SetScene, SetOverSprites {
       'hojas': is113 ? 3 : 0,
       'flashFx': 0,
       'fotoFx': 0, // 0 = none, 1 = ok, 2 = bad
+      'badFoto':
+          0, // persistent rejected photo under abuela's stool until corrected
       // Celebration cues
       'corazonFx': 0,
       'estrellaFx': 0,
@@ -335,14 +338,19 @@ class Musica extends Escena implements SetScene, SetOverSprites {
       final eat = _n(p['eat']) == 1;
       final coverEars = _n(p['coverEars']) == 1;
       final fan = _n(p['fan']) == 1;
+      final dance = _n(p['dance']) == 1 || p['rondaRole'] == 'baila';
+      final danceStep = dance ? (anim % 2) : 0;
+      final effectivePose = dance ? (danceStep == 0 ? 'wave0' : 'wave1') : pose;
+      final danceDy = dance ? (danceStep == 0 ? 0 : -2) : 0;
+      final drawSy = sy + danceDy;
 
       final key =
-          'ms_p_${id}_${pose}_${open}_${sent}_${eyesShut}_${laugh}_${yawn}_${eat}_${coverEars}_$fan';
+          'ms_p_${id}_${effectivePose}_${open}_${sent}_${eyesShut}_${laugh}_${yawn}_${eat}_${coverEars}_${fan}_${dance}_$danceStep';
       final s = _spr(
         key,
         () => mkMusicaPersona(
           id,
-          pose,
+          effectivePose,
           open: open,
           sent: sent,
           eyesShut: eyesShut,
@@ -351,6 +359,8 @@ class Musica extends Escena implements SetScene, SetOverSprites {
           eat: eat,
           coverEars: coverEars,
           fan: fan,
+          dance: dance,
+          danceStep: danceStep,
         ),
       );
       final whoDef = MUSICA_PEOPLE[id];
@@ -358,7 +368,9 @@ class Musica extends Escena implements SetScene, SetOverSprites {
       final ay = sent
           ? (id == 'abuela' ? 36 : (whoDef?.nino == true ? 33 : 41))
           : inkBottom(s);
-      out.add(MusicaItem(s, sx - ax, sy - ay, sy, at.d, tag: 'persona:$id'));
+      out.add(
+        MusicaItem(s, sx - ax, drawSy - ay, drawSy, at.d, tag: 'persona:$id'),
+      );
 
       // Story 113: Abuela seated on `banqueta_abuela` holds her album & shows spare sheets in her pocket.
       if (id == 'abuela' && sent && storyNum == 113) {
@@ -505,6 +517,23 @@ class Musica extends Escena implements SetScene, SetOverSprites {
           at.sy,
           6.0,
           tag: 'fx:foto',
+          overlay: true,
+        ),
+      );
+    } else if (_n(w['badFoto']) == 1) {
+      final ab = gente['abuela'] as Map<String, dynamic>?;
+      final at = ab != null && ab['vis'] != 0
+          ? _atOf(ab)
+          : _p.at('banqueta_abuela');
+      final ph = _spr('ms_foto_2', () => mkFotoPapel(bad: true));
+      out.add(
+        MusicaItem(
+          ph,
+          (_round(at.sx) - 5).clamp(24, 206),
+          (_round(at.sy) + 2).clamp(4, 200),
+          at.sy + 4,
+          6.0,
+          tag: 'fx:bad_foto',
           overlay: true,
         ),
       );

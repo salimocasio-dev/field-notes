@@ -11,6 +11,7 @@ import 'dart:io';
 import 'package:coqui_pixel/coqui_pixel.dart' show jsTruthy;
 import 'package:coqui_scenes/coqui_scenes.dart';
 import 'package:coqui_scenes/src/musica/musica.dart';
+import 'package:coqui_scenes/src/musica/musica_sprites.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'support/sheet_bundle.dart';
@@ -273,6 +274,31 @@ void main() {
       expect((g['senor'] as Map)['spot'], 'ronda1');
       expect((g['senora'] as Map)['spot'], 'banco3');
       expect((g['luis'] as Map)['sing'], 1);
+      expect((g['senor'] as Map)['dance'], 1);
+
+      // Dancing participant renders a distinct animated sprite across frames
+      final dance0 = sc
+          .items(fr.host.W, 0)
+          .firstWhere((i) => i.tag == 'persona:senor');
+      final dance3 = sc
+          .items(fr.host.W, 3)
+          .firstWhere((i) => i.tag == 'persona:senor');
+      final idleSenor = mkMusicaPersona('senor', 'idle');
+      expect(dance0.s.px, isNot(equals(idleSenor.px)));
+      expect(dance3.s.px, isNot(equals(dance0.s.px)));
+
+      // Wrong photo keeps rejected photo under abuela's stool until corrected
+      await sc.acts['foto113']!({'a': 'abuelo', 'ok': 0});
+      expect(fr.host.W['badFoto'], 1);
+      await sc.acts['hojas']!({'n': 2});
+      await sc.acts['marca']!({'que': 'x'});
+      expect(sc.items(fr.host.W, 0).any((i) => i.tag == 'fx:bad_foto'), isTrue);
+      await sc.acts['foto113']!({'a': 'carmen', 'ok': 1});
+      expect(fr.host.W['badFoto'], 0);
+      expect(
+        sc.items(fr.host.W, 0).any((i) => i.tag == 'fx:bad_foto'),
+        isFalse,
+      );
 
       // `gesto(carmen, rie)` preserves laughing expression across opening asks until moved
       await sc.acts['gesto']!({'quien': 'carmen', 'que': 'rie'});
