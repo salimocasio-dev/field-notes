@@ -10,7 +10,7 @@
 // - things-clear (bench-things, table-things, photos-cord, photos-table, cake, packet-stool): interactive props have
 //   0 px hidden by the set and 0 px covered by any person or the frog (per regalos-sheet.json notes: thing-over-thing
 //   such as fotos4 touching cake by 2 px is info);
-// - step-clear: when abuelo stands on taburete, he covers 0 px of any photo or wall peg;
+// - step-clear: when abuelo stands on taburete, he covers 0 px of any wall peg (photos are checked by things-clear);
 // - sprites-apart: no two visible characters (people, frog) overlap sideways unless their feet are >= 12 px apart.
 import 'dart:math' as math;
 import 'dart:typed_data';
@@ -173,7 +173,7 @@ class RegalosRules {
     final spotByTag = <String, String>{};
     for (final en in gente.entries) {
       final p = en.value as Map?;
-      if (p != null && p['vis'] != 0 && p['spot'] is String) {
+      if (p != null && jsTruthy(p['vis']) && p['spot'] is String) {
         spotByTag['persona:${en.key}'] = p['spot'] as String;
       }
     }

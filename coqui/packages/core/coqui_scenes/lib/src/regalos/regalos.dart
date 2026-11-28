@@ -258,6 +258,9 @@ class Regalos extends Escena implements SetScene, SetOverSprites {
       'paquetesTagged': is116 ? 1 : 0,
       'paqueteStoolVis': is116 ? 1 : 0,
       'paqueteStoolTorn': 0,
+      'paqueteStoolOpen': 0,
+      'paqueteA':
+          null, // null | 'carmen' | guest key ('pepe'|'maestra'|'piraguero')
       'sorpresas': 3,
       'papelesRotos': 0, // 0, 1, 2 torn papers by stool at ending
       'abuelaLista': is116 ? 1 : 0,
@@ -558,9 +561,16 @@ class Regalos extends Escena implements SetScene, SetOverSprites {
     }
     if (_n(w['paqueteStoolVis']) == 1) {
       final at = _p.at('paquete');
-      final sx = _round(at.sx), sy = _round(at.sy);
+      final a = w['paqueteA'] as String?;
+      // Shift packet cleanly toward Carmen (banqueta_izq) or guest (banqueta_der) while staying clear of both.
+      final shiftX = a == null ? 0 : (a == 'carmen' ? -6 : 6);
+      final sx = _round(at.sx) + shiftX, sy = _round(at.sy);
       final torn = _n(w['paqueteStoolTorn']) == 1;
-      final s = _spr('rg_pktS_$torn', () => mkPaquete(14, 12, torn: torn));
+      final open = !torn && _n(w['paqueteStoolOpen']) == 1;
+      final s = _spr(
+        'rg_pktS_${torn}_$open',
+        () => mkPaquete(14, 12, torn: torn, open: open),
+      );
       out.add(
         RegalosItem(s, sx - s.w ~/ 2, sy - s.h, sy, at.d, tag: 'cosa:paquete'),
       );

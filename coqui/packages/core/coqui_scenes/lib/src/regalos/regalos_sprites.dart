@@ -380,43 +380,58 @@ Sprite mkFotoRegalos(String kind, {required bool hung}) {
 }
 
 /// Wrapped gift packet (`14x14` on table, `14x12` on low stool): [tagged] = paper name tag attached (before wind),
-/// [torn] = opened with torn paper and no bow (wrong push in 116).
-Sprite mkPaquete(int w, int h, {bool tagged = false, bool torn = false}) =>
-    _mk(w, h, (b) {
-      final cx = w ~/ 2;
-      if (torn) {
-        // Torn open packet, bow gone, surprise peeking out
-        b.rect(1, 5, w - 2, h - 6, _h('#78B092'));
-        b.rect(3, 3, w - 6, 4, _h('#FFF0B8'));
-        b.px(2, 5, _h('#B4E0C8'));
-        b.px(w - 3, 5, _h('#B4E0C8'));
-        b.rect(5, 4, 4, 2, _h('#E86878'));
-      } else {
-        b.rect(1, 4, w - 2, h - 5, _h('#8EC8A8'));
-        b.rect(1, 4, w - 2, 1, _h('#B4E0C8'));
-        b.rect(1, h - 2, w - 2, 1, _h('#5E9C80'));
-        b.rect(cx - 1, 4, 2, h - 5, _h('#FFFBEA'));
-        b.ell(
-          cx - 2.4,
-          3,
-          2.2,
-          1.6,
-          _ramp(const ['#B02828', '#D0403A', '#F08070']),
-        );
-        b.ell(
-          cx + 2.4,
-          3,
-          2.2,
-          1.6,
-          _ramp(const ['#B02828', '#D0403A', '#F08070']),
-        );
-        b.rect(cx - 1, 2, 2, 3, _h('#B02828'));
-        if (tagged) {
-          b.rect(w - 4, 6, 3, 3, _h('#FFFBEA'));
-          b.px(w - 3, 7, _h('#3A3A46'));
-        }
-      }
-    });
+/// [open] = neatly opened gift box (right push in 116), [torn] = torn paper and no bow (wrong push in 116).
+Sprite mkPaquete(
+  int w,
+  int h, {
+  bool tagged = false,
+  bool torn = false,
+  bool open = false,
+}) => _mk(w, h, (b) {
+  final cx = w ~/ 2;
+  if (torn) {
+    // Torn open packet, bow gone, surprise peeking out
+    b.rect(1, 5, w - 2, h - 6, _h('#78B092'));
+    b.rect(3, 3, w - 6, 4, _h('#FFF0B8'));
+    b.px(2, 5, _h('#B4E0C8'));
+    b.px(w - 3, 5, _h('#B4E0C8'));
+    b.rect(5, 4, 4, 2, _h('#E86878'));
+  } else if (open) {
+    // Neatly opened box with lifted lid & golden gift glow inside
+    b.rect(1, 5, w - 2, h - 6, _h('#8EC8A8'));
+    b.rect(1, h - 2, w - 2, 1, _h('#5E9C80'));
+    b.rect(2, 5, w - 4, 2, _h('#FFF0B8'));
+    b.rect(2, 2, w - 4, 2, _h('#B4E0C8'));
+    b.rect(cx - 1, 2, 2, 2, _h('#D0403A'));
+    b.px(cx, 4, _h('#FFE050'));
+    b.px(cx - 2, 3, _h('#FFE050'));
+    b.px(cx + 2, 3, _h('#FFE050'));
+  } else {
+    b.rect(1, 4, w - 2, h - 5, _h('#8EC8A8'));
+    b.rect(1, 4, w - 2, 1, _h('#B4E0C8'));
+    b.rect(1, h - 2, w - 2, 1, _h('#5E9C80'));
+    b.rect(cx - 1, 4, 2, h - 5, _h('#FFFBEA'));
+    b.ell(
+      cx - 2.4,
+      3,
+      2.2,
+      1.6,
+      _ramp(const ['#B02828', '#D0403A', '#F08070']),
+    );
+    b.ell(
+      cx + 2.4,
+      3,
+      2.2,
+      1.6,
+      _ramp(const ['#B02828', '#D0403A', '#F08070']),
+    );
+    b.rect(cx - 1, 2, 2, 3, _h('#B02828'));
+    if (tagged) {
+      b.rect(w - 4, 6, 3, 3, _h('#FFFBEA'));
+      b.px(w - 3, 7, _h('#3A3A46'));
+    }
+  }
+});
 
 /* ---------- FX & ending props ---------- */
 
@@ -599,6 +614,7 @@ List<(String, Sprite)> regalosSpritesSheet() => [
   ('paquete_mesa_tag', mkPaquete(14, 14, tagged: true)),
   ('paquete_mesa', mkPaquete(14, 14)),
   ('paquete_stool', mkPaquete(14, 12)),
+  ('paquete_stool_open', mkPaquete(14, 12, open: true)),
   ('paquete_stool_torn', mkPaquete(14, 12, torn: true)),
   ('papel_roto', mkPapelRoto()),
   ('sombrerito', mkSombrerito()),

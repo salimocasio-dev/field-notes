@@ -480,6 +480,8 @@ extension _RegalosActs on Regalos {
         if (pm > 1) W['paquetesMesa'] = pm - 1;
         W['paqueteStoolVis'] = 1;
         W['paqueteStoolTorn'] = 0;
+        W['paqueteStoolOpen'] = 0;
+        W['paqueteA'] = null;
         await wait(160);
       }),
 
@@ -487,13 +489,17 @@ extension _RegalosActs on Regalos {
         final a = (o['a'] as String?) ?? 'carmen';
         final ok = _n(o['ok']) == 1;
         W['paqueteStoolVis'] = 1;
+        W['paqueteA'] = a;
         await bounceFrog(dx: a == 'carmen' ? -3 : 3, dy: -4, ms: 120);
         if (ok) {
+          W['paqueteStoolTorn'] = 0;
+          W['paqueteStoolOpen'] = 1;
           final manosSet = (W['manosWho'] as Set<String>?) ?? <String>{};
           manosSet.clear();
           await wait(160);
         } else {
           // Wrong push: the giver opens it on the spot -> paper torn, bow off!
+          W['paqueteStoolOpen'] = 0;
           W['paqueteStoolTorn'] = 1;
           await wait(200);
         }
@@ -519,6 +525,8 @@ extension _RegalosActs on Regalos {
         W['papelesRotos'] = (3 - n).clamp(0, 2);
         W['paqueteStoolVis'] = 1;
         W['paqueteStoolTorn'] = 0;
+        W['paqueteStoolOpen'] = 0;
+        W['paqueteA'] = null;
         W['paquetesMesa'] = 0;
         final manosSet = (W['manosWho'] as Set<String>?) ?? <String>{};
         manosSet.clear();

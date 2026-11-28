@@ -1,6 +1,7 @@
 // Los regalos's three stories (114 to 116) played with no screen on the REAL scene (order 76), covering all four
 // right/wrong patterns (rr, rw, wr, ww) across fixed draw combinations (34 x 4 = 136 fixed paths) plus seeded plays
-// (24 paths -> 160 total paths), with RegalosRules checked at every act's end and at the story's end.
+// (2 seeds x 4 patterns = 8 paths per story, 24 seeded paths -> 160 total across the 3 stories), with RegalosRules
+// checked at every act's end and at the story's end.
 import 'dart:convert';
 import 'dart:io';
 

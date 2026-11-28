@@ -129,5 +129,10 @@ void main() {
       ),
       isFalse,
     );
+    expect(_same(mkPaquete(14, 12), mkPaquete(14, 12, open: true)), isFalse);
+    expect(
+      _same(mkPaquete(14, 12, open: true), mkPaquete(14, 12, torn: true)),
+      isFalse,
+    );
   });
 }
