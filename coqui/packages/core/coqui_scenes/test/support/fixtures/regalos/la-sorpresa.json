@@ -1,0 +1,559 @@
+{
+ "id": "la-sorpresa",
+ "title": "La sorpresa",
+ "place": "El fuerte",
+ "scene": "regalos",
+ "next": "las-velas",
+ "goal": "Lay Carmen's surprise birthday table behind the curtain across the arch, fetching from the bench the present or the cake that abuela asks for, so that the curtain keeps its three pegs: a wrong thing has to be hurried back to the bench, the frog runs into the curtain's edge, a peg flies off, and more of the table shows from the dance floor.",
+ "stake": {
+  "thing": "pinzas",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "regalo",
+  "bizcocho",
+  "cumpleaños",
+  "sorpresa"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "fiesta",
+  "hoy",
+  "baila",
+  "ve",
+  "trae",
+  "flor",
+  "mesa",
+  "grande",
+  "bonito",
+  "me gusta",
+  "contento",
+  "¿cómo estás?",
+  "viene",
+  "tengo",
+  "también",
+  "por favor",
+  "gracias",
+  "sí",
+  "no"
+ ],
+ "also_heard": [],
+ "names": {
+  "abuela": "abuela",
+  "abuelo": "n_abuelo",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {},
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c114_ab_cumple": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, hoy es el cumpleaños de Carmen."
+  },
+  "c114_l_shh": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Shh! Es una sorpresa."
+  },
+  "c114_l_baila": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Carmen baila. No ve la sorpresa."
+  },
+  "c114_ab_bizcocho": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Para el cumpleaños hay un bizcocho."
+  },
+  "c114_ab_este": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Este es el bizcocho de Carmen."
+  },
+  "c114_l_gusta": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Coquí, ¿te gusta el bizcocho?"
+  },
+  "c43_cq_me_gusta": {
+   "who": "tu",
+   "text": "¡Sí, me gusta!",
+   "tu_turno": [
+    {
+     "palabra": "me gusta",
+     "formas": [
+      "me gusta",
+      "sí me gusta",
+      "si me gusta"
+     ]
+    }
+   ]
+  },
+  "c114_abo_regalo": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Y yo tengo un regalo para Carmen."
+  },
+  "c114_l_regalo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: El regalo es una sorpresa también."
+  },
+  "c114_ab_grande": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Qué regalo grande!"
+  },
+  "c114_l_ahi": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Ahí viene Carmen!"
+  },
+  "c114_l_no_baila": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: No. Carmen baila."
+  },
+  "c114_l_sorpresa": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Sorpresa!"
+  },
+  "c114_ca_bizcocho": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Un bizcocho! ¡Y un regalo! Coquí, ¿cómo estás?"
+  },
+  "c114_cq_contento": {
+   "who": "tu",
+   "text": "¡Contento!",
+   "tu_turno": [
+    {
+     "palabra": "contento",
+     "formas": [
+      "contento",
+      "muy contento"
+     ]
+    }
+   ]
+  },
+  "c114_fin": {
+   "who": "narr",
+   "text": "Hoy es el cumpleaños de Carmen. Hay un bizcocho, un regalo y una sorpresa."
+  },
+  "c114_trae_regalo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, trae el regalo, por favor."
+  },
+  "c114_no_regalo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. El regalo."
+  },
+  "c114_trae_bizcocho": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, trae el bizcocho, por favor."
+  },
+  "c114_no_bizcocho": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. El bizcocho."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "noche"
+   }
+  },
+  {
+   "act": "pinzas",
+   "n": 3
+  },
+  {
+   "act": "llega",
+   "quien": "abuela",
+   "a": "tras_mesa",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "luis",
+   "a": "arco",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "abuelo",
+   "a": "junto_banco",
+   "suelto": 1
+  },
+  {
+   "act": "ir",
+   "a": "mesa_coqui",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c114_ab_cumple",
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "silencio"
+  },
+  {
+   "ask": "cortina",
+   "lead": [],
+   "line": "c114_l_shh",
+   "then": [],
+   "after": [
+    {
+     "act": "cortina114",
+     "como": "cierra"
+    }
+   ]
+  },
+  "c114_l_baila",
+  {
+   "dots": 2
+  },
+  {
+   "ask": "bizcocho",
+   "lead": [],
+   "line": "c114_ab_bizcocho",
+   "then": [],
+   "after": [
+    {
+     "act": "tapa114"
+    }
+   ]
+  },
+  "c114_ab_este",
+  "c114_l_gusta",
+  "c43_cq_me_gusta",
+  {
+   "dots": 3
+  },
+  {
+   "act": "suena114",
+   "quien": "abuelo"
+  },
+  {
+   "ask": "regalo",
+   "lead": [],
+   "line": "c114_abo_regalo",
+   "then": [],
+   "after": [
+    {
+     "act": "suena114",
+     "quien": "coqui"
+    }
+   ]
+  },
+  "c114_l_regalo",
+  "c114_ab_grande",
+  {
+   "dots": 4
+  },
+  {
+   "act": "mantel114"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "quieto",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "abuelo",
+   "que": "quieto",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "quieto",
+   "suelto": 1
+  },
+  {
+   "act": "sombra114",
+   "suelto": 1
+  },
+  "c114_l_ahi",
+  {
+   "act": "ya"
+  },
+  "c114_l_no_baila",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "qa",
+   "options": [
+    "regalo",
+    "bizcocho"
+   ],
+   "other": "qb"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "bizcocho",
+    "regalo",
+    "flores"
+   ],
+   "pick": "$qa",
+   "tests": "$qa",
+   "lock": true,
+   "lead": [],
+   "line": "c114_trae_$qa",
+   "right": [
+    {
+     "act": "lleva114",
+     "que": "$qa",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "lleva114",
+     "que": "$x",
+     "ok": 0,
+     "suelto": 1
+    },
+    "c114_no_$qa",
+    {
+     "act": "ya"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "pinzas",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "pinzas",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "decide": "do",
+   "options": [
+    "$qb",
+    "flores"
+   ],
+   "pick": "$qb",
+   "tests": "$qb",
+   "lock": true,
+   "lead": [],
+   "line": "c114_trae_$qb",
+   "right": [
+    {
+     "act": "lleva114",
+     "que": "$qb",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "lleva114",
+     "que": "$x",
+     "ok": 0,
+     "suelto": 1
+    },
+    "c114_no_$qb",
+    {
+     "act": "ya"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "pinzas",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "pinzas",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 7
+  },
+  {
+   "act": "llega",
+   "quien": "abuela",
+   "a": "escondidos",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "abuelo",
+   "a": "escondidos",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "luis",
+   "a": "escondidos",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final114",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final114",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final114",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 8
+  },
+  "c114_l_sorpresa",
+  "c114_ca_bizcocho",
+  "c114_cq_contento",
+  "c114_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c114_ab_cumple",
+  "c114_l_shh",
+  "c114_l_baila",
+  "c114_ab_bizcocho",
+  "c114_ab_este",
+  "c114_l_gusta",
+  "c43_cq_me_gusta",
+  "c114_abo_regalo",
+  "c114_l_regalo",
+  "c114_ab_grande",
+  "c114_l_ahi",
+  "c114_l_no_baila",
+  "c114_trae_regalo",
+  "c114_trae_bizcocho",
+  "c114_l_sorpresa",
+  "c114_ca_bizcocho",
+  "c114_cq_contento",
+  "c114_fin"
+ ]
+}

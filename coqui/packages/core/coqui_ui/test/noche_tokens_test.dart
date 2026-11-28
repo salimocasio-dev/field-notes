@@ -557,6 +557,8 @@ void main() {
         'transcriptNow': (nocheFontAtkinson, FontWeight.w700, 24, 32, 0),
         'bookTitle': (nocheFontLiterata, FontWeight.w600, 26, 32, 0),
         'bookBody': (nocheFontLiterata, FontWeight.w400, 19, 31, 0),
+        'bookBodyAtkinson': (nocheFontAtkinson, FontWeight.w400, 19, 31, 0),
+        'bookBodyLexend': (nocheFontLexend, FontWeight.w400, 19, 31, 0),
         'dropCap': (nocheFontLiterata, FontWeight.w600, 60, 52, 0),
         'cover': (nocheFontLiterata, FontWeight.w600, 13, 16, 0),
         'coverSmall': (nocheFontLiterata, FontWeight.w600, 10, 12, 0),
@@ -601,6 +603,61 @@ void main() {
         );
       }
     });
+
+    test('primary and primarySmall include Noto Sans Arabic font fallback', () {
+      expect(
+        NocheType.primary.fontFamilyFallback,
+        equals(['packages/coqui_ui/$nocheFontNotoSansArabic']),
+      );
+      expect(
+        NocheType.primarySmall.fontFamilyFallback,
+        equals(['packages/coqui_ui/$nocheFontNotoSansArabic']),
+      );
+    });
+
+    testWidgets(
+      'primary and primarySmall render Arabic glyphs alongside English via fallback',
+      (tester) async {
+        Future<int> litPixelsForStyle(TextStyle style, String sample) async {
+          final probeKey = GlobalKey();
+          await tester.pumpWidget(
+            Directionality(
+              textDirection: TextDirection.ltr,
+              child: Align(
+                alignment: AlignmentDirectional.topStart,
+                child: RepaintBoundary(
+                  key: probeKey,
+                  child: Container(
+                    width: 360,
+                    height: 60,
+                    color: NocheColors.ground,
+                    alignment: AlignmentDirectional.centerStart,
+                    child: Text(
+                      sample,
+                      style: style.copyWith(color: NocheColors.text),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+          final px = await _capturePixels(tester, probeKey);
+          final bg = px[0];
+          var count = 0;
+          for (final p in px) {
+            if (p != bg) count++;
+          }
+          return count;
+        }
+
+        for (final style in [NocheType.primary, NocheType.primarySmall]) {
+          final englishOnly = await litPixelsForStyle(style, 'Back to ');
+          final mixedArabic = await litPixelsForStyle(style, 'Back to تكلّم');
+          expect(englishOnly, greaterThan(50));
+          expect(mixedArabic, greaterThan(englishOnly + 50));
+        }
+      },
+    );
 
     test('NocheType.forScript handles Latn, Arab, and unbundled scripts', () {
       expect(

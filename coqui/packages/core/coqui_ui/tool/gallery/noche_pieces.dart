@@ -48,6 +48,7 @@ class _NochePiecesDevPageState extends State<NochePiecesDevPage> {
   String _selectedTab = NocheTabs.map;
   String _skill = 'listening';
   int _minutes = 30;
+  String _lineSpacing = 'normal';
   bool _underline = true;
   bool _lightSentence = false;
 
@@ -456,6 +457,73 @@ class _NochePiecesDevPageState extends State<NochePiecesDevPage> {
       ),
       const SizedBox(height: 24),
 
+      // 12b. Text-filled primary buttons, compact icon segmented, quick-fade dashes, reader fonts
+      const NocheSectionLabel('Reader and sheet variants'),
+      NochePrimaryButton.text(label: 'Write my story', onPressed: () {}),
+      const SizedBox(height: 12),
+      const NochePrimaryButton.text(
+        label: 'Text button disabled',
+        onPressed: null,
+      ),
+      const SizedBox(height: 12),
+      NocheSegmented<String>(
+        role: NocheSegmentedRole.radioGroup,
+        semanticLabel: NocheA11y.label(NocheA11y.lineSpacing),
+        padding: EdgeInsetsDirectional.zero,
+        backgroundColor: NocheColors.ground,
+        selected: _lineSpacing,
+        onChanged: (v) => setState(() => _lineSpacing = v),
+        options: [
+          NocheSegmentOption(
+            value: 'tight',
+            icon: NocheIcons.lineSpacingTight,
+            semanticLabel: NocheA11y.label(NocheA11y.lineSpacingTight),
+          ),
+          NocheSegmentOption(
+            value: 'normal',
+            icon: NocheIcons.lineSpacingNormal,
+            semanticLabel: NocheA11y.label(NocheA11y.lineSpacingNormal),
+          ),
+          NocheSegmentOption(
+            value: 'loose',
+            icon: NocheIcons.lineSpacingLoose,
+            semanticLabel: NocheA11y.label(NocheA11y.lineSpacingLoose),
+          ),
+        ],
+      ),
+      const SizedBox(height: 12),
+      NocheCard(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            NocheDashes.progress(
+              count: 7,
+              done: 4,
+              quickColorFade: true,
+              semanticLabel: 'Text size 4 of 7',
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Literata reader body',
+              style: NocheType.bookBody.copyWith(color: NocheColors.text),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Atkinson reader body',
+              style: NocheType.bookBodyAtkinson.copyWith(
+                color: NocheColors.text,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Lexend reader body',
+              style: NocheType.bookBodyLexend.copyWith(color: NocheColors.text),
+            ),
+          ],
+        ),
+      ),
+      const SizedBox(height: 24),
+
       // 13. Tab bars (non-map active + map active)
       const NocheSectionLabel('Tab bar (non-map active, fixed order)'),
     ];
@@ -584,6 +652,9 @@ class _NocheMotionDevPageState extends State<NocheMotionDevPage> {
   bool _windowExpanded = false;
   int _lockTaps = 0;
   int _sheetStep = 0;
+  bool _playing = false;
+  String _lineSpacing = 'normal';
+  int _textSizeDashes = 4;
 
   bool get _isRtl => widget.textDirection == TextDirection.rtl;
   String get _script => _isRtl ? 'Arab' : 'Latn';
@@ -658,6 +729,56 @@ class _NocheMotionDevPageState extends State<NocheMotionDevPage> {
         );
       },
     );
+  }
+
+  void _openScrimlessSheet() {
+    showNocheSheet<void>(
+      context,
+      scrim: false,
+      showCloseButton: false,
+      closeLabel: NocheA11y.label(NocheA11y.closeTextAndPage),
+      builder: (context, close) => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            'Scrimless headerless sheet — tap above or drag down to close.',
+            style: NocheType.body.copyWith(color: NocheColors.text),
+          ),
+          const SizedBox(height: 12),
+          NochePrimaryButton.text(label: 'Close', onPressed: close),
+        ],
+      ),
+    );
+  }
+
+  void _openLockableSheet() {
+    final canDismiss = ValueNotifier<bool>(true);
+    showNocheSheet<void>(
+      context,
+      title: 'Dynamic lock sheet',
+      dismissibleListenable: canDismiss,
+      builder: (context, close) => ValueListenableBuilder<bool>(
+        valueListenable: canDismiss,
+        builder: (context, unlocked, _) => Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            NocheSwitchRow(
+              label: 'Allow user dismiss',
+              value: unlocked,
+              showTopBorder: false,
+              onChanged: (v) => canDismiss.value = v,
+            ),
+            const SizedBox(height: 12),
+            NochePrimaryButton.text(
+              label: 'Close programmatically',
+              onPressed: close,
+            ),
+          ],
+        ),
+      ),
+    ).whenComplete(canDismiss.dispose);
   }
 
   void _openWindowRoute() {
@@ -1040,6 +1161,101 @@ class _NocheMotionDevPageState extends State<NocheMotionDevPage> {
                       SizedBox(width: 8),
                       NocheChip(label: '3'),
                     ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+
+            // 10. Play disc cross-fade, compact icon segmented, quick-fade dashes, scrimless/lockable sheets
+            const NocheSectionLabel(
+              'Play disc fade, icon segmented & sheet modes',
+            ),
+            Center(
+              child: NochePlayDisc(
+                icon: _playing ? NocheIcons.pause : NocheIcons.play,
+                semanticLabel: _playing
+                    ? NocheA11y.label(NocheA11y.pause)
+                    : NocheA11y.label(NocheA11y.listen),
+                onPressed: () => setState(() => _playing = !_playing),
+              ),
+            ),
+            const SizedBox(height: 16),
+            NocheSegmented<String>(
+              role: NocheSegmentedRole.radioGroup,
+              semanticLabel: NocheA11y.label(NocheA11y.lineSpacing),
+              padding: EdgeInsetsDirectional.zero,
+              backgroundColor: NocheColors.ground,
+              selected: _lineSpacing,
+              onChanged: (v) => setState(() => _lineSpacing = v),
+              options: [
+                NocheSegmentOption(
+                  value: 'tight',
+                  icon: NocheIcons.lineSpacingTight,
+                  semanticLabel: NocheA11y.label(NocheA11y.lineSpacingTight),
+                ),
+                NocheSegmentOption(
+                  value: 'normal',
+                  icon: NocheIcons.lineSpacingNormal,
+                  semanticLabel: NocheA11y.label(NocheA11y.lineSpacingNormal),
+                ),
+                NocheSegmentOption(
+                  value: 'loose',
+                  icon: NocheIcons.lineSpacingLoose,
+                  semanticLabel: NocheA11y.label(NocheA11y.lineSpacingLoose),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            NocheCard(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  NocheDashes.progress(
+                    count: 7,
+                    done: _textSizeDashes,
+                    quickColorFade: true,
+                    semanticLabel: 'Text size $_textSizeDashes of 7',
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: NocheOutlineButton(
+                          label: 'Smaller A',
+                          onPressed: _textSizeDashes > 1
+                              ? () => setState(() => _textSizeDashes--)
+                              : null,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: NocheOutlineButton(
+                          label: 'Larger A',
+                          onPressed: _textSizeDashes < 7
+                              ? () => setState(() => _textSizeDashes++)
+                              : null,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: NocheOutlineButton(
+                    label: 'Scrimless sheet',
+                    onPressed: _openScrimlessSheet,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: NocheOutlineButton(
+                    label: 'Lockable sheet',
+                    onPressed: _openLockableSheet,
                   ),
                 ),
               ],
