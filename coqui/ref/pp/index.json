@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
-  "files": 1772,
-  "totalBytes": 109144726,
+  "files": 1804,
+  "totalBytes": 111034639,
   "entries": [
     {
       "path": "balcon/door-open-win-open/kinds.bin",
@@ -1722,6 +1722,166 @@
       "path": "cruce/tarde-1/zb.json",
       "bytes": 322,
       "sha256": "d02cd0184d5c9f78cbfa28723c49d1ef19be794217df36040e188c3651118308"
+    },
+    {
+      "path": "cuarto/alba-0-0-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "cuarto/alba-0-0-0/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "cuarto/alba-0-0-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "8d35a3ad1be073307e7ab19ea5232424014db75b1eb87c94861ca31782492278"
+    },
+    {
+      "path": "cuarto/alba-0-0-0/pix.json",
+      "bytes": 370,
+      "sha256": "f32b0045e1582eb595025c7256016f2d809730ea96b01ed00a431a5a4a7959ef"
+    },
+    {
+      "path": "cuarto/alba-0-0-0/pix.png",
+      "bytes": 3644,
+      "sha256": "68cdd19bc82bb0ed3a7ab426e71ee676fdbf6c07cf2e5fa454fbe3c19e42e38e"
+    },
+    {
+      "path": "cuarto/alba-0-0-0/state.json",
+      "bytes": 947,
+      "sha256": "91a4e9b7835a2fd92905df3819705aab65158fdd61a78ee3e3ed9ad254843e00"
+    },
+    {
+      "path": "cuarto/alba-0-0-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "25bb8d42aaf29a54977ff618ad5bf544a33d91dda1c1aedd59ee035cd34c1212"
+    },
+    {
+      "path": "cuarto/alba-0-0-0/zb.json",
+      "bytes": 322,
+      "sha256": "a7b7954040fbb8948e674d6c6323a349554b6e30ce4f8f5388de88209e6dacec"
+    },
+    {
+      "path": "cuarto/alba-1-0-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "cuarto/alba-1-0-0/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "cuarto/alba-1-0-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "a96632e0c6584f2630b21f5b4cd9febc9f9a8caed549079fd911c66ea09cc21c"
+    },
+    {
+      "path": "cuarto/alba-1-0-0/pix.json",
+      "bytes": 370,
+      "sha256": "fec9c236133978b38aae6af4644cdc055720bdb8cbb0da054cdbfc89b43bdfa3"
+    },
+    {
+      "path": "cuarto/alba-1-0-0/pix.png",
+      "bytes": 3679,
+      "sha256": "8de68a97b6ff6f0416b26a55f917f342ed51a6e10aff6572760addefcba6a876"
+    },
+    {
+      "path": "cuarto/alba-1-0-0/state.json",
+      "bytes": 947,
+      "sha256": "34a888b893b5b9b195edd1985d8788888b577ea5880f9058224b07f378df4384"
+    },
+    {
+      "path": "cuarto/alba-1-0-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "25bb8d42aaf29a54977ff618ad5bf544a33d91dda1c1aedd59ee035cd34c1212"
+    },
+    {
+      "path": "cuarto/alba-1-0-0/zb.json",
+      "bytes": 322,
+      "sha256": "a7b7954040fbb8948e674d6c6323a349554b6e30ce4f8f5388de88209e6dacec"
+    },
+    {
+      "path": "cuarto/manana-0-0-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "cuarto/manana-0-0-0/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "cuarto/manana-0-0-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "4bf9d94b16ae337cd7f15f1be1aba603ded44a5fdd092c310a455b1424becca5"
+    },
+    {
+      "path": "cuarto/manana-0-0-0/pix.json",
+      "bytes": 370,
+      "sha256": "8a2133f8e14da1098792d7dbe29011998daabc7680a8620961ebd2acaccd0c42"
+    },
+    {
+      "path": "cuarto/manana-0-0-0/pix.png",
+      "bytes": 3904,
+      "sha256": "e0583626a66c45019b361fd21e36eacf746ce1161de07c772aa76bed35329cf6"
+    },
+    {
+      "path": "cuarto/manana-0-0-0/state.json",
+      "bytes": 951,
+      "sha256": "5297916c2ab31629ebf21be3e21285c7e84ab3412f320ba1d5a0ea0ec3cd4a55"
+    },
+    {
+      "path": "cuarto/manana-0-0-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "25bb8d42aaf29a54977ff618ad5bf544a33d91dda1c1aedd59ee035cd34c1212"
+    },
+    {
+      "path": "cuarto/manana-0-0-0/zb.json",
+      "bytes": 322,
+      "sha256": "a7b7954040fbb8948e674d6c6323a349554b6e30ce4f8f5388de88209e6dacec"
+    },
+    {
+      "path": "cuarto/manana-0-1-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "cuarto/manana-0-1-1/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "cuarto/manana-0-1-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "0de46fb80fc8bc939d1e62339301bc85c43fba5145af2fff30a50ec9947d0318"
+    },
+    {
+      "path": "cuarto/manana-0-1-1/pix.json",
+      "bytes": 370,
+      "sha256": "4fb29fdd3794cc26099afa2e40ffa763584d2a6e5613f492362a1c12330639fa"
+    },
+    {
+      "path": "cuarto/manana-0-1-1/pix.png",
+      "bytes": 4662,
+      "sha256": "0b34b3dcf222c32abe9cca8bdfb38a025490cd0ec745c6f194e1f6476d7d727d"
+    },
+    {
+      "path": "cuarto/manana-0-1-1/state.json",
+      "bytes": 951,
+      "sha256": "d73000030578c5226b2ff446ef70ba2a899aeb1b1b5237d853e39553d127b19c"
+    },
+    {
+      "path": "cuarto/manana-0-1-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "cabb64a0afabec8c13561d58a89e9557998f00da1b413679e3598557525809eb"
+    },
+    {
+      "path": "cuarto/manana-0-1-1/zb.json",
+      "bytes": 322,
+      "sha256": "33f5d20eb414377083e0bde42fd52835f0dc6fdd25bec98a8d14d833b8fdc239"
     },
     {
       "path": "cuenta/cerca-abajo/kinds.bin",

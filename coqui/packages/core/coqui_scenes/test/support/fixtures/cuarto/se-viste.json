@@ -1,0 +1,583 @@
+{
+ "id": "se-viste",
+ "title": "Se viste",
+ "place": "La casa, un día entero",
+ "scene": "cuarto",
+ "next": "limpio-y-sucio",
+ "goal": "Help Luis dress in the order Carmen says, first or afterwards, so that he looks neat in abuela's photo for the first day of school: every thing put on out of turn has to come off and go on again, and it ruffles him, first a tuft of hair, then his shirt tail.",
+ "stake": {
+  "thing": "pelo",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "se viste",
+  "ropa",
+  "primero"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "después",
+  "se pone",
+  "camisa",
+  "pantalón",
+  "zapatos",
+  "sombrero",
+  "reloj",
+  "falta",
+  "cuarto",
+  "rápido",
+  "listo",
+  "guagua",
+  "escuela",
+  "mira",
+  "ahora",
+  "no",
+  "sí"
+ ],
+ "also_heard": [],
+ "names": {
+  "abuela": "abuela",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "primero": "primero",
+  "despues": "después"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c98_ab_mira": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Mira, Coquí: la ropa de Luis está en la silla."
+  },
+  "c98_ab_viste": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Ahora Luis se viste."
+  },
+  "c98_ca_no": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No, Luis! Primero el pantalón, después los zapatos."
+  },
+  "c98_que_primero": {
+   "who": "narr",
+   "text": "¿Qué se pone Luis primero?"
+  },
+  "c98_ab_falta": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Luis se viste. ¿Qué falta, Coquí?"
+  },
+  "c98_cq_camisa": {
+   "who": "tu",
+   "text": "¡La camisa!",
+   "tu_turno": [
+    {
+     "palabra": "camisa",
+     "formas": [
+      "la camisa",
+      "camisa"
+     ]
+    }
+   ]
+  },
+  "c98_ca_sim": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Sí. Primero la ropa, después la foto."
+  },
+  "c98_ab_listo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Listo! ¡La guagua! ¡Vámonos!"
+  },
+  "c58_cq_rapido": {
+   "who": "tu",
+   "text": "¡Rápido, Luis!",
+   "tu_turno": [
+    {
+     "palabra": "rápido",
+     "formas": [
+      "rápido",
+      "rapido"
+     ]
+    }
+   ]
+  },
+  "c98_fin": {
+   "who": "narr",
+   "text": "Por la mañana Luis se viste: primero la ropa, después la escuela."
+  },
+  "c98_ca_primero_camisa": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Primero Luis se pone la camisa."
+  },
+  "c98_ca_despues_camisa": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Luis se pone la camisa después."
+  },
+  "c98_no_camisa": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No! Primero la camisa."
+  },
+  "c98_ca_primero_zapatos": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Primero Luis se pone los zapatos."
+  },
+  "c98_ca_despues_zapatos": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Luis se pone los zapatos después."
+  },
+  "c98_no_zapatos": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No! Primero los zapatos."
+  },
+  "c98_ca_primero_sombrero": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Primero Luis se pone el sombrero."
+  },
+  "c98_ca_despues_sombrero": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Luis se pone el sombrero después."
+  },
+  "c98_no_sombrero": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No! Primero el sombrero."
+  },
+  "c98_ca_primero_reloj": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Primero Luis se pone el reloj."
+  },
+  "c98_ca_despues_reloj": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Luis se pone el reloj después."
+  },
+  "c98_no_reloj": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No! Primero el reloj."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "manana",
+    "luz": 0,
+    "cuna": 0,
+    "butaca": 0
+   }
+  },
+  {
+   "act": "pelo98",
+   "n": 3
+  },
+  {
+   "act": "silla98",
+   "a": "pantalon",
+   "b": "zapatos"
+  },
+  {
+   "act": "llega",
+   "quien": "luis",
+   "a": "vestir",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "carmen",
+   "a": "sentado_carmen",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "abuela",
+   "a": "puerta",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "act": "ir",
+   "a": "alfombra"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  {
+   "ask": "silla",
+   "lead": [],
+   "line": "c98_ab_mira",
+   "then": [],
+   "after": [
+    {
+     "act": "ir",
+     "a": "silla_coqui"
+    }
+   ]
+  },
+  "c98_ab_viste",
+  {
+   "dots": 2
+  },
+  {
+   "act": "zapatos98"
+  },
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "rie"
+  },
+  "c98_ca_no",
+  {
+   "ask": "ropa_a",
+   "lead": [],
+   "line": "c98_que_primero",
+   "then": [],
+   "after": [
+    {
+     "act": "corrige98"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  "c98_ab_falta",
+  "c98_cq_camisa",
+  "c98_ca_sim",
+  {
+   "dots": 4
+  },
+  {
+   "act": "llega",
+   "quien": "carmen",
+   "a": "capitana"
+  },
+  {
+   "act": "silla98",
+   "a": "camisa",
+   "b": "zapatos"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "ca",
+   "options": [
+    "camisa",
+    "zapatos"
+   ]
+  },
+  {
+   "draw": "oa",
+   "options": [
+    "primero",
+    "despues"
+   ]
+  },
+  {
+   "calc": "ka",
+   "cond": "ca=camisa",
+   "then": "ropa_a",
+   "else": "ropa_b"
+  },
+  {
+   "calc": "ua",
+   "cond": "ca=camisa",
+   "then": "ropa_b",
+   "else": "ropa_a"
+  },
+  {
+   "calc": "pa",
+   "cond": "oa=primero",
+   "then": "$ka",
+   "else": "$ua"
+  },
+  {
+   "calc": "fa",
+   "cond": "pa=ropa_a",
+   "then": "camisa",
+   "else": "zapatos"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "ropa_a",
+    "ropa_b"
+   ],
+   "pick": "$pa",
+   "tests": "$oa",
+   "lock": true,
+   "lead": [],
+   "line": "c98_ca_$oa_$ca",
+   "right": [
+    {
+     "act": "viste98",
+     "cual": "$pa",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "viste98",
+     "cual": "$x",
+     "ok": 0,
+     "suelto": 1
+    },
+    "c98_no_$fa",
+    {
+     "act": "ya"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "pelo98",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "pelo98",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "act": "silla98",
+   "a": "sombrero",
+   "b": "reloj"
+  },
+  {
+   "draw": "cb",
+   "options": [
+    "sombrero",
+    "reloj"
+   ]
+  },
+  {
+   "draw": "ob",
+   "options": [
+    "primero",
+    "despues"
+   ]
+  },
+  {
+   "calc": "kb",
+   "cond": "cb=sombrero",
+   "then": "ropa_a",
+   "else": "ropa_b"
+  },
+  {
+   "calc": "ub",
+   "cond": "cb=sombrero",
+   "then": "ropa_b",
+   "else": "ropa_a"
+  },
+  {
+   "calc": "pb",
+   "cond": "ob=primero",
+   "then": "$kb",
+   "else": "$ub"
+  },
+  {
+   "calc": "fb",
+   "cond": "pb=ropa_a",
+   "then": "sombrero",
+   "else": "reloj"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "ropa_a",
+    "ropa_b"
+   ],
+   "pick": "$pb",
+   "tests": "$ob",
+   "lock": true,
+   "lead": [],
+   "line": "c98_ca_$ob_$cb",
+   "right": [
+    {
+     "act": "viste98",
+     "cual": "$pb",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "viste98",
+     "cual": "$x",
+     "ok": 0,
+     "suelto": 1
+    },
+    "c98_no_$fb",
+    {
+     "act": "ya"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "pelo98",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "pelo98",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 7
+  },
+  {
+   "act": "llega",
+   "quien": "abuela",
+   "a": "foto"
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final98",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final98",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final98",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 8
+  },
+  "c98_ab_listo",
+  "c58_cq_rapido",
+  "c98_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c98_ab_mira",
+  "c98_ab_viste",
+  "c98_ca_no",
+  "c98_que_primero",
+  "c98_ab_falta",
+  "c98_cq_camisa",
+  "c98_ca_sim",
+  "c98_ca_primero_camisa",
+  "c98_ca_despues_reloj",
+  "c98_ab_listo",
+  "c58_cq_rapido",
+  "c98_fin"
+ ]
+}

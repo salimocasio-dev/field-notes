@@ -1,0 +1,624 @@
+{
+ "id": "a-las-siete",
+ "title": "A las siete",
+ "place": "La casa, un día entero",
+ "scene": "cuarto",
+ "next": "se-viste",
+ "goal": "Wake or get up each sleeper the way abuela calls from the kitchen (the little bell wakes him, the blanket pulled off gets him up) so that the baby in the cradle keeps its three Z's of sleep: every mix-up makes a noise, and a Z pops.",
+ "stake": {
+  "thing": "zetas",
+  "steps": 3
+ },
+ "dots": 10,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "se despierta",
+  "se levanta",
+  "la mañana",
+  "a las siete"
+ ],
+ "formas_foco": {
+  "se levanta": [
+   "me levanto",
+   "se levantan"
+  ]
+ },
+ "back_again": [
+  "cuarto",
+  "cama",
+  "tiene sueño",
+  "bebé",
+  "duerme",
+  "despacio",
+  "reloj",
+  "¿qué hora es?",
+  "son las",
+  "y media",
+  "siete",
+  "toca",
+  "ahora",
+  "ya",
+  "buenos días",
+  "no",
+  "sí"
+ ],
+ "also_heard": [],
+ "names": {
+  "abuela": "abuela",
+  "abuelo": "n_abuelo",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "bebe": "n_bebe",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "despierta": "se despierta",
+  "levanta": "se levanta"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "n_bebe": {
+   "who": "narr",
+   "text": "Este es el bebé."
+  },
+  "c97_ab_shh": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Shh. El bebé duerme. Despacio, Coquí."
+  },
+  "c97_donde_reloj": {
+   "who": "narr",
+   "text": "¿Dónde está el reloj, Coquí?"
+  },
+  "c97_ab_siete": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Son las siete de la mañana."
+  },
+  "c97_ab_carmen_despierta": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: A las siete, Carmen se despierta."
+  },
+  "c97_ca_mmm": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Mmm. Buenos días."
+  },
+  "c97_ab_carmen_levanta": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Ahora Carmen se levanta."
+  },
+  "c97_ca_ya": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Ya me levanto! ¡Qué bonita la mañana!"
+  },
+  "c97_ab_que_hora": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Luis duerme. ¿Qué hora es, Coquí?"
+  },
+  "c97_cq_son_las": {
+   "who": "tu",
+   "text": "Son las siete.",
+   "tu_turno": [
+    {
+     "palabra": "son las",
+     "formas": [
+      "son las siete"
+     ]
+    }
+   ]
+  },
+  "c97_ab_luis_despierta": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Sí. A las siete Luis se despierta."
+  },
+  "c97_ab_y_media": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y a las siete y media se levanta."
+  },
+  "c97_ca_yo": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Luis se despierta. Yo me levanto."
+  },
+  "c97_cq_despacio": {
+   "who": "tu",
+   "text": "¡Despacio, Luis!",
+   "tu_turno": [
+    {
+     "palabra": "despacio",
+     "formas": [
+      "despacio",
+      "despacio luis"
+     ]
+    }
+   ]
+  },
+  "c97_fin": {
+   "who": "narr",
+   "text": "Son las siete y media de la mañana. Luis y Carmen se levantan."
+  },
+  "c97_a_despierta": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Coquí! Ahora Luis se despierta."
+  },
+  "c97_a_levanta": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Coquí! Ahora Luis se levanta."
+  },
+  "c97_b_despierta": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Coquí! Ahora abuelo se despierta."
+  },
+  "c97_b_levanta": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Coquí! Ahora abuelo se levanta."
+  },
+  "c97_no_despierta": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No, Coquí! ¡Se despierta!"
+  },
+  "c97_no_levanta": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No, Coquí! ¡Se levanta!"
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "manana",
+    "luz": 0,
+    "cuna": 1,
+    "butaca": 1
+   }
+  },
+  {
+   "act": "reloj97",
+   "hora": 7
+  },
+  {
+   "act": "zetas",
+   "n": 3
+  },
+  {
+   "act": "llega",
+   "quien": "luis",
+   "a": "cama_luis",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "carmen",
+   "a": "cama_carmen",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "abuelo",
+   "a": "butaca_abuelo",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "abuela",
+   "a": "puerta",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "act": "ir",
+   "a": "mesita_coqui"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "silencio"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "senala",
+   "a": "cuna"
+  },
+  "c97_ab_shh",
+  {
+   "ask": "reloj",
+   "lead": [],
+   "line": "c97_donde_reloj",
+   "then": [],
+   "after": []
+  },
+  "c97_ab_siete",
+  {
+   "dots": 2
+  },
+  {
+   "ask": "campana",
+   "lead": [],
+   "line": "c97_ab_carmen_despierta",
+   "then": [],
+   "after": [
+    {
+     "act": "campana97",
+     "quien": "carmen",
+     "ok": 1
+    }
+   ]
+  },
+  "c97_ca_mmm",
+  {
+   "dots": 3
+  },
+  {
+   "ask": "manta_carmen",
+   "lead": [],
+   "line": "c97_ab_carmen_levanta",
+   "then": [],
+   "after": [
+    {
+     "act": "manta97",
+     "quien": "carmen",
+     "ok": 1
+    }
+   ]
+  },
+  "c97_ca_ya",
+  {
+   "dots": 4
+  },
+  "c97_ab_que_hora",
+  "c97_cq_son_las",
+  "c97_ab_luis_despierta",
+  "c97_ab_y_media",
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "pies"
+  },
+  "c97_ca_yo",
+  {
+   "dots": 5
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "puntillas",
+   "suelto": 1
+  },
+  {
+   "act": "sale",
+   "quien": "abuela",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "da",
+   "options": [
+    "despierta",
+    "levanta"
+   ]
+  },
+  {
+   "calc": "ka",
+   "cond": "da=despierta",
+   "then": "campana",
+   "else": "manta_luis"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "campana",
+    "manta_luis"
+   ],
+   "pick": "$ka",
+   "tests": "$da",
+   "lock": true,
+   "lead": [],
+   "line": "c97_a_$da",
+   "right": [
+    {
+     "if": "da=despierta",
+     "then": [
+      {
+       "act": "campana97",
+       "quien": "luis",
+       "ok": 1
+      }
+     ],
+     "else": [
+      {
+       "act": "manta97",
+       "quien": "luis",
+       "ok": 1
+      }
+     ]
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "if": "da=despierta",
+     "then": [
+      {
+       "act": "manta97",
+       "quien": "luis",
+       "ok": 0
+      }
+     ],
+     "else": [
+      {
+       "act": "campana97",
+       "quien": "luis",
+       "ok": 0
+      }
+     ]
+    },
+    "c97_no_$da",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "zetas",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "zetas",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "db",
+   "options": [
+    "despierta",
+    "levanta"
+   ]
+  },
+  {
+   "calc": "kb",
+   "cond": "db=despierta",
+   "then": "campana",
+   "else": "manta_abuelo"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "campana",
+    "manta_abuelo"
+   ],
+   "pick": "$kb",
+   "tests": "$db",
+   "lock": true,
+   "lead": [],
+   "line": "c97_b_$db",
+   "right": [
+    {
+     "if": "db=despierta",
+     "then": [
+      {
+       "act": "campana97",
+       "quien": "abuelo",
+       "ok": 1
+      }
+     ],
+     "else": [
+      {
+       "act": "manta97",
+       "quien": "abuelo",
+       "ok": 1
+      }
+     ]
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "if": "db=despierta",
+     "then": [
+      {
+       "act": "manta97",
+       "quien": "abuelo",
+       "ok": 0
+      }
+     ],
+     "else": [
+      {
+       "act": "campana97",
+       "quien": "abuelo",
+       "ok": 0
+      }
+     ]
+    },
+    "c97_no_$db",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "zetas",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "zetas",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 8
+  },
+  {
+   "act": "corre97",
+   "suelto": 1
+  },
+  "c97_cq_despacio",
+  {
+   "act": "ya"
+  }
+ ],
+ "final": [
+  {
+   "dots": 9
+  },
+  {
+   "act": "reloj97",
+   "hora": 7.5
+  },
+  {
+   "act": "llega",
+   "quien": "abuela",
+   "a": "puerta"
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final97",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final97",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final97",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 10
+  },
+  "c97_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c97_ab_shh",
+  "c97_donde_reloj",
+  "c97_ab_siete",
+  "c97_ab_carmen_despierta",
+  "c97_ca_mmm",
+  "c97_ab_carmen_levanta",
+  "c97_ca_ya",
+  "c97_ab_que_hora",
+  "c97_cq_son_las",
+  "c97_ab_luis_despierta",
+  "c97_ab_y_media",
+  "c97_ca_yo",
+  "c97_a_despierta",
+  "c97_b_levanta",
+  "c97_cq_despacio",
+  "c97_fin"
+ ]
+}
