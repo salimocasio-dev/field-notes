@@ -104,6 +104,11 @@ abstract final class NocheIcons {
     NocheIconShape('M6 9l6 6 6-6'),
   ], strokeWidth: 2.5);
 
+  /// Upward chevron. Noche-Motion-Visita.dc.html (24, stroke 2.5)
+  static const chevronUp = NocheIconData([
+    NocheIconShape('M6 15l6-6 6 6'),
+  ], strokeWidth: 2.5);
+
   /// Streak flame. Noche-Mapa.dc.html, Noche-Yo.dc.html (18, stroke 2)
   static const flame = NocheIconData([
     NocheIconShape(
@@ -256,6 +261,7 @@ abstract final class NocheIcons {
     'close': close,
     'back': back,
     'chevronDown': chevronDown,
+    'chevronUp': chevronUp,
     'flame': flame,
     'play': play,
     'videoPlay': videoPlay,

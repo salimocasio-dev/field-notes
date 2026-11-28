@@ -226,31 +226,28 @@ void main() {
     );
   });
 
-  group('Services optional fields', () {
-    test(
-      'entitlements, progressStores, and availableCourses default safely',
-      () {
-        final s = Services(
-          progress: _StubProgressStore(),
-          course: _StubCourseCatalog(),
-          clips: _StubClipPlayer(),
-          speech: _StubSpeechListener(),
-          call: _StubCallSession(),
-          nav: _StubAppNavigator(),
-          clock: _StubClock(),
-          rng: _StubRng(),
-          haptics: _StubHaptics(),
-          info: _StubAppInfo(),
-          pictures: _RecordingSource(),
-          storage: (_) => _StubKeyValueStore(),
-        );
-        expect(s.entitlements, isA<AllowAllEntitlements>());
-        expect(s.entitlements.plan, Plan.courseAndCalls);
-        expect(s.entitlements.has(Feature.calls), isTrue);
-        expect(s.progressStores, isNull);
-        expect(s.availableCourses, isEmpty);
-      },
-    );
+  group('Services fields', () {
+    test('progressStores and availableCourses default safely', () {
+      final entitlements = _StubEntitlements();
+      final s = Services(
+        progress: _StubProgressStore(),
+        course: _StubCourseCatalog(),
+        clips: _StubClipPlayer(),
+        speech: _StubSpeechListener(),
+        call: _StubCallSession(),
+        nav: _StubAppNavigator(),
+        clock: _StubClock(),
+        rng: _StubRng(),
+        haptics: _StubHaptics(),
+        info: _StubAppInfo(),
+        pictures: _RecordingSource(),
+        storage: (_) => _StubKeyValueStore(),
+        entitlements: entitlements,
+      );
+      expect(identical(s.entitlements, entitlements), isTrue);
+      expect(s.progressStores, isNull);
+      expect(s.availableCourses, isEmpty);
+    });
 
     test(
       'entitlements, progressStores, and availableCourses accept overrides',

@@ -433,8 +433,9 @@ class NocheCard extends StatelessWidget {
 }
 
 /// Primary action button (`Noche-Palabras.dc.html`): full width, 56 high,
-/// radius 28, `next` fill, `onAccent` text (`primary`). Disabled: `line` fill,
-/// `label` text.
+/// radius 28, `next` fill, `onAccent` text (`primary`). The
+/// [NochePrimaryButton.text] variant uses `text` fill and `ground` label
+/// (`primarySmall` by default). Disabled: `line` fill, `label` text.
 class NochePrimaryButton extends StatelessWidget {
   const NochePrimaryButton({
     super.key,
@@ -442,7 +443,18 @@ class NochePrimaryButton extends StatelessWidget {
     required this.onPressed,
     this.small = false,
     this.semanticLabel,
-  });
+  }) : _textFilled = false;
+
+  /// Text-filled primary action button (`Noche-Motion-Escribir.dc.html`):
+  /// `text` fill with `ground` label when enabled, `line` fill with `label`
+  /// text when disabled, 56 high, radius 28, `primarySmall` by default.
+  const NochePrimaryButton.text({
+    super.key,
+    required this.label,
+    required this.onPressed,
+    this.small = true,
+    this.semanticLabel,
+  }) : _textFilled = true;
 
   final String label;
   final VoidCallback? onPressed;
@@ -450,12 +462,17 @@ class NochePrimaryButton extends StatelessWidget {
   /// Uses [NocheType.primarySmall] (17 px) instead of [NocheType.primary] (18 px).
   final bool small;
   final String? semanticLabel;
+  final bool _textFilled;
 
   @override
   Widget build(BuildContext context) {
     final enabled = onPressed != null;
-    final bg = enabled ? NocheColors.next : NocheColors.line;
-    final fg = enabled ? NocheColors.onAccent : NocheColors.label;
+    final bg = enabled
+        ? (_textFilled ? NocheColors.text : NocheColors.next)
+        : NocheColors.line;
+    final fg = enabled
+        ? (_textFilled ? NocheColors.ground : NocheColors.onAccent)
+        : NocheColors.label;
     final style = (small ? NocheType.primarySmall : NocheType.primary).copyWith(
       color: fg,
     );
@@ -630,7 +647,8 @@ class NochePlayBar extends StatelessWidget {
 }
 
 /// Circular orange action disc (`Noche-Mapa.dc.html` 64, `Noche-Hablar.dc.html`
-/// 96): `next` fill, `onAccent` icon, optional 8 px soft ring halo.
+/// 96): `next` fill, `onAccent` icon, optional 8 px soft ring halo. Icon
+/// changes cross-fade in `quick` on `enter`.
 class NochePlayDisc extends StatelessWidget {
   const NochePlayDisc({
     super.key,
@@ -653,6 +671,7 @@ class NochePlayDisc extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final motion = NocheMotion.of(context);
     final resolvedIconSize = iconSize ?? (size >= NocheSize.mic ? 40 : 28);
     return Pressable(
       onPressed: onPressed,
@@ -669,10 +688,17 @@ class NochePlayDisc extends StatelessWidget {
               ? [BoxShadow(color: NocheColors.callHalo, spreadRadius: 8)]
               : null,
         ),
-        child: NocheIcon(
-          icon,
-          size: resolvedIconSize,
-          color: NocheColors.onAccent,
+        child: AnimatedSwitcher(
+          duration: motion.quick,
+          reverseDuration: motion.quick,
+          switchInCurve: motion.enter,
+          switchOutCurve: motion.enter,
+          child: NocheIcon(
+            icon,
+            key: ValueKey<NocheIconData>(icon),
+            size: resolvedIconSize,
+            color: NocheColors.onAccent,
+          ),
         ),
       ),
     );
@@ -686,22 +712,38 @@ enum NocheSegmentedRole { radioGroup, tabList }
 class NocheSegmentOption<T> {
   const NocheSegmentOption({
     required this.value,
-    required this.label,
+    this.label = '',
+    this.icon,
+    this.iconSize = 22,
+    this.builder,
     this.muted = false,
     this.semanticLabel,
-  });
+  }) : assert(
+         label != '' || icon != null || builder != null,
+         'NocheSegmentOption requires a non-empty label, an icon, or a builder.',
+       ),
+       assert(
+         label != '' || semanticLabel != null,
+         'NocheSegmentOption requires semanticLabel when label is empty.',
+       );
 
   final T value;
   final String label;
+  final NocheIconData? icon;
+  final double iconSize;
+  final Widget Function(BuildContext context, Color color, bool selected)?
+  builder;
 
   /// Draws an unselected option in `label` colour (e.g. "Reading · A2" on `Noche-Palabras`).
   final bool muted;
   final String? semanticLabel;
 }
 
-/// Segmented control (`Noche-Yo.dc.html` minutes, `Noche-Palabras.dc.html` skills):
-/// panel fill, 1 px line border, radius 28, padding 4; options 48 high, radius 24;
-/// single `text`-filled thumb slides behind the labels in `move` on `travel`.
+/// Segmented control (`Noche-Yo.dc.html` minutes, `Noche-Palabras.dc.html` skills,
+/// `Noche-Lector-Aa.dc.html` line spacing): panel fill, 1 px line border,
+/// radius 28 with padding 4 (or compact radius 25 when `padding` is zero);
+/// options 48 high, radius 24; single `text`-filled thumb slides behind the
+/// labels/icons in `move` on `travel`.
 class NocheSegmented<T> extends StatefulWidget {
   const NocheSegmented({
     super.key,
@@ -711,6 +753,8 @@ class NocheSegmented<T> extends StatefulWidget {
     this.role = NocheSegmentedRole.radioGroup,
     this.semanticLabel,
     this.large = false,
+    this.padding = const EdgeInsetsDirectional.all(4),
+    this.backgroundColor = NocheColors.panel,
   });
 
   final List<NocheSegmentOption<T>> options;
@@ -721,6 +765,8 @@ class NocheSegmented<T> extends StatefulWidget {
 
   /// Uses 16 px label text (as on `Noche-Yo.dc.html` minutes) instead of 14 px.
   final bool large;
+  final EdgeInsetsDirectional padding;
+  final Color backgroundColor;
 
   @override
   State<NocheSegmented<T>> createState() => _NocheSegmentedState<T>();
@@ -795,6 +841,75 @@ class _NocheSegmentedState<T> extends State<NocheSegmented<T>>
   @override
   Widget build(BuildContext context) {
     final count = widget.options.length;
+    final compact = widget.padding == EdgeInsetsDirectional.zero;
+    final layout = LayoutBuilder(
+      builder: (context, constraints) {
+        final slotWidth = count == 0 ? 0.0 : constraints.maxWidth / count;
+        return Stack(
+          children: [
+            if (count > 0)
+              AnimatedBuilder(
+                animation: _controller,
+                builder: (context, _) {
+                  final motion = NocheMotion.of(context);
+                  final double pos;
+                  final double opacity;
+                  if (_reducedFade || motion.reduced) {
+                    pos = _toIndex;
+                    opacity = _reducedFade
+                        ? motion.enter.transform(_controller.value)
+                        : 1.0;
+                  } else {
+                    pos =
+                        ui.lerpDouble(
+                          _fromIndex,
+                          _toIndex,
+                          motion.travel.transform(_controller.value),
+                        ) ??
+                        _toIndex;
+                    opacity = 1.0;
+                  }
+                  return PositionedDirectional(
+                    start: pos * slotWidth,
+                    top: 0,
+                    width: slotWidth,
+                    height: NocheSize.touch,
+                    child: IgnorePointer(
+                      child: Opacity(
+                        opacity: opacity,
+                        child: DecoratedBox(
+                          key: const ValueKey('noche_segmented_thumb'),
+                          decoration: BoxDecoration(
+                            color: NocheColors.text,
+                            borderRadius: BorderRadius.circular(
+                              NocheSize.pillRadius,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            Row(
+              children: [
+                for (final option in widget.options)
+                  Expanded(
+                    child: _SegmentButton<T>(
+                      option: option,
+                      isSelected: option.value == widget.selected,
+                      role: widget.role,
+                      large: widget.large,
+                      onTap: () => widget.onChanged(option.value),
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+
     return Semantics(
       container: true,
       role: widget.role == NocheSegmentedRole.tabList
@@ -802,101 +917,36 @@ class _NocheSegmentedState<T> extends State<NocheSegmented<T>>
           : ui.SemanticsRole.radioGroup,
       label: widget.semanticLabel,
       child: Container(
-        padding: const EdgeInsetsDirectional.all(4),
+        padding: widget.padding,
         decoration: BoxDecoration(
-          color: NocheColors.panel,
+          color: widget.backgroundColor,
           border: Border.all(color: NocheColors.line, width: 1),
-          borderRadius: BorderRadius.circular(28),
+          borderRadius: BorderRadius.circular(
+            compact ? NocheSize.pillRadius + 1 : 28,
+          ),
         ),
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final slotWidth = count == 0 ? 0.0 : constraints.maxWidth / count;
-            return Stack(
-              children: [
-                if (count > 0)
-                  AnimatedBuilder(
-                    animation: _controller,
-                    builder: (context, _) {
-                      final motion = NocheMotion.of(context);
-                      final double pos;
-                      final double opacity;
-                      if (_reducedFade || motion.reduced) {
-                        pos = _toIndex;
-                        opacity = _reducedFade
-                            ? motion.enter.transform(_controller.value)
-                            : 1.0;
-                      } else {
-                        pos =
-                            ui.lerpDouble(
-                              _fromIndex,
-                              _toIndex,
-                              motion.travel.transform(_controller.value),
-                            ) ??
-                            _toIndex;
-                        opacity = 1.0;
-                      }
-                      return PositionedDirectional(
-                        start: pos * slotWidth,
-                        top: 0,
-                        width: slotWidth,
-                        height: NocheSize.touch,
-                        child: IgnorePointer(
-                          child: Opacity(
-                            opacity: opacity,
-                            child: DecoratedBox(
-                              key: const ValueKey('noche_segmented_thumb'),
-                              decoration: BoxDecoration(
-                                color: NocheColors.text,
-                                borderRadius: BorderRadius.circular(
-                                  NocheSize.pillRadius,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                Row(
-                  children: [
-                    for (final option in widget.options)
-                      Expanded(
-                        child: _SegmentButton(
-                          label: option.label,
-                          semanticLabel: option.semanticLabel ?? option.label,
-                          isSelected: option.value == widget.selected,
-                          muted: option.muted,
-                          role: widget.role,
-                          large: widget.large,
-                          onTap: () => widget.onChanged(option.value),
-                        ),
-                      ),
-                  ],
-                ),
-              ],
-            );
-          },
-        ),
+        child: compact
+            ? ClipRRect(
+                borderRadius: BorderRadius.circular(NocheSize.pillRadius),
+                child: layout,
+              )
+            : layout,
       ),
     );
   }
 }
 
-class _SegmentButton extends StatelessWidget {
+class _SegmentButton<T> extends StatelessWidget {
   const _SegmentButton({
-    required this.label,
-    required this.semanticLabel,
+    required this.option,
     required this.isSelected,
-    required this.muted,
     required this.role,
     required this.large,
     required this.onTap,
   });
 
-  final String label;
-  final String semanticLabel;
+  final NocheSegmentOption<T> option;
   final bool isSelected;
-  final bool muted;
   final NocheSegmentedRole role;
   final bool large;
   final VoidCallback onTap;
@@ -904,9 +954,10 @@ class _SegmentButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final motion = NocheMotion.of(context);
+    final hasLabel = option.label.isNotEmpty;
     final fg = isSelected
         ? NocheColors.ground
-        : (muted ? NocheColors.label : NocheColors.text);
+        : (option.muted ? NocheColors.label : NocheColors.text);
     final base = isSelected ? NocheType.buttonStrong : NocheType.button;
     final sizedBase = large ? base.copyWith(fontSize: 16) : base;
 
@@ -918,7 +969,7 @@ class _SegmentButton extends StatelessWidget {
       inMutuallyExclusiveGroup: role == NocheSegmentedRole.radioGroup,
       checked: role == NocheSegmentedRole.radioGroup ? isSelected : null,
       selected: role == NocheSegmentedRole.tabList ? isSelected : null,
-      label: semanticLabel,
+      label: option.semanticLabel ?? option.label,
       child: Pressable(
         onPressed: onTap,
         semanticsButton: false,
@@ -930,7 +981,9 @@ class _SegmentButton extends StatelessWidget {
             ),
             child: Container(
               height: NocheSize.touch,
-              padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
+              padding: EdgeInsetsDirectional.symmetric(
+                horizontal: hasLabel ? 8 : 0,
+              ),
               alignment: AlignmentDirectional.center,
               decoration: BoxDecoration(
                 color: Colors.transparent,
@@ -940,12 +993,47 @@ class _SegmentButton extends StatelessWidget {
                 tween: ColorTween(end: fg),
                 duration: motion.quick,
                 curve: motion.enter,
-                builder: (context, color, _) => Text(
-                  label,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: sizedBase.copyWith(color: color ?? fg),
-                ),
+                builder: (context, color, _) {
+                  final resolvedColor = color ?? fg;
+                  if (option.builder != null) {
+                    return option.builder!(context, resolvedColor, isSelected);
+                  }
+                  if (option.icon != null && !hasLabel) {
+                    return NocheIcon(
+                      option.icon!,
+                      size: option.iconSize,
+                      color: resolvedColor,
+                    );
+                  }
+                  if (option.icon != null && hasLabel) {
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        NocheIcon(
+                          option.icon!,
+                          size: option.iconSize,
+                          color: resolvedColor,
+                        ),
+                        const SizedBox(width: 6),
+                        Flexible(
+                          child: Text(
+                            option.label,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: sizedBase.copyWith(color: resolvedColor),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                  return Text(
+                    option.label,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: sizedBase.copyWith(color: resolvedColor),
+                  );
+                },
               ),
             ),
           ),
@@ -1441,6 +1529,7 @@ class _RenderSlidingMarkLayout extends RenderBox
 /// One option inside [NochePillGroup].
 class NochePillOption<T> {
   const NochePillOption({
+    this.key,
     required this.value,
     required this.label,
     this.leading,
@@ -1452,6 +1541,7 @@ class NochePillOption<T> {
     this.padding,
   });
 
+  final Key? key;
   final T value;
   final String label;
   final Widget? leading;
@@ -1596,7 +1686,8 @@ class _NochePillGroupState<T> extends State<NochePillGroup<T>>
                 ),
               ),
               for (final option in widget.options)
-                _PillGroupItem(
+                _PillGroupItem<T>(
+                  key: option.key,
                   option: option,
                   isSelected: option.value == widget.selected,
                   role: widget.role,
@@ -1613,6 +1704,7 @@ class _NochePillGroupState<T> extends State<NochePillGroup<T>>
 
 class _PillGroupItem<T> extends StatelessWidget {
   const _PillGroupItem({
+    super.key,
     required this.option,
     required this.isSelected,
     required this.role,

@@ -28,6 +28,7 @@ class NocheDashes extends StatelessWidget {
     required this.states,
     this.onLessonGround = false,
     this.gap = 4,
+    this.quickColorFade = false,
     this.semanticLabel,
   });
 
@@ -40,6 +41,7 @@ class NocheDashes extends StatelessWidget {
     int? currentIndex,
     bool onLessonGround = false,
     double gap = 4,
+    bool quickColorFade = false,
     String? semanticLabel,
   }) {
     final built = List<NocheDashState>.generate(count, (i) {
@@ -54,6 +56,7 @@ class NocheDashes extends StatelessWidget {
       states: built,
       onLessonGround: onLessonGround,
       gap: gap,
+      quickColorFade: quickColorFade,
       semanticLabel: semanticLabel,
     );
   }
@@ -61,6 +64,10 @@ class NocheDashes extends StatelessWidget {
   final List<NocheDashState> states;
   final bool onLessonGround;
   final double gap;
+
+  /// When `true`, every dash transitions its colour symmetrically on both fill
+  /// and empty in `quick` on `enter` without directional width-wipe motion.
+  final bool quickColorFade;
   final String? semanticLabel;
 
   @override
@@ -77,6 +84,7 @@ class NocheDashes extends StatelessWidget {
               key: ValueKey('noche_dash_$i'),
               state: states[i],
               notYetColor: notYetColor,
+              quickColorFade: quickColorFade,
             ),
           ),
         ],
@@ -92,10 +100,16 @@ class NocheDashes extends StatelessWidget {
 }
 
 class _NocheDash extends StatefulWidget {
-  const _NocheDash({super.key, required this.state, required this.notYetColor});
+  const _NocheDash({
+    super.key,
+    required this.state,
+    required this.notYetColor,
+    required this.quickColorFade,
+  });
 
   final NocheDashState state;
   final Color notYetColor;
+  final bool quickColorFade;
 
   @override
   State<_NocheDash> createState() => _NocheDashState();
@@ -121,6 +135,13 @@ class _NocheDashState extends State<_NocheDash>
   @override
   void didUpdateWidget(_NocheDash oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (widget.quickColorFade) {
+      if (_animatingToDone) {
+        _animatingToDone = false;
+        _controller.value = 1.0;
+      }
+      return;
+    }
     if (oldWidget.state != NocheDashState.done &&
         widget.state == NocheDashState.done) {
       final motion = NocheMotion.of(context);
@@ -147,15 +168,30 @@ class _NocheDashState extends State<_NocheDash>
 
   @override
   Widget build(BuildContext context) {
+    final targetColor = switch (widget.state) {
+      NocheDashState.done => NocheColors.text,
+      NocheDashState.current => NocheColors.next,
+      NocheDashState.notYet => widget.notYetColor,
+    };
+
+    if (widget.quickColorFade) {
+      final motion = NocheMotion.of(context);
+      return AnimatedContainer(
+        duration: motion.quick,
+        curve: motion.enter,
+        height: 8,
+        decoration: BoxDecoration(
+          color: targetColor,
+          borderRadius: BorderRadius.circular(4),
+        ),
+      );
+    }
+
     if (!_animatingToDone) {
       return Container(
         height: 8,
         decoration: BoxDecoration(
-          color: switch (widget.state) {
-            NocheDashState.done => NocheColors.text,
-            NocheDashState.current => NocheColors.next,
-            NocheDashState.notYet => widget.notYetColor,
-          },
+          color: targetColor,
           borderRadius: BorderRadius.circular(4),
         ),
       );
