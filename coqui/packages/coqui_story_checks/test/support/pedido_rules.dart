@@ -405,8 +405,9 @@ class PedidoRules {
     // 4. cocinero-head (top 14 drawn rows inside hatch hole projected from PedidoE.HATCH, 0 hid, 0 cov)
     final cocIdx = items.indexWhere((it) => it.tag == 'persona:cocinero');
     if (cocIdx >= 0) {
-      final hatch = _cachedHatch ??= (_m.places.hatchBounds as List)
-          .cast<double>();
+      final hatch = _cachedHatch ??= [
+        for (final v in _m.places.hatchBounds as List) (v as num).toDouble(),
+      ];
       final coc = items[cocIdx];
       final ink = coc.ink;
       if (ink != null) {

@@ -1,30 +1,36 @@
 // El pedido's props, cat, board pictures, plates, drinks, FX, and sprite sheet list (part of pedido_sprites.dart).
 part of 'pedido_sprites.dart';
 
+final List<int> _platanoRamp = _ramp(const ['#3E7A2A', '#58A03C', '#88C860']);
+final List<int> _carneRamp = _ramp(const ['#6A2A12', '#8A4212', '#B8601C']);
+final List<int> _pescadoRamp = _ramp(const ['#6E7E96', '#98A8BE', '#C8D4E4']);
+final List<int> _tostonRamp = _ramp(const ['#C8861C', '#F6D060']);
+final List<int> _mofongoRamp = _ramp(const ['#A8782C', '#D8AC58', '#F0D088']);
+
 Sprite _mkCocineroProp(String prop) => _mk(14, 14, (b) {
   switch (prop) {
     case 'platano':
-      b.cap(4, 2, 10, 11, 1.8, _ramp(const ['#3E7A2A', '#58A03C', '#88C860']));
+      b.cap(4, 2, 10, 11, 1.8, _platanoRamp);
     case 'tres_platanos':
       for (final x in const [3.5, 7.0, 10.5]) {
-        b.cap(7, 2, x, 12, 1.4, _ramp(const ['#3E7A2A', '#58A03C', '#88C860']));
+        b.cap(7, 2, x, 12, 1.4, _platanoRamp);
       }
       b.rect(3, 6, 8, 2, _h('#D0403A'));
     case 'sarten':
       b.ell(6, 8, 4.5, 3, _ramp(const ['#3A3A44', '#5A5A68', '#7A7A8A']));
       b.rect(10, 7, 4, 2, _h('#5A3A1E'));
-      b.ell(6, 7.5, 2.4, 1.4, _ramp(const ['#C8861C', '#F6D060']));
+      b.ell(6, 7.5, 2.4, 1.4, _tostonRamp);
     case 'prensa':
       b.rect(2, 9, 10, 3, _h('#A8682C'));
       b.rect(2, 4, 10, 3, _h('#C8853C'));
       b.rect(1, 5, 2, 6, _h('#7A4A1E'));
-      b.ell(7, 8, 2.2, 1, _ramp(const ['#C8861C', '#F6D060']));
+      b.ell(7, 8, 2.2, 1, _tostonRamp);
     case 'pilon':
       b.rect(4, 6, 6, 6, _h('#A8682C'));
       b.rect(3, 5, 8, 2, _h('#C8853C'));
       b.rect(5, 11, 4, 2, _h('#7A4A1E'));
       b.cap(7, 5, 10, 1, 1.2, _ramp(const ['#B87A3C', '#DFAA68']));
-      b.ell(7, 5, 2.4, 1.2, _ramp(const ['#C8861C', '#F6D060']));
+      b.ell(7, 5, 2.4, 1.2, _tostonRamp);
   }
 });
 
@@ -85,11 +91,11 @@ void _drawPicDish(Buf b, String kind) {
       }
     case 'carne':
       b.ell(7, 7, 5.6, 3, _PLATE);
-      b.ell(5.4, 6.2, 2, 1.6, _ramp(const ['#6A2A12', '#8A4212', '#B8601C']));
-      b.ell(8.6, 6.6, 2, 1.6, _ramp(const ['#6A2A12', '#8A4212', '#B8601C']));
+      b.ell(5.4, 6.2, 2, 1.6, _carneRamp);
+      b.ell(8.6, 6.6, 2, 1.6, _carneRamp);
     case 'pescado':
       b.ell(7, 7, 5.6, 3, _PLATE);
-      b.ell(6.2, 6.4, 3.4, 1.5, _ramp(const ['#6E7E96', '#98A8BE', '#C8D4E4']));
+      b.ell(6.2, 6.4, 3.4, 1.5, _pescadoRamp);
       b.line(9, 6, 11, 4.5, _h('#98A8BE'));
       b.line(9, 7, 11, 8, _h('#98A8BE'));
       b.px(4, 6, _h('#20140A'));
@@ -101,24 +107,24 @@ void _drawPicDish(Buf b, String kind) {
       b.px(9, 6, _h('#D0403A'));
     case 'carne_tostones' || 'ct':
       b.ell(7, 7, 5.6, 3, _PLATE);
-      b.ell(4.8, 6.2, 2, 1.6, _ramp(const ['#6A2A12', '#8A4212', '#B8601C']));
+      b.ell(4.8, 6.2, 2, 1.6, _carneRamp);
       for (final x in const [8.0, 10.0]) {
-        b.ell(x, 6.4, 1.3, 1, _ramp(const ['#C8861C', '#F6D060']));
+        b.ell(x, 6.4, 1.3, 1, _tostonRamp);
       }
     case 'carne_mofongo' || 'cm':
       b.ell(7, 7, 5.6, 3, _PLATE);
-      b.ell(4.8, 6.2, 2, 1.6, _ramp(const ['#6A2A12', '#8A4212', '#B8601C']));
-      b.ell(9.2, 5.6, 2.2, 2.2, _ramp(const ['#A8782C', '#D8AC58', '#F0D088']));
+      b.ell(4.8, 6.2, 2, 1.6, _carneRamp);
+      b.ell(9.2, 5.6, 2.2, 2.2, _mofongoRamp);
     case 'pescado_tostones' || 'pt':
       b.ell(7, 7, 5.6, 3, _PLATE);
-      b.ell(4.8, 6.4, 2.6, 1.3, _ramp(const ['#6E7E96', '#98A8BE', '#C8D4E4']));
+      b.ell(4.8, 6.4, 2.6, 1.3, _pescadoRamp);
       for (final x in const [8.5, 10.5]) {
-        b.ell(x, 6.4, 1.3, 1, _ramp(const ['#C8861C', '#F6D060']));
+        b.ell(x, 6.4, 1.3, 1, _tostonRamp);
       }
     case 'pescado_mofongo' || 'pm':
       b.ell(7, 7, 5.6, 3, _PLATE);
-      b.ell(4.8, 6.4, 2.6, 1.3, _ramp(const ['#6E7E96', '#98A8BE', '#C8D4E4']));
-      b.ell(9.2, 5.6, 2.2, 2.2, _ramp(const ['#A8782C', '#D8AC58', '#F0D088']));
+      b.ell(4.8, 6.4, 2.6, 1.3, _pescadoRamp);
+      b.ell(9.2, 5.6, 2.2, 2.2, _mofongoRamp);
     case 'refresco':
       b.rect(6, 2, 3, 3, _h('#B8402A'));
       b.rect(5, 5, 5, 6, _h('#B8402A'));
@@ -173,10 +179,10 @@ Sprite mkPlato(String kind) => _mk(14, 8, (b) {
     case 'sopa':
       b.ell(7, 3.8, 4, 1.6, _ramp(const ['#E87830', '#F6A050']));
     case 'carne':
-      b.ell(5, 3.6, 2.2, 1.5, _ramp(const ['#6A2A12', '#8A4212', '#B8601C']));
-      b.ell(9, 3.8, 2.2, 1.5, _ramp(const ['#6A2A12', '#8A4212', '#B8601C']));
+      b.ell(5, 3.6, 2.2, 1.5, _carneRamp);
+      b.ell(9, 3.8, 2.2, 1.5, _carneRamp);
     case 'pescado':
-      b.ell(6.5, 3.8, 3.8, 1.5, _ramp(const ['#6E7E96', '#98A8BE', '#C8D4E4']));
+      b.ell(6.5, 3.8, 3.8, 1.5, _pescadoRamp);
       b.line(10, 3, 12, 1.5, _h('#98A8BE'));
       b.line(10, 4, 12, 5.5, _h('#98A8BE'));
     case 'ensalada':
@@ -186,24 +192,24 @@ Sprite mkPlato(String kind) => _mk(14, 8, (b) {
       b.px(9, 4, _h('#D0403A'));
     case 'tostones':
       for (final (x, y) in const [(4.2, 3.7), (7.0, 3.2), (9.8, 3.7)]) {
-        b.ell(x, y, 1.6, 1.1, _ramp(const ['#C8861C', '#F6D060']));
+        b.ell(x, y, 1.6, 1.1, _tostonRamp);
       }
     case 'mofongo':
-      b.ell(7, 3.0, 3.0, 2.4, _ramp(const ['#A8782C', '#D8AC58', '#F0D088']));
+      b.ell(7, 3.0, 3.0, 2.4, _mofongoRamp);
     case 'carne_tostones':
-      b.ell(4.6, 3.6, 2.0, 1.4, _ramp(const ['#6A2A12', '#8A4212', '#B8601C']));
-      b.ell(8.2, 3.8, 1.3, 1.0, _ramp(const ['#C8861C', '#F6D060']));
-      b.ell(10.2, 3.5, 1.3, 1.0, _ramp(const ['#C8861C', '#F6D060']));
+      b.ell(4.6, 3.6, 2.0, 1.4, _carneRamp);
+      b.ell(8.2, 3.8, 1.3, 1.0, _tostonRamp);
+      b.ell(10.2, 3.5, 1.3, 1.0, _tostonRamp);
     case 'carne_mofongo':
-      b.ell(4.6, 3.6, 2.0, 1.4, _ramp(const ['#6A2A12', '#8A4212', '#B8601C']));
-      b.ell(9.2, 3.1, 2.2, 2.0, _ramp(const ['#A8782C', '#D8AC58', '#F0D088']));
+      b.ell(4.6, 3.6, 2.0, 1.4, _carneRamp);
+      b.ell(9.2, 3.1, 2.2, 2.0, _mofongoRamp);
     case 'pescado_tostones':
-      b.ell(4.8, 3.8, 2.6, 1.2, _ramp(const ['#6E7E96', '#98A8BE', '#C8D4E4']));
-      b.ell(8.6, 3.8, 1.3, 1.0, _ramp(const ['#C8861C', '#F6D060']));
-      b.ell(10.6, 3.5, 1.3, 1.0, _ramp(const ['#C8861C', '#F6D060']));
+      b.ell(4.8, 3.8, 2.6, 1.2, _pescadoRamp);
+      b.ell(8.6, 3.8, 1.3, 1.0, _tostonRamp);
+      b.ell(10.6, 3.5, 1.3, 1.0, _tostonRamp);
     case 'pescado_mofongo':
-      b.ell(4.8, 3.8, 2.6, 1.2, _ramp(const ['#6E7E96', '#98A8BE', '#C8D4E4']));
-      b.ell(9.2, 3.1, 2.2, 2.0, _ramp(const ['#A8782C', '#D8AC58', '#F0D088']));
+      b.ell(4.8, 3.8, 2.6, 1.2, _pescadoRamp);
+      b.ell(9.2, 3.1, 2.2, 2.0, _mofongoRamp);
   }
 });
 
@@ -217,13 +223,7 @@ Sprite mkPlatito(int rounds) {
     } else {
       const pts = [(3.6, 3.7), (6.0, 3.2), (8.4, 3.7)];
       for (var i = 0; i < n; i++) {
-        b.ell(
-          pts[i].$1,
-          pts[i].$2,
-          1.5,
-          1,
-          _ramp(const ['#C8861C', '#F6D060']),
-        );
+        b.ell(pts[i].$1, pts[i].$2, 1.5, 1, _tostonRamp);
       }
     }
   });

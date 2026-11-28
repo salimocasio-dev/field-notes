@@ -288,12 +288,25 @@ extension _PedidoActs on Pedido {
           }
         }
         rep[0] = null;
+        final alt = cuadros.firstWhere(
+          (d) => d != dish,
+          orElse: () => 'carne_mofongo',
+        );
+        await _remakePlate88(alt);
       }
     }),
     'platanos': (o) => _run(o, () async {
+      final prev = _n(W['platanos']);
+      final next = _n(o['n']).clamp(0, 3);
       W['platanosVis'] = 1;
-      W['platanos'] = _n(o['n']).clamp(0, 3);
-      await wait(120);
+      W['platanos'] = next;
+      if (prev > next) {
+        final cuadros = (W['cuadros'] as List?)?.cast<String>() ?? const [];
+        final dish = cuadros.isNotEmpty ? cuadros.first : 'carne_tostones';
+        await _remakePlate88(dish);
+      } else {
+        await wait(120);
+      }
     }),
     'final88': (o) => _run(o, () async {
       final n = _n(o['n']).clamp(1, 3);
@@ -537,4 +550,20 @@ extension _PedidoActs on Pedido {
       await wait(200);
     },
   };
+
+  Future<void> _remakePlate88(String dish) async {
+    final rep = W['repisa'] as List<String?>;
+    W['cocineroProp'] = 'platano';
+    await wait(110);
+    W['cocineroProp'] = 'sarten';
+    W['llamaFx'] = 1;
+    await wait(120);
+    W['llamaFx'] = 0;
+    W['cocineroProp'] = null;
+    rep[0] = dish;
+    W['campanaFx'] = 1;
+    await wait(110);
+    W['campanaFx'] = 0;
+    rep[0] = null;
+  }
 }
