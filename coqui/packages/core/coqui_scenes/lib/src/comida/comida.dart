@@ -36,6 +36,16 @@ int _n(Object? v) {
   return 0;
 }
 
+/// Which soup bowls (`0: abuela`, `1: abuelo`, `2: luis`) are still steaming when [hotCount] remain hot:
+/// at 2 (`c91_f2`: "La sopa de abuelo está fría.") abuelo's bowl cools first; at 1 (`c91_f1`: "Dos sopas están
+/// frías.", abuela shares hers with Luis) both abuelo's and Luis's have cooled.
+bool _sopaHot(int index, int hotCount) => switch (hotCount) {
+  >= 3 => true,
+  2 => index != 1,
+  1 => index == 0,
+  _ => false,
+};
+
 /// One sprite of the sprite layer, placed: its picture, its top left on the 240 × 216 picture, the screen row of its
 /// anchor and the depth there (front.plane), and who or what it is.
 class ComidaItem {
@@ -419,7 +429,7 @@ class Comida extends Escena implements SetScene, SetOverSprites {
       final spots = _p.group('sopas');
       for (var i = 0; i < spots.length; i++) {
         final spot = spots[i];
-        final isHot = i < hot;
+        final isHot = _sopaHot(i, hot);
         final at = _p.at(spot);
         final sx = _round(at.sx), sy = _round(at.sy);
         final s = _spr('cm_sopa_$isHot', () => mkSopa(caliente: isHot));
@@ -1240,11 +1250,11 @@ class Comida extends Escena implements SetScene, SetOverSprites {
       final n = _n(o['n']).clamp(0, 3);
       W['sopasVis'] = 1;
       W['sopas'] = n;
-      // Put down spoons for bowls that stopped steaming (index >= n among abuela, abuelo, luis)
+      // Put down spoons for bowls that stopped steaming (abuelo cools first at n=2, luis second at n=1)
       const who = ['abuela', 'abuelo', 'luis'];
       for (var i = 0; i < who.length; i++) {
         final p = _personOf(who[i]);
-        if (p != null && i >= n) p['cuchara'] = 0;
+        if (p != null && !_sopaHot(i, n)) p['cuchara'] = 0;
       }
       await wait(160);
     }),
@@ -1259,7 +1269,7 @@ class Comida extends Escena implements SetScene, SetOverSprites {
       const who = ['abuela', 'abuelo', 'luis'];
       for (var i = 0; i < who.length; i++) {
         final p = _personOf(who[i]);
-        if (p != null) p['cuchara'] = i < n ? 1 : 0;
+        if (p != null) p['cuchara'] = _sopaHot(i, n) ? 1 : 0;
       }
       await wait(320);
     }),

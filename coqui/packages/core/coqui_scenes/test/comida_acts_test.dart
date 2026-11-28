@@ -319,4 +319,50 @@ void main() {
     expect(host.W['twinkle'], 'sal');
     expect(jsTruthy(host.W['cq']['vis']), isTrue);
   });
+
+  test(
+    'falta-algo cools abuelo first (n=2) and leaves only abuela hot (n=1)',
+    () async {
+      final story = jsonDecode(
+        File('test/support/fixtures/comida/falta-algo.json').readAsStringSync(),
+      ) as Map<String, dynamic>;
+      final scene = createComida() as Comida;
+      final frame = StillFrame(scene);
+      final host = frame.host;
+      host.S = story;
+      host.W = {...host.W, ...scene.fresh(story)};
+
+      await scene.acts['sopas']!({'n': 3});
+      for (final who in const ['abuela', 'abuelo', 'luis']) {
+        await scene.acts['gesto']!({'quien': who, 'que': 'cuchara'});
+      }
+      Set<String> steamTags() => {
+        for (final it in scene.items(host.W, 0))
+          if (it.tag != null && it.tag!.startsWith('fx:vapor_sopa')) it.tag!,
+      };
+      Map<String, dynamic> g(String who) =>
+          (host.W['gente'] as Map<String, dynamic>)[who]
+              as Map<String, dynamic>;
+
+      expect(steamTags(), const {
+        'fx:vapor_sopa1',
+        'fx:vapor_sopa2',
+        'fx:vapor_sopa3',
+      });
+
+      // 1 miss -> abuelo's bowl (sopa2) cools and his spoon goes down
+      await scene.acts['sopas']!({'n': 2});
+      expect(steamTags(), const {'fx:vapor_sopa1', 'fx:vapor_sopa3'});
+      expect(g('abuela')['cuchara'], 1);
+      expect(g('abuelo')['cuchara'], 0);
+      expect(g('luis')['cuchara'], 1);
+
+      // 2 misses -> abuelo's and Luis's bowls cool; only abuela's steams
+      await scene.acts['final91']!({'n': 1});
+      expect(steamTags(), const {'fx:vapor_sopa1'});
+      expect(g('abuela')['cuchara'], 1);
+      expect(g('abuelo')['cuchara'], 0);
+      expect(g('luis')['cuchara'], 0);
+    },
+  );
 }

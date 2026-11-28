@@ -39,7 +39,7 @@ class ComidaRules {
 
   static final Map<String, Float32List> _zb = {};
   static final Map<String, SetBakes> _bakes = {};
-  static Set<int>? _potPixels;
+  static final Map<String, Set<int>> _potPixels = {};
 
   Float32List _zbOf(String key) => _zb['${scene.id}:$key'] ??= () {
     final bakes = _bakes[scene.id] ??= SetBakes(scene);
@@ -47,29 +47,30 @@ class ComidaRules {
     return Float32List.fromList(baked.zb);
   }();
 
-  /// Exact pixel indices of the big pot inside `olla` box [30, 56, 21, 16]: pixels whose baked set colour is NOT the
-  /// beige serving tablecloth and whose depth is on the pot (`zb > 1.95` or in the pot's upper rim/handles).
-  Set<int> _potMask(String key, List<int> ollaBox) => _potPixels ??= () {
-    final bakes = _bakes[scene.id] ??= SetBakes(scene);
-    final baked = bakes.bakeKey(key);
-    final pix = baked.pix;
-    final zb = baked.zb;
-    final out = <int>{};
-    for (var y = ollaBox[1]; y < ollaBox[1] + ollaBox[3]; y++) {
-      for (var x = ollaBox[0]; x < ollaBox[0] + ollaBox[2]; x++) {
-        final i = y * 240 + x;
-        // Serving table top is at z=0.74 (warm beige tablecloth: r > 170, g > 150, b > 100);
-        // pot body is dark grey/blue-grey (r < 120), handles dark (r < 90), rice top yellow (b < 120, y <= 63).
-        final c = pix[i];
-        final r = c & 0xFF, g = (c >> 8) & 0xFF, b = (c >> 16) & 0xFF;
-        final isCloth = r > 155 && g > 135 && b > 95 && y >= 62;
-        if (zb[i] > 1.85 && !isCloth) {
-          out.add(i);
+  /// Exact pixel indices of the pot inside `olla` box [30, 56, 21, 16], keyed by set state:
+  /// on each row y, the serving table's top plane (z = 0.74) has depth `d_table(y) = v(y, 0.74) * COS + 0.74 * 0.5`;
+  /// any pixel rising above the table top (z > 0.74) has `zb > d_table(y) + 0.05`.
+  Set<int> _potMask(String key, List<int> ollaBox) =>
+      _potPixels['${scene.id}:$key'] ??= () {
+        final bakes = _bakes[scene.id] ??= SetBakes(scene);
+        final baked = bakes.bakeKey(key);
+        final zb = baked.zb;
+        final e = scene.projection;
+        const tableZ = 0.74;
+        final out = <int>{};
+        for (var y = ollaBox[1]; y < ollaBox[1] + ollaBox[3]; y++) {
+          final vTable =
+              (y + 0.5 - e.OY + tableZ * e.COS * e.S) / (e.S * e.SIN);
+          final dTable = vTable * e.COS + tableZ * 0.5;
+          for (var x = ollaBox[0]; x < ollaBox[0] + ollaBox[2]; x++) {
+            final i = y * 240 + x;
+            if (zb[i] > dTable + 0.05) {
+              out.add(i);
+            }
+          }
         }
-      }
-    }
-    return out;
-  }();
+        return out;
+      }();
 
   final List<ComidaBreach> breaches = [];
   int checked = 0;
@@ -201,7 +202,9 @@ class ComidaRules {
       ..write('|')
       ..write(setKey)
       ..write('|')
-      ..write(story);
+      ..write(story)
+      ..write('|')
+      ..write(W['estacionVis']);
     for (final k in const [
       'abuela',
       'abuelo',
@@ -573,7 +576,8 @@ class ComidaRules {
     for (final it in items) {
       if (it.tag == null || it.ink == null) continue;
       if (it.tag == 'coqui') {
-        final fb = scene.host.frogBox(cq!);
+        if (cq == null) continue;
+        final fb = scene.host.frogBox(cq);
         chars.add((tag: 'coqui', sx: fb.x + fb.w / 2, sy: it.sy, width: 32.0));
       } else if (it.tag == 'persona:perro') {
         chars.add((
