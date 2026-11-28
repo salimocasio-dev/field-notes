@@ -1,0 +1,703 @@
+{
+ "id": "bienvenidos",
+ "title": "Bienvenidos",
+ "place": "La fonda",
+ "scene": "entrada",
+ "next": "esta-libre",
+ "goal": "Lead the family into the fonda to the table with the flowers and the star card: when the mesera calls them on they hop up to her, when she says to wait a moment they wait on the bench, and every time the frog does the other the people behind them get the best table that is left.",
+ "stake": {
+  "thing": "mesas",
+  "steps": 3
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "fonda",
+  "mesera",
+  "bienvenido",
+  "adelante",
+  "un momento"
+ ],
+ "formas_foco": {
+  "bienvenido": [
+   "bienvenidos"
+  ]
+ },
+ "back_again": [
+  "buenas tardes",
+  "hola",
+  "tengo hambre",
+  "familia",
+  "gente",
+  "mucho",
+  "hay",
+  "espera",
+  "va",
+  "vamos",
+  "aquí",
+  "cuatro",
+  "por favor",
+  "sí",
+  "mira"
+ ],
+ "also_heard": [
+  "comemos",
+  "son",
+  "somos",
+  "tienen"
+ ],
+ "names": {
+  "abuela": "abuela",
+  "abuelo": "n_abuelo",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui",
+  "senor": "b_n_senor",
+  "senora": "b_n_senora",
+  "hombre": "b_n_hombre",
+  "mujer": "b_n_mujer"
+ },
+ "palabras": {
+  "momento": "un momento"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "b_n_hombre": {
+   "who": "narr",
+   "text": "Es un hombre."
+  },
+  "b_n_mujer": {
+   "who": "narr",
+   "text": "Es una mujer."
+  },
+  "c84_ab_mira": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Mira, Coquí: la fonda. Aquí comemos."
+  },
+  "c84_me_hola": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: ¡Hola! ¡Bienvenidos!"
+  },
+  "c84_cq_tardes": {
+   "who": "tu",
+   "text": "¡Buenas tardes!",
+   "tu_turno": [
+    {
+     "palabra": "buenas tardes",
+     "formas": [
+      "buenas tardes"
+     ]
+    }
+   ]
+  },
+  "c84_donde_mesera": {
+   "who": "narr",
+   "text": "¿Dónde está la mesera de la fonda?"
+  },
+  "c84_donde_espera": {
+   "who": "narr",
+   "text": "¿Dónde espera Coquí un momento?"
+  },
+  "c84_abo_momento": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Un momento, Coquí. Espera aquí."
+  },
+  "c84_me_adelante": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: ¡Adelante!"
+  },
+  "c84_ab_adelante": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Adelante, Coquí. Vamos."
+  },
+  "c84_donde_adelante": {
+   "who": "narr",
+   "text": "¡Adelante! ¿A dónde va Coquí?"
+  },
+  "c84_me_bienvenido": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: Bienvenido, Coquí. ¿Cuántos son?"
+  },
+  "c84_ab_somos": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Somos cuatro... y Coquí."
+  },
+  "c84_me_gente": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: Un momento. Hay mucha gente."
+  },
+  "c84_pf_adelante": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: ¡Adelante, por favor!"
+  },
+  "c84_pf_momento": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: Un momento, por favor."
+  },
+  "c84_no_adelante": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: ¡No, Coquí! ¡Adelante!"
+  },
+  "c84_no_momento": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: ¡No, Coquí! ¡Un momento!"
+  },
+  "c84_me_bienvenidos": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: Bienvenidos. ¿Tienen hambre?"
+  },
+  "c42_cq_tengo_hambre": {
+   "who": "tu",
+   "text": "¡Sí, tengo hambre!",
+   "tu_turno": [
+    {
+     "palabra": "tengo hambre",
+     "formas": [
+      "tengo hambre",
+      "sí tengo hambre"
+     ]
+    }
+   ]
+  },
+  "c84_fin": {
+   "who": "narr",
+   "text": "La familia está en la fonda. Y Coquí tiene hambre."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "ocaso",
+    "cuerda": "puesta"
+   }
+  },
+  {
+   "act": "mesas84",
+   "n": 3
+  },
+  {
+   "act": "ir",
+   "a": "felpudo"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "set": {
+    "twinkle": "mesa3"
+   }
+  },
+  {
+   "wait": 600
+  },
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "senala",
+   "a": "mesa3"
+  },
+  "c84_ab_mira",
+  {
+   "act": "gesto",
+   "quien": "mesera",
+   "que": "saluda",
+   "suelto": 1
+  },
+  "c84_me_hola",
+  {
+   "act": "ya"
+  },
+  "c84_cq_tardes",
+  {
+   "ask": "mesera",
+   "lead": [],
+   "line": "c84_donde_mesera",
+   "then": [],
+   "after": [
+    {
+     "act": "gesto",
+     "quien": "mesera",
+     "que": "reverencia"
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "pasa84",
+   "que": "platos",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "mesera",
+   "que": "mano"
+  },
+  "c84_pf_momento",
+  {
+   "ask": "banco",
+   "lead": [],
+   "line": "c84_donde_espera",
+   "then": [],
+   "after": [
+    {
+     "act": "ir",
+     "a": "banco_coqui"
+    }
+   ]
+  },
+  {
+   "act": "ya"
+  },
+  "c84_abo_momento",
+  {
+   "dots": 3
+  },
+  {
+   "act": "gesto",
+   "quien": "mesera",
+   "que": "pasa"
+  },
+  "c84_me_adelante",
+  "c84_ab_adelante",
+  {
+   "ask": "mesera",
+   "lead": [],
+   "line": "c84_donde_adelante",
+   "then": [],
+   "after": [
+    {
+     "act": "avanza84",
+     "tramo": "a",
+     "ok": 1
+    }
+   ]
+  },
+  "c84_me_bienvenido",
+  "c84_ab_somos",
+  {
+   "dots": 4
+  },
+  {
+   "act": "gesto",
+   "quien": "mesera",
+   "que": "lista"
+  },
+  "c84_me_gente",
+  {
+   "act": "ir",
+   "a": "felpudo"
+  },
+  {
+   "act": "llega",
+   "quien": "abuela",
+   "a": "puerta1",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "abuelo",
+   "a": "puerta2",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "luis",
+   "a": "puerta3",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "carmen",
+   "a": "puerta4",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "gesto",
+   "quien": "senor",
+   "que": "mira",
+   "a": "mesa3"
+  },
+  {
+   "act": "gesto",
+   "quien": "senora",
+   "que": "mira",
+   "a": "mesa3"
+  },
+  {
+   "act": "gesto",
+   "quien": "mesera",
+   "que": "lista"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "da",
+   "options": [
+    "adelante",
+    "momento"
+   ]
+  },
+  {
+   "calc": "pa",
+   "cond": "da=adelante",
+   "then": "mesera",
+   "else": "banco"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "mesera",
+    "banco"
+   ],
+   "pick": "$pa",
+   "tests": "$da",
+   "lock": true,
+   "lead": [],
+   "line": "c84_pf_$da",
+   "right": [
+    {
+     "if": "da=adelante",
+     "then": [
+      {
+       "act": "avanza84",
+       "tramo": "a",
+       "ok": 1
+      }
+     ],
+     "else": [
+      {
+       "act": "espera84",
+       "tramo": "a",
+       "ok": 1
+      }
+     ]
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "if": "da=adelante",
+     "then": [
+      {
+       "act": "espera84",
+       "tramo": "a",
+       "ok": 0
+      }
+     ],
+     "else": [
+      {
+       "act": "avanza84",
+       "tramo": "a",
+       "ok": 0
+      }
+     ]
+    },
+    "c84_no_$da",
+    {
+     "calc": "ma",
+     "cond": "lost=0",
+     "then": "2",
+     "else": "1"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "if": "ma=2",
+     "then": [
+      {
+       "act": "mesas84",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "mesas84",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "act": "llega",
+   "quien": "mesera",
+   "a": "tras_cuerda"
+  },
+  {
+   "if": "lost=0",
+   "then": [],
+   "else": [
+    {
+     "act": "llega",
+     "quien": "hombre",
+     "a": "cola1",
+     "suelto": 1
+    },
+    {
+     "act": "llega",
+     "quien": "mujer",
+     "a": "cola2",
+     "suelto": 1
+    },
+    {
+     "act": "ya"
+    }
+   ]
+  },
+  {
+   "draw": "db",
+   "options": [
+    "adelante",
+    "momento"
+   ]
+  },
+  {
+   "calc": "pb",
+   "cond": "db=adelante",
+   "then": "mesera",
+   "else": "banco"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "mesera",
+    "banco"
+   ],
+   "pick": "$pb",
+   "tests": "$db",
+   "lock": true,
+   "lead": [],
+   "line": "c84_pf_$db",
+   "right": [
+    {
+     "if": "db=adelante",
+     "then": [
+      {
+       "act": "avanza84",
+       "tramo": "b",
+       "ok": 1
+      }
+     ],
+     "else": [
+      {
+       "act": "espera84",
+       "tramo": "b",
+       "ok": 1
+      }
+     ]
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    },
+    {
+     "set": {
+      "cuerda": "abierta"
+     }
+    }
+   ],
+   "wrong": [
+    {
+     "if": "db=adelante",
+     "then": [
+      {
+       "act": "espera84",
+       "tramo": "b",
+       "ok": 0
+      }
+     ],
+     "else": [
+      {
+       "act": "avanza84",
+       "tramo": "b",
+       "ok": 0
+      }
+     ]
+    },
+    "c84_no_$db",
+    {
+     "calc": "mb",
+     "cond": "lost=0",
+     "then": "2",
+     "else": "1"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "if": "mb=2",
+     "then": [
+      {
+       "act": "mesas84",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "mesas84",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final84",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final84",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final84",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 9
+  },
+  "c84_me_bienvenidos",
+  "c42_cq_tengo_hambre",
+  "c84_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c84_ab_mira",
+  "c84_me_hola",
+  "c84_cq_tardes",
+  "c84_donde_mesera",
+  "c84_pf_momento",
+  "c84_donde_espera",
+  "c84_abo_momento",
+  "c84_me_adelante",
+  "c84_ab_adelante",
+  "c84_donde_adelante",
+  "c84_me_bienvenido",
+  "c84_ab_somos",
+  "c84_me_gente",
+  "c84_pf_adelante",
+  "c84_pf_momento",
+  "c84_me_bienvenidos",
+  "c42_cq_tengo_hambre",
+  "c84_fin"
+ ]
+}
