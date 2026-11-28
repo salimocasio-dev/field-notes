@@ -343,6 +343,36 @@ Sprite mkPerroNariz() => _mk(10, 8, (b) {
   b.rect(4, 2, 2, 2, _h('#241610'));
 });
 
+/// 30 x 26 Canelo rearing on hind legs with front paws up on the table (`perro106`).
+Sprite mkPerroMesa(bool mouthOpen) {
+  final t = _ramp(const ['#8A5A2A', '#B07A3C', '#D09A54', '#E8BE80']);
+  final out = _h('#221414');
+  return _mk(30, 26, (b) {
+    // Wagging tail and planted hind legs
+    b.cap(8, 19, 4, mouthOpen ? 16 : 14, 1.4, [t[1]]);
+    b.ell(12, 18, 5.5, 5.0, t);
+    b.rect(9, 20, 2, 5, t[0]);
+    b.rect(13, 20, 2, 5, t[2]);
+    // Upright chest leaning toward the table, with both front paws raised
+    b.ell(16, 12, 4.2, 4.6, t);
+    b.cap(17, 10, 22, 6, 1.4, [t[1]]);
+    b.cap(19, 12, 24, 7, 1.4, [t[2]]);
+    b.rect(21, 5, 3, 2, t[3]);
+    b.rect(23, 6, 3, 2, t[3]);
+    // Head with red collar, ears, eye, nose, and optional eager bark
+    b.rect(14, 7, 5, 2, _h('#D84848'));
+    b.ell(18, 4, 4.4, 3.8, t);
+    b.ell(22, 5, 2.6, 1.8, [t[3]]);
+    b.cap(15, 2, 14, 6, 1.3, [t[0]]);
+    b.cap(19, 1, 20, 0, 1.2, [t[0]]);
+    b.px(19, 3, out);
+    b.px(24, 4, out);
+    if (mouthOpen) {
+      b.rect(21, 6, 3, 2, _h('#7A1C1C'));
+    }
+  });
+}
+
 /// 14 x 10 open newspaper for abuelo sleeping (`levantados107`) or folding (`dobla`).
 Sprite mkPeriodico() => _mk(14, 10, (b) {
   b.rect(1, 1, 12, 8, _h('#F4F0E4'));
@@ -400,6 +430,7 @@ List<(String, Sprite)> nocheSpritesSheet() => [
   ),
   ('perro_eat', mkPerro('eat', false)),
   ('perro_sit', mkPerro('sit', false)),
+  ('perro_mesa', mkPerroMesa(false)),
   ('jugo', mkJugo()),
   ('flan', mkFlan()),
   ('queso', mkQueso()),

@@ -396,6 +396,10 @@ class Noche extends Escena implements SetScene, SetOverSprites {
   ) {
     if (id == 'perro') {
       final pose = (p['pose'] as String?) ?? 'eat';
+      if (pose == 'mesa') {
+        final s = _spr('no_perro_mesa_${a % 2}', () => mkPerroMesa(a % 2 == 1));
+        return (s: s, ax: 15, ay: nocheInkBottom(s), lying: false, lyingZ: 0.0);
+      }
       final mp = switch (pose) {
         'bark' => 'bark',
         'sit' => 'sit',
@@ -1088,22 +1092,13 @@ class Noche extends Escena implements SetScene, SetOverSprites {
         return [b[0].toInt() + 14, b[1].toInt() + 18, 20, 12];
       },
     ),
-    // Furniture targets for 106 & 107 (`mesa`, `aparador`, `cama`, `sofa`)
-    Thing(
-      id: 'mesa',
-      si: (w) => _n(w['mesa']) == 1,
-      box: (w) => _p.box('mesa'),
-    ),
-    Thing(id: 'aparador', box: (w) => _p.box('aparador')),
     // OPEN: noche-sheet.json has no box for `bandeja`; placed on the sideboard beside aparador_coqui in 106.
     Thing(
       id: 'bandeja',
       si: (w) => _n(w['story']) == 106,
       box: (w) => const [174, 41, 38, 12],
     ),
-    Thing(id: 'cama', box: (w) => _p.box('cama')),
-    Thing(id: 'sofa', box: (w) => _p.box('sofa')),
-    // People
+    // People (checked ahead of background furniture so a sitting/lying person wins taps on them)
     for (final who in NOCHE_PERSONAS)
       Thing(
         id: who,
@@ -1113,6 +1108,15 @@ class Noche extends Escena implements SetScene, SetOverSprites {
         },
         box: (w) => _spriteBox(w, 'persona:$who'),
       ),
+    // Furniture targets for 106 & 107 (`mesa`, `aparador`, `cama`, `sofa`)
+    Thing(
+      id: 'mesa',
+      si: (w) => _n(w['mesa']) == 1,
+      box: (w) => _p.box('mesa'),
+    ),
+    Thing(id: 'aparador', box: (w) => _p.box('aparador')),
+    Thing(id: 'cama', box: (w) => _p.box('cama')),
+    Thing(id: 'sofa', box: (w) => _p.box('sofa')),
   ];
 
   @override
@@ -1332,7 +1336,7 @@ class Noche extends Escena implements SetScene, SetOverSprites {
         p['y'] = at.y;
         p['z'] = 0.0;
         p['spot'] = 'perro';
-        p['pose'] = 'bark';
+        p['pose'] = 'mesa';
         p['vis'] = 1;
       }
       await wait(220);

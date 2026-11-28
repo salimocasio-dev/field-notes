@@ -314,4 +314,19 @@ void main() {
     }
     expect(changed, greaterThan(4));
   });
+
+  test('perro106 sets Canelo into the paws-on-table pose', () async {
+    final story = _story('antes-y-despues');
+    final scene = createNoche() as Noche;
+    final host = StillHost(scene);
+    host.S = story;
+    host.W = {...host.W, 'lost': 0, ...scene.fresh(story)};
+    await scene.acts['perro106']!({});
+    final perro = (host.W['gente'] as Map)['perro'] as Map;
+    expect(perro['pose'], 'mesa');
+    final placedPerro = scene
+        .placed(host.W, 0)
+        .firstWhere((it) => it.tag == 'persona:perro');
+    expect(placedPerro.s.h, 26);
+  });
 }
