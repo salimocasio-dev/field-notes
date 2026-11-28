@@ -1,0 +1,849 @@
+{
+ "id": "buenas-noches",
+ "title": "Buenas noches",
+ "place": "La fonda",
+ "scene": "cuenta",
+ "next": "buenos-dias",
+ "goal": "Put each last guest's folded bills where he says they are for, in the register's drawer for the bill or in the glass jar for the tip, so that the family catches the last guagua of the night: every mix-up takes time, and the guagua's lights come one lamp nearer.",
+ "stake": {
+  "thing": "guagua",
+  "steps": 3
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "propina",
+  "estoy lleno",
+  "hasta luego",
+  "buenas noches"
+ ],
+ "formas_foco": {
+  "estoy lleno": [
+   "estoy llena"
+  ]
+ },
+ "back_again": [
+  "cuenta",
+  "caja",
+  "peso",
+  "mesero",
+  "mesera",
+  "cocinero",
+  "flan",
+  "delicioso",
+  "para",
+  "otro",
+  "guagua",
+  "vamos",
+  "también",
+  "todo",
+  "bien",
+  "casa",
+  "adiós",
+  "esto",
+  "aquí",
+  "hay",
+  "más",
+  "¿algo más?",
+  "pone",
+  "por favor",
+  "gracias",
+  "no"
+ ],
+ "also_heard": [],
+ "names": {
+  "abuela": "abuela",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui",
+  "senor": "b_n_senor",
+  "senora": "b_n_senora",
+  "joven": "b_n_joven",
+  "mujer": "b_n_mujer"
+ },
+ "palabras": {},
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "b_n_joven": {
+   "who": "narr",
+   "text": "Es un joven."
+  },
+  "b_n_mujer": {
+   "who": "narr",
+   "text": "Es una mujer."
+  },
+  "c95_mo_buenas_noches": {
+   "who": "narr",
+   "habla": "mesero",
+   "text": "El mesero dice: Buenas noches. ¿Algo más?"
+  },
+  "c95_cq_cuenta": {
+   "who": "tu",
+   "text": "La cuenta, por favor.",
+   "tu_turno": [
+    {
+     "palabra": "cuenta",
+     "formas": [
+      "la cuenta por favor",
+      "la cuenta"
+     ]
+    }
+   ]
+  },
+  "c95_abo_cuenta": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Esto es para la cuenta."
+  },
+  "c95_donde_cuenta": {
+   "who": "narr",
+   "text": "¿Dónde pones los pesos de la cuenta?"
+  },
+  "c95_abo_propina": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Y esto es para la propina."
+  },
+  "c95_donde_propina": {
+   "who": "narr",
+   "text": "¿Dónde pones la propina?"
+  },
+  "c95_mo_gracias_propina": {
+   "who": "narr",
+   "habla": "mesero",
+   "text": "El mesero dice: ¡Gracias por la propina!"
+  },
+  "c95_ab_otra_propina": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y otra propina, para el cocinero. ¡El flan está delicioso!"
+  },
+  "c95_mo_todo_bien": {
+   "who": "narr",
+   "habla": "mesero",
+   "text": "El mesero dice: ¿Todo bien?"
+  },
+  "c95_abo_todo_bien": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Todo bien. Estoy lleno."
+  },
+  "c95_l_lleno": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Yo también estoy lleno!"
+  },
+  "c95_ca_llena": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Yo no estoy llena. ¿Hay más flan?"
+  },
+  "c95_me_hasta_luego": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: Buenas noches. ¡Hasta luego!"
+  },
+  "c95_ab_hasta_luego": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Buenas noches. Hasta luego."
+  },
+  "c95_co_hasta_luego": {
+   "who": "narr",
+   "habla": "cocinero",
+   "text": "El cocinero dice: ¡Hasta luego, Luis! ¡Hasta luego, Carmen!"
+  },
+  "c95_ab_guagua": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡La guagua! Vamos, Coquí."
+  },
+  "c95_me_caja": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: ¡Coquí, la caja, por favor!"
+  },
+  "c95_me_adios": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: ¡Buenas noches, Coquí! ¡Hasta luego!"
+  },
+  "c95_cq_adios": {
+   "who": "tu",
+   "text": "¡Adiós!",
+   "tu_turno": [
+    {
+     "palabra": "adiós",
+     "formas": [
+      "adiós",
+      "adios"
+     ]
+    }
+   ]
+  },
+  "c95_fin": {
+   "who": "narr",
+   "text": "La familia va para casa. Buenas noches, fonda."
+  },
+  "c95_senor_propina": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Esto es para la propina."
+  },
+  "c95_no_senor_propina": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: No, Coquí. Para la propina."
+  },
+  "c95_senor_cuenta": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Esto es para la cuenta."
+  },
+  "c95_no_senor_cuenta": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: No, Coquí. Para la cuenta."
+  },
+  "c95_a_senor": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Gracias. Hasta luego."
+  },
+  "c95_b_senor": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Gracias. Buenas noches."
+  },
+  "c95_senora_propina": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Esto es para la propina."
+  },
+  "c95_no_senora_propina": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Para la propina."
+  },
+  "c95_senora_cuenta": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Esto es para la cuenta."
+  },
+  "c95_no_senora_cuenta": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Para la cuenta."
+  },
+  "c95_a_senora": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Gracias. Hasta luego."
+  },
+  "c95_b_senora": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Gracias. Buenas noches."
+  },
+  "c95_joven_propina": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: Esto es para la propina."
+  },
+  "c95_no_joven_propina": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: No, Coquí. Para la propina."
+  },
+  "c95_joven_cuenta": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: Esto es para la cuenta."
+  },
+  "c95_no_joven_cuenta": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: No, Coquí. Para la cuenta."
+  },
+  "c95_a_joven": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: Gracias. Hasta luego."
+  },
+  "c95_b_joven": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: Gracias. Buenas noches."
+  },
+  "c95_mujer_propina": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: Esto es para la propina."
+  },
+  "c95_no_mujer_propina": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: No, Coquí. Para la propina."
+  },
+  "c95_mujer_cuenta": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: Esto es para la cuenta."
+  },
+  "c95_no_mujer_cuenta": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: No, Coquí. Para la cuenta."
+  },
+  "c95_a_mujer": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: Gracias. Hasta luego."
+  },
+  "c95_b_mujer": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: Gracias. Buenas noches."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "noche",
+    "sillas": "abajo",
+    "guagua": "no"
+   }
+  },
+  {
+   "act": "ir",
+   "a": "mostrador_coqui"
+  },
+  {
+   "act": "llega",
+   "quien": "mesero",
+   "a": "junto_mesa"
+  },
+  {
+   "act": "llega",
+   "quien": "cocinero",
+   "a": "cocina"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c95_mo_buenas_noches",
+  {
+   "act": "gesto",
+   "quien": "abuelo",
+   "que": "mira",
+   "a": "coqui"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuelo",
+   "que": "si"
+  },
+  "c95_cq_cuenta",
+  {
+   "act": "paga95",
+   "quien": "abuelo",
+   "que": "cuenta"
+  },
+  "c95_abo_cuenta",
+  {
+   "ask": "gaveta",
+   "lead": [],
+   "line": "c95_donde_cuenta",
+   "then": [],
+   "after": [
+    {
+     "act": "guarda95",
+     "donde": "gaveta",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "paga95",
+   "quien": "abuelo",
+   "que": "propina"
+  },
+  "c95_abo_propina",
+  {
+   "ask": "frasco",
+   "lead": [],
+   "line": "c95_donde_propina",
+   "then": [],
+   "after": [
+    {
+     "act": "guarda95",
+     "donde": "frasco",
+     "ok": 1
+    }
+   ]
+  },
+  "c95_mo_gracias_propina",
+  {
+   "act": "paga95",
+   "quien": "abuela",
+   "que": "propina"
+  },
+  "c95_ab_otra_propina",
+  {
+   "act": "gesto",
+   "quien": "cocinero",
+   "que": "reverencia"
+  },
+  {
+   "dots": 3
+  },
+  "c95_mo_todo_bien",
+  {
+   "act": "gesto",
+   "quien": "abuelo",
+   "que": "barriga"
+  },
+  "c95_abo_todo_bien",
+  "c95_l_lleno",
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "mira",
+   "a": "flanes"
+  },
+  "c95_ca_llena",
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "rie",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "abuelo",
+   "que": "rie",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "rie",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "rie",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "llega",
+   "quien": "abuela",
+   "a": "umbral1",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "abuelo",
+   "a": "umbral2",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "luis",
+   "a": "umbral3",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "carmen",
+   "a": "umbral4",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  "c95_me_hasta_luego",
+  "c95_ab_hasta_luego",
+  "c95_co_hasta_luego",
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "mira",
+   "a": "puerta"
+  },
+  {
+   "act": "guagua",
+   "n": "lejos"
+  },
+  "c95_ab_guagua",
+  {
+   "reparte": [
+    "ga",
+    "gb"
+   ],
+   "options": [
+    "senor",
+    "senora",
+    "joven",
+    "mujer"
+   ]
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "llega",
+   "quien": "$ga",
+   "a": "fila1",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "$gb",
+   "a": "fila2",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "mesera",
+   "a": "sillas_mesera",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "act": "sillas95",
+   "suelto": 1
+  },
+  "c95_me_caja",
+  {
+   "act": "ya"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "mira",
+   "a": "puerta"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "pa",
+   "options": [
+    "propina",
+    "cuenta"
+   ]
+  },
+  {
+   "calc": "ka",
+   "cond": "pa=propina",
+   "then": "frasco",
+   "else": "gaveta"
+  },
+  {
+   "act": "llega",
+   "quien": "$ga",
+   "a": "paga"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "gaveta",
+    "frasco"
+   ],
+   "pick": "$ka",
+   "tests": "$pa",
+   "lock": true,
+   "lead": [],
+   "line": "c95_$ga_$pa",
+   "right": [
+    {
+     "act": "guarda95",
+     "donde": "$ka",
+     "ok": 1
+    },
+    "c95_a_$ga",
+    {
+     "act": "sale",
+     "quien": "$ga"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "guarda95",
+     "donde": "$x",
+     "ok": 0,
+     "suelto": 1
+    },
+    "c95_no_$ga_$pa",
+    {
+     "act": "ya"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "guagua",
+       "n": "medio"
+      }
+     ],
+     "else": [
+      {
+       "act": "guagua",
+       "n": "cerca"
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "pb",
+   "options": [
+    "propina",
+    "cuenta"
+   ]
+  },
+  {
+   "calc": "kb",
+   "cond": "pb=propina",
+   "then": "frasco",
+   "else": "gaveta"
+  },
+  {
+   "act": "llega",
+   "quien": "$gb",
+   "a": "paga"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "gaveta",
+    "frasco"
+   ],
+   "pick": "$kb",
+   "tests": "$pb",
+   "lock": true,
+   "lead": [],
+   "line": "c95_$gb_$pb",
+   "right": [
+    {
+     "act": "guarda95",
+     "donde": "$kb",
+     "ok": 1
+    },
+    "c95_b_$gb",
+    {
+     "act": "sale",
+     "quien": "$gb"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "guarda95",
+     "donde": "$x",
+     "ok": 0,
+     "suelto": 1
+    },
+    "c95_no_$gb_$pb",
+    {
+     "act": "ya"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "guagua",
+       "n": "medio"
+      }
+     ],
+     "else": [
+      {
+       "act": "guagua",
+       "n": "cerca"
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "act": "ir",
+   "a": "puerta_coqui"
+  },
+  {
+   "act": "gesto",
+   "quien": "mesera",
+   "que": "saluda",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "mesero",
+   "que": "saluda",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "cocinero",
+   "que": "saluda",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  "c95_me_adios",
+  "c95_cq_adios",
+  {
+   "dots": 9
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final95",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final95",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final95",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  "c95_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c95_mo_buenas_noches",
+  "c95_cq_cuenta",
+  "c95_abo_cuenta",
+  "c95_donde_cuenta",
+  "c95_abo_propina",
+  "c95_donde_propina",
+  "c95_mo_gracias_propina",
+  "c95_ab_otra_propina",
+  "c95_mo_todo_bien",
+  "c95_abo_todo_bien",
+  "c95_l_lleno",
+  "c95_ca_llena",
+  "c95_me_hasta_luego",
+  "c95_ab_hasta_luego",
+  "c95_co_hasta_luego",
+  "c95_ab_guagua",
+  "c95_me_caja",
+  "c95_senor_propina",
+  "c95_a_senor",
+  "c95_mujer_cuenta",
+  "c95_b_mujer",
+  "c95_me_adios",
+  "c95_cq_adios",
+  "c95_fin"
+ ]
+}
