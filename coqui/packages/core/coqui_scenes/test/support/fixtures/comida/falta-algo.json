@@ -1,0 +1,1354 @@
+{
+ "id": "falta-algo",
+ "title": "Falta algo",
+ "place": "La fonda",
+ "scene": "comida",
+ "next": "mas-y-menos",
+ "goal": "Fetch from the mesera's side table the thing a person says is missing (salt, ice, sugar or napkins), not the one there is plenty of, so that the three bowls of hot soup keep steaming: every wrong thing means another trip across the terrace, and by then a bowl has gone cold.",
+ "stake": {
+  "thing": "sopas",
+  "steps": 3
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "falta",
+  "bastante",
+  "hielo",
+  "servilleta"
+ ],
+ "formas_foco": {
+  "servilleta": [
+   "servilletas"
+  ],
+  "bastante": [
+   "bastantes"
+  ]
+ },
+ "back_again": [
+  "sopa",
+  "tostones",
+  "refresco",
+  "ensalada",
+  "sal",
+  "azúcar",
+  "café",
+  "hay",
+  "tiene",
+  "caliente",
+  "frío",
+  "mesera",
+  "mesero",
+  "aquí tiene",
+  "¿algo más?",
+  "nada",
+  "ya",
+  "mira",
+  "ven",
+  "ahora",
+  "mi",
+  "cuidado",
+  "gracias",
+  "no",
+  "sí"
+ ],
+ "also_heard": [],
+ "names": {
+  "abuela": "abuela",
+  "abuelo": "n_abuelo",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "sal.azucar.sal": "falta",
+  "sal.azucar.azucar": "bastante",
+  "sal.azucar.hielo": "falta",
+  "sal.azucar.servilletas": "falta",
+  "sal.hielo.sal": "falta",
+  "sal.hielo.azucar": "falta",
+  "sal.hielo.hielo": "bastante",
+  "sal.hielo.servilletas": "falta",
+  "sal.servilletas.sal": "falta",
+  "sal.servilletas.azucar": "falta",
+  "sal.servilletas.hielo": "falta",
+  "sal.servilletas.servilletas": "bastante",
+  "azucar.sal.sal": "bastante",
+  "azucar.sal.azucar": "falta",
+  "azucar.sal.hielo": "falta",
+  "azucar.sal.servilletas": "falta",
+  "azucar.hielo.sal": "falta",
+  "azucar.hielo.azucar": "falta",
+  "azucar.hielo.hielo": "bastante",
+  "azucar.hielo.servilletas": "falta",
+  "azucar.servilletas.sal": "falta",
+  "azucar.servilletas.azucar": "falta",
+  "azucar.servilletas.hielo": "falta",
+  "azucar.servilletas.servilletas": "bastante",
+  "hielo.sal.sal": "bastante",
+  "hielo.sal.azucar": "hielo",
+  "hielo.sal.hielo": "hielo",
+  "hielo.sal.servilletas": "hielo",
+  "hielo.azucar.sal": "hielo",
+  "hielo.azucar.azucar": "bastante",
+  "hielo.azucar.hielo": "hielo",
+  "hielo.azucar.servilletas": "hielo",
+  "hielo.servilletas.sal": "hielo",
+  "hielo.servilletas.azucar": "hielo",
+  "hielo.servilletas.hielo": "hielo",
+  "hielo.servilletas.servilletas": "bastante",
+  "servilletas.sal.sal": "bastante",
+  "servilletas.sal.azucar": "servilleta",
+  "servilletas.sal.hielo": "servilleta",
+  "servilletas.sal.servilletas": "servilleta",
+  "servilletas.azucar.sal": "servilleta",
+  "servilletas.azucar.azucar": "bastante",
+  "servilletas.azucar.hielo": "servilleta",
+  "servilletas.azucar.servilletas": "servilleta",
+  "servilletas.hielo.sal": "servilleta",
+  "servilletas.hielo.azucar": "servilleta",
+  "servilletas.hielo.hielo": "bastante",
+  "servilletas.hielo.servilletas": "servilleta"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c91_me_mesero": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: Coquí, ahora tú eres el mesero."
+  },
+  "c91_ab_falta_sal": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Mmm, tostones. ¡Ay! Falta sal."
+  },
+  "c91_donde_sal": {
+   "who": "narr",
+   "text": "¿Dónde está la sal para abuela?"
+  },
+  "c91_ab_ya_no": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Gracias. Ya no falta sal."
+  },
+  "c91_l_falta_hielo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Mi refresco está caliente. Falta hielo."
+  },
+  "c91_donde_hielo": {
+   "who": "narr",
+   "text": "¿Dónde hay hielo para Luis?"
+  },
+  "c91_l_hielo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Hielo! Gracias."
+  },
+  "c91_au_falta_serv": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¡Ay! Falta una servilleta."
+  },
+  "c91_donde_serv": {
+   "who": "narr",
+   "text": "¿Dónde están las servilletas?"
+  },
+  "c36_cq_aqui_tiene": {
+   "who": "tu",
+   "text": "¡Aquí tiene!",
+   "tu_turno": [
+    {
+     "palabra": "aquí tiene",
+     "formas": [
+      "aquí tiene",
+      "aqui tiene"
+     ]
+    }
+   ]
+  },
+  "c91_au_gracias_serv": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Gracias por la servilleta, mesero."
+  },
+  "c91_ca_mi_serv": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Mi servilleta está aquí."
+  },
+  "c91_l_no_no": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡No, no! Hay bastante hielo. Mira."
+  },
+  "c91_ab_bastante": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Hay bastante hielo, Coquí. Falta azúcar."
+  },
+  "c91_que_falta": {
+   "who": "narr",
+   "text": "Hay bastante hielo. ¿Qué falta?"
+  },
+  "c91_ab_ahora": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Gracias. Ahora tiene bastante azúcar."
+  },
+  "c91_me_sopa": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: La sopa. ¡Cuidado! Está caliente."
+  },
+  "c91_f3": {
+   "who": "narr",
+   "text": "La sopa está caliente."
+  },
+  "c91_f2": {
+   "who": "narr",
+   "text": "La sopa de abuelo está fría."
+  },
+  "c91_f1": {
+   "who": "narr",
+   "text": "Dos sopas están frías."
+  },
+  "c91_cq_algo_mas": {
+   "who": "tu",
+   "text": "¿Algo más?",
+   "tu_turno": [
+    {
+     "palabra": "¿algo más?",
+     "formas": [
+      "algo más",
+      "algo mas"
+     ]
+    }
+   ]
+  },
+  "c91_ab_ven": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Sí. ¡Falta Coquí! Ven acá, mesero."
+  },
+  "c91_fin": {
+   "who": "narr",
+   "text": "Ahora no falta nada."
+  },
+  "c91_gr_abuela": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Gracias, mesero."
+  },
+  "c91_no_abuela_sal": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Falta sal."
+  },
+  "c91_hf_abuela_azucar_sal": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Hay bastante azúcar. Falta sal."
+  },
+  "c91_fh_abuela_azucar_sal": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Falta sal. Hay bastante azúcar."
+  },
+  "c91_hf_abuela_hielo_sal": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Hay bastante hielo. Falta sal."
+  },
+  "c91_fh_abuela_hielo_sal": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Falta sal. Hay bastante hielo."
+  },
+  "c91_hf_abuela_servilletas_sal": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Hay bastantes servilletas. Falta sal."
+  },
+  "c91_fh_abuela_servilletas_sal": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Falta sal. Hay bastantes servilletas."
+  },
+  "c91_no_abuela_azucar": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Falta azúcar."
+  },
+  "c91_hf_abuela_sal_azucar": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Hay bastante sal. Falta azúcar."
+  },
+  "c91_fh_abuela_sal_azucar": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Falta azúcar. Hay bastante sal."
+  },
+  "c91_hf_abuela_hielo_azucar": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Hay bastante hielo. Falta azúcar."
+  },
+  "c91_fh_abuela_hielo_azucar": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Falta azúcar. Hay bastante hielo."
+  },
+  "c91_hf_abuela_servilletas_azucar": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Hay bastantes servilletas. Falta azúcar."
+  },
+  "c91_fh_abuela_servilletas_azucar": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Falta azúcar. Hay bastantes servilletas."
+  },
+  "c91_no_abuela_hielo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Falta hielo."
+  },
+  "c91_hf_abuela_sal_hielo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Hay bastante sal. Falta hielo."
+  },
+  "c91_fh_abuela_sal_hielo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Falta hielo. Hay bastante sal."
+  },
+  "c91_hf_abuela_azucar_hielo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Hay bastante azúcar. Falta hielo."
+  },
+  "c91_fh_abuela_azucar_hielo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Falta hielo. Hay bastante azúcar."
+  },
+  "c91_hf_abuela_servilletas_hielo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Hay bastantes servilletas. Falta hielo."
+  },
+  "c91_fh_abuela_servilletas_hielo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Falta hielo. Hay bastantes servilletas."
+  },
+  "c91_no_abuela_servilletas": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Falta una servilleta."
+  },
+  "c91_hf_abuela_sal_servilletas": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Hay bastante sal. Falta una servilleta."
+  },
+  "c91_fh_abuela_sal_servilletas": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Falta una servilleta. Hay bastante sal."
+  },
+  "c91_hf_abuela_azucar_servilletas": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Hay bastante azúcar. Falta una servilleta."
+  },
+  "c91_fh_abuela_azucar_servilletas": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Falta una servilleta. Hay bastante azúcar."
+  },
+  "c91_hf_abuela_hielo_servilletas": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Hay bastante hielo. Falta una servilleta."
+  },
+  "c91_fh_abuela_hielo_servilletas": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Falta una servilleta. Hay bastante hielo."
+  },
+  "c91_gr_abuelo": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Gracias, mesero."
+  },
+  "c91_no_abuelo_sal": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: No, Coquí. Falta sal."
+  },
+  "c91_hf_abuelo_azucar_sal": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Hay bastante azúcar. Falta sal."
+  },
+  "c91_fh_abuelo_azucar_sal": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Falta sal. Hay bastante azúcar."
+  },
+  "c91_hf_abuelo_hielo_sal": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Hay bastante hielo. Falta sal."
+  },
+  "c91_fh_abuelo_hielo_sal": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Falta sal. Hay bastante hielo."
+  },
+  "c91_hf_abuelo_servilletas_sal": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Hay bastantes servilletas. Falta sal."
+  },
+  "c91_fh_abuelo_servilletas_sal": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Falta sal. Hay bastantes servilletas."
+  },
+  "c91_no_abuelo_azucar": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: No, Coquí. Falta azúcar."
+  },
+  "c91_hf_abuelo_sal_azucar": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Hay bastante sal. Falta azúcar."
+  },
+  "c91_fh_abuelo_sal_azucar": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Falta azúcar. Hay bastante sal."
+  },
+  "c91_hf_abuelo_hielo_azucar": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Hay bastante hielo. Falta azúcar."
+  },
+  "c91_fh_abuelo_hielo_azucar": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Falta azúcar. Hay bastante hielo."
+  },
+  "c91_hf_abuelo_servilletas_azucar": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Hay bastantes servilletas. Falta azúcar."
+  },
+  "c91_fh_abuelo_servilletas_azucar": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Falta azúcar. Hay bastantes servilletas."
+  },
+  "c91_no_abuelo_hielo": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: No, Coquí. Falta hielo."
+  },
+  "c91_hf_abuelo_sal_hielo": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Hay bastante sal. Falta hielo."
+  },
+  "c91_fh_abuelo_sal_hielo": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Falta hielo. Hay bastante sal."
+  },
+  "c91_hf_abuelo_azucar_hielo": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Hay bastante azúcar. Falta hielo."
+  },
+  "c91_fh_abuelo_azucar_hielo": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Falta hielo. Hay bastante azúcar."
+  },
+  "c91_hf_abuelo_servilletas_hielo": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Hay bastantes servilletas. Falta hielo."
+  },
+  "c91_fh_abuelo_servilletas_hielo": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Falta hielo. Hay bastantes servilletas."
+  },
+  "c91_no_abuelo_servilletas": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: No, Coquí. Falta una servilleta."
+  },
+  "c91_hf_abuelo_sal_servilletas": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Hay bastante sal. Falta una servilleta."
+  },
+  "c91_fh_abuelo_sal_servilletas": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Falta una servilleta. Hay bastante sal."
+  },
+  "c91_hf_abuelo_azucar_servilletas": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Hay bastante azúcar. Falta una servilleta."
+  },
+  "c91_fh_abuelo_azucar_servilletas": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Falta una servilleta. Hay bastante azúcar."
+  },
+  "c91_hf_abuelo_hielo_servilletas": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Hay bastante hielo. Falta una servilleta."
+  },
+  "c91_fh_abuelo_hielo_servilletas": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Falta una servilleta. Hay bastante hielo."
+  },
+  "c91_gr_luis": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Gracias, mesero."
+  },
+  "c91_no_luis_sal": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: No, Coquí. Falta sal."
+  },
+  "c91_hf_luis_azucar_sal": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Hay bastante azúcar. Falta sal."
+  },
+  "c91_fh_luis_azucar_sal": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Falta sal. Hay bastante azúcar."
+  },
+  "c91_hf_luis_hielo_sal": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Hay bastante hielo. Falta sal."
+  },
+  "c91_fh_luis_hielo_sal": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Falta sal. Hay bastante hielo."
+  },
+  "c91_hf_luis_servilletas_sal": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Hay bastantes servilletas. Falta sal."
+  },
+  "c91_fh_luis_servilletas_sal": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Falta sal. Hay bastantes servilletas."
+  },
+  "c91_no_luis_azucar": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: No, Coquí. Falta azúcar."
+  },
+  "c91_hf_luis_sal_azucar": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Hay bastante sal. Falta azúcar."
+  },
+  "c91_fh_luis_sal_azucar": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Falta azúcar. Hay bastante sal."
+  },
+  "c91_hf_luis_hielo_azucar": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Hay bastante hielo. Falta azúcar."
+  },
+  "c91_fh_luis_hielo_azucar": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Falta azúcar. Hay bastante hielo."
+  },
+  "c91_hf_luis_servilletas_azucar": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Hay bastantes servilletas. Falta azúcar."
+  },
+  "c91_fh_luis_servilletas_azucar": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Falta azúcar. Hay bastantes servilletas."
+  },
+  "c91_no_luis_hielo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: No, Coquí. Falta hielo."
+  },
+  "c91_hf_luis_sal_hielo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Hay bastante sal. Falta hielo."
+  },
+  "c91_fh_luis_sal_hielo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Falta hielo. Hay bastante sal."
+  },
+  "c91_hf_luis_azucar_hielo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Hay bastante azúcar. Falta hielo."
+  },
+  "c91_fh_luis_azucar_hielo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Falta hielo. Hay bastante azúcar."
+  },
+  "c91_hf_luis_servilletas_hielo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Hay bastantes servilletas. Falta hielo."
+  },
+  "c91_fh_luis_servilletas_hielo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Falta hielo. Hay bastantes servilletas."
+  },
+  "c91_no_luis_servilletas": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: No, Coquí. Falta una servilleta."
+  },
+  "c91_hf_luis_sal_servilletas": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Hay bastante sal. Falta una servilleta."
+  },
+  "c91_fh_luis_sal_servilletas": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Falta una servilleta. Hay bastante sal."
+  },
+  "c91_hf_luis_azucar_servilletas": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Hay bastante azúcar. Falta una servilleta."
+  },
+  "c91_fh_luis_azucar_servilletas": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Falta una servilleta. Hay bastante azúcar."
+  },
+  "c91_hf_luis_hielo_servilletas": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Hay bastante hielo. Falta una servilleta."
+  },
+  "c91_fh_luis_hielo_servilletas": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Falta una servilleta. Hay bastante hielo."
+  },
+  "c91_gr_carmen": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Gracias, mesero."
+  },
+  "c91_no_carmen_sal": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: No, Coquí. Falta sal."
+  },
+  "c91_hf_carmen_azucar_sal": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Hay bastante azúcar. Falta sal."
+  },
+  "c91_fh_carmen_azucar_sal": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Falta sal. Hay bastante azúcar."
+  },
+  "c91_hf_carmen_hielo_sal": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Hay bastante hielo. Falta sal."
+  },
+  "c91_fh_carmen_hielo_sal": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Falta sal. Hay bastante hielo."
+  },
+  "c91_hf_carmen_servilletas_sal": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Hay bastantes servilletas. Falta sal."
+  },
+  "c91_fh_carmen_servilletas_sal": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Falta sal. Hay bastantes servilletas."
+  },
+  "c91_no_carmen_azucar": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: No, Coquí. Falta azúcar."
+  },
+  "c91_hf_carmen_sal_azucar": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Hay bastante sal. Falta azúcar."
+  },
+  "c91_fh_carmen_sal_azucar": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Falta azúcar. Hay bastante sal."
+  },
+  "c91_hf_carmen_hielo_azucar": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Hay bastante hielo. Falta azúcar."
+  },
+  "c91_fh_carmen_hielo_azucar": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Falta azúcar. Hay bastante hielo."
+  },
+  "c91_hf_carmen_servilletas_azucar": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Hay bastantes servilletas. Falta azúcar."
+  },
+  "c91_fh_carmen_servilletas_azucar": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Falta azúcar. Hay bastantes servilletas."
+  },
+  "c91_no_carmen_hielo": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: No, Coquí. Falta hielo."
+  },
+  "c91_hf_carmen_sal_hielo": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Hay bastante sal. Falta hielo."
+  },
+  "c91_fh_carmen_sal_hielo": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Falta hielo. Hay bastante sal."
+  },
+  "c91_hf_carmen_azucar_hielo": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Hay bastante azúcar. Falta hielo."
+  },
+  "c91_fh_carmen_azucar_hielo": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Falta hielo. Hay bastante azúcar."
+  },
+  "c91_hf_carmen_servilletas_hielo": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Hay bastantes servilletas. Falta hielo."
+  },
+  "c91_fh_carmen_servilletas_hielo": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Falta hielo. Hay bastantes servilletas."
+  },
+  "c91_no_carmen_servilletas": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: No, Coquí. Falta una servilleta."
+  },
+  "c91_hf_carmen_sal_servilletas": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Hay bastante sal. Falta una servilleta."
+  },
+  "c91_fh_carmen_sal_servilletas": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Falta una servilleta. Hay bastante sal."
+  },
+  "c91_hf_carmen_azucar_servilletas": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Hay bastante azúcar. Falta una servilleta."
+  },
+  "c91_fh_carmen_azucar_servilletas": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Falta una servilleta. Hay bastante azúcar."
+  },
+  "c91_hf_carmen_hielo_servilletas": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Hay bastante hielo. Falta una servilleta."
+  },
+  "c91_fh_carmen_hielo_servilletas": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Falta una servilleta. Hay bastante hielo."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "noche"
+   }
+  },
+  {
+   "act": "ir",
+   "a": "auxiliar_coqui"
+  },
+  {
+   "act": "llega",
+   "quien": "mesera",
+   "a": "junto_mesa"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "sale",
+   "quien": "mesera",
+   "suelto": 1
+  },
+  "c91_me_mesero",
+  {
+   "act": "ya"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "come"
+  },
+  "c91_ab_falta_sal",
+  {
+   "ask": "sal",
+   "lead": [],
+   "line": "c91_donde_sal",
+   "then": [],
+   "after": [
+    {
+     "act": "trae91",
+     "que": "sal",
+     "a": "abuela",
+     "ok": 1
+    }
+   ]
+  },
+  "c91_ab_ya_no",
+  {
+   "dots": 2
+  },
+  "c91_l_falta_hielo",
+  {
+   "ask": "hielo",
+   "lead": [],
+   "line": "c91_donde_hielo",
+   "then": [],
+   "after": [
+    {
+     "act": "trae91",
+     "que": "hielo",
+     "a": "luis",
+     "ok": 1
+    }
+   ]
+  },
+  "c91_l_hielo",
+  {
+   "dots": 3
+  },
+  "c91_au_falta_serv",
+  {
+   "ask": "servilletas",
+   "lead": [],
+   "line": "c91_donde_serv",
+   "then": [],
+   "after": [
+    {
+     "act": "trae91",
+     "que": "servilletas",
+     "a": "abuelo",
+     "ok": 1
+    }
+   ]
+  },
+  "c36_cq_aqui_tiene",
+  "c91_au_gracias_serv",
+  "c91_ca_mi_serv",
+  {
+   "dots": 4
+  },
+  {
+   "act": "trae91",
+   "que": "hielo",
+   "a": "luis",
+   "ok": 0
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "tapa"
+  },
+  "c91_l_no_no",
+  "c91_ab_bastante",
+  {
+   "ask": "azucar",
+   "lead": [],
+   "line": "c91_que_falta",
+   "then": [],
+   "after": [
+    {
+     "act": "trae91",
+     "que": "azucar",
+     "a": "abuela",
+     "ok": 1
+    }
+   ]
+  },
+  "c91_ab_ahora",
+  {
+   "dots": 5
+  },
+  {
+   "act": "llega",
+   "quien": "mesera",
+   "a": "junto_mesa"
+  },
+  {
+   "act": "sopas",
+   "n": 3
+  },
+  "c91_me_sopa",
+  {
+   "act": "sale",
+   "quien": "mesera"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "cuchara"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuelo",
+   "que": "cuchara"
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "cuchara"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "mira",
+   "a": "coqui"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuelo",
+   "que": "mira",
+   "a": "coqui"
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "mira",
+   "a": "coqui"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "reparte": [
+    "ha",
+    "fa",
+    "hb",
+    "fb"
+   ],
+   "options": [
+    "sal",
+    "azucar",
+    "hielo",
+    "servilletas"
+   ]
+  },
+  {
+   "draw": "qa",
+   "options": [
+    "abuela",
+    "abuelo",
+    "luis",
+    "carmen"
+   ]
+  },
+  {
+   "draw": "oa",
+   "options": [
+    "hf",
+    "fh"
+   ]
+  },
+  {
+   "decide": "do",
+   "options": [
+    "sal",
+    "azucar",
+    "hielo",
+    "servilletas"
+   ],
+   "pick": "$fa",
+   "tests": "$fa.$ha.$x",
+   "lock": true,
+   "lead": [],
+   "line": "c91_$oa_$qa_$ha_$fa",
+   "right": [
+    {
+     "act": "trae91",
+     "que": "$fa",
+     "a": "$qa",
+     "ok": 1
+    },
+    "c91_gr_$qa",
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "trae91",
+     "que": "$x",
+     "a": "$qa",
+     "ok": 0
+    },
+    {
+     "act": "gesto",
+     "quien": "$qa",
+     "que": "no"
+    },
+    "c91_no_$qa_$fa",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "sopas",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "sopas",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "eb",
+   "options": [
+    "1",
+    "2",
+    "3"
+   ]
+  },
+  {
+   "if": "qa=abuela",
+   "then": [
+    {
+     "calc": "qb",
+     "cond": "eb=1",
+     "then": "abuelo",
+     "else": "luis"
+    },
+    {
+     "calc": "qb",
+     "cond": "eb=3",
+     "then": "carmen",
+     "else": "$qb"
+    }
+   ],
+   "else": [
+    {
+     "if": "qa=abuelo",
+     "then": [
+      {
+       "calc": "qb",
+       "cond": "eb=1",
+       "then": "abuela",
+       "else": "luis"
+      },
+      {
+       "calc": "qb",
+       "cond": "eb=3",
+       "then": "carmen",
+       "else": "$qb"
+      }
+     ],
+     "else": [
+      {
+       "if": "qa=luis",
+       "then": [
+        {
+         "calc": "qb",
+         "cond": "eb=1",
+         "then": "abuela",
+         "else": "abuelo"
+        },
+        {
+         "calc": "qb",
+         "cond": "eb=3",
+         "then": "carmen",
+         "else": "$qb"
+        }
+       ],
+       "else": [
+        {
+         "calc": "qb",
+         "cond": "eb=1",
+         "then": "abuela",
+         "else": "abuelo"
+        },
+        {
+         "calc": "qb",
+         "cond": "eb=3",
+         "then": "luis",
+         "else": "$qb"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "draw": "ob",
+   "options": [
+    "hf",
+    "fh"
+   ]
+  },
+  {
+   "decide": "do",
+   "options": [
+    "sal",
+    "azucar",
+    "hielo",
+    "servilletas"
+   ],
+   "pick": "$fb",
+   "tests": "$fb.$hb.$x",
+   "lock": true,
+   "lead": [],
+   "line": "c91_$ob_$qb_$hb_$fb",
+   "right": [
+    {
+     "act": "trae91",
+     "que": "$fb",
+     "a": "$qb",
+     "ok": 1
+    },
+    "c91_gr_$qb",
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "trae91",
+     "que": "$x",
+     "a": "$qb",
+     "ok": 0
+    },
+    {
+     "act": "gesto",
+     "quien": "$qb",
+     "que": "no"
+    },
+    "c91_no_$qb_$fb",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "sopas",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "sopas",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final91",
+     "n": 3
+    },
+    "c91_f3"
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final91",
+       "n": 2
+      },
+      "c91_f2"
+     ],
+     "else": [
+      {
+       "act": "final91",
+       "n": 1
+      },
+      "c91_f1"
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 9
+  },
+  "c91_cq_algo_mas",
+  "c91_ab_ven",
+  {
+   "act": "sube91"
+  },
+  "c91_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c91_me_mesero",
+  "c91_ab_falta_sal",
+  "c91_donde_sal",
+  "c91_ab_ya_no",
+  "c91_l_falta_hielo",
+  "c91_donde_hielo",
+  "c91_l_hielo",
+  "c91_au_falta_serv",
+  "c91_donde_serv",
+  "c36_cq_aqui_tiene",
+  "c91_au_gracias_serv",
+  "c91_ca_mi_serv",
+  "c91_l_no_no",
+  "c91_ab_bastante",
+  "c91_que_falta",
+  "c91_ab_ahora",
+  "c91_me_sopa",
+  "c91_hf_abuelo_sal_hielo",
+  "c91_gr_abuelo",
+  "c91_f3",
+  "c91_cq_algo_mas",
+  "c91_ab_ven",
+  "c91_fin"
+ ]
+}

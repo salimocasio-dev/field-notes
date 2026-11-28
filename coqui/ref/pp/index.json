@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
-  "files": 1684,
-  "totalBytes": 103920070,
+  "files": 1692,
+  "totalBytes": 104395838,
   "entries": [
     {
       "path": "balcon/door-open-win-open/kinds.bin",
@@ -1402,6 +1402,46 @@
       "path": "comer/comer/zb.json",
       "bytes": 322,
       "sha256": "0b2c30c3ea79e35ed9c79169a84d85c93e802fb542dbabe2398c63e1b9ba5046"
+    },
+    {
+      "path": "comida/noche/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0f7a3f75257a3eba679d48ed675b271de78c5cc872c8a99031b654d4dd78381a"
+    },
+    {
+      "path": "comida/noche/kinds.json",
+      "bytes": 305,
+      "sha256": "e4306e872842ad2b41c887dedc26f969d1664b42089defa5d6111215f2414ea4"
+    },
+    {
+      "path": "comida/noche/pix.bin",
+      "bytes": 207360,
+      "sha256": "d498586e7e3cdec7057e73d5e8844c785ca32e860cc63fa7c13d46283e40bede"
+    },
+    {
+      "path": "comida/noche/pix.json",
+      "bytes": 370,
+      "sha256": "b4f3dd2f28b1160b9114f7257bd2e7a4070ca910e47f48be0fd7a2b5b4d9b4e4"
+    },
+    {
+      "path": "comida/noche/pix.png",
+      "bytes": 7290,
+      "sha256": "04dff62864389e83eb604bd0b83e9032dc13bebfc52104ad1acbdd3213fa146f"
+    },
+    {
+      "path": "comida/noche/state.json",
+      "bytes": 921,
+      "sha256": "882ea1c7fdf4ee83af27b4992c97ae836f607b5ae523d27ccdf81eb97b30c62d"
+    },
+    {
+      "path": "comida/noche/zb.bin",
+      "bytes": 207360,
+      "sha256": "5fb0d91e756d511c4ee7a67add56635426194a8063e5781287681f45809762eb"
+    },
+    {
+      "path": "comida/noche/zb.json",
+      "bytes": 322,
+      "sha256": "0615e1f251013125a83321633959ff5c12785e4ca69c51fa9e6a7ae8e8067de0"
     },
     {
       "path": "cruce/mediodia-0/kinds.bin",
