@@ -101,4 +101,12 @@ class PedidoPlaces {
   /// The spots of group [name].
   List<String> group(String name) =>
       sheet.groups[name] ?? (throw SheetError('no group $name'));
+
+  /// Screen bounds `[x0, x1, y0, y1]` of the kitchen hatch hole (`PedidoE.HATCH` on back wall `v = 0`).
+  List<double> get hatchBounds {
+    final h = PedidoE.HATCH;
+    final p0 = e.project(h[0] / e.R2, -h[0] / e.R2, h[3]);
+    final p1 = e.project(h[1] / e.R2, -h[1] / e.R2, h[2]);
+    return [p0.sx, p1.sx, p0.sy, p1.sy];
+  }
 }

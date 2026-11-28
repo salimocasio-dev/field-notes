@@ -1,0 +1,799 @@
+{
+ "id": "la-cuenta-por-favor",
+ "title": "La cuenta, por favor",
+ "place": "La fonda",
+ "scene": "cuenta",
+ "next": "buenas-noches",
+ "goal": "Take each guest's payment the way he says he pays (the card machine or the cash drawer) so that the glass jar beside the register collects the guests' coins, up to three, abuelo's first: a guest who gets a muddle puts his coin back in his pocket.",
+ "stake": {
+  "thing": "frasco",
+  "steps": 3
+ },
+ "dots": 10,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "cuenta",
+  "total",
+  "tarjeta",
+  "efectivo"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "nada más",
+  "¿algo más?",
+  "¿cuánto es?",
+  "peso",
+  "cambio",
+  "caja",
+  "paga",
+  "cierra",
+  "veinte",
+  "treinta",
+  "cuarenta",
+  "cincuenta",
+  "sesenta",
+  "setenta",
+  "ochenta",
+  "noventa",
+  "mesera",
+  "aquí tiene",
+  "toma",
+  "toca",
+  "con",
+  "todo",
+  "mira",
+  "por favor",
+  "gracias",
+  "no"
+ ],
+ "also_heard": [
+  "cash"
+ ],
+ "names": {
+  "abuela": "abuela",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui",
+  "senor": "b_n_senor",
+  "senora": "b_n_senora",
+  "joven": "b_n_joven",
+  "mujer": "b_n_mujer"
+ },
+ "palabras": {},
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "b_n_joven": {
+   "who": "narr",
+   "text": "Es un joven."
+  },
+  "b_n_mujer": {
+   "who": "narr",
+   "text": "Es una mujer."
+  },
+  "c94_ab_cuenta": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: La cuenta, por favor."
+  },
+  "c94_me_aqui_tiene": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: La cuenta. Aquí tiene."
+  },
+  "c94_donde_cuenta": {
+   "who": "narr",
+   "text": "¿Dónde está la cuenta de abuelo?"
+  },
+  "c94_abo_cuanto": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¿Cuánto es?"
+  },
+  "c94_me_total_40": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: El total son cuarenta pesos."
+  },
+  "c94_ab_total": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Cuarenta pesos. Mira, Coquí: aquí está el total."
+  },
+  "c94_donde_total": {
+   "who": "narr",
+   "text": "¿Dónde está el total en la cuenta?"
+  },
+  "c94_me_tarjeta_o": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: ¿Tarjeta o efectivo?"
+  },
+  "c94_abo_tarjeta": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Tarjeta."
+  },
+  "c94_paga_tarjeta": {
+   "who": "narr",
+   "text": "Abuelo paga con tarjeta. ¿Qué toca Coquí?"
+  },
+  "c94_me_con_tarjeta": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: Con tarjeta. Gracias."
+  },
+  "c94_senor_cash": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Cash."
+  },
+  "c94_me_en_efectivo": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: En efectivo. Gracias."
+  },
+  "c94_paga_efectivo": {
+   "who": "narr",
+   "text": "El señor paga en efectivo. ¿Qué toca Coquí?"
+  },
+  "c94_me_cambio": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: Aquí tiene el cambio."
+  },
+  "c94_me_toma": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: Toma, Coquí. ¿Algo más?"
+  },
+  "c94_cq_nada_mas": {
+   "who": "tu",
+   "text": "Nada más, gracias.",
+   "tu_turno": [
+    {
+     "palabra": "nada más",
+     "formas": [
+      "nada más",
+      "nada mas",
+      "nada más gracias",
+      "nada mas gracias"
+     ]
+    }
+   ]
+  },
+  "c94_me_esto": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: Esto es para ti, Coquí."
+  },
+  "c94_cq_gracias": {
+   "who": "tu",
+   "text": "¡Gracias!",
+   "tu_turno": [
+    {
+     "palabra": "gracias",
+     "formas": [
+      "gracias",
+      "muchas gracias"
+     ]
+    }
+   ]
+  },
+  "c94_fin": {
+   "who": "narr",
+   "text": "Todo está en la caja. La mesera cierra la caja."
+  },
+  "c94_t_20": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: El total son veinte pesos. ¿Tarjeta o efectivo?"
+  },
+  "c94_t_30": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: El total son treinta pesos. ¿Tarjeta o efectivo?"
+  },
+  "c94_t_40": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: El total son cuarenta pesos. ¿Tarjeta o efectivo?"
+  },
+  "c94_t_50": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: El total son cincuenta pesos. ¿Tarjeta o efectivo?"
+  },
+  "c94_t_60": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: El total son sesenta pesos. ¿Tarjeta o efectivo?"
+  },
+  "c94_t_70": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: El total son setenta pesos. ¿Tarjeta o efectivo?"
+  },
+  "c94_t_80": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: El total son ochenta pesos. ¿Tarjeta o efectivo?"
+  },
+  "c94_t_90": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: El total son noventa pesos. ¿Tarjeta o efectivo?"
+  },
+  "c94_senora_cuenta": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: La cuenta, por favor."
+  },
+  "c94_senora_efectivo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Efectivo, por favor."
+  },
+  "c94_senora_tarjeta": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Con tarjeta, por favor."
+  },
+  "c94_no_senora_efectivo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Efectivo."
+  },
+  "c94_no_senora_tarjeta": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Tarjeta."
+  },
+  "c94_joven_cuenta": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: La cuenta, por favor."
+  },
+  "c94_joven_efectivo": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: Efectivo, por favor."
+  },
+  "c94_joven_tarjeta": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: Con tarjeta, por favor."
+  },
+  "c94_no_joven_efectivo": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: No, Coquí. Efectivo."
+  },
+  "c94_no_joven_tarjeta": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: No, Coquí. Tarjeta."
+  },
+  "c94_mujer_cuenta": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: La cuenta, por favor."
+  },
+  "c94_mujer_efectivo": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: Efectivo, por favor."
+  },
+  "c94_mujer_tarjeta": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: Con tarjeta, por favor."
+  },
+  "c94_no_mujer_efectivo": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: No, Coquí. Efectivo."
+  },
+  "c94_no_mujer_tarjeta": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: No, Coquí. Tarjeta."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "noche",
+    "sillas": "abajo",
+    "guagua": "no"
+   }
+  },
+  {
+   "act": "frasco",
+   "n": 0
+  },
+  {
+   "act": "ir",
+   "a": "mostrador_coqui"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c94_ab_cuenta",
+  "c94_me_aqui_tiene",
+  {
+   "ask": "cuenta",
+   "lead": [],
+   "line": "c94_donde_cuenta",
+   "then": [],
+   "after": [
+    {
+     "act": "lleva94",
+     "a": "abuelo"
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  "c94_abo_cuanto",
+  "c94_me_total_40",
+  {
+   "act": "cuenta94",
+   "n": 40
+  },
+  "c94_ab_total",
+  {
+   "ask": "cuenta",
+   "lead": [],
+   "line": "c94_donde_total",
+   "then": [],
+   "after": [
+    {
+     "set": {
+      "twinkle": "cuenta"
+     }
+    },
+    {
+     "wait": 700
+    },
+    {
+     "set": {
+      "twinkle": null
+     }
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  "c94_me_tarjeta_o",
+  "c94_abo_tarjeta",
+  {
+   "ask": "maquina",
+   "lead": [],
+   "line": "c94_paga_tarjeta",
+   "then": [],
+   "after": [
+    {
+     "act": "cobra94",
+     "como": "tarjeta",
+     "ok": 1
+    }
+   ]
+  },
+  "c94_me_con_tarjeta",
+  {
+   "act": "moneda94",
+   "quien": "abuelo",
+   "mete": 1
+  },
+  {
+   "act": "frasco",
+   "n": 1
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "llega",
+   "quien": "senor",
+   "a": "paga"
+  },
+  "c94_t_30",
+  "c94_senor_cash",
+  "c94_me_en_efectivo",
+  {
+   "ask": "gaveta",
+   "lead": [],
+   "line": "c94_paga_efectivo",
+   "then": [],
+   "after": [
+    {
+     "act": "cobra94",
+     "como": "efectivo",
+     "ok": 1
+    }
+   ]
+  },
+  "c94_me_cambio",
+  {
+   "act": "sale",
+   "quien": "senor"
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "menta94"
+  },
+  "c94_me_toma",
+  "c94_cq_nada_mas",
+  {
+   "reparte": [
+    "ga",
+    "gb"
+   ],
+   "options": [
+    "senora",
+    "joven",
+    "mujer"
+   ]
+  },
+  {
+   "reparte": [
+    "ta",
+    "tb"
+   ],
+   "options": [
+    "20",
+    "30",
+    "40",
+    "50",
+    "60",
+    "70",
+    "80",
+    "90"
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "act": "llega",
+   "quien": "$ga",
+   "a": "fila1",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "$gb",
+   "a": "fila2",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "act": "gesto",
+   "quien": "mesera",
+   "que": "agita"
+  },
+  {
+   "act": "gesto",
+   "quien": "mesera",
+   "que": "senala",
+   "a": "fila1"
+  },
+  {
+   "act": "gesto",
+   "quien": "mesera",
+   "que": "senala",
+   "a": "frasco"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "ca",
+   "options": [
+    "efectivo",
+    "tarjeta"
+   ]
+  },
+  {
+   "calc": "ka",
+   "cond": "ca=efectivo",
+   "then": "gaveta",
+   "else": "maquina"
+  },
+  {
+   "act": "llega",
+   "quien": "$ga",
+   "a": "paga"
+  },
+  "c94_$ga_cuenta",
+  "c94_t_$ta",
+  {
+   "decide": "do",
+   "options": [
+    "maquina",
+    "gaveta"
+   ],
+   "pick": "$ka",
+   "tests": "$ca",
+   "lock": true,
+   "lead": [],
+   "line": "c94_$ga_$ca",
+   "right": [
+    {
+     "act": "cobra94",
+     "como": "$ca",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "moneda94",
+       "quien": "$ga",
+       "mete": 1
+      },
+      {
+       "act": "frasco",
+       "n": 2
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "calc": "xc",
+     "cond": "x=maquina",
+     "then": "tarjeta",
+     "else": "efectivo"
+    },
+    {
+     "act": "cobra94",
+     "como": "$xc",
+     "ok": 0
+    },
+    "c94_no_$ga_$ca",
+    {
+     "act": "moneda94",
+     "quien": "$ga",
+     "mete": 0
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 8
+  },
+  {
+   "act": "sale",
+   "quien": "$ga"
+  },
+  {
+   "draw": "cb",
+   "options": [
+    "efectivo",
+    "tarjeta"
+   ]
+  },
+  {
+   "calc": "kb",
+   "cond": "cb=efectivo",
+   "then": "gaveta",
+   "else": "maquina"
+  },
+  {
+   "act": "llega",
+   "quien": "$gb",
+   "a": "paga"
+  },
+  "c94_$gb_cuenta",
+  "c94_t_$tb",
+  {
+   "decide": "do",
+   "options": [
+    "maquina",
+    "gaveta"
+   ],
+   "pick": "$kb",
+   "tests": "$cb",
+   "lock": true,
+   "lead": [],
+   "line": "c94_$gb_$cb",
+   "right": [
+    {
+     "act": "cobra94",
+     "como": "$cb",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "moneda94",
+       "quien": "$gb",
+       "mete": 1
+      },
+      {
+       "if": "lost=0",
+       "then": [
+        {
+         "act": "frasco",
+         "n": 3
+        }
+       ],
+       "else": [
+        {
+         "act": "frasco",
+         "n": 2
+        }
+       ]
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "calc": "xc",
+     "cond": "x=maquina",
+     "then": "tarjeta",
+     "else": "efectivo"
+    },
+    {
+     "act": "cobra94",
+     "como": "$xc",
+     "ok": 0
+    },
+    "c94_no_$gb_$cb",
+    {
+     "act": "moneda94",
+     "quien": "$gb",
+     "mete": 0
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 9
+  },
+  {
+   "act": "sale",
+   "quien": "$gb"
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final94",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final94",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final94",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 10
+  },
+  "c94_me_esto",
+  "c94_cq_gracias",
+  {
+   "act": "cierra94"
+  },
+  "c94_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c94_ab_cuenta",
+  "c94_me_aqui_tiene",
+  "c94_donde_cuenta",
+  "c94_abo_cuanto",
+  "c94_me_total_40",
+  "c94_ab_total",
+  "c94_donde_total",
+  "c94_me_tarjeta_o",
+  "c94_abo_tarjeta",
+  "c94_paga_tarjeta",
+  "c94_me_con_tarjeta",
+  "c94_t_30",
+  "c94_senor_cash",
+  "c94_me_en_efectivo",
+  "c94_paga_efectivo",
+  "c94_me_cambio",
+  "c94_me_toma",
+  "c94_cq_nada_mas",
+  "c94_senora_cuenta",
+  "c94_t_60",
+  "c94_senora_efectivo",
+  "c94_joven_cuenta",
+  "c94_t_20",
+  "c94_joven_tarjeta",
+  "c94_me_esto",
+  "c94_cq_gracias",
+  "c94_fin"
+ ]
+}

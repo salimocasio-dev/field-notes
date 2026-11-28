@@ -322,21 +322,27 @@ extension _PedidoActs on Pedido {
         tray[i] = i < parts.length ? parts[i] : null;
       }
       W['alzaBebida'] = null;
+      W['da89Dx'] = 0;
+      W['da89Dy'] = 0;
       await wait(120);
     }),
     'alza89': (o) => _run(o, () async {
       W['alzaBebida'] = o['que'] as String?;
+      W['da89Dx'] = 0;
+      W['da89Dy'] = 0;
       await wait(200);
     }),
     'da89': (o) => _run(o, () async {
       final que = (o['que'] as String?) ?? '';
       final a = (o['a'] as String?) ?? '';
       final ok = _n(o['ok']) == 1;
-      W['alzaBebida'] = null;
+      final tray = W['bandeja'] as List<String?>;
+      final idx = tray.indexOf(que);
       final p = _gente[a] as Map<String, dynamic>?;
       if (ok) {
-        final tray = W['bandeja'] as List<String?>;
-        final idx = tray.indexOf(que);
+        W['alzaBebida'] = null;
+        W['da89Dx'] = 0;
+        W['da89Dy'] = 0;
         if (idx >= 0) tray[idx] = null;
         if (p != null) {
           p['pose'] = 'bebe';
@@ -346,17 +352,36 @@ extension _PedidoActs on Pedido {
           await wait(160);
         }
       } else {
-        if (p != null) {
-          for (final dx in const [-1, 1, -1, 0]) {
-            p['dx'] = dx;
-            await wait(55);
+        // Keep the selected wrong drink lifted and visibly offered/pushed back through the spoken correction.
+        W['alzaBebida'] = idx >= 0 ? que : null;
+        var dir = 1;
+        if (idx >= 0) {
+          final drinkX = _p.screen('bebida${idx + 1}')[0];
+          final tgt = _targetScreen(a, W);
+          if (tgt != null && tgt.sx != drinkX) {
+            dir = tgt.sx < drinkX ? -1 : 1;
           }
-        } else {
-          await wait(160);
         }
+        const shakes = [-1, 1, -1, 0];
+        const pushX = [1, 2, 1, 0];
+        const pushY = [-1, -2, -1, 0];
+        for (var i = 0; i < 4; i++) {
+          if (p != null) p['dx'] = shakes[i];
+          if (idx >= 0) {
+            W['da89Dx'] = dir * pushX[i];
+            W['da89Dy'] = pushY[i];
+          }
+          await wait(55);
+        }
+        if (p != null) p['dx'] = 0;
+        W['da89Dx'] = 0;
+        W['da89Dy'] = 0;
       }
     }),
     'sorbo89': (o) => _run(o, () async {
+      W['alzaBebida'] = null;
+      W['da89Dx'] = 0;
+      W['da89Dy'] = 0;
       W['meseroSorbo'] = 1;
       await wait(240);
       W['meseroSorbo'] = 0;
@@ -373,6 +398,8 @@ extension _PedidoActs on Pedido {
         tray[i] = null;
       }
       W['alzaBebida'] = null;
+      W['da89Dx'] = 0;
+      W['da89Dy'] = 0;
       W['jugoVis'] = 1;
       W['jugo'] = n;
       // OPEN: pedido-sheet.json has no separate ending spot on the family table; place tall glass at bebida1 beside frog.

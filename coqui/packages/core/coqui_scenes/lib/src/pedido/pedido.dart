@@ -259,6 +259,8 @@ class Pedido extends Escena implements SetScene, SetOverSprites {
       // Story 89 state
       'bandeja': <String?>[null, null, null],
       'alzaBebida': null,
+      'da89Dx': 0,
+      'da89Dy': 0,
       'jugoVis': 0,
       'jugo': 3,
       'vasitoEn': 'vasito',
@@ -583,15 +585,18 @@ class Pedido extends Escena implements SetScene, SetOverSprites {
       final spot = 'bebida${i + 1}';
       final at = _p.at(spot);
       final s = _spr('pd_beb_$kind', () => mkBebida(kind));
-      final lift = lifted == kind ? -6 : 0;
+      final isLifted = lifted == kind;
+      final lift = isLifted ? -6 : 0;
+      final dx = isLifted ? _n(w['da89Dx']) : 0;
+      final dy = isLifted ? _n(w['da89Dy']) : 0;
       final sx = _round(at.sx), sy = _round(at.sy);
       out.add(
         PedidoItem(
           s,
-          sx - 5,
-          sy - s.h + lift,
+          sx - 5 + dx,
+          sy - s.h + lift + dy,
           sy,
-          at.d + (lift != 0 ? .02 : 0),
+          at.d + (isLifted ? .02 : 0),
           tag: 'cosa:$spot',
         ),
       );

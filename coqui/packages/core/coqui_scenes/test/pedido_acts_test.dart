@@ -442,6 +442,56 @@ void main() {
     expect(senBoard.cue['cueX'], bBox[0] + bBox[2] ~/ 2);
     expect(senBoard.cue['cueY'], greaterThanOrEqualTo(42));
   });
+
+  test('da89(ok: 0) keeps selected wrong drink lifted and distinct through correction until sorbo89', () async {
+    final story = _story('las-bebidas');
+    final scene = createPedido() as Pedido;
+    final frame = StillFrame(scene);
+    final host = StillHost(scene);
+    host.S = story;
+    host.W = {
+      ...host.W,
+      'lost': 0,
+      'resp': null,
+      'twinkle': null,
+      ...scene.fresh(story),
+    };
+    await scene.acts['sale']!({'quien': 'carmen'});
+    await scene.acts['llega']!({'quien': 'mesero', 'a': 'junto_mesa'});
+    await scene.acts['bandeja89']!({'orden': 'refresco,limonada,cafe'});
+
+    Uint32List snap() {
+      frame.draw(host.W, F: host.F, cam: host.cam);
+      return Uint32List.fromList(frame.display);
+    }
+
+    await scene.acts['da89']!({'que': 'limonada', 'a': 'abuelo', 'ok': 0});
+    expect(host.W['alzaBebida'], 'limonada');
+    expect(host.W['da89Dx'], 0);
+    expect(host.W['da89Dy'], 0);
+    final wrongLim = snap();
+
+    await scene.acts['da89']!({'que': 'cafe', 'a': 'abuelo', 'ok': 0});
+    expect(host.W['alzaBebida'], 'cafe');
+    expect(host.W['da89Dx'], 0);
+    expect(host.W['da89Dy'], 0);
+    final wrongCafe = snap();
+
+    expect(
+      _pixelsEqual(wrongLim, wrongCafe),
+      isFalse,
+      reason: 'da89(ok: 0) must render distinct frames for limonada vs cafe',
+    );
+
+    await scene.acts['sorbo89']!({});
+    expect(host.W['alzaBebida'], isNull);
+    final afterSorbo = snap();
+    expect(
+      _pixelsEqual(wrongCafe, afterSorbo),
+      isFalse,
+      reason: 'sorbo89 must lower the lifted wrong drink back onto the tray',
+    );
+  });
 }
 
 bool _pixelsEqual(Uint32List a, Uint32List b) {

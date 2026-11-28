@@ -87,6 +87,7 @@ class PedidoRules {
   double? _cachedBias;
   int? _cachedX0;
   List<int>? _cachedCampana;
+  List<double>? _cachedHatch;
   List<(String, List<int>)>? _cachedPanels;
 
   static final Expando<int> _spriteIds = Expando<int>();
@@ -226,6 +227,8 @@ class PedidoRules {
       ..write(cq?['y'])
       ..write(',')
       ..write(cq?['z'])
+      ..write(',')
+      ..write(cq?['dx'])
       ..write(',')
       ..write(cq?['dy']);
     for (final dynamic it in rawItems) {
@@ -399,9 +402,11 @@ class PedidoRules {
       }
     }
 
-    // 4. cocinero-head (top 14 drawn rows inside hatch hole x 97.9..196.7, y 7.05..43.5, 0 hid, 0 cov)
+    // 4. cocinero-head (top 14 drawn rows inside hatch hole projected from PedidoE.HATCH, 0 hid, 0 cov)
     final cocIdx = items.indexWhere((it) => it.tag == 'persona:cocinero');
     if (cocIdx >= 0) {
+      final hatch = _cachedHatch ??= (_m.places.hatchBounds as List)
+          .cast<double>();
       final coc = items[cocIdx];
       final ink = coc.ink;
       if (ink != null) {
@@ -412,7 +417,9 @@ class PedidoRules {
           for (var x = ink[0]; x <= ink[2]; x++) {
             if (coc.s.px[y * coc.s.w + x] >>> 24 == 0) continue;
             final X = coc.left + x;
-            if (X < 97.9 || X > 196.7 || Y < 7.05 || Y > 43.5) outHole++;
+            if (X < hatch[0] || X > hatch[1] || Y < hatch[2] || Y > hatch[3]) {
+              outHole++;
+            }
           }
         }
         final r = covOf(cocIdx, maxRowsFromTop: 14);
@@ -593,17 +600,21 @@ class PedidoRules {
       ));
     }
     if (cq != null && jsTruthy(cq['vis'])) {
-      final sp = cq['spot'];
-      if (sp is String && (_m.places.has(sp) as bool)) {
-        final at = _m.places.at(sp);
+      final cx = cq['x'];
+      final cy = cq['y'];
+      if (cx is num && cy is num) {
+        final dx = (cq['dx'] as num?) ?? 0;
         chars.add((
           id: 'coqui',
-          sx: ((at.sx as num) + 0.5).floor(),
-          sy: ((at.sy as num) + 0.5).floor(),
+          sx: (cx + dx + 16 + 0.5).floor(),
+          sy: (cy + 25 + 0.5).floor(),
           kind: 'coqui',
         ));
       } else {
-        addBreach('scene-state', 'cq.vis is truthy with unknown spot "$sp"');
+        addBreach(
+          'scene-state',
+          'cq.vis is truthy with missing screen position ($cx, $cy)',
+        );
       }
     }
     for (var i = 0; i < chars.length; i++) {
