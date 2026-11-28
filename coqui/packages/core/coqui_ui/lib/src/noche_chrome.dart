@@ -9,6 +9,7 @@ import 'package:coqui_ui/src/noche_motion.dart';
 import 'package:coqui_ui/src/noche_motion_pieces.dart';
 import 'package:coqui_ui/src/noche_tokens.dart';
 import 'package:coqui_ui/src/pressable.dart';
+import 'package:flutter/foundation.dart' show ValueListenable;
 import 'package:material_ui/material_ui.dart';
 
 /// Fixed Noche tab ids and display order (`library`, `words`, `map`, `speak`,
@@ -54,6 +55,10 @@ class NocheTabBar extends StatefulWidget {
 
   /// How far the raised Map disc + 4 px ring rises above the 64 px bar.
   static const double mapRise = 24;
+
+  /// Stable key for the interactive tab item for [id].
+  static ValueKey<String> itemKey(String id) =>
+      ValueKey<String>('tab-item:$id');
 
   static NocheIconData _iconFor(String id) => switch (id) {
     NocheTabs.library => NocheIcons.library,
@@ -305,6 +310,7 @@ class _NocheTabBarState extends State<NocheTabBar>
                         Expanded(
                           child: id == NocheTabs.map
                               ? _MapTab(
+                                  key: NocheTabBar.itemKey(id),
                                   label: widget.tabNames[id] ?? '',
                                   selected: widget.selectedId == id,
                                   script: widget.script,
@@ -316,6 +322,7 @@ class _NocheTabBarState extends State<NocheTabBar>
                                     top: NocheTabBar.mapRise,
                                   ),
                                   child: _RegularTab(
+                                    key: NocheTabBar.itemKey(id),
                                     icon: NocheTabBar._iconFor(id),
                                     label: widget.tabNames[id] ?? '',
                                     selected: widget.selectedId == id,
@@ -339,6 +346,7 @@ class _NocheTabBarState extends State<NocheTabBar>
 
 class _RegularTab extends StatelessWidget {
   const _RegularTab({
+    super.key,
     required this.icon,
     required this.label,
     required this.selected,
@@ -409,6 +417,7 @@ class _RegularTab extends StatelessWidget {
 
 class _MapTab extends StatelessWidget {
   const _MapTab({
+    super.key,
     required this.label,
     required this.selected,
     required this.script,
@@ -731,6 +740,7 @@ class NocheSheet extends StatefulWidget {
     this.title,
     this.onClose,
     this.closeLabel,
+    this.showCloseButton = true,
     this.respectSafeArea = true,
     this.scrollable = true,
   }) : assert(
@@ -747,6 +757,7 @@ class NocheSheet extends StatefulWidget {
   final String? title;
   final VoidCallback? onClose;
   final String? closeLabel;
+  final bool showCloseButton;
   final bool respectSafeArea;
   final bool scrollable;
 
@@ -758,11 +769,37 @@ class _NocheSheetState extends State<NocheSheet> {
   double _drag = 0;
 
   @override
+  void didUpdateWidget(NocheSheet oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.onClose == null && _drag != 0) {
+      _drag = 0;
+    }
+  }
+
+  void _handleDragUpdate(DragUpdateDetails d) {
+    setState(() => _drag = (_drag + d.delta.dy).clamp(0, 2000));
+  }
+
+  void _handleDragEnd(DragEndDetails _) {
+    final close = _drag > 72;
+    setState(() => _drag = 0);
+    if (close) widget.onClose?.call();
+  }
+
+  void _handleDragCancel() {
+    if (_drag != 0) {
+      setState(() => _drag = 0);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final safeBottom = widget.respectSafeArea
         ? MediaQuery.paddingOf(context).bottom
         : 0.0;
-    final hasHeader = widget.title != null || widget.onClose != null;
+    final showClose = widget.onClose != null && widget.showCloseButton;
+    final hasHeader = widget.title != null || showClose;
+    final canDrag = widget.onClose != null;
     const sheetRadius = NocheSize.cardRadius;
 
     Widget content = widget.rows != null
@@ -790,40 +827,30 @@ class _NocheSheetState extends State<NocheSheet> {
 
     return Transform.translate(
       offset: Offset(0, _drag),
-      child: ClipRRect(
-        borderRadius: const BorderRadiusDirectional.only(
-          topStart: Radius.circular(sheetRadius),
-          topEnd: Radius.circular(sheetRadius),
-        ),
-        child: CustomPaint(
-          foregroundPainter: const _SheetTopBorderPainter(
-            color: NocheColors.line,
-            radius: sheetRadius,
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onVerticalDragUpdate: canDrag ? _handleDragUpdate : null,
+        onVerticalDragEnd: canDrag ? _handleDragEnd : null,
+        onVerticalDragCancel: canDrag ? _handleDragCancel : null,
+        child: ClipRRect(
+          borderRadius: const BorderRadiusDirectional.only(
+            topStart: Radius.circular(sheetRadius),
+            topEnd: Radius.circular(sheetRadius),
           ),
-          child: ColoredBox(
-            color: NocheColors.panel,
-            child: DefaultTextStyle.merge(
-              style: NocheType.body.copyWith(color: NocheColors.text),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onVerticalDragUpdate: widget.onClose == null
-                        ? null
-                        : (d) => setState(
-                            () => _drag = (_drag + d.delta.dy).clamp(0, 2000),
-                          ),
-                    onVerticalDragEnd: widget.onClose == null
-                        ? null
-                        : (_) {
-                            final close = _drag > 72;
-                            setState(() => _drag = 0);
-                            if (close) widget.onClose!();
-                          },
-                    onVerticalDragCancel: () => setState(() => _drag = 0),
-                    child: Column(
+          child: CustomPaint(
+            foregroundPainter: const _SheetTopBorderPainter(
+              color: NocheColors.line,
+              radius: sheetRadius,
+            ),
+            child: ColoredBox(
+              color: NocheColors.panel,
+              child: DefaultTextStyle.merge(
+                style: NocheType.body.copyWith(color: NocheColors.text),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const SizedBox(height: 12),
@@ -862,7 +889,7 @@ class _NocheSheetState extends State<NocheSheet> {
                                             ),
                                           ),
                                   ),
-                                  if (widget.onClose != null)
+                                  if (showClose)
                                     Semantics(
                                       container: true,
                                       child: Pressable(
@@ -893,12 +920,12 @@ class _NocheSheetState extends State<NocheSheet> {
                         ],
                       ],
                     ),
-                  ),
-                  if (widget.scrollable)
-                    Flexible(child: SingleChildScrollView(child: body))
-                  else
-                    body,
-                ],
+                    if (widget.scrollable)
+                      Flexible(child: SingleChildScrollView(child: body))
+                    else
+                      body,
+                  ],
+                ),
               ),
             ),
           ),
@@ -931,13 +958,26 @@ class NocheSheetOverlay extends StatelessWidget {
   }
 }
 
-/// Opens a [NocheSheet] over `NocheColors.scrim` on the root navigator.
+/// Opens a [NocheSheet] over `NocheColors.scrim` (or without a dim scrim when
+/// [scrim] is `false`) on the root navigator.
+///
+/// When [scrim] is `false`, the route remains modal (no tap-through to the
+/// underlying route): tapping above the sheet dismisses it while dismissible,
+/// or absorbs taps while locked.
+///
+/// Pass [dismissibleListenable] to dynamically lock and unlock user-triggered
+/// dismissals (scrim or tap-above, drag-down, close button, system back) while
+/// keeping programmatic `close()` enabled. The caller owns and disposes
+/// [dismissibleListenable].
 Future<T?> showNocheSheet<T>(
   BuildContext context, {
   required Widget Function(BuildContext context, VoidCallback close) builder,
   String? title,
   String? closeLabel,
   bool dismissible = true,
+  ValueListenable<bool>? dismissibleListenable,
+  bool scrim = true,
+  bool showCloseButton = true,
 }) {
   final motion = NocheMotion.of(context);
   final navigator = Navigator.of(context, rootNavigator: true);
@@ -947,6 +987,9 @@ Future<T?> showNocheSheet<T>(
       title: title,
       closeLabel: closeLabel,
       dismissible: dismissible,
+      dismissibleListenable: dismissibleListenable,
+      scrim: scrim,
+      showCloseButton: showCloseButton,
       themes: InheritedTheme.capture(from: context, to: navigator.context),
       motion: motion,
     ),
@@ -993,6 +1036,9 @@ class _NocheSheetRoute<T> extends PopupRoute<T> {
     required this.title,
     required this.closeLabel,
     required this.dismissible,
+    required this.dismissibleListenable,
+    required this.scrim,
+    required this.showCloseButton,
     required this.themes,
     required this.motion,
   });
@@ -1001,14 +1047,19 @@ class _NocheSheetRoute<T> extends PopupRoute<T> {
   final String? title;
   final String? closeLabel;
   final bool dismissible;
+  final ValueListenable<bool>? dismissibleListenable;
+  final bool scrim;
+  final bool showCloseButton;
   final CapturedThemes themes;
   final NocheMotionData motion;
 
-  @override
-  Color? get barrierColor => NocheColors.scrim;
+  bool get _canDismiss => dismissibleListenable?.value ?? dismissible;
 
   @override
-  bool get barrierDismissible => dismissible;
+  Color? get barrierColor => scrim ? NocheColors.scrim : null;
+
+  @override
+  bool get barrierDismissible => scrim && _canDismiss;
 
   @override
   String? get barrierLabel => null;
@@ -1033,14 +1084,18 @@ class _NocheSheetRoute<T> extends PopupRoute<T> {
     }
   }
 
-  @override
-  Widget buildModalBarrier() {
+  void _dismissByUser() {
+    if (!_canDismiss) return;
+    _close();
+  }
+
+  Widget _buildScrimBarrier(bool canDismiss) {
     if (offstage) {
       return ModalBarrier(
-        dismissible: barrierDismissible,
+        dismissible: canDismiss,
         semanticsLabel: barrierLabel,
-        barrierSemanticsDismissible: semanticsDismissible,
-        onDismiss: barrierDismissible ? _close : null,
+        barrierSemanticsDismissible: semanticsDismissible && canDismiss,
+        onDismiss: canDismiss ? _dismissByUser : null,
       );
     }
     final barrier = AnimatedModalBarrier(
@@ -1050,10 +1105,10 @@ class _NocheSheetRoute<T> extends PopupRoute<T> {
         motion: motion,
         targetColor: NocheColors.scrim,
       ),
-      dismissible: barrierDismissible,
+      dismissible: canDismiss,
       semanticsLabel: barrierLabel,
-      barrierSemanticsDismissible: semanticsDismissible,
-      onDismiss: barrierDismissible ? _close : null,
+      barrierSemanticsDismissible: semanticsDismissible && canDismiss,
+      onDismiss: canDismiss ? _dismissByUser : null,
     );
     return AnimatedBuilder(
       animation: animation!,
@@ -1068,26 +1123,47 @@ class _NocheSheetRoute<T> extends PopupRoute<T> {
   }
 
   @override
+  Widget buildModalBarrier() {
+    if (!scrim) {
+      return const SizedBox.shrink();
+    }
+    if (dismissibleListenable != null) {
+      return ValueListenableBuilder<bool>(
+        valueListenable: dismissibleListenable!,
+        builder: (context, canDismiss, _) => _buildScrimBarrier(canDismiss),
+      );
+    }
+    return _buildScrimBarrier(dismissible);
+  }
+
+  @override
   Widget buildPage(
     BuildContext context,
     Animation<double> animation,
     Animation<double> secondaryAnimation,
   ) {
-    final sheetChild = ConstrainedBox(
-      constraints: BoxConstraints(
-        maxHeight: MediaQuery.sizeOf(context).height * 0.88,
-      ),
-      child: NocheSheet(
-        title: title,
-        closeLabel: closeLabel,
-        onClose: dismissible ? _close : null,
-        child: Builder(builder: (c) => builder(c, _close)),
-      ),
-    );
+    final sheetBody = Builder(builder: (c) => builder(c, _close));
 
-    return themes.wrap(
-      PopScope(
-        canPop: dismissible,
+    Widget buildWithDismissible(
+      BuildContext context,
+      bool canDismiss,
+      Widget? content,
+    ) {
+      final sheetChild = ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.sizeOf(context).height * 0.88,
+        ),
+        child: NocheSheet(
+          title: title,
+          closeLabel: closeLabel,
+          showCloseButton: showCloseButton,
+          onClose: canDismiss ? _dismissByUser : null,
+          child: content,
+        ),
+      );
+
+      return PopScope(
+        canPop: canDismiss,
         child: AnimatedBuilder(
           animation: animation,
           child: sheetChild,
@@ -1120,13 +1196,57 @@ class _NocheSheetRoute<T> extends PopupRoute<T> {
               );
             }
 
-            return Align(
-              alignment: AlignmentDirectional.bottomCenter,
-              child: sheetTransition,
+            if (scrim) {
+              return Align(
+                alignment: AlignmentDirectional.bottomCenter,
+                child: sheetTransition,
+              );
+            }
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: canDismiss
+                      ? IgnorePointer(
+                          ignoring: isReverse,
+                          child: Semantics(
+                            button: true,
+                            label:
+                                closeLabel ??
+                                NocheA11y.label(NocheA11y.closeSheet),
+                            onTap: _dismissByUser,
+                            child: GestureDetector(
+                              key: const ValueKey<String>(
+                                'noche_sheet_scrimless_closer',
+                              ),
+                              behavior: HitTestBehavior.opaque,
+                              onTap: _dismissByUser,
+                              child: const SizedBox.expand(),
+                            ),
+                          ),
+                        )
+                      : GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          child: const SizedBox.expand(),
+                        ),
+                ),
+                sheetTransition,
+              ],
             );
           },
         ),
-      ),
+      );
+    }
+
+    return themes.wrap(
+      dismissibleListenable != null
+          ? ValueListenableBuilder<bool>(
+              valueListenable: dismissibleListenable!,
+              builder: buildWithDismissible,
+              child: sheetBody,
+            )
+          : buildWithDismissible(context, dismissible, sheetBody),
     );
   }
 }

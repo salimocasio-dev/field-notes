@@ -111,9 +111,11 @@ TextStyle _nocheStyle(
   double size,
   double line, {
   double letterSpacing = 0,
+  List<String>? fontFamilyFallback,
 }) => TextStyle(
   inherit: false,
   fontFamily: family,
+  fontFamilyFallback: fontFamilyFallback,
   package: coquiFontPackage,
   fontSize: size,
   fontWeight: weight,
@@ -201,6 +203,7 @@ abstract final class NocheType {
     FontWeight.w700,
     18,
     18,
+    fontFamilyFallback: const [nocheFontNotoSansArabic],
   );
 
   static final primarySmall = _nocheStyle(
@@ -208,6 +211,7 @@ abstract final class NocheType {
     FontWeight.w700,
     17,
     17,
+    fontFamilyFallback: const [nocheFontNotoSansArabic],
   );
 
   static final body = _nocheStyle(nocheFontAtkinson, FontWeight.w500, 14, 20);
@@ -291,6 +295,20 @@ abstract final class NocheType {
     31,
   );
 
+  static final bookBodyAtkinson = _nocheStyle(
+    nocheFontAtkinson,
+    FontWeight.w400,
+    19,
+    31,
+  );
+
+  static final bookBodyLexend = _nocheStyle(
+    nocheFontLexend,
+    FontWeight.w400,
+    19,
+    31,
+  );
+
   static final dropCap = _nocheStyle(
     nocheFontLiterata,
     FontWeight.w600,
@@ -333,6 +351,8 @@ abstract final class NocheType {
     'transcriptNow': transcriptNow,
     'bookTitle': bookTitle,
     'bookBody': bookBody,
+    'bookBodyAtkinson': bookBodyAtkinson,
+    'bookBodyLexend': bookBodyLexend,
     'dropCap': dropCap,
     'cover': cover,
     'coverSmall': coverSmall,
