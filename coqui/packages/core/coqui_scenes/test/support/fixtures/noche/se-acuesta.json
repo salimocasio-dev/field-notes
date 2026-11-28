@@ -1,0 +1,658 @@
+{
+ "id": "se-acuesta",
+ "title": "Se acuesta",
+ "place": "La casa, un día entero",
+ "scene": "noche",
+ "next": "la-fiesta",
+ "goal": "Lead each child to the bed or to the sofa as abuela says, so that her storybook keeps its three pages for the bedtime reading: every mix-up takes time, and abuela looks at the clock and turns one page down.",
+ "stake": {
+  "thing": "paginas",
+  "steps": 3
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "se acuesta",
+  "descansa",
+  "todos los días"
+ ],
+ "formas_foco": {
+  "se acuesta": [
+   "te acuestas"
+  ],
+  "descansa": [
+   "descanso"
+  ]
+ },
+ "back_again": [
+  "tiene sueño",
+  "cama",
+  "libro",
+  "noche",
+  "son las",
+  "ocho",
+  "a las",
+  "después",
+  "quiero",
+  "buenas noches",
+  "hasta mañana",
+  "un momento",
+  "yo",
+  "tú",
+  "no",
+  "sí"
+ ],
+ "also_heard": [
+  "canta"
+ ],
+ "names": {
+  "abuela": "abuela",
+  "abuelo": "n_abuelo",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "acuesta": "se acuesta"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c107_ab_ocho": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Son las ocho de la noche. A las ocho, Carmen se acuesta."
+  },
+  "c107_ca_sueno": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Todos los días, a las ocho... Tengo sueño."
+  },
+  "c107_abo_descanso": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Yo no tengo sueño. Yo descanso un momento."
+  },
+  "c107_ab_descansa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Abuelo descansa todos los días. Carmen se acuesta."
+  },
+  "c107_l_yo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¿Y yo?"
+  },
+  "c107_ab_tu": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Abuelo descansa. Tú te acuestas. Todos los días, a las ocho."
+  },
+  "c107_ab_libro": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Después, un libro. ¿Quieres, Coquí?"
+  },
+  "c38_cq_si_quiero": {
+   "who": "tu",
+   "text": "¡Sí, quiero!",
+   "tu_turno": [
+    {
+     "palabra": "quiero",
+     "formas": [
+      "quiero",
+      "sí quiero",
+      "si quiero"
+     ]
+    }
+   ]
+  },
+  "c107_ab_hasta": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Hasta mañana, Coquí."
+  },
+  "c107_cq_noches": {
+   "who": "tu",
+   "text": "¡Buenas noches!",
+   "tu_turno": [
+    {
+     "palabra": "buenas noches",
+     "formas": [
+      "buenas noches"
+     ]
+    }
+   ]
+  },
+  "c107_cq_canta": {
+   "who": "tu",
+   "text": "¡Coquí! ¡Coquí!"
+  },
+  "c107_fin": {
+   "who": "narr",
+   "text": "Todos los días, por la noche, la familia descansa. Y Coquí canta."
+  },
+  "c107_luis_acuesta": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Luis se acuesta."
+  },
+  "c107_no_luis_acuesta": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Luis se acuesta."
+  },
+  "c107_luis_descansa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Luis descansa un momento."
+  },
+  "c107_no_luis_descansa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Luis descansa."
+  },
+  "c107_carmen_acuesta": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Carmen se acuesta."
+  },
+  "c107_no_carmen_acuesta": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Carmen se acuesta."
+  },
+  "c107_carmen_descansa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Carmen descansa un momento."
+  },
+  "c107_no_carmen_descansa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Carmen descansa."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "noche",
+    "tele": 0,
+    "mesa": 0,
+    "oscuro": 0
+   }
+  },
+  {
+   "act": "reloj107",
+   "hora": 8
+  },
+  {
+   "act": "paginas",
+   "n": 3
+  },
+  {
+   "act": "llega",
+   "quien": "abuela",
+   "a": "butaca"
+  },
+  {
+   "act": "llega",
+   "quien": "abuelo",
+   "a": "ventana_abuelo"
+  },
+  {
+   "act": "llega",
+   "quien": "luis",
+   "a": "alfombra1",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "carmen",
+   "a": "alfombra2",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "act": "ir",
+   "a": "brazo_coqui"
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "bosteza",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "bosteza",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  {
+   "ask": "cama",
+   "lead": [],
+   "line": "c107_ab_ocho",
+   "then": [],
+   "after": [
+    {
+     "act": "acuesta107",
+     "quien": "carmen",
+     "ok": 1
+    }
+   ]
+  },
+  "c107_ca_sueno",
+  {
+   "dots": 2
+  },
+  {
+   "act": "gesto",
+   "quien": "abuelo",
+   "que": "dobla"
+  },
+  {
+   "ask": "sofa",
+   "lead": [],
+   "line": "c107_abo_descanso",
+   "then": [],
+   "after": [
+    {
+     "act": "descansa107",
+     "quien": "abuelo",
+     "ok": 1
+    }
+   ]
+  },
+  "c107_ab_descansa",
+  {
+   "dots": 3
+  },
+  "c107_l_yo",
+  "c107_ab_tu",
+  {
+   "act": "acuesta107",
+   "quien": "luis",
+   "ok": 1
+  },
+  {
+   "dots": 4
+  },
+  "c107_ab_libro",
+  "c38_cq_si_quiero",
+  {
+   "dots": 5
+  },
+  {
+   "act": "levantados107"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "mira",
+   "a": "reloj"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "mira",
+   "a": "libro"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "qa",
+   "options": [
+    "luis",
+    "carmen"
+   ],
+   "other": "qb"
+  },
+  {
+   "draw": "wa",
+   "options": [
+    "acuesta",
+    "descansa"
+   ]
+  },
+  {
+   "calc": "pa",
+   "cond": "wa=acuesta",
+   "then": "cama",
+   "else": "sofa"
+  },
+  {
+   "draw": "sa",
+   "options": [
+    "sofa_pies"
+   ]
+  },
+  {
+   "decide": "do",
+   "options": [
+    "cama",
+    "sofa"
+   ],
+   "pick": "$pa",
+   "tests": "$wa",
+   "lock": true,
+   "lead": [],
+   "line": "c107_$qa_$wa",
+   "right": [
+    {
+     "if": "wa=acuesta",
+     "then": [
+      {
+       "act": "acuesta107",
+       "quien": "$qa",
+       "ok": 1
+      }
+     ],
+     "else": [
+      {
+       "act": "descansa107",
+       "quien": "$qa",
+       "a": "$sa",
+       "ok": 1
+      }
+     ]
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "if": "x=cama",
+     "then": [
+      {
+       "act": "acuesta107",
+       "quien": "$qa",
+       "ok": 0
+      }
+     ],
+     "else": [
+      {
+       "act": "descansa107",
+       "quien": "$qa",
+       "a": "$sa",
+       "ok": 0
+      }
+     ]
+    },
+    "c107_no_$qa_$wa",
+    {
+     "act": "gesto",
+     "quien": "abuela",
+     "que": "mira",
+     "a": "reloj"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "paginas",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "paginas",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "wb",
+   "options": [
+    "acuesta",
+    "descansa"
+   ]
+  },
+  {
+   "calc": "pb",
+   "cond": "wb=acuesta",
+   "then": "cama",
+   "else": "sofa"
+  },
+  {
+   "calc": "sb",
+   "cond": "wa=descansa",
+   "then": "sofa_pies2",
+   "else": "sofa_pies"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "cama",
+    "sofa"
+   ],
+   "pick": "$pb",
+   "tests": "$wb",
+   "lock": true,
+   "lead": [],
+   "line": "c107_$qb_$wb",
+   "right": [
+    {
+     "if": "wb=acuesta",
+     "then": [
+      {
+       "act": "acuesta107",
+       "quien": "$qb",
+       "ok": 1
+      }
+     ],
+     "else": [
+      {
+       "act": "descansa107",
+       "quien": "$qb",
+       "a": "$sb",
+       "ok": 1
+      }
+     ]
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "if": "x=cama",
+     "then": [
+      {
+       "act": "acuesta107",
+       "quien": "$qb",
+       "ok": 0
+      }
+     ],
+     "else": [
+      {
+       "act": "descansa107",
+       "quien": "$qb",
+       "a": "$sb",
+       "ok": 0
+      }
+     ]
+    },
+    "c107_no_$qb_$wb",
+    {
+     "act": "gesto",
+     "quien": "abuela",
+     "que": "mira",
+     "a": "reloj"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "paginas",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "paginas",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "palmas"
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final107",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final107",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final107",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 9
+  },
+  {
+   "set": {
+    "oscuro": 1
+   }
+  },
+  {
+   "act": "ir",
+   "a": "ventana_coqui"
+  },
+  "c107_ab_hasta",
+  "c107_cq_noches",
+  {
+   "act": "canta107",
+   "suelto": 1
+  },
+  "c107_cq_canta",
+  {
+   "act": "ya"
+  },
+  "c107_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c107_ab_ocho",
+  "c107_ca_sueno",
+  "c107_abo_descanso",
+  "c107_ab_descansa",
+  "c107_l_yo",
+  "c107_ab_tu",
+  "c107_ab_libro",
+  "c38_cq_si_quiero",
+  "c107_luis_descansa",
+  "c107_no_luis_descansa",
+  "c107_carmen_acuesta",
+  "c107_ab_hasta",
+  "c107_cq_noches",
+  "c107_cq_canta",
+  "c107_fin"
+ ]
+}

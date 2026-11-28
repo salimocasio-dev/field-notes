@@ -1,0 +1,837 @@
+{
+ "id": "prende-y-apaga",
+ "title": "Prende y apaga",
+ "place": "La casa, un día entero",
+ "scene": "noche",
+ "next": "antes-y-despues",
+ "goal": "Light or put out the lamp that Luis or Carmen asks for, so that the little scarf abuela is knitting for the frog keeps its three stripes: a lamp put out when light was wanted makes her drop her stitches in the dark, a lamp lit when dark was wanted makes abuelo knock her wool, and either way a stripe comes undone.",
+ "stake": {
+  "thing": "bufanda",
+  "steps": 3
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "televisión",
+  "ve",
+  "prende",
+  "apaga"
+ ],
+ "formas_foco": {
+  "prende": [
+   "prendes"
+  ],
+  "apaga": [
+   "apagas"
+  ],
+  "ve": [
+   "veo",
+   "ver"
+  ]
+ },
+ "back_again": [
+  "luz",
+  "noche",
+  "quiero",
+  "también",
+  "gracias",
+  "por favor",
+  "mira",
+  "ahora",
+  "yo",
+  "tú",
+  "no",
+  "sí"
+ ],
+ "also_heard": [],
+ "names": {
+  "abuela": "abuela",
+  "abuelo": "n_abuelo",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {},
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c105_abo_tele": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Coquí, la televisión, por favor."
+  },
+  "db18": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Gracias, Coquí."
+  },
+  "c105_ab_prende_tele": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí prende la televisión. Abuelo ve televisión."
+  },
+  "c105_ab_no_veo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No veo. Coquí, prende una luz, por favor."
+  },
+  "c105_q_prendes": {
+   "who": "narr",
+   "text": "¿Qué luz prendes?"
+  },
+  "c105_ab_ahora_veo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Gracias. Coquí prende la luz. Ahora veo."
+  },
+  "c105_abo_ay": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¡Ay! No veo la televisión. Coquí, apaga una luz."
+  },
+  "c105_q_apagas": {
+   "who": "narr",
+   "text": "¿Qué luz apagas?"
+  },
+  "c105_abo_ahora": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Gracias. Ahora veo la televisión."
+  },
+  "c105_ab_apaga_luz": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí apaga la luz."
+  },
+  "c105_ca_quiero": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Yo quiero ver televisión! ¿Y tú, Coquí?"
+  },
+  "p_cq_yo_tambien": {
+   "who": "tu",
+   "text": "¡Yo también!",
+   "tu_turno": [
+    {
+     "palabra": "también",
+     "formas": [
+      "yo también",
+      "yo tambien",
+      "también",
+      "tambien"
+     ]
+    }
+   ]
+  },
+  "c105_ab_para_ti": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Para ti, Coquí."
+  },
+  "c50_cq_gracias": {
+   "who": "tu",
+   "text": "¡Gracias!",
+   "tu_turno": [
+    {
+     "palabra": "gracias",
+     "formas": [
+      "gracias",
+      "muchas gracias"
+     ]
+    }
+   ]
+  },
+  "c105_fin": {
+   "who": "narr",
+   "text": "Por la noche abuelo ve televisión. Coquí prende y apaga la luz."
+  },
+  "c105_g_luis_prende": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Coquí, prende una luz, por favor."
+  },
+  "c105_no_luis_prende": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡No, Coquí! ¡Prende una luz!"
+  },
+  "c105_g_luis_apaga": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Coquí, apaga una luz, por favor."
+  },
+  "c105_no_luis_apaga": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡No, Coquí! ¡Apaga una luz!"
+  },
+  "c105_g_carmen_prende": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Coquí, prende una luz, por favor."
+  },
+  "c105_no_carmen_prende": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No, Coquí! ¡Prende una luz!"
+  },
+  "c105_g_carmen_apaga": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Coquí, apaga una luz, por favor."
+  },
+  "c105_no_carmen_apaga": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No, Coquí! ¡Apaga una luz!"
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "noche",
+    "tele": 0,
+    "mesa": 0,
+    "oscuro": 0
+   }
+  },
+  {
+   "act": "bufanda",
+   "n": 3
+  },
+  {
+   "act": "luces105",
+   "a": 0,
+   "b": 1,
+   "c": 0
+  },
+  {
+   "act": "llega",
+   "quien": "abuelo",
+   "a": "sofa1"
+  },
+  {
+   "act": "llega",
+   "quien": "abuela",
+   "a": "butaca"
+  },
+  {
+   "act": "ir",
+   "a": "brazo_coqui"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  {
+   "ask": "television",
+   "lead": [],
+   "line": "c105_abo_tele",
+   "then": [],
+   "after": [
+    {
+     "act": "tele105",
+     "on": 1
+    }
+   ]
+  },
+  "db18",
+  "c105_ab_prende_tele",
+  {
+   "dots": 2
+  },
+  "c105_ab_no_veo",
+  {
+   "ask": "luz3",
+   "lead": [],
+   "line": "c105_q_prendes",
+   "then": [],
+   "after": [
+    {
+     "act": "luz105",
+     "cual": "luz3",
+     "ok": 1
+    }
+   ]
+  },
+  "c105_ab_ahora_veo",
+  {
+   "dots": 3
+  },
+  {
+   "act": "gesto",
+   "quien": "abuelo",
+   "que": "entorna"
+  },
+  "c105_abo_ay",
+  {
+   "ask": "luz2",
+   "lead": [],
+   "line": "c105_q_apagas",
+   "then": [],
+   "after": [
+    {
+     "act": "luz105",
+     "cual": "luz2",
+     "ok": 1
+    }
+   ]
+  },
+  "c105_abo_ahora",
+  "c105_ab_apaga_luz",
+  {
+   "dots": 4
+  },
+  {
+   "act": "llega",
+   "quien": "luis",
+   "a": "alfombra1",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "carmen",
+   "a": "alfombra2",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  "c105_ca_quiero",
+  "p_cq_yo_tambien",
+  {
+   "dots": 5
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "teje",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "abuelo",
+   "que": "mira",
+   "a": "television",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "mira",
+   "a": "television",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "mira",
+   "a": "television",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "draw": "la",
+   "options": [
+    "0"
+   ]
+  },
+  {
+   "draw": "lb",
+   "options": [
+    "0"
+   ]
+  },
+  {
+   "draw": "lc",
+   "options": [
+    "1"
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "qa",
+   "options": [
+    "luis",
+    "carmen"
+   ]
+  },
+  {
+   "draw": "wa",
+   "options": [
+    "prende",
+    "apaga"
+   ]
+  },
+  {
+   "calc": "ta",
+   "cond": "wa=apaga",
+   "then": "1",
+   "else": "0"
+  },
+  {
+   "calc": "yaa",
+   "cond": "la=$ta",
+   "then": "1",
+   "else": "0"
+  },
+  {
+   "calc": "yba",
+   "cond": "lb=$ta",
+   "then": "1",
+   "else": "0"
+  },
+  {
+   "calc": "yca",
+   "cond": "lc=$ta",
+   "then": "1",
+   "else": "0"
+  },
+  {
+   "draw": "pa",
+   "options": [
+    "luz3"
+   ]
+  },
+  {
+   "calc": "pa",
+   "cond": "yba=1",
+   "then": "luz2",
+   "else": "$pa"
+  },
+  {
+   "calc": "pa",
+   "cond": "yaa=1",
+   "then": "luz1",
+   "else": "$pa"
+  },
+  {
+   "calc": "vaa",
+   "cond": "yaa=1",
+   "then": "luz1",
+   "else": "$pa"
+  },
+  {
+   "calc": "vba",
+   "cond": "yba=1",
+   "then": "luz2",
+   "else": "$pa"
+  },
+  {
+   "calc": "vca",
+   "cond": "yca=1",
+   "then": "luz3",
+   "else": "$pa"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "luz1",
+    "luz2",
+    "luz3"
+   ],
+   "pick": "$pa",
+   "vale": [
+    "$vaa",
+    "$vba",
+    "$vca"
+   ],
+   "tests": "$wa",
+   "lock": true,
+   "lead": [],
+   "line": "c105_g_$qa_$wa",
+   "right": [
+    {
+     "calc": "pla",
+     "cond": "ok",
+     "then": "$x",
+     "else": "$pa"
+    },
+    {
+     "act": "luz105",
+     "cual": "$pla",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "gesto",
+       "quien": "$qa",
+       "que": "si"
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ],
+     "else": [
+      {
+       "act": "vuelve105",
+       "cual": "$x"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "luz105",
+     "cual": "$x",
+     "ok": 0
+    },
+    "c105_no_$qa_$wa",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "bufanda",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "bufanda",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "calc": "nva",
+   "cond": "wa=prende",
+   "then": "1",
+   "else": "0"
+  },
+  {
+   "calc": "la",
+   "cond": "pla=luz1",
+   "then": "$nva",
+   "else": "$la"
+  },
+  {
+   "calc": "lb",
+   "cond": "pla=luz2",
+   "then": "$nva",
+   "else": "$lb"
+  },
+  {
+   "calc": "lc",
+   "cond": "pla=luz3",
+   "then": "$nva",
+   "else": "$lc"
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "qb",
+   "options": [
+    "luis",
+    "carmen"
+   ]
+  },
+  {
+   "draw": "wb",
+   "options": [
+    "prende",
+    "apaga"
+   ]
+  },
+  {
+   "calc": "hay",
+   "cond": "la=1",
+   "then": "1",
+   "else": "0"
+  },
+  {
+   "calc": "hay",
+   "cond": "lb=1",
+   "then": "1",
+   "else": "$hay"
+  },
+  {
+   "calc": "hay",
+   "cond": "lc=1",
+   "then": "1",
+   "else": "$hay"
+  },
+  {
+   "calc": "wb",
+   "cond": "hay=1",
+   "then": "$wb",
+   "else": "prende"
+  },
+  {
+   "calc": "tb",
+   "cond": "wb=apaga",
+   "then": "1",
+   "else": "0"
+  },
+  {
+   "calc": "yab",
+   "cond": "la=$tb",
+   "then": "1",
+   "else": "0"
+  },
+  {
+   "calc": "ybb",
+   "cond": "lb=$tb",
+   "then": "1",
+   "else": "0"
+  },
+  {
+   "calc": "ycb",
+   "cond": "lc=$tb",
+   "then": "1",
+   "else": "0"
+  },
+  {
+   "draw": "pb",
+   "options": [
+    "luz3"
+   ]
+  },
+  {
+   "calc": "pb",
+   "cond": "ybb=1",
+   "then": "luz2",
+   "else": "$pb"
+  },
+  {
+   "calc": "pb",
+   "cond": "yab=1",
+   "then": "luz1",
+   "else": "$pb"
+  },
+  {
+   "calc": "vab",
+   "cond": "yab=1",
+   "then": "luz1",
+   "else": "$pb"
+  },
+  {
+   "calc": "vbb",
+   "cond": "ybb=1",
+   "then": "luz2",
+   "else": "$pb"
+  },
+  {
+   "calc": "vcb",
+   "cond": "ycb=1",
+   "then": "luz3",
+   "else": "$pb"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "luz1",
+    "luz2",
+    "luz3"
+   ],
+   "pick": "$pb",
+   "vale": [
+    "$vab",
+    "$vbb",
+    "$vcb"
+   ],
+   "tests": "$wb",
+   "lock": true,
+   "lead": [],
+   "line": "c105_g_$qb_$wb",
+   "right": [
+    {
+     "calc": "plb",
+     "cond": "ok",
+     "then": "$x",
+     "else": "$pb"
+    },
+    {
+     "act": "luz105",
+     "cual": "$plb",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "gesto",
+       "quien": "$qb",
+       "que": "si"
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ],
+     "else": [
+      {
+       "act": "vuelve105",
+       "cual": "$x"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "luz105",
+     "cual": "$x",
+     "ok": 0
+    },
+    "c105_no_$qb_$wb",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "bufanda",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "bufanda",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "calc": "nvb",
+   "cond": "wb=prende",
+   "then": "1",
+   "else": "0"
+  },
+  {
+   "calc": "la",
+   "cond": "plb=luz1",
+   "then": "$nvb",
+   "else": "$la"
+  },
+  {
+   "calc": "lb",
+   "cond": "plb=luz2",
+   "then": "$nvb",
+   "else": "$lb"
+  },
+  {
+   "calc": "lc",
+   "cond": "plb=luz3",
+   "then": "$nvb",
+   "else": "$lc"
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final105",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final105",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final105",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 9
+  },
+  "c105_ab_para_ti",
+  "c50_cq_gracias",
+  "c105_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c105_abo_tele",
+  "db18",
+  "c105_ab_prende_tele",
+  "c105_ab_no_veo",
+  "c105_q_prendes",
+  "c105_ab_ahora_veo",
+  "c105_abo_ay",
+  "c105_q_apagas",
+  "c105_abo_ahora",
+  "c105_ab_apaga_luz",
+  "c105_ca_quiero",
+  "p_cq_yo_tambien",
+  "c105_g_luis_apaga",
+  "c105_g_carmen_prende",
+  "c105_ab_para_ti",
+  "c50_cq_gracias",
+  "c105_fin"
+ ]
+}
