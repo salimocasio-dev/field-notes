@@ -668,10 +668,15 @@ class _BranchRules {
     required this.storyDefaultLane,
     this.contractsPrefix = 'contracts/',
     this.contractsOwnerLane = 'coqui_contracts',
+    this.contractsRequiredLibPaths = const [
+      'coqui/packages/core/coqui_contracts/lib/**',
+    ],
     this.contractsConformancePaths = const [
       'coqui/packages/**',
       'coqui/app/**',
     ],
+    this.contractsDeniedPaths = const [],
+    this.contractsMaxConformanceChangedLines = 6,
   });
 
   final String lanePrefix;
@@ -679,7 +684,26 @@ class _BranchRules {
   final String storyDefaultLane;
   final String contractsPrefix;
   final String contractsOwnerLane;
+  final List<String> contractsRequiredLibPaths;
   final List<String> contractsConformancePaths;
+  final List<String> contractsDeniedPaths;
+  final int contractsMaxConformanceChangedLines;
+}
+
+class _ChangedFileStat {
+  const _ChangedFileStat({
+    required this.path,
+    this.status = 'M',
+    this.addedLines,
+    this.deletedLines,
+    this.isBinary = false,
+  });
+
+  final String path;
+  final String status;
+  final int? addedLines;
+  final int? deletedLines;
+  final bool isBinary;
 }
 
 class _LaneMap {
@@ -721,7 +745,11 @@ class _BranchResolution {
     this.allowedPaths = const [],
     this.generatedPaths = const [],
     this.sharedPaths = const [],
-    this.requiredOwnerPaths = const [],
+    this.ownerPaths = const [],
+    this.requiredLibPaths = const [],
+    this.deniedPaths = const [],
+    this.conformanceMaxChangedLines,
+    this.conformanceExtensions = const [],
     this.error,
   });
 
@@ -731,7 +759,11 @@ class _BranchResolution {
   final List<String> allowedPaths;
   final List<String> generatedPaths;
   final List<String> sharedPaths;
-  final List<String> requiredOwnerPaths;
+  final List<String> ownerPaths;
+  final List<String> requiredLibPaths;
+  final List<String> deniedPaths;
+  final int? conformanceMaxChangedLines;
+  final List<String> conformanceExtensions;
   final String? error;
 
   List<String> get allAllowedPatterns =>
@@ -1056,7 +1088,10 @@ String _expandTemplatePath(
   var storyDefaultLane = '';
   var contractsPrefix = 'contracts/';
   var contractsOwnerLane = '';
+  var contractsRequiredLibPaths = const <String>[];
   var contractsConformancePaths = const <String>[];
+  var contractsDeniedPaths = const <String>[];
+  var contractsMaxConformanceChangedLines = 6;
   final rawBranchRules = data['branch_rules'];
   if (rawBranchRules is! Map) {
     errors.add('branch_rules must be an object');
@@ -1067,7 +1102,12 @@ String _expandTemplatePath(
     final sdl = br['story_default_lane'];
     final cp = br['contracts_prefix'];
     final col = br['contracts_owner_lane'];
+    final crlp = br['contracts_required_lib_paths'];
     final ccp = br['contracts_conformance_paths'];
+    final cdp = br.containsKey('contracts_denied_paths')
+        ? br['contracts_denied_paths']
+        : const <Object?>[];
+    final cmcl = br['contracts_max_conformance_changed_lines'];
     if (lp is! String || !lp.endsWith('/')) {
       errors.add("branch_rules.lane_prefix must be a string ending with '/'");
     } else {
@@ -1097,12 +1137,32 @@ String _expandTemplatePath(
     } else {
       contractsOwnerLane = col;
     }
+    contractsRequiredLibPaths = _asStringList(
+      crlp,
+      'branch_rules.contracts_required_lib_paths',
+      errors,
+      allowEmpty: false,
+    );
     contractsConformancePaths = _asStringList(
       ccp,
       'branch_rules.contracts_conformance_paths',
       errors,
       allowEmpty: false,
     );
+    contractsDeniedPaths = _asStringList(
+      cdp,
+      'branch_rules.contracts_denied_paths',
+      errors,
+      allowEmpty: true,
+    );
+    if (cmcl is! int || cmcl <= 0) {
+      errors.add(
+        'branch_rules.contracts_max_conformance_changed_lines must be a '
+        'positive integer',
+      );
+    } else {
+      contractsMaxConformanceChangedLines = cmcl;
+    }
   }
 
   final generatedPathGroups = <String, List<String>>{};
@@ -1353,7 +1413,10 @@ String _expandTemplatePath(
       storyDefaultLane: storyDefaultLane,
       contractsPrefix: contractsPrefix,
       contractsOwnerLane: contractsOwnerLane,
+      contractsRequiredLibPaths: contractsRequiredLibPaths,
       contractsConformancePaths: contractsConformancePaths,
+      contractsDeniedPaths: contractsDeniedPaths,
+      contractsMaxConformanceChangedLines: contractsMaxConformanceChangedLines,
     ),
     generatedPathGroups: generatedPathGroups,
     sanctionedMultiPackage: sanctioned,
@@ -1410,8 +1473,20 @@ List<String> _validateLaneMap(_LaneMap map) {
       "'${map.branchRules.contractsOwnerLane}'",
     );
   }
+  for (final p in map.branchRules.contractsRequiredLibPaths) {
+    checkPat(p, 'branch_rules.contracts_required_lib_paths');
+  }
   for (final p in map.branchRules.contractsConformancePaths) {
     checkPat(p, 'branch_rules.contracts_conformance_paths');
+  }
+  for (final p in map.branchRules.contractsDeniedPaths) {
+    checkPat(p, 'branch_rules.contracts_denied_paths');
+  }
+  if (map.branchRules.contractsMaxConformanceChangedLines <= 0) {
+    errors.add(
+      'branch_rules.contracts_max_conformance_changed_lines must be a '
+      'positive integer',
+    );
   }
   map.sanctionedMultiPackage.forEach((name, rule) {
     for (final combo in rule.combinations) {
@@ -1683,7 +1758,15 @@ _BranchResolution _resolveBranch(_LaneMap map, String branch) {
       );
     }
     final defaultId = map.branchRules.storyDefaultLane;
-    final lane = map.lanes[defaultId]!;
+    final lane = map.lanes[defaultId];
+    if (lane == null) {
+      return _BranchResolution(
+        branch: branch,
+        restricted: true,
+        error:
+            "branch $branch references unknown story_default_lane '$defaultId'",
+      );
+    }
     return _BranchResolution(
       branch: branch,
       restricted: true,
@@ -1703,7 +1786,16 @@ _BranchResolution _resolveBranch(_LaneMap map, String branch) {
         error: "branch $branch must match '$contractsPrefix<number>'",
       );
     }
-    final ownerLane = map.lanes[map.branchRules.contractsOwnerLane]!;
+    final ownerId = map.branchRules.contractsOwnerLane;
+    final ownerLane = map.lanes[ownerId];
+    if (ownerLane == null) {
+      return _BranchResolution(
+        branch: branch,
+        restricted: true,
+        error:
+            "branch $branch references unknown contracts_owner_lane '$ownerId'",
+      );
+    }
     return _BranchResolution(
       branch: branch,
       restricted: true,
@@ -1714,7 +1806,12 @@ _BranchResolution _resolveBranch(_LaneMap map, String branch) {
       ]),
       generatedPaths: ownerLane.generatedPaths,
       sharedPaths: map.sharedPaths,
-      requiredOwnerPaths: ownerLane.paths,
+      ownerPaths: ownerLane.paths,
+      requiredLibPaths: map.branchRules.contractsRequiredLibPaths,
+      deniedPaths: map.branchRules.contractsDeniedPaths,
+      conformanceMaxChangedLines:
+          map.branchRules.contractsMaxConformanceChangedLines,
+      conformanceExtensions: const ['.dart'],
     );
   }
 
@@ -1723,6 +1820,15 @@ _BranchResolution _resolveBranch(_LaneMap map, String branch) {
     restricted: false,
     sharedPaths: map.sharedPaths,
   );
+}
+
+/// Parses [rawLaneMap] without running `_validateLaneMap` and returns
+/// `_resolveBranch(map, branch).error`. Intended for unit tests verifying
+/// safe handling of unvalidated lane maps.
+String? resolveBranchErrorForTest(Object? rawLaneMap, String branch) {
+  final (laneMap, _) = _parseLaneMap(rawLaneMap);
+  if (laneMap == null) return 'lane map root must be a JSON object';
+  return _resolveBranch(laneMap, branch).error;
 }
 
 String _formatAllowedSummary(List<String> patterns) {
@@ -1798,54 +1904,156 @@ Future<List<String>> _checkLane(
   if (mb.error != null) {
     return ['[d] branch $branch: ${mb.error}'];
   }
-  final diff = _git(root, [
+  final statusDiff = _git(root, [
     '-c',
     'core.quotepath=false',
     'diff',
-    '--name-only',
+    '--name-status',
     '--no-renames',
     '-z',
     '${mb.commit}..HEAD',
   ]);
-  if (!diff.ok) {
-    return ['[d] branch $branch: git diff failed: ${diff.err}'];
+  if (!statusDiff.ok) {
+    return [
+      '[d] branch $branch: git diff --name-status failed: ${statusDiff.err}',
+    ];
+  }
+  final numstatDiff = _git(root, [
+    '-c',
+    'core.quotepath=false',
+    'diff',
+    '--numstat',
+    '--no-renames',
+    '-z',
+    '${mb.commit}..HEAD',
+  ]);
+  if (!numstatDiff.ok) {
+    return [
+      '[d] branch $branch: git diff --numstat failed: ${numstatDiff.err}',
+    ];
   }
 
-  final files = [
-    for (final f in diff.raw.split('\u0000'))
-      if (f.isNotEmpty) f,
-  ];
+  final numstats = <String, (int?, int?, bool)>{};
+  for (final entry in numstatDiff.raw.split('\u0000')) {
+    if (entry.isEmpty) continue;
+    final firstTab = entry.indexOf('\t');
+    if (firstTab < 0) continue;
+    final secondTab = entry.indexOf('\t', firstTab + 1);
+    if (secondTab < 0) continue;
+    final addedRaw = entry.substring(0, firstTab);
+    final deletedRaw = entry.substring(firstTab + 1, secondTab);
+    final path = entry.substring(secondTab + 1);
+    if (addedRaw == '-' || deletedRaw == '-') {
+      numstats[path] = (null, null, true);
+    } else {
+      numstats[path] = (
+        int.tryParse(addedRaw),
+        int.tryParse(deletedRaw),
+        false,
+      );
+    }
+  }
+
+  final files = <String>[];
+  final fileStats = <String, _ChangedFileStat>{};
+  final tokens = statusDiff.raw.split('\u0000');
+  for (var i = 0; i + 1 < tokens.length; i += 2) {
+    final status = tokens[i];
+    final path = tokens[i + 1];
+    if (status.isEmpty || path.isEmpty) continue;
+    files.add(path);
+    final ns = numstats[path];
+    fileStats[path] = _ChangedFileStat(
+      path: path,
+      status: status,
+      addedLines: ns?.$1,
+      deletedLines: ns?.$2,
+      isBinary: ns?.$3 ?? false,
+    );
+  }
+
   final allowed = resolution.allAllowedPatterns;
   final allowedSummary = _formatAllowedSummary(allowed);
   final problems = <String>[];
   final allowedFiles = <String>[];
   for (final file in files) {
+    if (resolution.deniedPaths.any((pat) => _matchLanePattern(pat, file))) {
+      problems.add(
+        "$file: [d] branch $branch may not modify locked/denied path '$file'",
+      );
+      continue;
+    }
     if (allowed.any((pat) => _matchLanePattern(pat, file))) {
       allowedFiles.add(file);
       continue;
     }
     problems.add('$file: [d] branch $branch may change only $allowedSummary');
   }
-  if (resolution.requiredOwnerPaths.isNotEmpty) {
-    final ownerTouched = files.any(
-      (file) => resolution.requiredOwnerPaths.any(
-        (pat) => _matchLanePattern(pat, file),
-      ),
-    );
-    if (!ownerTouched) {
-      final ownerSummary = _formatAllowedSummary(resolution.requiredOwnerPaths);
-      final exemptPatterns = [
-        ...resolution.sharedPaths,
-        ...resolution.generatedPaths,
-      ];
-      for (final file in allowedFiles) {
-        if (exemptPatterns.any((pat) => _matchLanePattern(pat, file))) {
-          continue;
+
+  if (resolution.requiredLibPaths.isNotEmpty ||
+      resolution.conformanceMaxChangedLines != null) {
+    final exemptPatterns = [
+      ...resolution.ownerPaths,
+      ...resolution.sharedPaths,
+      ...resolution.generatedPaths,
+    ];
+    final conformanceFiles = [
+      for (final file in allowedFiles)
+        if (!exemptPatterns.any((pat) => _matchLanePattern(pat, file))) file,
+    ];
+    if (conformanceFiles.isNotEmpty) {
+      final libTouched = files.any(
+        (file) => resolution.requiredLibPaths.any(
+          (pat) => _matchLanePattern(pat, file),
+        ),
+      );
+      if (resolution.requiredLibPaths.isNotEmpty && !libTouched) {
+        final libSummary = _formatAllowedSummary(resolution.requiredLibPaths);
+        for (final file in conformanceFiles) {
+          problems.add(
+            "$file: [d] branch $branch may edit '$file' for conformance only "
+            'alongside changes in $libSummary',
+          );
         }
-        problems.add(
-          "$file: [d] branch $branch may edit '$file' for conformance only "
-          'alongside changes in $ownerSummary',
-        );
+      }
+      for (final file in conformanceFiles) {
+        if (resolution.conformanceExtensions.isNotEmpty &&
+            !resolution.conformanceExtensions.any(file.endsWith)) {
+          final exts = resolution.conformanceExtensions.join(', ');
+          problems.add(
+            "$file: [d] branch $branch conformance edit on '$file' must "
+            'target $exts files only',
+          );
+        }
+        final stat = fileStats[file];
+        if (stat == null) {
+          problems.add(
+            "$file: [d] branch $branch requires diff stats to verify "
+            "conformance edit size/status on '$file'",
+          );
+        } else if (stat.status != 'M') {
+          problems.add(
+            "$file: [d] branch $branch conformance edit on '$file' must "
+            "modify an existing file in place (got status '${stat.status}')",
+          );
+        } else if (stat.isBinary ||
+            stat.addedLines == null ||
+            stat.deletedLines == null) {
+          problems.add(
+            "$file: [d] branch $branch binary file '$file' is not allowed as "
+            'a conformance edit',
+          );
+        } else if (resolution.conformanceMaxChangedLines != null &&
+            (stat.addedLines! + stat.deletedLines!) >
+                resolution.conformanceMaxChangedLines!) {
+          final changedLines = stat.addedLines! + stat.deletedLines!;
+          problems.add(
+            "$file: [d] branch $branch conformance edit on '$file' changed "
+            '$changedLines lines (${stat.addedLines} added + '
+            '${stat.deletedLines} deleted), exceeding max '
+            '${resolution.conformanceMaxChangedLines}',
+          );
+        }
       }
     }
   }

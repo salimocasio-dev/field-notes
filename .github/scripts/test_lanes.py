@@ -240,6 +240,25 @@ class LaneMapCoreTests(unittest.TestCase):
         val_errs = lanes.validate_lane_map(lm)
         self.assertTrue(any("contracts_owner_lane" in e and "no_such_lane" in e for e in val_errs), val_errs)
 
+        # Invalid contracts_required_lib_paths (empty, non-list, bad glob)
+        empty_lib = copy.deepcopy(base_raw)
+        empty_lib["branch_rules"]["contracts_required_lib_paths"] = []
+        _, parse_errs = lanes.parse_lane_map(empty_lib)
+        self.assertTrue(any("contracts_required_lib_paths" in e for e in parse_errs), parse_errs)
+
+        nonlist_lib = copy.deepcopy(base_raw)
+        nonlist_lib["branch_rules"]["contracts_required_lib_paths"] = "coqui/packages/core/coqui_contracts/lib/**"
+        _, parse_errs = lanes.parse_lane_map(nonlist_lib)
+        self.assertTrue(any("contracts_required_lib_paths" in e for e in parse_errs), parse_errs)
+
+        bad_lib_glob = copy.deepcopy(base_raw)
+        bad_lib_glob["branch_rules"]["contracts_required_lib_paths"] = ["coqui/**/platform.dart"]
+        lm, parse_errs = lanes.parse_lane_map(bad_lib_glob)
+        self.assertEqual(parse_errs, [])
+        assert lm is not None
+        val_errs = lanes.validate_lane_map(lm)
+        self.assertTrue(any("contracts_required_lib_paths" in e for e in val_errs), val_errs)
+
         # Empty contracts_conformance_paths
         empty_paths = copy.deepcopy(base_raw)
         empty_paths["branch_rules"]["contracts_conformance_paths"] = []
@@ -261,15 +280,51 @@ class LaneMapCoreTests(unittest.TestCase):
         val_errs = lanes.validate_lane_map(lm)
         self.assertTrue(any("contracts_conformance_paths" in e for e in val_errs), val_errs)
 
+        # Invalid contracts_denied_paths (non-list and bad glob; empty list is allowed)
+        empty_denied = copy.deepcopy(base_raw)
+        empty_denied["branch_rules"]["contracts_denied_paths"] = []
+        lm, parse_errs = lanes.parse_lane_map(empty_denied)
+        self.assertEqual(parse_errs, [])
+        assert lm is not None
+        self.assertEqual(lanes.validate_lane_map(lm), [])
+
+        nonlist_denied = copy.deepcopy(base_raw)
+        nonlist_denied["branch_rules"]["contracts_denied_paths"] = "historia/cuentos/**"
+        _, parse_errs = lanes.parse_lane_map(nonlist_denied)
+        self.assertTrue(any("contracts_denied_paths" in e for e in parse_errs), parse_errs)
+
+        bad_denied_glob = copy.deepcopy(base_raw)
+        bad_denied_glob["branch_rules"]["contracts_denied_paths"] = ["coqui/**/call.dart"]
+        lm, parse_errs = lanes.parse_lane_map(bad_denied_glob)
+        self.assertEqual(parse_errs, [])
+        assert lm is not None
+        val_errs = lanes.validate_lane_map(lm)
+        self.assertTrue(any("contracts_denied_paths" in e for e in val_errs), val_errs)
+
+        # Invalid contracts_max_conformance_changed_lines (0, -1, "6", True)
+        for bad_max in (0, -1, "6", True):
+            with self.subTest(bad_max=bad_max):
+                raw = copy.deepcopy(base_raw)
+                raw["branch_rules"]["contracts_max_conformance_changed_lines"] = bad_max
+                _, parse_errs = lanes.parse_lane_map(raw)
+                self.assertTrue(
+                    any("contracts_max_conformance_changed_lines" in e for e in parse_errs),
+                    parse_errs,
+                )
+
     def test_resolve_contracts_branch_and_malformed_names(self) -> None:
         lm = self.lane_map
         res = lanes.resolve_branch(lm, "contracts/260")
         self.assertTrue(res.restricted)
         self.assertIsNone(res.error)
         self.assertEqual(res.lane_ids, ("coqui_contracts",))
-        self.assertEqual(res.required_owner_paths, ("coqui/packages/core/coqui_contracts/**",))
+        self.assertEqual(res.owner_paths, ("coqui/packages/core/coqui_contracts/**",))
+        self.assertEqual(res.required_lib_paths, ("coqui/packages/core/coqui_contracts/lib/**",))
+        self.assertEqual(res.conformance_max_changed_lines, 6)
+        self.assertEqual(res.conformance_extensions, (".dart",))
         self.assertIn("coqui/packages/**", res.allowed_paths)
         self.assertIn("coqui/app/**", res.allowed_paths)
+        self.assertIn("coqui/packages/core/coqui_platform/lib/src/call/**", res.denied_paths)
 
         for bad in ("contracts/", "contracts/abc", "contracts/260/extra", "contracts/260-fix"):
             with self.subTest(branch=bad):
@@ -278,6 +333,31 @@ class LaneMapCoreTests(unittest.TestCase):
                 self.assertIsNotNone(bad_res.error)
                 assert bad_res.error is not None
                 self.assertIn("contracts/<number>", bad_res.error)
+
+    def test_resolve_branch_safe_error_on_unvalidated_missing_lanes(self) -> None:
+        base_raw = json.loads((TOOLS_DIR / "lanes.json").read_text(encoding="utf-8"))
+
+        missing_story = copy.deepcopy(base_raw)
+        missing_story["branch_rules"]["story_default_lane"] = "missing_scene_port"
+        lm_story, _ = lanes.parse_lane_map(missing_story)
+        assert lm_story is not None
+        res_story = lanes.resolve_branch(lm_story, "story/42")
+        self.assertTrue(res_story.restricted)
+        self.assertIsNotNone(res_story.error)
+        assert res_story.error is not None
+        self.assertIn("story_default_lane", res_story.error)
+        self.assertIn("missing_scene_port", res_story.error)
+
+        missing_owner = copy.deepcopy(base_raw)
+        missing_owner["branch_rules"]["contracts_owner_lane"] = "missing_contracts"
+        lm_owner, _ = lanes.parse_lane_map(missing_owner)
+        assert lm_owner is not None
+        res_owner = lanes.resolve_branch(lm_owner, "contracts/260")
+        self.assertTrue(res_owner.restricted)
+        self.assertIsNotNone(res_owner.error)
+        assert res_owner.error is not None
+        self.assertIn("contracts_owner_lane", res_owner.error)
+        self.assertIn("missing_contracts", res_owner.error)
 
 
 class BoardTests(unittest.TestCase):
@@ -577,42 +657,146 @@ class CheckLanesAndGuardrailsIntegrationTests(unittest.TestCase):
             self.assertIn("clash_a", res.stdout)
             self.assertIn("clash_b", res.stdout)
 
-    def test_contracts_branch_valid_conformance_and_requests_only(self) -> None:
+    def test_contracts_branch_valid_conformance_owner_only_and_requests_only(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             repo = TempGitRepo(Path(tmp))
+            # Pre-create existing files on main so conformance edits are status M.
+            repo.write("coqui/packages/core/coqui_contracts/lib/src/platform.dart", "// old contracts\n")
+            repo.write("coqui/packages/core/coqui_contracts/AGENTS.md", "# coqui_contracts\n")
+            repo.write("coqui/packages/core/coqui_platform/lib/src/store.dart", "// old store\n")
+            repo.write("coqui/packages/core/coqui_testing/lib/src/fakes.dart", "// old fakes\n")
+            repo.write("coqui/packages/features/feature_library/lib/src/reader.dart", "// old reader\n")
+            repo.write("coqui/app/lib/src/main.dart", "// old app\n")
+            repo.commit("seed existing files on main")
+
+            # (a) Contracts lib + small in-place (<= 6 changed lines) .dart conformance edits + requests/
             repo.branch("contracts/260")
-            repo.write("coqui/packages/core/coqui_contracts/lib/src/platform.dart", "// contracts\n")
-            repo.commit("contracts only")
+            repo.write("coqui/packages/core/coqui_contracts/lib/src/platform.dart", "// new contracts\n")
+            repo.write("coqui/packages/core/coqui_platform/lib/src/store.dart", "// conform store\n")
+            repo.write("coqui/packages/core/coqui_testing/lib/src/fakes.dart", "// conform fakes\n")
+            repo.write("coqui/packages/features/feature_library/lib/src/reader.dart", "// conform reader\n")
+            repo.write("coqui/app/lib/src/main.dart", "// conform app\n")
+            repo.write("coqui/requests/260-note.md", "# req\n")
+            repo.commit("contracts lib plus small conformance edits")
 
             res_cl = self._run_check_lanes(repo, "contracts/260")
             self.assertEqual(res_cl.returncode, 0, res_cl.stdout + res_cl.stderr)
             res_pg = self._run_pr_guardrails(repo, "contracts/260")
             self.assertEqual(res_pg.returncode, 0, res_pg.stdout + res_pg.stderr)
 
-            # Conformance edits across packages, app, and requests/
-            repo.write("coqui/packages/core/coqui_platform/lib/src/store.dart", "// conform\n")
-            repo.write("coqui/packages/core/coqui_testing/lib/src/fakes.dart", "// conform\n")
-            repo.write("coqui/packages/features/feature_library/lib/src/reader.dart", "// conform\n")
-            repo.write("coqui/app/lib/src/main.dart", "// conform\n")
-            repo.write("coqui/requests/260-note.md", "# req\n")
-            repo.commit("contracts plus conformance")
+            # (b) Owner-only AGENTS.md edit (no other packages)
+            repo._git(["checkout", "-q", "main"])
+            repo.branch("contracts/261")
+            repo.write("coqui/packages/core/coqui_contracts/AGENTS.md", "# coqui_contracts\n- Standing rule.\n")
+            repo.commit("owner-only AGENTS.md")
 
-            res_cl2 = self._run_check_lanes(repo, "contracts/260")
+            res_cl2 = self._run_check_lanes(repo, "contracts/261")
             self.assertEqual(res_cl2.returncode, 0, res_cl2.stdout + res_cl2.stderr)
-            res_pg2 = self._run_pr_guardrails(repo, "contracts/260")
+            res_pg2 = self._run_pr_guardrails(repo, "contracts/261")
             self.assertEqual(res_pg2.returncode, 0, res_pg2.stdout + res_pg2.stderr)
 
-        # Requests-only on contracts/<n>
-        with tempfile.TemporaryDirectory() as tmp:
-            repo = TempGitRepo(Path(tmp))
-            repo.branch("contracts/261")
-            repo.write("coqui/requests/261-note.md", "# req only\n")
+            # Requests-only on contracts/<n>
+            repo._git(["checkout", "-q", "main"])
+            repo.branch("contracts/262")
+            repo.write("coqui/requests/262-note.md", "# req only\n")
             repo.commit("requests only")
 
-            res_cl = self._run_check_lanes(repo, "contracts/261")
-            self.assertEqual(res_cl.returncode, 0, res_cl.stdout + res_cl.stderr)
-            res_pg = self._run_pr_guardrails(repo, "contracts/261")
-            self.assertEqual(res_pg.returncode, 0, res_pg.stdout + res_pg.stderr)
+            res_cl3 = self._run_check_lanes(repo, "contracts/262")
+            self.assertEqual(res_cl3.returncode, 0, res_cl3.stdout + res_cl3.stderr)
+            res_pg3 = self._run_pr_guardrails(repo, "contracts/262")
+            self.assertEqual(res_pg3.returncode, 0, res_pg3.stdout + res_pg3.stderr)
+
+    def test_contracts_branch_rejects_conformance_without_contracts_lib_change(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = TempGitRepo(Path(tmp))
+            repo.write("coqui/packages/core/coqui_contracts/AGENTS.md", "# coqui_contracts\n")
+            repo.write("coqui/packages/core/coqui_platform/lib/src/store.dart", "// old store\n")
+            repo.write("coqui/app/lib/src/main.dart", "// old app\n")
+            repo.commit("seed files on main")
+
+            # (c) Only coqui_contracts/AGENTS.md changed + 1-line conformance edit in coqui_platform -> FAIL
+            repo.branch("contracts/260")
+            repo.write("coqui/packages/core/coqui_contracts/AGENTS.md", "# coqui_contracts\n- Standing rule.\n")
+            repo.write("coqui/packages/core/coqui_platform/lib/src/store.dart", "// conform store\n")
+            repo.write("coqui/app/lib/src/main.dart", "// conform app\n")
+            repo.write("coqui/requests/260-note.md", "# req\n")
+            repo.commit("agents-only plus conformance")
+
+            for runner in (self._run_check_lanes, self._run_pr_guardrails):
+                res = runner(repo, "contracts/260")
+                self.assertNotEqual(res.returncode, 0)
+                self.assertIn("::error file=coqui/packages/core/coqui_platform/lib/src/store.dart::", res.stdout)
+                self.assertIn("::error file=coqui/app/lib/src/main.dart::", res.stdout)
+                self.assertIn(
+                    "for conformance only alongside changes in coqui/packages/core/coqui_contracts/lib/**",
+                    res.stdout,
+                )
+                self.assertNotIn("coqui/requests/260-note.md", res.stdout)
+
+    def test_contracts_branch_rejects_oversized_added_deleted_and_non_dart_conformance_edits(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = TempGitRepo(Path(tmp))
+            repo.write("coqui/packages/core/coqui_contracts/lib/src/platform.dart", "// old\n")
+            repo.write("coqui/packages/core/coqui_platform/lib/src/big.dart", "l1\nl2\nl3\nl4\n")
+            repo.write("coqui/packages/core/coqui_platform/lib/src/old.dart", "// delete me\n")
+            repo.write("coqui/packages/core/coqui_platform/pubspec.yaml", "name: coqui_platform\n")
+            repo.write("coqui/packages/core/coqui_platform/AGENTS.md", "# coqui_platform\n")
+            repo.commit("seed files on main")
+
+            # (d) > 6 changed lines, (e) added (A) and deleted (D) .dart files, (f) non-.dart files
+            repo.branch("contracts/260")
+            repo.write("coqui/packages/core/coqui_contracts/lib/src/platform.dart", "// new\n")
+            repo.write("coqui/packages/core/coqui_platform/lib/src/big.dart", "n1\nn2\nn3\nn4\n")  # 4+4 = 8 > 6
+            repo.write("coqui/packages/core/coqui_platform/lib/src/added.dart", "// new file\n")
+            (repo.root / "coqui/packages/core/coqui_platform/lib/src/old.dart").unlink()
+            repo.write("coqui/packages/core/coqui_platform/pubspec.yaml", "name: coqui_platform\n# edit\n")
+            repo.write("coqui/packages/core/coqui_platform/AGENTS.md", "# coqui_platform\n- note\n")
+            repo.commit("invalid conformance edits")
+
+            for runner in (self._run_check_lanes, self._run_pr_guardrails):
+                res = runner(repo, "contracts/260")
+                self.assertNotEqual(res.returncode, 0)
+                self.assertIn("::error file=coqui/packages/core/coqui_platform/lib/src/big.dart::", res.stdout)
+                self.assertIn("changed 8 lines", res.stdout)
+                self.assertIn("exceeding max 6", res.stdout)
+                self.assertIn("::error file=coqui/packages/core/coqui_platform/lib/src/added.dart::", res.stdout)
+                self.assertIn("got status 'A'", res.stdout)
+                self.assertIn("::error file=coqui/packages/core/coqui_platform/lib/src/old.dart::", res.stdout)
+                self.assertIn("got status 'D'", res.stdout)
+                self.assertIn("::error file=coqui/packages/core/coqui_platform/pubspec.yaml::", res.stdout)
+                self.assertIn("::error file=coqui/packages/core/coqui_platform/AGENTS.md::", res.stdout)
+                self.assertIn("must target .dart files only", res.stdout)
+
+    def test_contracts_branch_rejects_locked_denied_paths(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = TempGitRepo(Path(tmp))
+            repo.write("coqui/packages/core/coqui_contracts/lib/src/platform.dart", "// old\n")
+            repo.write("coqui/packages/core/coqui_platform/lib/src/call/call.dart", "// old call\n")
+            repo.write("coqui/packages/core/coqui_platform/lib/src/web/el_conv.dart", "// old el\n")
+            repo.write("coqui/packages/core/coqui_platform/assets/elevenlabs/lib.js", "// old js\n")
+            repo.write("coqui/app/android/app/build.gradle.kts", "// old gradle\n")
+            repo.commit("seed locked files on main")
+
+            # (g) 1-line edit in locked/denied paths alongside coqui_contracts/lib/**
+            repo.branch("contracts/260")
+            repo.write("coqui/packages/core/coqui_contracts/lib/src/platform.dart", "// new\n")
+            repo.write("coqui/packages/core/coqui_platform/lib/src/call/call.dart", "// edited call\n")
+            repo.write("coqui/packages/core/coqui_platform/lib/src/web/el_conv.dart", "// edited el\n")
+            repo.write("coqui/packages/core/coqui_platform/assets/elevenlabs/lib.js", "// edited js\n")
+            repo.write("coqui/app/android/app/build.gradle.kts", "// edited gradle\n")
+            repo.commit("edit locked paths")
+
+            for runner in (self._run_check_lanes, self._run_pr_guardrails):
+                res = runner(repo, "contracts/260")
+                self.assertNotEqual(res.returncode, 0)
+                for locked_path in (
+                    "coqui/packages/core/coqui_platform/lib/src/call/call.dart",
+                    "coqui/packages/core/coqui_platform/lib/src/web/el_conv.dart",
+                    "coqui/packages/core/coqui_platform/assets/elevenlabs/lib.js",
+                    "coqui/app/android/app/build.gradle.kts",
+                ):
+                    self.assertIn(f"::error file={locked_path}::", res.stdout)
+                self.assertIn("locked/denied path", res.stdout)
 
     def test_contracts_branch_rejects_non_package_paths(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -635,23 +819,6 @@ class CheckLanesAndGuardrailsIntegrationTests(unittest.TestCase):
                     "coqui/tool/helper.dart",
                 ):
                     self.assertIn(f"::error file={bad_path}::", res.stdout)
-
-    def test_contracts_branch_rejects_conformance_without_contracts_change(self) -> None:
-        with tempfile.TemporaryDirectory() as tmp:
-            repo = TempGitRepo(Path(tmp))
-            repo.branch("contracts/260")
-            repo.write("coqui/packages/core/coqui_platform/lib/src/store.dart", "// conform\n")
-            repo.write("coqui/app/lib/src/main.dart", "// app\n")
-            repo.write("coqui/requests/260-note.md", "# req\n")
-            repo.commit("conformance without contracts")
-
-            for runner in (self._run_check_lanes, self._run_pr_guardrails):
-                res = runner(repo, "contracts/260")
-                self.assertNotEqual(res.returncode, 0)
-                self.assertIn("::error file=coqui/packages/core/coqui_platform/lib/src/store.dart::", res.stdout)
-                self.assertIn("::error file=coqui/app/lib/src/main.dart::", res.stdout)
-                self.assertIn("for conformance only alongside changes in coqui/packages/core/coqui_contracts/**", res.stdout)
-                self.assertNotIn("coqui/requests/260-note.md", res.stdout)
 
     def test_contracts_branch_rejects_malformed_branch_names(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
