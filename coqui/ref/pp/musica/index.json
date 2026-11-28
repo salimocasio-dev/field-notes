@@ -1,0 +1,47 @@
+{
+  "what": "engine reference: musica",
+  "files": 8,
+  "totalBytes": 477648,
+  "entries": [
+    {
+      "path": "noche/kinds.bin",
+      "bytes": 51840,
+      "sha256": "1afd489f1ac2849ef811a6ca151c3554ebd851dc9f3307db51735aa838652b3b"
+    },
+    {
+      "path": "noche/kinds.json",
+      "bytes": 305,
+      "sha256": "27ccee04a612f5180d22ec9b25dd6f64dc83150541bb2183ec47208fd917e06a"
+    },
+    {
+      "path": "noche/pix.bin",
+      "bytes": 207360,
+      "sha256": "2240f145db6e85a3396242c3984230e2d30b319da77d832507f62b1dc705e7ea"
+    },
+    {
+      "path": "noche/pix.json",
+      "bytes": 370,
+      "sha256": "240c078af115bb02be189317227dd5f3cc20c4a9811bc84c0ac562a286d327ed"
+    },
+    {
+      "path": "noche/pix.png",
+      "bytes": 9222,
+      "sha256": "c1d6940233389997b8c94a2b3ae2cf7453bec9483f1fbcc9622656253ca2a732"
+    },
+    {
+      "path": "noche/state.json",
+      "bytes": 869,
+      "sha256": "255863b5066b3432a7d65ae09cb94d5a111d6b62c2f532c6c5d775518900ab74"
+    },
+    {
+      "path": "noche/zb.bin",
+      "bytes": 207360,
+      "sha256": "45a46420b8bd8f98a32a48430fdeea5a27dffec923716bff50b1773eeed7055f"
+    },
+    {
+      "path": "noche/zb.json",
+      "bytes": 322,
+      "sha256": "c770e96756e6a97cb2f8ab5f934eb6a727ae37d7fd54697197d2dcb087f51c79"
+    }
+  ]
+}
