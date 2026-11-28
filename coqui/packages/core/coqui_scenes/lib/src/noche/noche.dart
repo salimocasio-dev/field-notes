@@ -464,6 +464,20 @@ class Noche extends Escena implements SetScene, SetOverSprites {
       );
     }
 
+    if (pose == 'pies' && sent) {
+      final s = _spr(
+        'no_${whoKey}_pies_$open',
+        () => mkPersonaFeetUp(who, open),
+      );
+      return (
+        s: s,
+        ax: PX,
+        ay: 16 + 2 * (who.nino ? 7 : 11) + 3,
+        lying: false,
+        lyingZ: 0.0,
+      );
+    }
+
     final kp = switch (pose) {
       'saluda0' => 'wave0',
       'saluda1' => 'wave1',
@@ -573,6 +587,23 @@ class Noche extends Escena implements SetScene, SetOverSprites {
         NocheItem(spr, sx - 6, sy - spr.h, sy, at.d + .05, tag: 'cosa:bufanda'),
       );
     }
+    if (storyNum == 105) {
+      final lfx = w['lanaFx'];
+      if (lfx is Map) {
+        final spr = _spr('no_lana_roll', () => mkLana(rolling: true));
+        final fx = _n(lfx['x']), fy = _n(lfx['y']);
+        out.add(NocheItem(spr, fx - 4, fy - spr.h, fy, 3.2, tag: 'cosa:lana'));
+      } else {
+        final meta = _p.heldOffset('lana');
+        final at = _p.at(meta.on);
+        final spr = _spr('no_lana', () => mkLana());
+        final sx = _round(at.sx) + meta.dx;
+        final sy = _round(at.sy) + meta.dy;
+        out.add(
+          NocheItem(spr, sx - 4, sy - spr.h, sy, at.d + .06, tag: 'cosa:lana'),
+        );
+      }
+    }
     if (_n(w['libroVis']) == 1) {
       final meta = _p.heldOffset('libro');
       final at = _p.at(meta.on);
@@ -638,13 +669,6 @@ class Noche extends Escena implements SetScene, SetOverSprites {
     }
 
     // 5. Transient story FX (cleared before act completion)
-    final lfx = w['lanaFx'];
-    if (lfx is Map) {
-      final spr = _spr('no_lana_roll', () => mkLana(rolling: true));
-      final fx = _n(lfx['x']), fy = _n(lfx['y']);
-      out.add(NocheItem(spr, fx - 4, fy - spr.h, fy, 3.2, tag: 'fx:lana'));
-    }
-
     final nfx = w['notaFx'];
     if (nfx is Map) {
       final spr = _spr('no_nota', mkNotaMusical);
@@ -1056,7 +1080,7 @@ class Noche extends Escena implements SetScene, SetOverSprites {
     Thing(
       id: 'lana',
       si: (w) => _n(w['story']) == 105,
-      box: (w) => _heldBox('lana', 8, 8),
+      box: (w) => _spriteBox(w, 'cosa:lana') ?? _heldBox('lana', 8, 8),
     ),
     Thing(
       id: 'libro',
@@ -1412,7 +1436,13 @@ class Noche extends Escena implements SetScene, SetOverSprites {
       final quien = (o['quien'] as String?) ?? 'abuelo';
       final ok = _n(o['ok']) == 1;
       if (quien == 'abuelo') {
-        _placePerson('abuelo', 'sofa1', sentOverride: 1, lying: 0);
+        _placePerson(
+          'abuelo',
+          'sofa1',
+          sentOverride: 1,
+          lying: 0,
+          pose: 'pies',
+        );
       } else {
         final a = (o['a'] as String?) ?? 'sofa_pies';
         final resolved = _resolveSpot(a);
@@ -1422,7 +1452,7 @@ class Noche extends Escena implements SetScene, SetOverSprites {
             (W['cq'] as Map?)?['spot'] == 'brazo_coqui') {
           await _moveFrogTo('aparador_coqui');
         }
-        _placePerson(quien, a, sentOverride: 1, lying: 0);
+        _placePerson(quien, a, sentOverride: 1, lying: 0, pose: 'pies');
       }
       await wait(200);
       if (!ok) {

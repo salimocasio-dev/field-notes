@@ -103,6 +103,7 @@ class NocheRules {
   static const Set<String> _inViewTags = {
     'coqui',
     'cosa:bufanda',
+    'cosa:lana',
     'cosa:libro',
     'cosa:jugo',
     'cosa:flan',

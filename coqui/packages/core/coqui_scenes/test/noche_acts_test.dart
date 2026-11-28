@@ -123,6 +123,7 @@ void main() {
             final its = scene.placed(W, 0);
             for (final k in const [
               'bufanda',
+              'lana',
               'libro',
               'jugo',
               'flan',
@@ -328,5 +329,50 @@ void main() {
         .placed(host.W, 0)
         .firstWhere((it) => it.tag == 'persona:perro');
     expect(placedPerro.s.h, 26);
+  });
+
+  test(
+    'descansa107 renders feet-up pose distinct from ordinary sitting',
+    () async {
+      final story = _story('se-acuesta');
+      final scene = createNoche() as Noche;
+      final host = StillHost(scene);
+      host.S = story;
+      host.W = {...host.W, 'lost': 0, ...scene.fresh(story)};
+      final sitting = scene
+          .placed(host.W, 0)
+          .firstWhere((it) => it.tag == 'persona:abuelo')
+          .s;
+      await scene.acts['descansa107']!({'quien': 'abuelo', 'ok': 1});
+      await scene.acts['descansa107']!({
+        'quien': 'luis',
+        'a': 'sofa_pies',
+        'ok': 1,
+      });
+      final abuelo = (host.W['gente'] as Map)['abuelo'] as Map;
+      final luis = (host.W['gente'] as Map)['luis'] as Map;
+      expect(abuelo['pose'], 'pies');
+      expect(luis['pose'], 'pies');
+      final feetUp = scene
+          .placed(host.W, 0)
+          .firstWhere((it) => it.tag == 'persona:abuelo')
+          .s;
+      expect(feetUp.px, isNot(equals(sitting.px)));
+    },
+  );
+
+  test('prende-y-apaga draws wool at lap anchor and tracks rolling lanaFx', () {
+    final story = _story('prende-y-apaga');
+    final scene = createNoche() as Noche;
+    final host = StillHost(scene);
+    host.S = story;
+    host.W = {...host.W, 'lost': 0, ...scene.fresh(story)};
+    final items = scene.placed(host.W, 0);
+    expect(items.any((it) => it.tag == 'cosa:lana'), isTrue);
+    final staticBox = scene.box('lana', host.W);
+    expect(staticBox, isNotNull);
+    host.W['lanaFx'] = {'x': 120, 'y': 160};
+    final movedBox = scene.box('lana', host.W);
+    expect(movedBox, [116, 152, 8, 8]);
   });
 }

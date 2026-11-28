@@ -70,6 +70,36 @@ final Map<String, Who> NOCHE_WHO = {
   'carmen_pijama': _CARMEN_PIJAMA,
 };
 
+/// Resting feet-up pose for `descansa107` on the sofa: removes dangling legs below the lap
+/// and draws outstretched legs with shoes resting up on the cushion.
+Sprite mkPersonaFeetUp(Who who, bool open) {
+  final base = mkPersona(who, 'idle', open, true);
+  final t = who.nino ? 7 : 11;
+  final hc = 16 + 2 * t;
+  final legRamp = who.abajo ?? who.ropa;
+  final shoe = who.zapato ?? _h('#3A2414');
+  final outline = _h('#221414');
+  final b = Buf(base.w, base.h);
+  // Keep upper body, arms, and upper hip/lap; omit dangling lower legs & shoes.
+  for (var py = 0; py < math.min(base.h, hc + 2); py++) {
+    for (var qx = 0; qx < base.w; qx++) {
+      final c = base.px[py * base.w + qx];
+      if (c >>> 24 != 0) b.px(qx, py, c);
+    }
+  }
+  // Bottom outline under the raised hips.
+  b.rect(PX - (who.nino ? 6 : 8), hc + 1, who.nino ? 13 : 17, 1, outline);
+  // Outstretched legs resting up along the cushion to the right, plus upright shoes.
+  final legLen = who.nino ? 9 : 12;
+  b.rect(PX + 1, hc - 3, legLen + 2, 5, outline);
+  b.rect(PX + 1, hc - 2, legLen + 1, 3, legRamp[1]);
+  b.rect(PX + 2, hc - 2, legLen, 1, legRamp[2]);
+  b.rect(PX + legLen, hc - 6, 5, 8, outline);
+  b.rect(PX + legLen + 1, hc - 5, 3, 6, shoe);
+  b.px(PX + legLen + 2, hc - 5, _h('#8E7A6A'));
+  return b.done();
+}
+
 /* ---------- Lying-in-bed sprite (noche-preview.html `lying`) ---------- */
 
 /// Builds the clipped lying-in-bed sprite with blanket for [who] at spot screen `(sx, sy)` and [camaMeta].
@@ -411,11 +441,13 @@ List<(String, Sprite)> nocheSpritesSheet() => [
   ('abuela_silla', mkAbuelaS('idle', false, false)),
   ('abuela_pie', mkAbuela('idle', false)),
   ('abuelo_silla', mkPersona(NOCHE_WHO['abuelo']!, 'idle', false, true)),
+  ('abuelo_pies', mkPersonaFeetUp(NOCHE_WHO['abuelo']!, false)),
   ('abuelo_pie', mkPersona(NOCHE_WHO['abuelo']!, 'idle', false, false)),
   (
     'luis_pijama_piso',
     mkPersona(NOCHE_WHO['luis_pijama']!, 'idle', false, true),
   ),
+  ('luis_pijama_pies', mkPersonaFeetUp(NOCHE_WHO['luis_pijama']!, false)),
   (
     'carmen_pijama_piso',
     mkPersona(NOCHE_WHO['carmen_pijama']!, 'idle', false, true),
