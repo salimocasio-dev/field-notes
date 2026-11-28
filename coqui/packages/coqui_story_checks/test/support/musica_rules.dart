@@ -444,10 +444,10 @@ class MusicaRules {
       for (final it in items) {
         if (it.tag != 'persona:$who' || it.ink == null) continue;
         final r = checkCover(it, maxHeadRows: 14, zAgainst: noFrogBounceZ);
-        if (r.hidden > 0 || r.covered > 0) {
+        if (r.hidden > 0 || r.covered > 0 || r.outWin > 0) {
           add(
             'mic-clear',
-            '$who at ante_micro head: hidden=${r.hidden} covered=${r.covered}',
+            '$who at ante_micro head: hidden=${r.hidden} covered=${r.covered} out=${r.outWin}',
           );
         }
       }
@@ -464,10 +464,10 @@ class MusicaRules {
         for (final it in items) {
           if (it.tag != 'persona:$who' || it.ink == null) continue;
           final r = checkCover(it, maxHeadRows: 14, zAgainst: noFrogBounceZ);
-          if (r.hidden > 0 || r.covered > 0) {
+          if (r.hidden > 0 || r.covered > 0 || r.outWin > 0) {
             add(
               'ronda-heads',
-              '$who (${p['rondaRole']} at ${p['spot']}) head: hidden=${r.hidden} covered=${r.covered}',
+              '$who (${p['rondaRole']} at ${p['spot']}) head: hidden=${r.hidden} covered=${r.covered} out=${r.outWin}',
             );
           }
         }

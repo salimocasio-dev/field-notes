@@ -307,6 +307,26 @@ void main() {
       expect(fr.host.W['corazonFx'], 1);
       expect(fr.host.W['estrellaFx'], 1);
 
+      // Story 112: canta112 wrong-place keeps sing=1, final112 sets singing + dancing
+      final story112 = jsonDecode(
+        File('test/support/fixtures/musica/quieres-bailar.json')
+            .readAsStringSync(),
+      ) as Map<String, dynamic>;
+      final sc2 = createMusica() as Musica;
+      final fr2 = StillFrame(sc2);
+      fr2.host.S = story112;
+      fr2.host.W = {...fr2.host.W, ...sc2.fresh(story112)};
+      await sc2.acts['llega']!({'quien': 'abuelo', 'a': 'espera1'});
+      await sc2.acts['llega']!({'quien': 'luis', 'a': 'espera2'});
+      await sc2.acts['llega']!({'quien': 'carmen', 'a': 'espera3'});
+      await sc2.acts['canta112']!({'quien': 'carmen', 'ok': 0});
+      final g2 = fr2.host.W['gente'] as Map<String, dynamic>;
+      expect((g2['carmen'] as Map)['sing'], 1);
+      await sc2.acts['final112']!({'n': 3});
+      expect((g2['abuelo'] as Map)['sing'], 1);
+      expect((g2['luis'] as Map)['dance'], 1);
+      expect((g2['carmen'] as Map)['dance'], 1);
+
       // `gesto(carmen, rie)` preserves laughing expression across opening asks until moved
       await sc.acts['gesto']!({'quien': 'carmen', 'que': 'rie'});
       expect((g['carmen'] as Map)['laugh'], 1);

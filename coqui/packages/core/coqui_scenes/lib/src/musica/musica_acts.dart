@@ -461,6 +461,7 @@ extension _MusicaActs on Musica {
         // Wrong place: sings out on the floor where nobody hears
         final target = _pickDanceSpot(quien);
         _placePerson(p, target);
+        p['sing'] = 1;
         W['notasFloat'] = 0;
         for (final dx in const [-2, 2, 0]) {
           p['dx'] = dx;
@@ -503,11 +504,20 @@ extension _MusicaActs on Musica {
       final abuela = _personOf('abuela');
       if (abuela != null) _placePerson(abuela, 'banco2');
       final abuelo = _personOf('abuelo');
-      if (abuelo != null) _placePerson(abuelo, 'ante_micro');
+      if (abuelo != null) {
+        _placePerson(abuelo, 'ante_micro');
+        abuelo['sing'] = 1;
+      }
       final luis = _personOf('luis');
-      if (luis != null) _placePerson(luis, 'ronda1');
+      if (luis != null) {
+        _placePerson(luis, 'ronda1');
+        luis['dance'] = 1;
+      }
       final carmen = _personOf('carmen');
-      if (carmen != null) _placePerson(carmen, 'pista_baile');
+      if (carmen != null) {
+        _placePerson(carmen, 'pista_baile');
+        carmen['dance'] = 1;
+      }
       W['micMode'] = 'high';
       W['notas'] = n;
       W['notasFloat'] = n > 1 ? 2 : 1;
