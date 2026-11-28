@@ -88,6 +88,7 @@ class ReadingText {
     required this.body,
     required this.generated,
     this.isNew = false,
+    this.author,
     this.chapters,
     this.format,
     this.byteSize,
@@ -100,6 +101,7 @@ class ReadingText {
   final String body;
   final bool generated;
   final bool isNew;
+  final String? author;
   final List<ReadingChapter>? chapters;
   final String? format;
   final int? byteSize;
@@ -109,6 +111,7 @@ class ReadingText {
   Map<String, Object> toJson() => {
     'id': id,
     'title': title,
+    if (author != null && author!.isNotEmpty) 'author': author!,
     'body': body,
     'generated': generated,
     if (isNew) 'isNew': true,
@@ -142,10 +145,41 @@ class ReadingText {
       }
       if (body == null) return null;
 
-      final rawChapters = value['chapters'];
-      final parsedChapters = rawChapters is List
-          ? rawChapters.map(ReadingChapter.fromJson).nonNulls.toList()
+      final rawAuthor = value['author'];
+      final author = rawAuthor is String && rawAuthor.trim().isNotEmpty
+          ? rawAuthor.trim()
           : null;
+
+      List<ReadingChapter>? parsedChapters;
+      final rawChaptersKey = value['chaptersKey'];
+      if (rawChaptersKey is String &&
+          rawChaptersKey.isNotEmpty &&
+          readBody != null) {
+        final encodedChapters = readBody(rawChaptersKey);
+        if (encodedChapters != null && encodedChapters.isNotEmpty) {
+          try {
+            final decoded = jsonDecode(encodedChapters);
+            if (decoded is List) {
+              parsedChapters = decoded
+                  .map(ReadingChapter.fromJson)
+                  .nonNulls
+                  .toList();
+            }
+          } on FormatException {
+            parsedChapters = null;
+          }
+        }
+      }
+      if (parsedChapters == null) {
+        final rawChapters = value['chapters'];
+        if (rawChapters is List) {
+          parsedChapters = rawChapters
+              .map(ReadingChapter.fromJson)
+              .nonNulls
+              .toList();
+        }
+      }
+
       final rawFormat = value['format'];
       final format = rawFormat is String && rawFormat.isNotEmpty
           ? rawFormat
@@ -169,6 +203,7 @@ class ReadingText {
         body: body,
         generated: generated,
         isNew: value['isNew'] == true,
+        author: author,
         chapters: parsedChapters,
         format: format,
         byteSize: byteSize,
@@ -210,6 +245,8 @@ class ReadingStore {
 
   static String bodyKeyFor(String id) => 'body:$id';
 
+  static String chaptersKeyFor(String id) => 'chapters:$id';
+
   Object? _read(String key) {
     final text = storage.read(key);
     if (text == null) return null;
@@ -223,13 +260,24 @@ class ReadingStore {
   Map<String, Object> _indexEntry(ReadingText item) {
     final bodyKey = bodyKeyFor(item.id);
     final hasSeparateBody = storage.read(bodyKey) != null;
+    final chaptersKey = chaptersKeyFor(item.id);
+    final storedChapters = storage.read(chaptersKey);
+    final hasSeparateChapters =
+        item.chapters != null &&
+        item.chapters!.isNotEmpty &&
+        storedChapters != null &&
+        storedChapters.isNotEmpty;
     return {
       'id': item.id,
       'title': item.title,
+      if (item.author != null && item.author!.isNotEmpty)
+        'author': item.author!,
       if (hasSeparateBody) 'bodyKey': bodyKey else 'body': item.body,
       'generated': item.generated,
       if (item.isNew) 'isNew': true,
-      if (item.chapters != null)
+      if (hasSeparateChapters)
+        'chaptersKey': chaptersKey
+      else if (item.chapters != null)
         'chapters': [for (final chapter in item.chapters!) chapter.toJson()],
       if (item.format != null && item.format!.isNotEmpty)
         'format': item.format!,
@@ -287,6 +335,7 @@ class ReadingStore {
     required String body,
     required bool generated,
     bool isNew = false,
+    String? author,
     List<ReadingChapter>? chapters,
     String? format,
     int? byteSize,
@@ -301,6 +350,7 @@ class ReadingStore {
         body: body,
         generated: generated,
         isNew: isNew,
+        author: author,
         chapters: chapters,
         format: format,
         byteSize: byteSize,
@@ -318,6 +368,7 @@ class ReadingStore {
     required String body,
     required bool generated,
     bool isNew = false,
+    String? author,
     List<ReadingChapter>? chapters,
     String? format,
     int? byteSize,
@@ -345,12 +396,38 @@ class ReadingStore {
       throw const ReadingStorageFullException();
     }
 
+    final chaptersKey = chaptersKeyFor(id);
+    final hasChapters = chapters != null && chapters.isNotEmpty;
+    if (hasChapters) {
+      final encodedChapters = jsonEncode([
+        for (final chapter in chapters) chapter.toJson(),
+      ]);
+      try {
+        await storage.write(chaptersKey, encodedChapters);
+      } on Object {
+        await _bestEffortDelete(bodyKey);
+        await _bestEffortDelete(chaptersKey);
+        throw const ReadingStorageFullException();
+      }
+      if (storage.read(chaptersKey) != encodedChapters) {
+        await _bestEffortDelete(bodyKey);
+        await _bestEffortDelete(chaptersKey);
+        throw const ReadingStorageFullException();
+      }
+    }
+
+    final trimmedAuthor = author?.trim();
+    final resolvedAuthor = trimmedAuthor != null && trimmedAuthor.isNotEmpty
+        ? trimmedAuthor
+        : null;
+
     final text = ReadingText(
       id: id,
       title: title,
       body: body,
       generated: generated,
       isNew: isNew,
+      author: resolvedAuthor,
       chapters: chapters,
       format: format,
       byteSize: byteSize,
@@ -365,10 +442,12 @@ class ReadingStore {
       await storage.write('texts', encoded);
     } on Object {
       await _bestEffortDelete(bodyKey);
+      if (hasChapters) await _bestEffortDelete(chaptersKey);
       throw const ReadingStorageFullException();
     }
     if (storage.read('texts') != encoded) {
       await _bestEffortDelete(bodyKey);
+      if (hasChapters) await _bestEffortDelete(chaptersKey);
       throw const ReadingStorageFullException();
     }
 

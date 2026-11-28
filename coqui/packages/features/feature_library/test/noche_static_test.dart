@@ -13,6 +13,8 @@ void main() {
     'lib/src/book_coverage.dart',
     'lib/src/wording.dart',
     'lib/src/book_importer.dart',
+    'lib/src/epub_parser.dart',
+    'lib/src/docx_parser.dart',
     'lib/src/import_screen.dart',
     'lib/src/reading.dart',
     'lib/src/story_generator.dart',

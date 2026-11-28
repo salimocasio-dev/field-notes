@@ -12,7 +12,7 @@ Biblioteca and the book reader (Leer).
 
 - The plan's row: contracts, ui.
 - Coquí packages: `coqui_contracts`, `coqui_ui`.
-- Third party: `material_ui` ^1.11.1.
+- Third party: `material_ui` ^1.11.1, `archive` ^4.7.1, `xml` ^7.1.0.
 - Dev only: `flutter_lints`, `flutter_test` (from the SDK), and `coqui_testing` (the fakes).
 - `coqui_testing` goes under `dev_dependencies` only. Tests and `tool/` import it. Nothing under `lib/` does.
 - Material widgets come from `package:material_ui/material_ui.dart`. Nobody imports `package:flutter/material.dart`.

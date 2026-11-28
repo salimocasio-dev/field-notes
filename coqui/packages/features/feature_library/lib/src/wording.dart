@@ -53,7 +53,9 @@ abstract final class LibraryWording {
   static const String stepReadingDetail =
       'Reading the pages. Then: checking its words against yours.';
   static const String stepCheckingDetail = 'Checking its words against yours.';
+  static const String formatEpub = 'EPUB';
   static const String formatTxt = 'TXT';
+  static const String formatWord = 'Word';
   static const String formatPasted = 'Text';
 
   static const String coveragePhraseStretch =
@@ -74,6 +76,8 @@ abstract final class LibraryWording {
       "Locked by the store it came from. Coquí can't open locked books.";
   static const String errorInvalidText =
       "Couldn't read this file as plain text.";
+  static const String errorInvalidEpub = "Couldn't read this EPUB file.";
+  static const String errorInvalidDocx = "Couldn't read this Word file.";
   static const String errorCouldNotOpen = "Couldn't open this file.";
   static const String errorCouldNotAdd = "Couldn't add this text.";
   static const String errorEmptyText = 'This file has no text to read.';

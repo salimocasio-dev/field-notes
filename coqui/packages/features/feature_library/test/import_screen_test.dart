@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:archive/archive.dart';
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
@@ -333,7 +334,9 @@ void main() {
           expect(tester.takeException(), isNull);
           expect(find.text(LibraryWording.importTitle), findsOneWidget);
           expect(
-            find.text(LibraryWording.importIntro(supportedImportFormats)),
+            find.text(
+              'Books and documents in EPUB, TXT or Word. Only you can see what you add.',
+            ),
             findsOneWidget,
           );
           expect(find.text(LibraryWording.pasteTextTile), findsOneWidget);
@@ -547,7 +550,7 @@ void main() {
         await settle(tester);
 
         expect(picker.requestedExtensions, [
-          ['txt'],
+          ['epub', 'txt', 'docx'],
         ]);
 
         // Verify stored ReadingText structure: 2 paragraphs, chapters == null.
@@ -1029,6 +1032,381 @@ void main() {
         expect(entry.containsKey('body'), isFalse);
       }
     });
+  });
+
+  group('Importing EPUB and Word files end-to-end', () {
+    Uint8List zipStrings(Map<String, String> entries) {
+      final archive = Archive();
+      for (final entry in entries.entries) {
+        archive.addFile(ArchiveFile.string(entry.key, entry.value));
+      }
+      return ZipEncoder().encodeBytes(archive);
+    }
+
+    Uint8List makeSampleEpub({String? encryptionXml}) {
+      final files = <String, String>{
+        'mimetype': 'application/epub+zip',
+        'META-INF/container.xml': '''<?xml version="1.0" encoding="UTF-8"?>
+<container version="1.0" xmlns="urn:oasis:names:tc:opendocument:xmlns:container">
+  <rootfiles>
+    <rootfile full-path="OEBPS/content.opf" media-type="application/oebps-package+xml"/>
+  </rootfiles>
+</container>''',
+        'OEBPS/content.opf': '''<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" version="3.0">
+  <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <dc:title>Noches de San Juan</dc:title>
+    <dc:creator>Clara Reyes</dc:creator>
+  </metadata>
+  <manifest>
+    <item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>
+    <item id="ch1" href="ch1.xhtml" media-type="application/xhtml+xml"/>
+    <item id="ch2" href="ch2.xhtml" media-type="application/xhtml+xml"/>
+  </manifest>
+  <spine>
+    <itemref idref="ch1"/>
+    <itemref idref="ch2"/>
+  </spine>
+</package>''',
+        'OEBPS/nav.xhtml': '''<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+  <body>
+    <nav epub:type="toc">
+      <ol>
+        <li><a href="ch1.xhtml">La plaza vieja</a></li>
+        <li><a href="ch2.xhtml">El malecón</a></li>
+      </ol>
+    </nav>
+  </body>
+</html>''',
+        'OEBPS/ch1.xhtml': '''<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <body>
+    <h1>La plaza vieja</h1>
+    <p>Casa árbol agua.</p>
+  </body>
+</html>''',
+        'OEBPS/ch2.xhtml': '''<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <body>
+    <h1>El malecón</h1>
+    <p>Perro desconocido.</p>
+  </body>
+</html>''',
+      };
+      if (encryptionXml != null) {
+        files['META-INF/encryption.xml'] = encryptionXml;
+      }
+      return zipStrings(files);
+    }
+
+    Uint8List makeSampleDocx() => zipStrings({
+      '[Content_Types].xml': '<Types/>',
+      '_rels/.rels': '''<?xml version="1.0" encoding="UTF-8"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
+  <Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/>
+</Relationships>''',
+      'docProps/core.xml': '''<?xml version="1.0" encoding="UTF-8"?>
+<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
+                   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <dc:title>Cuaderno de campo</dc:title>
+  <dc:creator>Diego Solís</dc:creator>
+</cp:coreProperties>''',
+      'word/document.xml': '''<?xml version="1.0" encoding="UTF-8"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:body>
+    <w:p>
+      <w:pPr><w:pStyle w:val="Heading1"/></w:pPr>
+      <w:r><w:t>Amanecer en el bosque</w:t></w:r>
+    </w:p>
+    <w:p>
+      <w:r><w:t>Casa árbol agua.</w:t></w:r>
+    </w:p>
+    <w:p>
+      <w:pPr><w:pStyle w:val="Heading1"/></w:pPr>
+      <w:r><w:t>Tarde junto al río</w:t></w:r>
+    </w:p>
+    <w:p>
+      <w:r><w:t>Agua clara casa.</w:t></w:r>
+    </w:p>
+  </w:body>
+</w:document>''',
+    });
+
+    testWidgets(
+      'imports valid EPUB with chapters & author, shows EPUB meta line and coverage, persists across restart, and opens chapters sheet in TextReader',
+      (tester) async {
+        tester.view.devicePixelRatio = 1;
+        tester.view.physicalSize = const Size(390, 844);
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        final nav = _TestNavigator();
+        final clock = FakeClock();
+        final progress = FakeProgressStore();
+        _seedEarWords(progress, {'casa': 2, 'arbol': 3, 'agua': 4});
+        final spaces = <String, FakeKeyValueStore>{};
+        Services makeServices() => fakeServices(
+          progress: progress,
+          clock: clock,
+          nav: nav,
+          storage: (space) => spaces.putIfAbsent(space, FakeKeyValueStore.new),
+        );
+
+        final picker = _FakeFilePicker([
+          PickedImportFile(name: 'san_juan.epub', bytes: makeSampleEpub()),
+        ]);
+        var services = makeServices();
+        const module = LibraryModule();
+
+        Widget buildApp() => MaterialApp(
+          home: ValueListenableBuilder<AppRoute?>(
+            valueListenable: nav.current,
+            builder: (context, route, _) {
+              if (route is BookRoute) {
+                return module.screenFor(route, services)!;
+              }
+              return ImportScreen(
+                services: services,
+                filePicker: picker,
+                stepYield: () async {},
+              );
+            },
+          ),
+        );
+
+        await tester.pumpWidget(buildApp());
+        await settle(tester);
+
+        await tester.tap(find.text(LibraryWording.chooseFileButton));
+        await settle(tester);
+
+        final store = ReadingStore(services.storage(ReadingStore.space));
+        final saved = store.texts();
+        expect(saved.length, 1);
+        final book = saved.first;
+        expect(book.title, 'Noches de San Juan');
+        expect(book.author, 'Clara Reyes');
+        expect(book.format, LibraryWording.formatEpub);
+        expect(book.chapters, isNotNull);
+        expect(book.chapters!.length, 2);
+
+        // Ready card displays EPUB · <N> pages · 2 chapters and 60% coverage (3/5 words heard).
+        expect(find.text('Noches de San Juan'), findsNWidgets(2));
+        expect(
+          find.text(
+            LibraryWording.bookMetaLine(
+              format: LibraryWording.formatEpub,
+              pages: book.estimatedPages!,
+              chapters: 2,
+            ),
+          ),
+          findsOneWidget,
+        );
+        expect(
+          find.text(
+            '${LibraryWording.coverageHeadline(60)} ${LibraryWording.coveragePhraseStretch}',
+            findRichText: true,
+          ),
+          findsOneWidget,
+        );
+
+        // Restart app -> author & chapters persist from split storage.
+        services = makeServices();
+        final reloadedBook = ReadingStore(services.storage(ReadingStore.space))
+            .text(book.id);
+        expect(reloadedBook?.author, 'Clara Reyes');
+        expect(reloadedBook?.chapters?.length, 2);
+
+        await tester.pumpWidget(buildApp());
+        await settle(tester);
+
+        // Tap Ready card -> opens TextReader and chapters sheet shows TOC chapters.
+        await tester.tap(find.text('Noches de San Juan').last);
+        await settle(tester);
+        expect(find.byType(TextReader), findsOneWidget);
+
+        final chaptersButtonLabel = NocheA11y.label(
+          NocheA11y.chapters,
+          courseWords: services.course.language.a11yWords,
+        );
+        await tester.tap(find.bySemanticsLabel(chaptersButtonLabel));
+        await tester.pumpAndSettle();
+
+        expect(find.text('La plaza vieja'), findsAtLeastNWidgets(1));
+        expect(find.text('El malecón'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'shows calm locked error card with lock icon and exact copy for DRM-locked EPUB',
+      (tester) async {
+        final rig = Rig();
+        const drmXml = '''<?xml version="1.0" encoding="UTF-8"?>
+<encryption xmlns="urn:oasis:names:tc:opendocument:xmlns:container"
+            xmlns:enc="http://www.w3.org/2001/04/xmlenc#">
+  <enc:EncryptedData>
+    <enc:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes128-cbc"/>
+    <enc:CipherData>
+      <enc:CipherReference URI="OEBPS/ch1.xhtml"/>
+    </enc:CipherData>
+  </enc:EncryptedData>
+</encryption>''';
+        final picker = _FakeFilePicker([
+          PickedImportFile(
+            name: 'Bloqueado.epub',
+            bytes: makeSampleEpub(encryptionXml: drmXml),
+          ),
+        ]);
+
+        await _pumpImport(
+          tester,
+          screenKey: const ValueKey('locked-epub'),
+          services: rig.services,
+          filePicker: picker,
+          stepYield: () async {},
+        );
+
+        await tester.tap(find.text(LibraryWording.chooseFileButton));
+        await settle(tester);
+
+        expect(find.text('Bloqueado.epub'), findsOneWidget);
+        expect(
+          find.text(
+            "Locked by the store it came from. Coquí can't open locked books.",
+          ),
+          findsOneWidget,
+        );
+        final lockIcons = tester
+            .widgetList<NocheIcon>(find.byType(NocheIcon))
+            .where((i) => i.data == NocheIcons.lock);
+        expect(lockIcons, isNotEmpty);
+      },
+    );
+
+    testWidgets(
+      'imports valid Word .docx with headings as chapters, shows Word meta line, and opens chapters sheet in TextReader',
+      (tester) async {
+        tester.view.devicePixelRatio = 1;
+        tester.view.physicalSize = const Size(390, 844);
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        final nav = _TestNavigator();
+        final progress = FakeProgressStore();
+        _seedEarWords(progress, {'casa': 2, 'arbol': 3, 'agua': 4, 'clara': 2});
+        final services = fakeServices(progress: progress, nav: nav);
+        final picker = _FakeFilePicker([
+          PickedImportFile(name: 'campo.docx', bytes: makeSampleDocx()),
+        ]);
+        const module = LibraryModule();
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: ValueListenableBuilder<AppRoute?>(
+              valueListenable: nav.current,
+              builder: (context, route, _) {
+                if (route is BookRoute) {
+                  return module.screenFor(route, services)!;
+                }
+                return ImportScreen(
+                  services: services,
+                  filePicker: picker,
+                  stepYield: () async {},
+                );
+              },
+            ),
+          ),
+        );
+        await settle(tester);
+
+        await tester.tap(find.text(LibraryWording.chooseFileButton));
+        await settle(tester);
+
+        final store = ReadingStore(services.storage(ReadingStore.space));
+        final book = store.texts().single;
+        expect(book.title, 'Cuaderno de campo');
+        expect(book.author, 'Diego Solís');
+        expect(book.format, LibraryWording.formatWord);
+        expect(book.chapters?.length, 2);
+
+        expect(
+          find.text(
+            LibraryWording.bookMetaLine(
+              format: LibraryWording.formatWord,
+              pages: book.estimatedPages!,
+              chapters: 2,
+            ),
+          ),
+          findsOneWidget,
+        );
+
+        await tester.tap(find.text('Cuaderno de campo').last);
+        await settle(tester);
+        expect(find.byType(TextReader), findsOneWidget);
+
+        final chaptersButtonLabel = NocheA11y.label(
+          NocheA11y.chapters,
+          courseWords: services.course.language.a11yWords,
+        );
+        await tester.tap(find.bySemanticsLabel(chaptersButtonLabel));
+        await tester.pumpAndSettle();
+
+        expect(find.text('Amanecer en el bosque'), findsAtLeastNWidgets(1));
+        expect(find.text('Tarde junto al río'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'shows calm error cards for malformed .epub and malformed .docx without crashing',
+      (tester) async {
+        final rig = Rig();
+        final picker = _FakeFilePicker([
+          PickedImportFile(
+            name: 'Corrupto.epub',
+            bytes: Uint8List.fromList(utf8.encode('not-a-zip')),
+          ),
+          PickedImportFile(
+            name: 'Corrupto.docx',
+            bytes: Uint8List.fromList([
+              0xD0,
+              0xCF,
+              0x11,
+              0xE0,
+              0xA1,
+              0xB1,
+              0x1A,
+              0xE1,
+            ]),
+          ),
+        ]);
+
+        await _pumpImport(
+          tester,
+          screenKey: const ValueKey('malformed-epub-docx'),
+          services: rig.services,
+          filePicker: picker,
+          stepYield: () async {},
+        );
+
+        await tester.tap(find.text(LibraryWording.chooseFileButton));
+        await settle(tester);
+        expect(tester.takeException(), isNull);
+        expect(find.text('Corrupto.epub'), findsOneWidget);
+        expect(find.text(LibraryWording.errorInvalidEpub), findsOneWidget);
+
+        await tester.tap(find.text(LibraryWording.chooseFileButton));
+        await settle(tester);
+        expect(tester.takeException(), isNull);
+        expect(find.text('Corrupto.docx'), findsOneWidget);
+        expect(find.text(LibraryWording.errorInvalidDocx), findsOneWidget);
+      },
+    );
   });
 }
 
