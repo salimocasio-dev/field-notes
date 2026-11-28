@@ -1,0 +1,87 @@
+{
+  "what": "engine reference: muralla",
+  "files": 16,
+  "totalBytes": 957798,
+  "entries": [
+    {
+      "path": "noche/kinds.bin",
+      "bytes": 51840,
+      "sha256": "60cdddd82e092bbb41edcdb2866fea721e2e0faca64b93984b3b8da690befc56"
+    },
+    {
+      "path": "noche/kinds.json",
+      "bytes": 305,
+      "sha256": "b58024d9f9686f3b84ce396b4f537dd4e2ca02dcd03ee665c673b567c967d3a4"
+    },
+    {
+      "path": "noche/pix.bin",
+      "bytes": 207360,
+      "sha256": "d1d981d0f02a2343a0fa583130c0398eed986eca199e97ab3c8d276f64f64e0a"
+    },
+    {
+      "path": "noche/pix.json",
+      "bytes": 370,
+      "sha256": "8997956e868811e9da3be584fb69a39ef19102f80dfa1ecc521710fca137a386"
+    },
+    {
+      "path": "noche/pix.png",
+      "bytes": 10430,
+      "sha256": "7ce8d9d6b4ffaa088874b88cf66a1ef174f50784268d93fa41cc06b224c05da2"
+    },
+    {
+      "path": "noche/state.json",
+      "bytes": 923,
+      "sha256": "0d8ddf3b1cd5251a909b6db1003a6c91ff7815e4342e26198d893f20efd61fb3"
+    },
+    {
+      "path": "noche/zb.bin",
+      "bytes": 207360,
+      "sha256": "4d40d16805fe8e406c11a54052cbf45dedc8278b9dcde89840745e755a071ffa"
+    },
+    {
+      "path": "noche/zb.json",
+      "bytes": 322,
+      "sha256": "8ff499d691afd71de32bad2e7af6098796edc0bd6abc80ae30e344eaf7e6a572"
+    },
+    {
+      "path": "tarde_noche/kinds.bin",
+      "bytes": 51840,
+      "sha256": "60cdddd82e092bbb41edcdb2866fea721e2e0faca64b93984b3b8da690befc56"
+    },
+    {
+      "path": "tarde_noche/kinds.json",
+      "bytes": 305,
+      "sha256": "b58024d9f9686f3b84ce396b4f537dd4e2ca02dcd03ee665c673b567c967d3a4"
+    },
+    {
+      "path": "tarde_noche/pix.bin",
+      "bytes": 207360,
+      "sha256": "a88fc2fd09f5aa497900b6e8d868f524522034314d4f709d9d98067549fb7ac9"
+    },
+    {
+      "path": "tarde_noche/pix.json",
+      "bytes": 370,
+      "sha256": "d0b6626d3b47204964486d7c61f04abe89401a26ce8709c2f8fb9ba1052df160"
+    },
+    {
+      "path": "tarde_noche/pix.png",
+      "bytes": 10396,
+      "sha256": "fb0cf6e7c6d9ab4da625042360598b21e7f525f45c41a7772555297b131e9949"
+    },
+    {
+      "path": "tarde_noche/state.json",
+      "bytes": 935,
+      "sha256": "abb8b945c023f6c378aeba3af0769f390d3289e03b78e4ae1d2744a5596fad5d"
+    },
+    {
+      "path": "tarde_noche/zb.bin",
+      "bytes": 207360,
+      "sha256": "4d40d16805fe8e406c11a54052cbf45dedc8278b9dcde89840745e755a071ffa"
+    },
+    {
+      "path": "tarde_noche/zb.json",
+      "bytes": 322,
+      "sha256": "8ff499d691afd71de32bad2e7af6098796edc0bd6abc80ae30e344eaf7e6a572"
+    }
+  ]
+}
