@@ -341,7 +341,7 @@ class EntradaRules {
       if (tag == null || !tag.startsWith('persona:')) continue;
       final who = tag.substring(8);
       final p = gente[who] as Map?;
-      if (p == null || p['vis'] == 0) continue;
+      if (p == null || !jsTruthy(p['vis'])) continue;
       final spot = p['spot'] as String?;
       if (!_isTableSeat(spot)) continue;
       final r = covOf(
@@ -357,11 +357,15 @@ class EntradaRules {
       }
     }
 
-    // 4. cola-heads (people at cola1/cola2 >= 16 px above grown-ups at puerta1/2 or atril1/2)
-    int? topRowOfSpot(String spot) {
+    // 4. cola-heads (people at cola1/cola2 >= 16 px above standing grown-ups at puerta1/2 or atril1/2)
+    int? topRowOfSpot(String spot, {bool standingAdultOnly = false}) {
       for (final en in gente.entries) {
         final p = en.value as Map?;
-        if (p == null || p['vis'] == 0 || p['spot'] != spot) continue;
+        if (p == null || !jsTruthy(p['vis']) || p['spot'] != spot) continue;
+        if (standingAdultOnly &&
+            (jsTruthy(p['sent']) || en.key == 'luis' || en.key == 'carmen')) {
+          continue;
+        }
         final idx = items.indexWhere((it) => it.tag == 'persona:${en.key}');
         if (idx < 0 || items[idx].ink == null) continue;
         return items[idx].top + items[idx].ink![1];
@@ -376,7 +380,7 @@ class EntradaRules {
       final cTop = topRowOfSpot(colaSpot);
       if (cTop == null) continue;
       for (final front in frontSpots) {
-        final fTop = topRowOfSpot(front);
+        final fTop = topRowOfSpot(front, standingAdultOnly: true);
         if (fTop == null) continue;
         final diff = fTop - cTop;
         if (diff < 16) {
@@ -395,7 +399,7 @@ class EntradaRules {
           gente.values.any(
             (v) =>
                 v is Map &&
-                v['vis'] == 1 &&
+                jsTruthy(v['vis']) &&
                 (v['spot'] == 'banco1' || v['spot'] == 'banco2'),
           );
       if (!benchUsed) {
@@ -432,7 +436,7 @@ class EntradaRules {
     // 6. mesera-waist (top 35 rows of mesera at atril or tras_cuerda)
     final meseraP = gente['mesera'] as Map?;
     if (meseraP != null &&
-        meseraP['vis'] == 1 &&
+        jsTruthy(meseraP['vis']) &&
         (meseraP['spot'] == 'atril' || meseraP['spot'] == 'tras_cuerda')) {
       final mIdx = items.indexWhere((it) => it.tag == 'persona:mesera');
       if (mIdx >= 0) {
@@ -451,7 +455,7 @@ class EntradaRules {
       bool tableOccupied(String prefix) => gente.values.any(
         (v) =>
             v is Map &&
-            v['vis'] == 1 &&
+            jsTruthy(v['vis']) &&
             v['spot'] is String &&
             (v['spot'] as String).startsWith(prefix),
       );
@@ -491,10 +495,13 @@ class EntradaRules {
           }
         }
       }
-      // Candles must cover 0 px of any person's head (top 14 rows)
+      // Candles must cover 0 px of any visible person's head (top 14 rows)
       for (var i = 0; i < items.length; i++) {
         final tag = items[i].tag;
         if (tag == null || !tag.startsWith('persona:')) continue;
+        final who = tag.substring(8);
+        final p = gente[who] as Map?;
+        if (p == null || !jsTruthy(p['vis'])) continue;
         final r = covOf(
           i,
           maxRowsFromTop: 14,

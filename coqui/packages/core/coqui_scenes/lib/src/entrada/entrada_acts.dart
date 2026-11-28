@@ -116,6 +116,37 @@ extension _EntradaActs on Entrada {
     _seat('carmen', '${table}_d');
   }
 
+  Future<void> _advancePastRope84() async {
+    // OPEN: entrada-sheet.json has no standing spots for the family beyond the rope (u > -0.35),
+    // so after unhooking the rope in round B we hop Coquí past the rope (paso1) and walk the family
+    // through into the best free table's spots before final84 completes the ending.
+    W['cuerda'] = 'abierta';
+    final best = _n(W['mesas84']).clamp(1, 3);
+    final table = best == 3 ? 'mesa3' : (best == 2 ? 'mesa2' : 'mesa1');
+    final meseraSpot = best == 3 ? 'mesera_fin' : 'junto_mesa';
+    if (best == 1) {
+      // Shift hombre/mujer to mesa2_c/d so mesa1_coqui and heads stay clear
+      final h = _gente['hombre'] as Map<String, dynamic>?;
+      final m = _gente['mujer'] as Map<String, dynamic>?;
+      if (h != null && jsTruthy(h['vis']) && h['spot'] == 'mesa2_a') {
+        _seat('hombre', 'mesa2_c');
+      }
+      if (m != null && jsTruthy(m['vis']) && m['spot'] == 'mesa2_b') {
+        _seat('mujer', 'mesa2_d');
+      }
+    }
+    await _hopFrogTo('paso1');
+    await Future.wait([
+      _walkPersonTo('mesera', meseraSpot, steps: 2),
+      _walkPersonTo('abuela', '${table}_a', steps: 3),
+      _walkPersonTo('abuelo', '${table}_b', steps: 3),
+      _walkPersonTo('luis', '${table}_c', steps: 3),
+      _walkPersonTo('carmen', '${table}_d', steps: 3),
+    ]);
+    _seatFamily(table);
+    await _hopFrogTo('${table}_coqui');
+  }
+
   Map<String, Act> _entradaOwnActs() => {
     'ya': (o) async {
       while (_loose.isNotEmpty) {
@@ -243,9 +274,7 @@ extension _EntradaActs on Entrada {
         } else {
           final mesera = _gente['mesera'] as Map<String, dynamic>?;
           if (mesera != null) mesera['pose'] = 'pasa';
-          W['cuerda'] = 'abierta';
-          await _hopFrogTo('ante_atril');
-          await wait(120);
+          await _advancePastRope84();
           if (mesera != null) mesera['pose'] = 'idle';
         }
       } else {
@@ -275,8 +304,7 @@ extension _EntradaActs on Entrada {
             _walkPersonTo('carmen', 'atril4', steps: 3),
           ]);
         } else {
-          W['cuerda'] = 'abierta';
-          await _hopFrogTo('ante_atril');
+          await _advancePastRope84();
         }
       } else {
         // Frog sat on bench when called forward: pair behind walks past to best free table
