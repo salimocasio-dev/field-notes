@@ -41,7 +41,7 @@ class CoquiStorage {
 }
 
 /// One space: every key read, written, and deleted under [prefix].
-class SpaceStore implements KeyValueStore {
+class SpaceStore implements KeyValueStore, DeletableKeyValueStore {
   SpaceStore(this.backend, this.prefix);
 
   final StringBackend backend;
@@ -54,5 +54,6 @@ class SpaceStore implements KeyValueStore {
   Future<void> write(String key, String value) =>
       backend.write('$prefix$key', value);
 
+  @override
   Future<void> delete(String key) => backend.delete('$prefix$key');
 }
