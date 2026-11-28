@@ -1,0 +1,1007 @@
+{
+ "id": "prueba",
+ "title": "Prueba",
+ "place": "La fonda",
+ "scene": "comida",
+ "next": "falta-algo",
+ "goal": "Feed each of the family from the plate that matches the taste he asks for (salado, dulce or picante), so that the jar of lemonade and its three glasses are still full for afterwards: every wrong mouthful sends a glass of lemonade down to put the fire out, and the empty glass is set aside.",
+ "stake": {
+  "thing": "jarra",
+  "steps": 3
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "prueba",
+  "salado",
+  "dulce",
+  "picante"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "tostones",
+  "limonada",
+  "piña",
+  "sal",
+  "agua",
+  "quiero",
+  "quieres",
+  "me gusta",
+  "cierra",
+  "abre",
+  "ojo",
+  "boca",
+  "tiene",
+  "otro",
+  "eso",
+  "esto",
+  "ahora",
+  "después",
+  "no",
+  "sí",
+  "gracias",
+  "por favor"
+ ],
+ "also_heard": [],
+ "names": {
+  "abuela": "abuela",
+  "abuelo": "n_abuelo",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "salado": "salado",
+  "dulce": "dulce",
+  "picante": "picante"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c90_ab_prueba": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Prueba, Coquí."
+  },
+  "c90_ab_salado": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: El tostón es salado. Tiene sal."
+  },
+  "c90_cual_salado": {
+   "who": "narr",
+   "text": "¿Cuál es el plato salado?"
+  },
+  "c90_l_pina": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Ahora, prueba la piña."
+  },
+  "c90_l_dulce": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: La piña es dulce. ¡Qué dulce!"
+  },
+  "c90_cual_dulce": {
+   "who": "narr",
+   "text": "¿Cuál es el plato dulce?"
+  },
+  "c90_au_esto": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Y ahora... prueba esto."
+  },
+  "c90_au_picante": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¡Picante!"
+  },
+  "c90_ab_ay": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Ay, no! Eso es picante, Coquí. ¿Qué quieres?"
+  },
+  "c90_cq_agua": {
+   "who": "tu",
+   "text": "¡Agua, por favor!",
+   "tu_turno": [
+    {
+     "palabra": "agua",
+     "formas": [
+      "agua",
+      "agua por favor"
+     ]
+    }
+   ]
+  },
+  "c90_ca_ahora": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Ahora yo. Cierro los ojos y abro la boca. Quiero algo salado."
+  },
+  "c90_cual_carmen": {
+   "who": "narr",
+   "text": "Carmen quiere algo salado. ¿Cuál es?"
+  },
+  "c90_ca_si": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Sí! Salado."
+  },
+  "c90_l_yo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Y yo quiero algo dulce!"
+  },
+  "c90_l_mmm": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Mmm. Dulce."
+  },
+  "c90_au_yo": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Yo quiero algo picante."
+  },
+  "c90_au_gusta": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Picante. Me gusta."
+  },
+  "c90_ab_despues": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La limonada es para después."
+  },
+  "c90_au_otro": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¿Otro, Coquí? Prueba."
+  },
+  "c90_cq_no": {
+   "who": "tu",
+   "text": "¡No, gracias!",
+   "tu_turno": [
+    {
+     "palabra": "no",
+     "formas": [
+      "no",
+      "no gracias"
+     ]
+    }
+   ]
+  },
+  "c90_ab_dulce": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí quiere algo dulce."
+  },
+  "c90_q_abuela_salado": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Quiero algo salado."
+  },
+  "c90_ok_abuela_salado": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Salado! Gracias."
+  },
+  "c90_no_abuela_dulce_salado": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No! Eso es dulce. ¡Quiero algo salado!"
+  },
+  "c90_no_abuela_picante_salado": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No! Eso es picante. ¡Quiero algo salado!"
+  },
+  "c90_q_abuela_dulce": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Quiero algo dulce."
+  },
+  "c90_ok_abuela_dulce": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Dulce! Gracias."
+  },
+  "c90_no_abuela_salado_dulce": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No! Eso es salado. ¡Quiero algo dulce!"
+  },
+  "c90_no_abuela_picante_dulce": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No! Eso es picante. ¡Quiero algo dulce!"
+  },
+  "c90_q_abuela_picante": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Quiero algo picante."
+  },
+  "c90_ok_abuela_picante": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Picante! Gracias."
+  },
+  "c90_no_abuela_salado_picante": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No! Eso es salado. ¡Quiero algo picante!"
+  },
+  "c90_no_abuela_dulce_picante": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No! Eso es dulce. ¡Quiero algo picante!"
+  },
+  "c90_q_abuelo_salado": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Quiero algo salado."
+  },
+  "c90_ok_abuelo_salado": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¡Salado! Gracias."
+  },
+  "c90_no_abuelo_dulce_salado": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¡No! Eso es dulce. ¡Quiero algo salado!"
+  },
+  "c90_no_abuelo_picante_salado": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¡No! Eso es picante. ¡Quiero algo salado!"
+  },
+  "c90_q_abuelo_dulce": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Quiero algo dulce."
+  },
+  "c90_ok_abuelo_dulce": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¡Dulce! Gracias."
+  },
+  "c90_no_abuelo_salado_dulce": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¡No! Eso es salado. ¡Quiero algo dulce!"
+  },
+  "c90_no_abuelo_picante_dulce": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¡No! Eso es picante. ¡Quiero algo dulce!"
+  },
+  "c90_q_abuelo_picante": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Quiero algo picante."
+  },
+  "c90_ok_abuelo_picante": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¡Picante! Gracias."
+  },
+  "c90_no_abuelo_salado_picante": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¡No! Eso es salado. ¡Quiero algo picante!"
+  },
+  "c90_no_abuelo_dulce_picante": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¡No! Eso es dulce. ¡Quiero algo picante!"
+  },
+  "c90_q_luis_salado": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Quiero algo salado."
+  },
+  "c90_ok_luis_salado": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Salado! Gracias."
+  },
+  "c90_no_luis_dulce_salado": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡No! Eso es dulce. ¡Quiero algo salado!"
+  },
+  "c90_no_luis_picante_salado": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡No! Eso es picante. ¡Quiero algo salado!"
+  },
+  "c90_q_luis_dulce": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Quiero algo dulce."
+  },
+  "c90_ok_luis_dulce": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Dulce! Gracias."
+  },
+  "c90_no_luis_salado_dulce": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡No! Eso es salado. ¡Quiero algo dulce!"
+  },
+  "c90_no_luis_picante_dulce": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡No! Eso es picante. ¡Quiero algo dulce!"
+  },
+  "c90_q_luis_picante": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Quiero algo picante."
+  },
+  "c90_ok_luis_picante": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Picante! Gracias."
+  },
+  "c90_no_luis_salado_picante": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡No! Eso es salado. ¡Quiero algo picante!"
+  },
+  "c90_no_luis_dulce_picante": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡No! Eso es dulce. ¡Quiero algo picante!"
+  },
+  "c90_q_carmen_salado": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Quiero algo salado."
+  },
+  "c90_ok_carmen_salado": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Salado! Gracias."
+  },
+  "c90_no_carmen_dulce_salado": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No! Eso es dulce. ¡Quiero algo salado!"
+  },
+  "c90_no_carmen_picante_salado": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No! Eso es picante. ¡Quiero algo salado!"
+  },
+  "c90_q_carmen_dulce": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Quiero algo dulce."
+  },
+  "c90_ok_carmen_dulce": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Dulce! Gracias."
+  },
+  "c90_no_carmen_salado_dulce": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No! Eso es salado. ¡Quiero algo dulce!"
+  },
+  "c90_no_carmen_picante_dulce": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No! Eso es picante. ¡Quiero algo dulce!"
+  },
+  "c90_q_carmen_picante": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Quiero algo picante."
+  },
+  "c90_ok_carmen_picante": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Picante! Gracias."
+  },
+  "c90_no_carmen_salado_picante": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No! Eso es salado. ¡Quiero algo picante!"
+  },
+  "c90_no_carmen_dulce_picante": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No! Eso es dulce. ¡Quiero algo picante!"
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "noche"
+   }
+  },
+  {
+   "act": "ir",
+   "a": "mesa_coqui"
+  },
+  {
+   "act": "jarra",
+   "n": 3
+  },
+  {
+   "act": "platillos90",
+   "orden": "salado,dulce,picante"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c90_ab_prueba",
+  {
+   "act": "gesto",
+   "quien": "coqui",
+   "que": "come"
+  },
+  "c90_ab_salado",
+  {
+   "ask": "platillo1",
+   "lead": [],
+   "line": "c90_cual_salado",
+   "then": [],
+   "after": [
+    {
+     "set": {
+      "twinkle": "platillo1"
+     }
+    },
+    {
+     "wait": 700
+    },
+    {
+     "set": {
+      "twinkle": null
+     }
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  "c90_l_pina",
+  {
+   "act": "gesto",
+   "quien": "coqui",
+   "que": "come"
+  },
+  "c90_l_dulce",
+  {
+   "ask": "platillo2",
+   "lead": [],
+   "line": "c90_cual_dulce",
+   "then": [],
+   "after": []
+  },
+  {
+   "dots": 3
+  },
+  "c90_au_esto",
+  {
+   "act": "fuego90"
+  },
+  "c90_au_picante",
+  "c90_ab_ay",
+  "c90_cq_agua",
+  {
+   "dots": 4
+  },
+  {
+   "act": "platillos90",
+   "orden": "salado,dulce,picante"
+  },
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "ojos"
+  },
+  "c90_ca_ahora",
+  {
+   "ask": "platillo1",
+   "lead": [],
+   "line": "c90_cual_carmen",
+   "then": [],
+   "after": [
+    {
+     "act": "da90",
+     "cual": "platillo1",
+     "a": "carmen",
+     "ok": 1
+    }
+   ]
+  },
+  "c90_ca_si",
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "ojos"
+  },
+  "c90_l_yo",
+  {
+   "act": "da90",
+   "cual": "platillo2",
+   "a": "luis",
+   "ok": 1
+  },
+  "c90_l_mmm",
+  {
+   "act": "gesto",
+   "quien": "abuelo",
+   "que": "ojos"
+  },
+  "c90_au_yo",
+  {
+   "act": "da90",
+   "cual": "platillo3",
+   "a": "abuelo",
+   "ok": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "abuelo",
+   "que": "come"
+  },
+  "c90_au_gusta",
+  {
+   "dots": 5
+  },
+  {
+   "act": "platillos90",
+   "orden": "salado,dulce,picante"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "senala",
+   "a": "jarra"
+  },
+  "c90_ab_despues",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "reparte": [
+    "ax",
+    "ay",
+    "az"
+   ],
+   "options": [
+    "salado",
+    "dulce",
+    "picante"
+   ]
+  },
+  {
+   "act": "platillos90",
+   "orden": "$ax,$ay,$az"
+  },
+  {
+   "draw": "qa",
+   "options": [
+    "abuela",
+    "abuelo",
+    "luis",
+    "carmen"
+   ]
+  },
+  {
+   "draw": "ga",
+   "options": [
+    "salado",
+    "dulce",
+    "picante"
+   ]
+  },
+  {
+   "calc": "pa",
+   "cond": "ax=$ga",
+   "then": "platillo1",
+   "else": "platillo3"
+  },
+  {
+   "calc": "pa",
+   "cond": "ay=$ga",
+   "then": "platillo2",
+   "else": "$pa"
+  },
+  {
+   "act": "gesto",
+   "quien": "$qa",
+   "que": "ojos"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "platillo1",
+    "platillo2",
+    "platillo3"
+   ],
+   "pick": "$pa",
+   "tests": "$ga",
+   "lock": true,
+   "lead": [],
+   "line": "c90_q_$qa_$ga",
+   "right": [
+    {
+     "act": "da90",
+     "cual": "$pa",
+     "a": "$qa",
+     "ok": 1
+    },
+    "c90_ok_$qa_$ga",
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "calc": "fa",
+     "cond": "x=platillo1",
+     "then": "$ax",
+     "else": "$az"
+    },
+    {
+     "calc": "fa",
+     "cond": "x=platillo2",
+     "then": "$ay",
+     "else": "$fa"
+    },
+    {
+     "act": "da90",
+     "cual": "$x",
+     "a": "$qa",
+     "ok": 0,
+     "suelto": 1
+    },
+    "c90_no_$qa_$fa_$ga",
+    {
+     "act": "ya"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "jarra",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "jarra",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "reparte": [
+    "bx",
+    "by",
+    "bz"
+   ],
+   "options": [
+    "salado",
+    "dulce",
+    "picante"
+   ]
+  },
+  {
+   "act": "platillos90",
+   "orden": "$bx,$by,$bz"
+  },
+  {
+   "draw": "eb",
+   "options": [
+    "1",
+    "2",
+    "3"
+   ]
+  },
+  {
+   "if": "qa=abuela",
+   "then": [
+    {
+     "calc": "qb",
+     "cond": "eb=1",
+     "then": "abuelo",
+     "else": "luis"
+    },
+    {
+     "calc": "qb",
+     "cond": "eb=3",
+     "then": "carmen",
+     "else": "$qb"
+    }
+   ],
+   "else": [
+    {
+     "if": "qa=abuelo",
+     "then": [
+      {
+       "calc": "qb",
+       "cond": "eb=1",
+       "then": "abuela",
+       "else": "luis"
+      },
+      {
+       "calc": "qb",
+       "cond": "eb=3",
+       "then": "carmen",
+       "else": "$qb"
+      }
+     ],
+     "else": [
+      {
+       "if": "qa=luis",
+       "then": [
+        {
+         "calc": "qb",
+         "cond": "eb=1",
+         "then": "abuela",
+         "else": "abuelo"
+        },
+        {
+         "calc": "qb",
+         "cond": "eb=3",
+         "then": "carmen",
+         "else": "$qb"
+        }
+       ],
+       "else": [
+        {
+         "calc": "qb",
+         "cond": "eb=1",
+         "then": "abuela",
+         "else": "abuelo"
+        },
+        {
+         "calc": "qb",
+         "cond": "eb=3",
+         "then": "luis",
+         "else": "$qb"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "draw": "gb",
+   "options": [
+    "salado",
+    "dulce",
+    "picante"
+   ]
+  },
+  {
+   "calc": "pb",
+   "cond": "bx=$gb",
+   "then": "platillo1",
+   "else": "platillo3"
+  },
+  {
+   "calc": "pb",
+   "cond": "by=$gb",
+   "then": "platillo2",
+   "else": "$pb"
+  },
+  {
+   "act": "gesto",
+   "quien": "$qb",
+   "que": "ojos"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "platillo1",
+    "platillo2",
+    "platillo3"
+   ],
+   "pick": "$pb",
+   "tests": "$gb",
+   "lock": true,
+   "lead": [],
+   "line": "c90_q_$qb_$gb",
+   "right": [
+    {
+     "act": "da90",
+     "cual": "$pb",
+     "a": "$qb",
+     "ok": 1
+    },
+    "c90_ok_$qb_$gb",
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "calc": "fb",
+     "cond": "x=platillo1",
+     "then": "$bx",
+     "else": "$bz"
+    },
+    {
+     "calc": "fb",
+     "cond": "x=platillo2",
+     "then": "$by",
+     "else": "$fb"
+    },
+    {
+     "act": "da90",
+     "cual": "$x",
+     "a": "$qb",
+     "ok": 0,
+     "suelto": 1
+    },
+    "c90_no_$qb_$fb_$gb",
+    {
+     "act": "ya"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "jarra",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "jarra",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final90",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final90",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final90",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 9
+  },
+  "c90_au_otro",
+  "c90_cq_no",
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "rie"
+  },
+  "c90_ab_dulce",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c90_ab_prueba",
+  "c90_ab_salado",
+  "c90_cual_salado",
+  "c90_l_pina",
+  "c90_l_dulce",
+  "c90_cual_dulce",
+  "c90_au_esto",
+  "c90_au_picante",
+  "c90_ab_ay",
+  "c90_cq_agua",
+  "c90_ca_ahora",
+  "c90_cual_carmen",
+  "c90_ca_si",
+  "c90_l_yo",
+  "c90_l_mmm",
+  "c90_au_yo",
+  "c90_au_gusta",
+  "c90_ab_despues",
+  "c90_q_luis_dulce",
+  "c90_ok_luis_dulce",
+  "c90_au_otro",
+  "c90_cq_no",
+  "c90_ab_dulce"
+ ]
+}
