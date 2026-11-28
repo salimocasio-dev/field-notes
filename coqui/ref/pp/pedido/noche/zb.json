@@ -1,0 +1,11 @@
+{
+  "file": "zb.bin",
+  "width": 240,
+  "height": 216,
+  "type": "float32",
+  "endian": "little",
+  "layout": "row-major, index = y * width + x",
+  "note": "the depth buffer after the frame; -1e9 where nothing was drawn",
+  "bytes": 207360,
+  "sha256": "05a712eacd49877cdb300b300dada9728d6e0279647c1922290c134d93ea1d09"
+}

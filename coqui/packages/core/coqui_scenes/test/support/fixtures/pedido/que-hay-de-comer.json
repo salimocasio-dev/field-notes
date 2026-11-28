@@ -1,0 +1,1002 @@
+{
+ "id": "que-hay-de-comer",
+ "title": "¿Qué hay de comer?",
+ "place": "La fonda",
+ "scene": "pedido",
+ "next": "tostones-y-mofongo",
+ "goal": "Push the plate the mesera calls for (soup, meat, fish or salad) to the edge of the hatch's shelf so that the cocinero's small plate of three golden rounds stays whole for the frog: every wrong plate comes back, and while he is busy with it the cat takes a round.",
+ "stake": {
+  "thing": "platito",
+  "steps": 3
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "sopa",
+  "carne",
+  "pescado",
+  "ensalada"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "mesera",
+  "cocinero",
+  "menú",
+  "quiero",
+  "hay",
+  "come",
+  "huele",
+  "rico",
+  "gato",
+  "mira",
+  "ven",
+  "para",
+  "por favor",
+  "gracias",
+  "buen provecho",
+  "yo",
+  "esto",
+  "no"
+ ],
+ "also_heard": [
+  "quieren",
+  "comer"
+ ],
+ "names": {
+  "abuela": "abuela",
+  "abuelo": "n_abuelo",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "sopa": "sopa",
+  "carne": "carne",
+  "pescado": "pescado",
+  "ensalada": "ensalada"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c87_ms_quieren": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: ¿Qué quieren comer?"
+  },
+  "c87_ab_menu": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Mira el menú, Coquí. Hay sopa. Hay carne. Hay pescado. Y hay ensalada."
+  },
+  "c87_donde_sopa": {
+   "who": "narr",
+   "text": "¿Dónde está la sopa en el menú?"
+  },
+  "c87_ab_sopa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Yo quiero sopa."
+  },
+  "c87_abo_pescado": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Yo, pescado."
+  },
+  "c87_l_carne": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Carne! Yo quiero carne."
+  },
+  "c87_ca_ensalada": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Y yo quiero ensalada."
+  },
+  "c87_abo_quiere": {
+   "who": "narr",
+   "text": "Abuelo quiere pescado. ¿Dónde está el pescado?"
+  },
+  "c87_ms_pad": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: Una sopa, un pescado, una carne y una ensalada."
+  },
+  "c87_co_carne": {
+   "who": "narr",
+   "habla": "cocinero",
+   "text": "El cocinero dice: ¡La carne!"
+  },
+  "c87_donde_carne": {
+   "who": "narr",
+   "text": "¿Dónde está la carne de Luis?"
+  },
+  "c87_ab_huele": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Mmm. ¿Cómo huele, Coquí?"
+  },
+  "c87_cq_rico": {
+   "who": "tu",
+   "text": "¡Rico!",
+   "tu_turno": [
+    {
+     "palabra": "rico",
+     "formas": [
+      "rico",
+      "qué rico",
+      "que rico"
+     ]
+    }
+   ]
+  },
+  "c87_ms_sirve": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: La sopa para abuela, el pescado para abuelo y la ensalada para Carmen."
+  },
+  "c87_ms_ven": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: Coquí, ven acá, por favor."
+  },
+  "c87_fam_come": {
+   "who": "narr",
+   "text": "La familia come. Abuela come sopa. Abuelo come pescado."
+  },
+  "c34_cq_buen": {
+   "who": "tu",
+   "text": "¡Buen provecho!",
+   "tu_turno": [
+    {
+     "palabra": "buen provecho",
+     "formas": [
+      "buen provecho"
+     ]
+    }
+   ]
+  },
+  "c28_ab_gracias": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Gracias, Coquí!"
+  },
+  "c87_pide_sopa": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: ¡Coquí! La sopa, por favor."
+  },
+  "c87_no_carne_sopa": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: No, Coquí. Esto es carne. ¡La sopa!"
+  },
+  "c87_no_pescado_sopa": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: No, Coquí. Esto es pescado. ¡La sopa!"
+  },
+  "c87_no_ensalada_sopa": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: No, Coquí. Esto es ensalada. ¡La sopa!"
+  },
+  "c87_pide_carne": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: ¡Coquí! La carne, por favor."
+  },
+  "c87_no_sopa_carne": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: No, Coquí. Esto es sopa. ¡La carne!"
+  },
+  "c87_no_pescado_carne": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: No, Coquí. Esto es pescado. ¡La carne!"
+  },
+  "c87_no_ensalada_carne": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: No, Coquí. Esto es ensalada. ¡La carne!"
+  },
+  "c87_pide_pescado": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: ¡Coquí! El pescado, por favor."
+  },
+  "c87_no_sopa_pescado": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: No, Coquí. Esto es sopa. ¡El pescado!"
+  },
+  "c87_no_carne_pescado": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: No, Coquí. Esto es carne. ¡El pescado!"
+  },
+  "c87_no_ensalada_pescado": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: No, Coquí. Esto es ensalada. ¡El pescado!"
+  },
+  "c87_pide_ensalada": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: ¡Coquí! La ensalada, por favor."
+  },
+  "c87_no_sopa_ensalada": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: No, Coquí. Esto es sopa. ¡La ensalada!"
+  },
+  "c87_no_carne_ensalada": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: No, Coquí. Esto es carne. ¡La ensalada!"
+  },
+  "c87_no_pescado_ensalada": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: No, Coquí. Esto es pescado. ¡La ensalada!"
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "noche",
+    "tablero": "comida"
+   }
+  },
+  {
+   "act": "ir",
+   "a": "mesa_coqui"
+  },
+  {
+   "act": "llega",
+   "quien": "mesera",
+   "a": "junto_mesa"
+  },
+  {
+   "act": "platito",
+   "n": 3
+  },
+  {
+   "act": "gesto",
+   "quien": "cocinero",
+   "que": "guina"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c87_ms_quieren",
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "senala",
+   "a": "cuadro1"
+  },
+  {
+   "act": "cuadro",
+   "n": "todos",
+   "suelto": 1
+  },
+  "c87_ab_menu",
+  {
+   "act": "ya"
+  },
+  {
+   "ask": "cuadro1",
+   "lead": [],
+   "line": "c87_donde_sopa",
+   "then": [],
+   "after": [
+    {
+     "act": "cuadro",
+     "n": 1
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "pide87",
+   "quien": "abuela",
+   "que": "sopa",
+   "suelto": 1
+  },
+  "c87_ab_sopa",
+  {
+   "act": "ya"
+  },
+  {
+   "act": "pide87",
+   "quien": "abuelo",
+   "que": "pescado",
+   "suelto": 1
+  },
+  "c87_abo_pescado",
+  {
+   "act": "ya"
+  },
+  {
+   "act": "pide87",
+   "quien": "luis",
+   "que": "carne",
+   "suelto": 1
+  },
+  "c87_l_carne",
+  {
+   "act": "ya"
+  },
+  {
+   "act": "pide87",
+   "quien": "carmen",
+   "que": "ensalada",
+   "suelto": 1
+  },
+  "c87_ca_ensalada",
+  {
+   "act": "ya"
+  },
+  {
+   "ask": "cuadro3",
+   "lead": [],
+   "line": "c87_abo_quiere",
+   "then": [],
+   "after": [
+    {
+     "act": "cuadro",
+     "n": 3
+    },
+    {
+     "act": "gesto",
+     "quien": "abuelo",
+     "que": "si"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "gesto",
+   "quien": "mesera",
+   "que": "mira",
+   "a": "cocinero"
+  },
+  "c87_ms_pad",
+  {
+   "act": "campana",
+   "que": "carne"
+  },
+  "c87_co_carne",
+  {
+   "ask": "plato1",
+   "lead": [],
+   "line": "c87_donde_carne",
+   "then": [],
+   "after": [
+    {
+     "act": "lleva87",
+     "que": "carne",
+     "a": "luis"
+    }
+   ]
+  },
+  "c87_ab_huele",
+  "c87_cq_rico",
+  {
+   "dots": 4
+  },
+  {
+   "act": "campana",
+   "que": "sopa"
+  },
+  {
+   "act": "campana",
+   "que": "pescado"
+  },
+  {
+   "act": "campana",
+   "que": "ensalada"
+  },
+  {
+   "act": "sirve87",
+   "suelto": 1
+  },
+  "c87_ms_sirve",
+  {
+   "act": "ya"
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "ir",
+   "a": "repisa_coqui"
+  },
+  "c87_ms_ven",
+  {
+   "act": "gesto",
+   "quien": "cocinero",
+   "que": "senala",
+   "a": "platito"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "act": "llega",
+   "quien": "mesera",
+   "a": "lejos"
+  },
+  {
+   "draw": "disha",
+   "options": [
+    "sopa",
+    "carne",
+    "pescado",
+    "ensalada"
+   ]
+  },
+  {
+   "draw": "slota",
+   "options": [
+    "1",
+    "2",
+    "3"
+   ]
+  },
+  {
+   "if": "disha=sopa",
+   "then": [
+    {
+     "reparte": [
+      "extraonea",
+      "extratwoa"
+     ],
+     "options": [
+      "carne",
+      "pescado",
+      "ensalada"
+     ]
+    }
+   ],
+   "else": [
+    {
+     "if": "disha=carne",
+     "then": [
+      {
+       "reparte": [
+        "extraonea",
+        "extratwoa"
+       ],
+       "options": [
+        "sopa",
+        "pescado",
+        "ensalada"
+       ]
+      }
+     ],
+     "else": [
+      {
+       "if": "disha=pescado",
+       "then": [
+        {
+         "reparte": [
+          "extraonea",
+          "extratwoa"
+         ],
+         "options": [
+          "sopa",
+          "carne",
+          "ensalada"
+         ]
+        }
+       ],
+       "else": [
+        {
+         "reparte": [
+          "extraonea",
+          "extratwoa"
+         ],
+         "options": [
+          "sopa",
+          "carne",
+          "pescado"
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "calc": "plateonea",
+   "cond": "slota=1",
+   "then": "$disha",
+   "else": "$extraonea"
+  },
+  {
+   "calc": "platetwoa",
+   "cond": "slota=2",
+   "then": "$disha",
+   "else": "$extratwoa"
+  },
+  {
+   "calc": "platetwoa",
+   "cond": "slota=1",
+   "then": "$extraonea",
+   "else": "$platetwoa"
+  },
+  {
+   "calc": "platethreea",
+   "cond": "slota=3",
+   "then": "$disha",
+   "else": "$extratwoa"
+  },
+  {
+   "act": "platos87",
+   "a": "$plateonea",
+   "b": "$platetwoa",
+   "c": "$platethreea"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "plato1",
+    "plato2",
+    "plato3"
+   ],
+   "pick": "plato$slota",
+   "tests": "$disha",
+   "lock": true,
+   "lead": [],
+   "line": "c87_pide_$disha",
+   "right": [
+    {
+     "act": "saca87",
+     "cual": "plato$slota",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "calc": "wronga",
+     "cond": "x=plato1",
+     "then": "$plateonea",
+     "else": "$platetwoa"
+    },
+    {
+     "calc": "wronga",
+     "cond": "x=plato3",
+     "then": "$platethreea",
+     "else": "$wronga"
+    },
+    {
+     "act": "saca87",
+     "cual": "$x",
+     "ok": 0
+    },
+    "c87_no_$wronga_$disha",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "platito",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "platito",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "roll",
+   "options": [
+    "1",
+    "2",
+    "3"
+   ]
+  },
+  {
+   "if": "disha=sopa",
+   "then": [
+    {
+     "calc": "dishb",
+     "cond": "roll=1",
+     "then": "carne",
+     "else": "pescado"
+    },
+    {
+     "calc": "dishb",
+     "cond": "roll=3",
+     "then": "ensalada",
+     "else": "$dishb"
+    }
+   ],
+   "else": [
+    {
+     "if": "disha=carne",
+     "then": [
+      {
+       "calc": "dishb",
+       "cond": "roll=1",
+       "then": "sopa",
+       "else": "pescado"
+      },
+      {
+       "calc": "dishb",
+       "cond": "roll=3",
+       "then": "ensalada",
+       "else": "$dishb"
+      }
+     ],
+     "else": [
+      {
+       "if": "disha=pescado",
+       "then": [
+        {
+         "calc": "dishb",
+         "cond": "roll=1",
+         "then": "sopa",
+         "else": "carne"
+        },
+        {
+         "calc": "dishb",
+         "cond": "roll=3",
+         "then": "ensalada",
+         "else": "$dishb"
+        }
+       ],
+       "else": [
+        {
+         "calc": "dishb",
+         "cond": "roll=1",
+         "then": "sopa",
+         "else": "carne"
+        },
+        {
+         "calc": "dishb",
+         "cond": "roll=3",
+         "then": "pescado",
+         "else": "$dishb"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "draw": "slotb",
+   "options": [
+    "1",
+    "2",
+    "3"
+   ]
+  },
+  {
+   "if": "dishb=sopa",
+   "then": [
+    {
+     "reparte": [
+      "extraoneb",
+      "extratwob"
+     ],
+     "options": [
+      "carne",
+      "pescado",
+      "ensalada"
+     ]
+    }
+   ],
+   "else": [
+    {
+     "if": "dishb=carne",
+     "then": [
+      {
+       "reparte": [
+        "extraoneb",
+        "extratwob"
+       ],
+       "options": [
+        "sopa",
+        "pescado",
+        "ensalada"
+       ]
+      }
+     ],
+     "else": [
+      {
+       "if": "dishb=pescado",
+       "then": [
+        {
+         "reparte": [
+          "extraoneb",
+          "extratwob"
+         ],
+         "options": [
+          "sopa",
+          "carne",
+          "ensalada"
+         ]
+        }
+       ],
+       "else": [
+        {
+         "reparte": [
+          "extraoneb",
+          "extratwob"
+         ],
+         "options": [
+          "sopa",
+          "carne",
+          "pescado"
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "calc": "plateoneb",
+   "cond": "slotb=1",
+   "then": "$dishb",
+   "else": "$extraoneb"
+  },
+  {
+   "calc": "platetwob",
+   "cond": "slotb=2",
+   "then": "$dishb",
+   "else": "$extratwob"
+  },
+  {
+   "calc": "platetwob",
+   "cond": "slotb=1",
+   "then": "$extraoneb",
+   "else": "$platetwob"
+  },
+  {
+   "calc": "platethreeb",
+   "cond": "slotb=3",
+   "then": "$dishb",
+   "else": "$extratwob"
+  },
+  {
+   "act": "platos87",
+   "a": "$plateoneb",
+   "b": "$platetwob",
+   "c": "$platethreeb"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "plato1",
+    "plato2",
+    "plato3"
+   ],
+   "pick": "plato$slotb",
+   "tests": "$dishb",
+   "lock": true,
+   "lead": [],
+   "line": "c87_pide_$dishb",
+   "right": [
+    {
+     "act": "saca87",
+     "cual": "plato$slotb",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "calc": "wrongb",
+     "cond": "x=plato1",
+     "then": "$plateoneb",
+     "else": "$platetwob"
+    },
+    {
+     "calc": "wrongb",
+     "cond": "x=plato3",
+     "then": "$platethreeb",
+     "else": "$wrongb"
+    },
+    {
+     "act": "saca87",
+     "cual": "$x",
+     "ok": 0
+    },
+    "c87_no_$wrongb_$dishb",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "platito",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "platito",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "act": "ir",
+   "a": "mesa_coqui"
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final87",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final87",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final87",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 9
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "come",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "abuelo",
+   "que": "come",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "come",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "come",
+   "suelto": 1
+  },
+  "c87_fam_come",
+  {
+   "act": "ya"
+  },
+  "c34_cq_buen",
+  "c28_ab_gracias",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c87_ms_quieren",
+  "c87_ab_menu",
+  "c87_donde_sopa",
+  "c87_ab_sopa",
+  "c87_abo_pescado",
+  "c87_l_carne",
+  "c87_ca_ensalada",
+  "c87_abo_quiere",
+  "c87_ms_pad",
+  "c87_co_carne",
+  "c87_donde_carne",
+  "c87_ab_huele",
+  "c87_cq_rico",
+  "c87_ms_sirve",
+  "c87_ms_ven",
+  "c87_pide_pescado",
+  "c87_fam_come",
+  "c34_cq_buen",
+  "c28_ab_gracias"
+ ]
+}
