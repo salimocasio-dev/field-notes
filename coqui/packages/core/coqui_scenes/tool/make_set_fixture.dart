@@ -172,6 +172,11 @@ void main(List<String> args) {
       constant: 'cuentaSetRefs',
       what: "cuenta's baked states",
     ),
+    'bano': (
+      file: 'bano_set_refs.dart',
+      constant: 'banoSetRefs',
+      what: "bano's baked states",
+    ),
     'noche': (
       file: 'noche_set_refs.dart',
       constant: 'nocheSetRefs',
