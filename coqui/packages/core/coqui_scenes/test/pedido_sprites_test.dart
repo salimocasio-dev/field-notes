@@ -47,6 +47,14 @@ void main() {
     expect((mkBebida('refresco').w, mkBebida('refresco').h), (10, 14));
     expect((mkVasito(3).w, mkVasito(3).h), (8, 18));
     expect((mkOrdenBurbuja('sopa').w, mkOrdenBurbuja('sopa').h), (14, 12));
+    expect((mkGestoFlecha().w, mkGestoFlecha().h), (9, 7));
+    expect(
+      (
+        mkAbuelaPedido('senala_izq', false).w,
+        mkAbuelaPedido('senala_izq', false).h,
+      ),
+      (52, 50),
+    );
   });
 
   test(
@@ -74,7 +82,7 @@ void main() {
 
   test('every sprite in pedidoSpritesSheet has opaque pixels', () {
     final sheet = pedidoSpritesSheet();
-    expect(sheet.length, greaterThanOrEqualTo(60));
+    expect(sheet.length, greaterThanOrEqualTo(75));
     for (final (name, s) in sheet) {
       expect(_ink(s), greaterThan(0), reason: '$name has no drawn pixels');
     }
@@ -87,6 +95,24 @@ void main() {
     expect(_same(mkMesera(), mkMesera(plato: 'carne')), isFalse);
     expect(_same(mkMesero(), mkMesero(abanico: true)), isFalse);
     expect(_same(mkMesero(), mkMesero(sorbo: true)), isFalse);
+    expect(
+      _same(
+        mkAbuelaPedido('senala_izq', false),
+        mkAbuelaPedido('senala_der', false),
+      ),
+      isFalse,
+    );
+    expect(
+      _same(mkAbuelaPedido('senala_izq', false), mkAbuelaPedido('yo', false)),
+      isFalse,
+    );
+    expect(
+      _same(mkAbuelaPedido('senala_der', false), mkAbuelaPedido('yo', false)),
+      isFalse,
+    );
+    expect(_same(mkGestoFlecha(), mkGestoFlecha(up: true)), isFalse);
+    expect(_same(mkGestoFlecha(), mkGestoFlecha(self: true)), isFalse);
+    expect(_same(mkGestoFlecha(up: true), mkGestoFlecha(self: true)), isFalse);
     expect(_same(mkGatoPedido('sit'), mkGatoPedido('mira')), isFalse);
     expect(_same(mkGatoPedido('sit'), mkGatoPedido('pata')), isFalse);
     expect(_same(mkGatoPedido('sit'), mkGatoPedido('lame')), isFalse);

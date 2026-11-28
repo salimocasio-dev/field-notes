@@ -1,8 +1,8 @@
 // El pedido (place 8, La fonda, scene 2: `pedido`; stories 87 to 89): a NEW scene, written from its script's
 // "Needs" list (historia/notas/guiones/pedido.md) on its set (pedido_set.dart) and its sheet (pedido-sheet.json,
-// read by SceneSheet). There is no old scene file: every act is this file's, each doing on screen what the Needs
-// list says, every place from the sheet (spots, set thing boxes, depth rule, shadows). Where the sheet names no
-// place or an act is unstated in the script, the code does the plainest thing that keeps the story playing and
+// read by SceneSheet). There is no old scene file: every act is in pedido_acts.dart, each doing on screen what the
+// Needs list says, every place from the sheet (spots, set thing boxes, depth rule, shadows). Where the sheet names
+// no place or an act is unstated in the script, the code does the plainest thing that keeps the story playing and
 // marks it `OPEN:`.
 //
 // The drawing (the sheet's `front`): every sprite stands with its feet's bottom edge on its spot's row and its
@@ -23,6 +23,8 @@ import 'package:coqui_scenes/src/pedido/pedido_set.dart';
 import 'package:coqui_scenes/src/pedido/pedido_sprites.dart';
 import 'package:coqui_scenes/src/scene_set.dart';
 import 'package:coqui_scenes/src/sheet_cache.dart';
+
+part 'pedido_acts.dart';
 
 /// The scene "El pedido", made from its sheet (read first: `loadScene`).
 Scene createPedido() => Pedido(sceneSheetOf('pedido'));
@@ -235,18 +237,18 @@ class Pedido extends Escena implements SetScene, SetOverSprites {
       'litCuadros': <int>{},
       // Cat at banquito
       'gatoVis': 1,
-      'gatoPose': is88 ? 'sit' : 'sit',
+      'gatoPose': 'sit',
       // Shelf plates repisa1..repisa3 (plato1..plato3)
       'repisa': <String?>[null, null, null],
-      // Story 87 state: small plate (3..0 golden rounds), order bubbles, served table plates, frog carrying plate
-      'platito': is87(storyNum) ? 3 : 0,
+      // Story 87 state
+      'platito': storyNum == 87 ? 3 : 0,
       'platitoEn': 'repisa_fin',
       'ordenes': <String, String>{},
       'servidos': <String, String>{},
       'llevaPlato': null,
       'meseraPad': 0,
       'meseraPlato': null,
-      // Story 88 state: hanging plantains (3..0 tied with ribbon), frog's plate (0..3), cocinero prop
+      // Story 88 state
       'platanosVis': is88 ? 1 : 0,
       'platanos': is88 ? 3 : 0,
       'platoRanaVis': is88 ? 1 : 0,
@@ -254,7 +256,7 @@ class Pedido extends Escena implements SetScene, SetOverSprites {
       'platoRanaEn': 'repisa_fin',
       'cocineroProp': null,
       'cocineroGuina': 0,
-      // Story 89 state: tray drinks (bebida1..bebida3), lifted drink, tall glass vasito (3..0), mesero poses
+      // Story 89 state
       'bandeja': <String?>[null, null, null],
       'alzaBebida': null,
       'jugoVis': 0,
@@ -263,11 +265,12 @@ class Pedido extends Escena implements SetScene, SetOverSprites {
       'meseroPad': 0,
       'meseroAbanico': 0,
       'meseroSorbo': 0,
-      // Transient FX
+      // Transient FX & active directional gesture target cue
       'campanaFx': 0,
       'llamaFx': 0,
       'vaporFx': 0,
       'finalCelebrar': 0,
+      'gestoCue': null,
       // HUD card
       'tarjeta': null,
       'marcas': null,
@@ -285,8 +288,6 @@ class Pedido extends Escena implements SetScene, SetOverSprites {
       },
     };
   }
-
-  static bool is87(int storyNum) => storyNum == 87;
 
   /* ---------- the set ---------- */
 
@@ -334,6 +335,16 @@ class Pedido extends Escena implements SetScene, SetOverSprites {
   static Sprite _spr(String key, Sprite Function() make) =>
       _sprites[key] ??= make();
 
+  static String _kitPoseOf(String pose) => switch (pose) {
+    'saluda0' => 'wave0',
+    'saluda1' => 'wave1',
+    'senala_izq' => 'offer',
+    'senala_der' || 'senala' => 'tu',
+    'yo' || 'rie' => 'yo',
+    'bebe' || 'come' => 'taza',
+    _ => 'idle',
+  };
+
   ({Sprite s, int ax, int ay}) _personSprite(
     String id,
     Map<String, dynamic> p,
@@ -344,26 +355,12 @@ class Pedido extends Escena implements SetScene, SetOverSprites {
     final pose = (p['pose'] as String?) ?? 'idle';
     final sent = _n(p['sent']) == 1;
     if (id == 'abuela') {
-      final abPose = switch (pose) {
-        'senala' => 'vaso',
-        'bebe' || 'come' => 'bebe',
-        _ => 'idle',
-      };
-      final s = _spr(
-        'pd_abS_${abPose}_$open',
-        () => mkAbuelaS(abPose, open, false),
-      );
+      final s = _spr('pd_abS_${pose}_$open', () => mkAbuelaPedido(pose, open));
       // pedido-sheet.json rules.anchor: abuelaS hangs by her lap (17, 36).
       return (s: s, ax: 17, ay: 36);
     }
+    final kp = _kitPoseOf(pose);
     if (id == 'cocinero') {
-      final kp = switch (pose) {
-        'saluda0' => 'wave0',
-        'saluda1' => 'wave1',
-        'senala' => 'tu',
-        'rie' => 'yo',
-        _ => 'idle',
-      };
       final guina = _n(w['cocineroGuina']) == 1;
       final prop = w['cocineroProp'] as String?;
       final s = _spr(
@@ -373,13 +370,6 @@ class Pedido extends Escena implements SetScene, SetOverSprites {
       return (s: s, ax: PX, ay: inkBottom(s));
     }
     if (id == 'mesera') {
-      final kp = switch (pose) {
-        'saluda0' => 'wave0',
-        'saluda1' => 'wave1',
-        'senala' => 'tu',
-        'rie' => 'yo',
-        _ => 'idle',
-      };
       final pad = _n(w['meseraPad']) == 1;
       final plato = w['meseraPlato'] as String?;
       final s = _spr(
@@ -389,13 +379,6 @@ class Pedido extends Escena implements SetScene, SetOverSprites {
       return (s: s, ax: PX, ay: inkBottom(s));
     }
     if (id == 'mesero') {
-      final kp = switch (pose) {
-        'saluda0' => 'wave0',
-        'saluda1' => 'wave1',
-        'senala' => 'tu',
-        'rie' => 'yo',
-        _ => 'idle',
-      };
       final pad = _n(w['meseroPad']) == 1;
       final abanico = _n(w['meseroAbanico']) == 1;
       final sorbo = _n(w['meseroSorbo']) == 1;
@@ -419,14 +402,6 @@ class Pedido extends Escena implements SetScene, SetOverSprites {
       'luis' => FAM['hermano']!,
       'carmen' => FAM['hermana']!,
       _ => PEDIDO_PEOPLE[id]!,
-    };
-    final kp = switch (pose) {
-      'saluda0' => 'wave0',
-      'saluda1' => 'wave1',
-      'senala' => 'tu',
-      'rie' => 'yo',
-      'bebe' || 'come' => 'taza',
-      _ => 'idle',
     };
     final s = _spr(
       'pd_${id}_${kp}_${open}_$sent',
@@ -631,7 +606,7 @@ class Pedido extends Escena implements SetScene, SetOverSprites {
       out.add(PedidoItem(s, sx - 4, sy - s.h, sy, at.d, tag: 'cosa:vasito'));
     }
 
-    // 10. Transient FX (bell sparkle, hatch flames, steam, 3-of-3 ending celebration stars & heart)
+    // 10. Transient FX (bell sparkle, hatch flames, steam, gesture target cue, 3-of-3 ending celebration)
     if (_n(w['campanaFx']) == 1) {
       final cb = _p.box('campana');
       final s = _spr('pd_camp_${anim % 2}', () => mkCampanaBrillo(anim % 2));
@@ -648,6 +623,19 @@ class Pedido extends Escena implements SetScene, SetOverSprites {
       final s = _spr('pd_vapor_${anim % 2}', () => mkVapor(anim % 2));
       final tblD = _p.at('bebida1').d;
       out.add(PedidoItem(s, 151, 96, 104, tblD + .02, tag: 'fx:vapor'));
+    }
+    final gc = w['gestoCue'];
+    if (gc is Map) {
+      final isSelf = gc['self'] == true;
+      final isUp = gc['up'] == true;
+      final s = _spr(
+        'pd_gcue_${isSelf}_$isUp',
+        () => mkGestoFlecha(self: isSelf, up: isUp),
+      );
+      final cx = _n(gc['cueX']);
+      final cy = _n(gc['cueY']);
+      final cd = (gc['d'] as num?)?.toDouble() ?? 6.0;
+      out.add(PedidoItem(s, cx - 4, cy, cy + 7, cd, tag: 'fx:gesto_cue'));
     }
     if (_n(w['finalCelebrar']) == 1) {
       final st = _spr('pd_star', mkEstrellaPedido);
@@ -930,7 +918,6 @@ class Pedido extends Escena implements SetScene, SetOverSprites {
       _itemBox(items(w, 0), (it) => it.tag == tag);
 
   List<Thing> _things() => [
-    // Shelf plates (checked before cocinero so shelf plates are never shadowed by cocinero's hidden lower body)
     for (var i = 1; i <= 3; i++)
       Thing(
         id: 'plato$i',
@@ -947,7 +934,6 @@ class Pedido extends Escena implements SetScene, SetOverSprites {
           (_n(w['story']) == 88 && _n(w['platoRanaVis']) == 1),
       box: (w) => _spriteBox(w, 'cosa:platito') ?? _p.spotBox('repisa_fin'),
     ),
-    // Drinks on tray and tall juice glass (checked before seated family)
     for (var i = 1; i <= 3; i++)
       Thing(
         id: 'bebida$i',
@@ -962,7 +948,6 @@ class Pedido extends Escena implements SetScene, SetOverSprites {
       si: (w) => _n(w['jugoVis']) == 1,
       box: (w) => _spriteBox(w, 'cosa:vasito') ?? _p.spotBox('vasito'),
     ),
-    // Hanging plantains & cat
     Thing(
       id: 'platanos',
       si: (w) => _n(w['platanosVis']) == 1,
@@ -973,7 +958,6 @@ class Pedido extends Escena implements SetScene, SetOverSprites {
       si: (w) => _n(w['gatoVis']) == 1,
       box: (w) => _spriteBox(w, 'cosa:gato'),
     ),
-    // Foreground standing staff & seated family (before cocinero who stands behind wall)
     for (final who in const [
       'mesera',
       'mesero',
@@ -988,7 +972,6 @@ class Pedido extends Escena implements SetScene, SetOverSprites {
         si: (w) => ((w['gente'] as Map?)?[who] as Map?)?['vis'] != 0,
         box: (w) => _spriteBox(w, 'persona:$who'),
       ),
-    // Set things: food board four panels (`cuadro1..4`) and drinks board (`bebidas`)
     for (var i = 1; i <= 4; i++)
       Thing(
         id: 'cuadro$i',
@@ -1017,24 +1000,99 @@ class Pedido extends Escena implements SetScene, SetOverSprites {
     return null;
   }
 
-  /* ---------- loose acts (`suelto: 1` / `ya`) ---------- */
+  /* ---------- sheet-backed gesture target resolver & frog hop ---------- */
 
-  final List<Future<void>> _loose = [];
-
-  Future<void> _run(Map<String, dynamic> o, Future<void> Function() body) {
-    if (jsTruthy(o['suelto'])) {
-      final f = body();
-      _loose.add(f);
-      return Future<void>.value();
+  _TargetPos? _targetScreen(String? target, Map<String, dynamic> w) {
+    if (target == null || target.isEmpty) return null;
+    final gente = (w['gente'] as Map<String, dynamic>?) ?? const {};
+    if (gente[target] is Map) {
+      final p = gente[target] as Map<String, dynamic>;
+      if (p['vis'] == 0) return null;
+      final at = _atOf(p);
+      final sx = _round(at.sx) + _n(p['dx']);
+      final sy = _round(at.sy) + _n(p['dy']);
+      if (target == 'cocinero') {
+        return (sx: sx, sy: sy, cueX: sx + 14, cueY: 24, up: false, d: 0.0);
+      }
+      final headTopOffset = switch (target) {
+        'abuela' => 36,
+        'luis' || 'carmen' => 31,
+        'mesera' || 'mesero' => 53,
+        _ => 39,
+      };
+      final headTop = sy - headTopOffset;
+      return (
+        sx: sx,
+        sy: sy,
+        cueX: sx,
+        cueY: (headTop - 10).clamp(42, 180),
+        up: false,
+        d: at.d + .06,
+      );
     }
-    return body();
+    if (target == 'coqui') {
+      final q = w['cq'] as Map<String, dynamic>?;
+      if (q == null || !jsTruthy(q['vis'])) return null;
+      final at = _frogPoint(q);
+      final sx = _round(at.sx), sy = _round(at.sy);
+      return (
+        sx: sx,
+        sy: sy,
+        cueX: sx,
+        cueY: sy - 34,
+        up: false,
+        d: at.d + .06,
+      );
+    }
+    if (const [
+      'cuadro1',
+      'cuadro2',
+      'cuadro3',
+      'cuadro4',
+      'bcuadro1',
+      'bcuadro2',
+      'bcuadro3',
+      'bcuadro4',
+      'bebidas',
+    ].contains(target)) {
+      final b = _p.box(target);
+      final cx = b[0] + b[2] ~/ 2;
+      final cy = b[1] + b[3] ~/ 2;
+      return (sx: cx, sy: cy, cueX: cx, cueY: 42, up: true, d: 1.2);
+    }
+    if (target == 'campana') {
+      final b = _p.box('campana');
+      final cx = b[0] + b[2] ~/ 2;
+      return (sx: cx, sy: b[1], cueX: cx, cueY: b[1] - 9, up: false, d: 1.2);
+    }
+    final spot = switch (target) {
+      'platito' =>
+        _n(w['story']) == 88
+            ? ((w['platoRanaEn'] as String?) ?? 'repisa_fin')
+            : ((w['platitoEn'] as String?) ?? 'repisa_fin'),
+      'vasito' => (w['vasitoEn'] as String?) ?? 'vasito',
+      'platanos' => 'platanos',
+      'gato' => 'banquito',
+      'plato1' => 'repisa1',
+      'plato2' => 'repisa2',
+      'plato3' => 'repisa3',
+      'bebida1' || 'bebida2' || 'bebida3' => target,
+      _ => _p.has(target) ? target : null,
+    };
+    if (spot == null || !_p.has(spot)) return null;
+    final at = _p.at(spot);
+    final sx = _round(at.sx), sy = _round(at.sy);
+    if (spot == 'platanos') {
+      return (sx: sx, sy: sy, cueX: sx, cueY: sy + 20, up: true, d: at.d + .06);
+    }
+    final dy = switch (target) {
+      'vasito' => 26,
+      'bebida1' || 'bebida2' || 'bebida3' => 24,
+      'gato' => 29,
+      _ => 17,
+    };
+    return (sx: sx, sy: sy, cueX: sx, cueY: sy - dy, up: false, d: at.d + .06);
   }
-
-  @override
-  List<num> remap(List<num> xy) => xy;
-
-  @override
-  Future<void> stake(int lost, int max, String en) async {}
 
   Future<void> _hopToSpot(String spot) async {
     if (!_p.has(spot)) return;
@@ -1061,448 +1119,16 @@ class Pedido extends Escena implements SetScene, SetOverSprites {
     q['spot'] = spot;
   }
 
-  /* ---------- acts (pedido.md "Needs" + gen_pedido.py) ---------- */
+  /* ---------- loose acts & delegated acts (pedido_acts.dart) ---------- */
+
+  final List<Future<void>> _loose = [];
 
   @override
-  Map<String, Act> get ownActs => {
-    'ya': (o) async {
-      while (_loose.isNotEmpty) {
-        final batch = List<Future<void>>.from(_loose);
-        _loose.clear();
-        await Future.wait(batch);
-      }
-    },
-    'brilla': (o) async {
-      W['twinkle'] = o['a'] ?? o['que'] ?? o['en'];
-      await wait(120);
-    },
-    'ir': (o) => _run(o, () async {
-      final spot = (o['a'] as String?) ?? 'mesa_coqui';
-      await _hopToSpot(spot);
-      if (_n(W['story']) == 87 && spot == 'repisa_coqui') {
-        W['gatoPose'] = 'mira';
-      }
-    }),
-    'llega': (o) => _run(o, () async {
-      final quien = (o['quien'] as String?) ?? '';
-      final rawA = (o['a'] as String?) ?? '';
-      final p = _gente[quien] as Map<String, dynamic>?;
-      if (p == null) return;
-      if (rawA == 'otra_mesa') {
-        // OPEN: `otra_mesa` is a 2-seat group (`otra_mesa1`, `otra_mesa2`) with no waitress standing spot; seat
-        // senor/joven at otra_mesa1 and senora/mujer at otra_mesa2 (hiding the replaced guest), and place mesera at lejos.
-        if (quien == 'senor' || quien == 'joven') {
-          final other = quien == 'senor' ? 'joven' : 'senor';
-          (_gente[other] as Map<String, dynamic>)['vis'] = 0;
-          _placePerson(p, 'otra_mesa1', sent: 1);
-        } else if (quien == 'senora' || quien == 'mujer') {
-          final other = quien == 'senora' ? 'mujer' : 'senora';
-          (_gente[other] as Map<String, dynamic>)['vis'] = 0;
-          _placePerson(p, 'otra_mesa2', sent: 1);
-        } else if (quien == 'mesera') {
-          _placePerson(p, 'lejos', sent: 0);
-        }
-      } else if (rawA == 'bandeja') {
-        // OPEN: pedido-sheet.json has no `bandeja` spot; place mesero at `junto_mesa` while tray drinks stand at bebida1..3.
-        _placePerson(p, 'junto_mesa', sent: 0);
-        W['meseroPad'] = 0;
-      } else if (_p.has(rawA)) {
-        final isChair =
-            rawA.startsWith('silla') || rawA.startsWith('otra_mesa');
-        _placePerson(p, rawA, sent: isChair ? 1 : 0);
-        if (quien == 'mesera' && rawA == 'junto_mesa') {
-          W['meseraPad'] = 1;
-          W['meseraPlato'] = null;
-        }
-        if (quien == 'mesero' && rawA == 'junto_mesa') {
-          W['meseroPad'] = 1;
-        }
-        if (quien == 'mesera' && rawA == 'lejos' && _n(W['story']) == 87) {
-          // OPEN: story 87 step 5 ("the fonda fills up") has no act; when mesera arrives at lejos for the game,
-          // seat senor at otra_mesa1 and senora at otra_mesa2 (matching pedido-preview.html moments 2 and 3).
-          W['meseraPad'] = 0;
-          W['meseraPlato'] = null;
-          _placePerson(
-            _gente['senor'] as Map<String, dynamic>,
-            'otra_mesa1',
-            sent: 1,
-          );
-          _placePerson(
-            _gente['senora'] as Map<String, dynamic>,
-            'otra_mesa2',
-            sent: 1,
-          );
-        }
-      }
-      await wait(160);
-    }),
-    'sale': (o) => _run(o, () async {
-      final quien = (o['quien'] as String?) ?? '';
-      final p = _gente[quien] as Map<String, dynamic>?;
-      if (p != null) {
-        p['vis'] = 0;
-        if (quien == 'mesera') {
-          W['meseraPad'] = 0;
-          W['meseraPlato'] = null;
-        }
-      }
-      await wait(120);
-    }),
-    'cuadro': (o) => _run(o, () async {
-      final lit = W['litCuadros'] as Set<int>;
-      final n = o['n'];
-      if (n == 'todos') {
-        for (var i = 1; i <= 4; i++) {
-          lit.add(i);
-          await wait(160);
-          lit.remove(i);
-        }
-      } else {
-        final idx = _n(n).clamp(1, 4);
-        lit.add(idx);
-        await wait(240);
-        lit.remove(idx);
-      }
-    }),
-    'pide87': (o) => _run(o, () async {
-      final quien = (o['quien'] as String?) ?? '';
-      final que = (o['que'] as String?) ?? 'sopa';
-      if (quien.isNotEmpty) {
-        (W['ordenes'] as Map<String, String>)[quien] = que;
-      }
-      await wait(180);
-    }),
-    'sirve87': (o) => _run(o, () async {
-      final rep = W['repisa'] as List<String?>;
-      for (var i = 0; i < 3; i++) {
-        rep[i] = null;
-      }
-      final serv = W['servidos'] as Map<String, String>;
-      serv['abuela'] = 'sopa';
-      serv['abuelo'] = 'pescado';
-      serv['carmen'] = 'ensalada';
-      (W['ordenes'] as Map<String, String>).clear();
-      W['meseraPlato'] = 'sopa';
-      await wait(260);
-      W['meseraPlato'] = null;
-    }),
-    'campana': (o) => _run(o, () async {
-      final que = (o['que'] as String?) ?? 'carne';
-      W['campanaFx'] = 1;
-      W['llamaFx'] = 1;
-      final rep = W['repisa'] as List<String?>;
-      var slot = rep.indexOf(null);
-      if (slot < 0) slot = 0;
-      rep[slot] = que;
-      await wait(220);
-      W['campanaFx'] = 0;
-      W['llamaFx'] = 0;
-    }),
-    'lleva87': (o) => _run(o, () async {
-      final que = (o['que'] as String?) ?? 'carne';
-      final a = (o['a'] as String?) ?? 'luis';
-      final rep = W['repisa'] as List<String?>;
-      final idx = rep.indexOf(que);
-      if (idx >= 0) {
-        rep[idx] = null;
-      } else {
-        rep[0] = null;
-      }
-      W['llevaPlato'] = que;
-      await wait(220);
-      W['llevaPlato'] = null;
-      (W['servidos'] as Map<String, String>)[a] = que;
-      W['vaporFx'] = 1;
-      await wait(180);
-      W['vaporFx'] = 0;
-    }),
-    'platos87': (o) => _run(o, () async {
-      final rep = W['repisa'] as List<String?>;
-      rep[0] = o['a'] as String?;
-      rep[1] = o['b'] as String?;
-      rep[2] = o['c'] as String?;
-      W['meseraPlato'] = null;
-      _placePerson(_gente['mesera'] as Map<String, dynamic>, 'lejos', sent: 0);
-      W['campanaFx'] = 1;
-      await wait(200);
-      W['campanaFx'] = 0;
-    }),
-    'saca87': (o) => _run(o, () async {
-      final cual = (o['cual'] as String?) ?? 'plato1';
-      final ok = _n(o['ok']) == 1;
-      final idx = (int.tryParse(cual.replaceFirst('plato', '')) ?? 1) - 1;
-      final rep = W['repisa'] as List<String?>;
-      final dish = (idx >= 0 && idx < 3) ? rep[idx] : null;
-      final ms = _gente['mesera'] as Map<String, dynamic>;
-      _placePerson(ms, 'borde', sent: 0);
-      W['meseraPlato'] = dish;
-      if (ok) {
-        if (idx >= 0 && idx < 3) rep[idx] = null;
-        await wait(220);
-        _placePerson(ms, 'lejos', sent: 0);
-        W['meseraPlato'] = null;
-        final guest = _gente['senor'] as Map<String, dynamic>;
-        guest['pose'] = 'come';
-        await wait(180);
-        guest['pose'] = 'idle';
-      } else {
-        final guest = _gente['senor'] as Map<String, dynamic>;
-        for (final dx in const [-1, 1, -1, 0]) {
-          guest['dx'] = dx;
-          await wait(55);
-        }
-        W['gatoPose'] = 'pata';
-        await wait(160);
-        W['gatoPose'] = 'mira';
-      }
-    }),
-    'platito': (o) => _run(o, () async {
-      W['platito'] = _n(o['n']).clamp(0, 3);
-      await wait(120);
-    }),
-    'final87': (o) => _run(o, () async {
-      final n = _n(o['n']).clamp(1, 3);
-      final rep = W['repisa'] as List<String?>;
-      for (var i = 0; i < 3; i++) {
-        rep[i] = null;
-      }
-      W['meseraPlato'] = null;
-      _placePerson(_gente['mesera'] as Map<String, dynamic>, 'lejos', sent: 0);
-      W['platito'] = n;
-      // OPEN: pedido-sheet.json has no separate ending spot on the family table; place platito at bebida1 beside the frog.
-      W['platitoEn'] = 'bebida1';
-      W['gatoPose'] = n == 1 ? 'duerme' : (n == 2 ? 'lame' : 'sit');
-      W['finalCelebrar'] = n == 3 ? 1 : 0;
-      await wait(320);
-    }),
-    'frie88': (o) => _run(o, () async {
-      final que = (o['que'] as String?) ?? 'tostones';
-      final rep = W['repisa'] as List<String?>;
-      if (que == 'tostones') {
-        W['cocineroProp'] = 'platano';
-        await wait(110);
-        W['cocineroProp'] = 'sarten';
-        W['llamaFx'] = 1;
-        await wait(110);
-        W['cocineroProp'] = 'prensa';
-        await wait(110);
-        W['llamaFx'] = 0;
-        W['cocineroProp'] = null;
-        rep[0] = 'tostones';
-      } else {
-        W['cocineroProp'] = 'pilon';
-        W['llamaFx'] = 1;
-        await wait(160);
-        W['llamaFx'] = 0;
-        W['cocineroProp'] = null;
-        rep[1] = 'mofongo';
-      }
-      await wait(120);
-    }),
-    'tablero88': (o) => _run(o, () async {
-      final orden = (o['orden'] as String?) ?? '';
-      final parts = orden.split(',').where((s) => s.isNotEmpty).toList();
-      if (parts.length == 4) {
-        W['cuadros'] = parts;
-      }
-      await wait(120);
-    }),
-    'pide88': (o) => _run(o, () async {
-      final cual = (o['cual'] as String?) ?? 'cuadro1';
-      final ok = _n(o['ok']) == 1;
-      final idx = (int.tryParse(cual.replaceFirst('cuadro', '')) ?? 1) - 1;
-      final cuadros = (W['cuadros'] as List).cast<String>();
-      final dish = (idx >= 0 && idx < cuadros.length)
-          ? cuadros[idx]
-          : 'carne_tostones';
-      final rep = W['repisa'] as List<String?>;
-      rep[0] = dish;
-      rep[1] = null;
-      rep[2] = null;
-      W['campanaFx'] = 1;
-      await wait(180);
-      W['campanaFx'] = 0;
-      if (ok) {
-        rep[0] = null;
-        await wait(160);
-      } else {
-        for (final gName in const ['joven', 'mujer']) {
-          final g = _gente[gName] as Map<String, dynamic>;
-          if (g['vis'] != 0) {
-            for (final dx in const [-1, 1, -1, 0]) {
-              g['dx'] = dx;
-              await wait(45);
-            }
-          }
-        }
-        rep[0] = null;
-      }
-    }),
-    'platanos': (o) => _run(o, () async {
-      W['platanosVis'] = 1;
-      W['platanos'] = _n(o['n']).clamp(0, 3);
-      await wait(120);
-    }),
-    'final88': (o) => _run(o, () async {
-      final n = _n(o['n']).clamp(1, 3);
-      final rep = W['repisa'] as List<String?>;
-      for (var i = 0; i < 3; i++) {
-        rep[i] = null;
-      }
-      W['cocineroProp'] = 'sarten';
-      W['llamaFx'] = 1;
-      await wait(160);
-      W['llamaFx'] = 0;
-      W['cocineroProp'] = null;
-      W['platanos'] = 0;
-      W['platoRanaVis'] = 1;
-      W['platoRana'] = n;
-      // OPEN: pedido-sheet.json has no separate ending spot on the family table; place frog's plate at bebida1.
-      W['platoRanaEn'] = 'bebida1';
-      W['finalCelebrar'] = n == 3 ? 1 : 0;
-      await wait(240);
-    }),
-    'bandeja89': (o) => _run(o, () async {
-      final orden = (o['orden'] as String?) ?? '';
-      final parts = orden.split(',').where((s) => s.isNotEmpty).toList();
-      final tray = W['bandeja'] as List<String?>;
-      for (var i = 0; i < 3; i++) {
-        tray[i] = i < parts.length ? parts[i] : null;
-      }
-      W['alzaBebida'] = null;
-      await wait(120);
-    }),
-    'alza89': (o) => _run(o, () async {
-      W['alzaBebida'] = o['que'] as String?;
-      await wait(200);
-    }),
-    'da89': (o) => _run(o, () async {
-      final que = (o['que'] as String?) ?? '';
-      final a = (o['a'] as String?) ?? '';
-      final ok = _n(o['ok']) == 1;
-      W['alzaBebida'] = null;
-      final p = _gente[a] as Map<String, dynamic>?;
-      if (ok) {
-        final tray = W['bandeja'] as List<String?>;
-        final idx = tray.indexOf(que);
-        if (idx >= 0) tray[idx] = null;
-        if (p != null) {
-          p['pose'] = 'bebe';
-          await wait(200);
-          p['pose'] = 'idle';
-        } else {
-          await wait(160);
-        }
-      } else {
-        if (p != null) {
-          for (final dx in const [-1, 1, -1, 0]) {
-            p['dx'] = dx;
-            await wait(55);
-          }
-        } else {
-          await wait(160);
-        }
-      }
-    }),
-    'sorbo89': (o) => _run(o, () async {
-      W['meseroSorbo'] = 1;
-      await wait(240);
-      W['meseroSorbo'] = 0;
-    }),
-    'jugo': (o) => _run(o, () async {
-      W['jugoVis'] = 1;
-      W['jugo'] = _n(o['n']).clamp(0, 3);
-      await wait(120);
-    }),
-    'final89': (o) => _run(o, () async {
-      final n = _n(o['n']).clamp(1, 3);
-      final tray = W['bandeja'] as List<String?>;
-      for (var i = 0; i < 3; i++) {
-        tray[i] = null;
-      }
-      W['alzaBebida'] = null;
-      W['jugoVis'] = 1;
-      W['jugo'] = n;
-      // OPEN: pedido-sheet.json has no separate ending spot on the family table; place tall glass at bebida1 beside frog.
-      W['vasitoEn'] = 'bebida1';
-      W['finalCelebrar'] = n == 3 ? 1 : 0;
-      await wait(320);
-    }),
-    'gesto': (o) => _run(o, () async {
-      final quien = (o['quien'] as String?) ?? 'abuela';
-      final que = (o['que'] as String?) ?? 'saluda';
-      if (quien == 'coqui') {
-        final q = W['cq'] as Map<String, dynamic>;
-        if (que == 'si' || que == 'come' || que == 'bebe') {
-          for (final dy in const [-2, 0, -2, 0]) {
-            q['dy'] = dy;
-            await wait(65);
-          }
-          q['dy'] = 0;
-        } else {
-          await wait(160);
-        }
-        return;
-      }
-      final p = _gente[quien] as Map<String, dynamic>?;
-      if (p == null) return;
-      if (que == 'saluda') {
-        for (var i = 0; i < 4; i++) {
-          p['pose'] = i % 2 == 0 ? 'saluda0' : 'saluda1';
-          await wait(80);
-        }
-        p['pose'] = 'idle';
-      } else if (que == 'no') {
-        for (final dx in const [-1, 1, -1, 0]) {
-          p['dx'] = dx;
-          await wait(65);
-        }
-        p['dx'] = 0;
-      } else if (que == 'si' || que == 'cabeza') {
-        for (final dy in const [1, 0, 1, 0]) {
-          p['dy'] = dy;
-          await wait(65);
-        }
-        p['dy'] = 0;
-      } else if (que == 'guina') {
-        W['cocineroGuina'] = 1;
-        await wait(240);
-        W['cocineroGuina'] = 0;
-      } else if (que == 'abanico') {
-        W['meseroAbanico'] = 1;
-        await wait(280);
-        W['meseroAbanico'] = 0;
-      } else {
-        // rie, mira, senala, come, bebe
-        p['pose'] = que;
-        if (quien == 'cocinero' &&
-            que == 'senala' &&
-            o['a'] == 'platito' &&
-            _n(W['story']) == 88) {
-          W['cocineroProp'] = 'tres_platanos';
-        }
-        await wait(240);
-        p['pose'] = 'idle';
-        if (W['cocineroProp'] == 'tres_platanos') {
-          W['cocineroProp'] = null;
-        }
-      }
-    }),
-    'marca': (o) async {
-      final m = W['marcas'];
-      if (m is List) {
-        final i = m.indexOf(null);
-        if (i >= 0) m[i] = o['que'];
-      }
-      await wait(120);
-    },
-    'fin': (o) async {
-      final q = W['cq'] as Map<String, dynamic>;
-      for (final dy in const [-4, -6, -3, 0]) {
-        q['dy'] = dy;
-        await wait(50);
-      }
-      await wait(200);
-    },
-  };
+  List<num> remap(List<num> xy) => xy;
+
+  @override
+  Future<void> stake(int lost, int max, String en) async {}
+
+  @override
+  Map<String, Act> get ownActs => _buildOwnActs();
 }

@@ -307,4 +307,181 @@ void main() {
     expect(speakersSeen, containsAll(PEDIDO_SPEAKERS));
     expect(PEDIDO_SPEAKERS.length, 12);
   });
+
+  test('cabeza and senala honor target direction, self-point, and sheet coordinates mid-gesture', () async {
+    final story = _story('las-bebidas');
+    final scene = createPedido() as Pedido;
+    final frame = StillFrame(scene);
+    final host = _MidGestureHost(scene, frame);
+    host.S = story;
+    host.W = {
+      ...host.W,
+      'lost': 0,
+      'resp': null,
+      'twinkle': null,
+      ...scene.fresh(story),
+    };
+    await scene.acts['sale']!({'quien': 'carmen'});
+    await scene.acts['llega']!({'quien': 'mesero', 'a': 'junto_mesa'});
+
+    final abueloX = scene.places.screen('silla1')[0];
+    final abuelaX = scene.places.screen('silla2')[0];
+    final luisX = scene.places.screen('silla3')[0];
+
+    Future<
+      ({
+        Uint32List pixels,
+        Map<String, dynamic> cue,
+        String pose,
+        int dx,
+        int dy,
+      })
+    >
+    capture(String quien, Map<String, dynamic> act) async {
+      host.arm(quien);
+      await scene.acts['gesto']!(act);
+      final cap = host.captured!;
+      expect(host.W['gestoCue'], isNull, reason: 'cue cleared after gesto');
+      final p = (host.W['gente'] as Map)[quien] as Map;
+      expect(p['pose'], 'idle');
+      expect(p['dx'], 0);
+      expect(p['dy'], 0);
+      return cap;
+    }
+
+    // 1. cabeza: luis -> abuelo (left) vs abuelo -> abuela (right)
+    final cabAbuelo = await capture('luis', {
+      'quien': 'luis',
+      'que': 'cabeza',
+      'a': 'abuelo',
+    });
+    final cabAbuela = await capture('abuelo', {
+      'quien': 'abuelo',
+      'que': 'cabeza',
+      'a': 'abuela',
+    });
+    expect(cabAbuelo.cue['a'], 'abuelo');
+    expect(cabAbuelo.cue['dir'], -1);
+    expect(cabAbuelo.cue['cueX'], abueloX);
+    expect(cabAbuelo.dx, -2);
+    expect(cabAbuelo.dy, 1);
+
+    expect(cabAbuela.cue['a'], 'abuela');
+    expect(cabAbuela.cue['dir'], 1);
+    expect(cabAbuela.cue['cueX'], abuelaX);
+    expect(cabAbuela.dx, 2);
+    expect(cabAbuela.dy, 1);
+
+    expect(
+      _pixelsEqual(cabAbuelo.pixels, cabAbuela.pixels),
+      isFalse,
+      reason: 'cabeza(luis, abuelo) and cabeza(abuelo, abuela) must differ',
+    );
+
+    // 2. senala: luis -> abuelo, luis -> abuela, and luis -> luis (self-point)
+    final senAbuelo = await capture('luis', {
+      'quien': 'luis',
+      'que': 'senala',
+      'a': 'abuelo',
+    });
+    final senAbuela = await capture('luis', {
+      'quien': 'luis',
+      'que': 'senala',
+      'a': 'abuela',
+    });
+    final senLuis = await capture('luis', {
+      'quien': 'luis',
+      'que': 'senala',
+      'a': 'luis',
+    });
+
+    expect(senAbuelo.pose, 'senala_izq');
+    expect(senAbuelo.cue['a'], 'abuelo');
+    expect(senAbuelo.cue['self'], isFalse);
+    expect(senAbuelo.cue['dir'], -1);
+    expect(senAbuelo.cue['cueX'], abueloX);
+
+    expect(senAbuela.pose, 'senala_izq');
+    expect(senAbuela.cue['a'], 'abuela');
+    expect(senAbuela.cue['self'], isFalse);
+    expect(senAbuela.cue['dir'], -1);
+    expect(senAbuela.cue['cueX'], abuelaX);
+
+    expect(senLuis.pose, 'yo');
+    expect(senLuis.cue['a'], 'luis');
+    expect(senLuis.cue['self'], isTrue);
+    expect(senLuis.cue['dir'], 0);
+    expect(senLuis.cue['cueX'], luisX);
+
+    expect(
+      _pixelsEqual(senAbuelo.pixels, senAbuela.pixels),
+      isFalse,
+      reason: 'senala(luis, abuelo) and senala(luis, abuela) must differ',
+    );
+    expect(
+      _pixelsEqual(senAbuelo.pixels, senLuis.pixels),
+      isFalse,
+      reason: 'senala(luis, abuelo) and senala(luis, luis) must differ',
+    );
+    expect(
+      _pixelsEqual(senAbuela.pixels, senLuis.pixels),
+      isFalse,
+      reason: 'senala(luis, abuela) and senala(luis, luis) must differ',
+    );
+
+    // 3. senala toward a board thing (bebidas): upward cue below panels (y >= 42)
+    final senBoard = await capture('mesero', {
+      'quien': 'mesero',
+      'que': 'senala',
+      'a': 'bebidas',
+    });
+    final bBox = scene.places.box('bebidas');
+    expect(senBoard.pose, 'senala_der');
+    expect(senBoard.cue['a'], 'bebidas');
+    expect(senBoard.cue['up'], isTrue);
+    expect(senBoard.cue['cueX'], bBox[0] + bBox[2] ~/ 2);
+    expect(senBoard.cue['cueY'], greaterThanOrEqualTo(42));
+  });
+}
+
+bool _pixelsEqual(Uint32List a, Uint32List b) {
+  if (a.length != b.length) return false;
+  for (var i = 0; i < a.length; i++) {
+    if (a[i] != b[i]) return false;
+  }
+  return true;
+}
+
+class _MidGestureHost extends StillHost {
+  _MidGestureHost(super.scene, this.frame);
+
+  final StillFrame frame;
+  String? _watchWho;
+  ({Uint32List pixels, Map<String, dynamic> cue, String pose, int dx, int dy})?
+  captured;
+
+  void arm(String who) {
+    _watchWho = who;
+    captured = null;
+  }
+
+  @override
+  Future<void> wait(num ms) async {
+    if (_watchWho != null && captured == null) {
+      final who = _watchWho!;
+      final p = (W['gente'] as Map)[who] as Map;
+      final cue = Map<String, dynamic>.from(
+        (W['gestoCue'] as Map?)?.cast<String, dynamic>() ?? const {},
+      );
+      frame.draw(W, F: F, cam: cam);
+      captured = (
+        pixels: Uint32List.fromList(frame.display),
+        cue: cue,
+        pose: (p['pose'] as String?) ?? 'idle',
+        dx: (p['dx'] as num?)?.toInt() ?? 0,
+        dy: (p['dy'] as num?)?.toInt() ?? 0,
+      );
+      _watchWho = null;
+    }
+  }
 }
