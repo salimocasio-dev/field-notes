@@ -335,16 +335,19 @@ extension _RegalosActs on Regalos {
       'final114': (o) => run(o, () async {
         final n = _n(o['n']).clamp(1, 3);
         W['pinzas'] = n;
-        // Luis puts the flowers on the table; everybody jumps up from behind the table (regalos-preview.html m3).
+        // Luis puts the flowers on the table; peg-dependent reaction before Carmen pulls the curtain open.
         W['regaloAt'] = 'mesa1';
         W['bizcochoAt'] = 'mesa2';
         W['floresAt'] = 'mesa3';
         W['cortinaState'] = 'shut';
+        W['carmenOjos'] = n == 1 ? 1 : 0;
+        await wait(140);
+        // Carmen pulls the curtain open for the birthday reveal and everybody jumps up!
+        W['cortinaState'] = 'open';
         _placePerson(_gente['abuela'] as Map<String, dynamic>, 'tras_mesa');
         _placePerson(_gente['luis'] as Map<String, dynamic>, 'tras_mesa3');
         _placePerson(_gente['abuelo'] as Map<String, dynamic>, 'junto_banco');
         _placePerson(_gente['carmen'] as Map<String, dynamic>, 'arco');
-        W['carmenOjos'] = n == 1 ? 1 : 0;
         W['celebrar'] = n >= 3 ? 1 : 0;
         for (final who in const ['abuela', 'luis', 'abuelo', 'carmen']) {
           (_gente[who] as Map<String, dynamic>)['dy'] = -4;
@@ -492,8 +495,10 @@ extension _RegalosActs on Regalos {
         W['paqueteA'] = a;
         await bounceFrog(dx: a == 'carmen' ? -3 : 3, dy: -4, ms: 120);
         if (ok) {
-          W['paqueteStoolTorn'] = 0;
-          W['paqueteStoolOpen'] = 1;
+          // Preserve torn wrapping if a wrong push already tore this packet (reset only on next pareja116).
+          if (_n(W['paqueteStoolTorn']) == 0) {
+            W['paqueteStoolOpen'] = 1;
+          }
           final manosSet = (W['manosWho'] as Set<String>?) ?? <String>{};
           manosSet.clear();
           await wait(160);

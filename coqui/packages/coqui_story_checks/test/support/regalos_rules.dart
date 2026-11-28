@@ -269,10 +269,11 @@ class RegalosRules {
         final left = it.left as int, top = it.top as int;
         final sy = it.sy as num;
         final d = it.d as double;
+        final overlay = it.overlay as bool;
         var hidden = 0, covered = 0, outWin = 0;
         for (var py = 0; py < sp.h; py++) {
           final Y = top + py;
-          final plane = d + (sy - (Y + .5)) * _t30 / S;
+          final plane = overlay ? d : d + (sy - (Y + .5)) * _t30 / S;
           for (var px = 0; px < sp.w; px++) {
             if (sp.px[py * sp.w + px] >>> 24 == 0) continue;
             final X = left + px;
@@ -281,7 +282,7 @@ class RegalosRules {
               continue;
             }
             final i = Y * w0 + X;
-            if (zb[i] > plane + bias) {
+            if (!overlay && zb[i] > plane + bias) {
               hidden++;
             } else if (topIdx[i] != idx) {
               covered++;
