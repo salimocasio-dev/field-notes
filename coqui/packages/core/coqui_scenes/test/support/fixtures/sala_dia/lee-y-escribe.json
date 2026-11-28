@@ -1,0 +1,575 @@
+{
+ "id": "lee-y-escribe",
+ "title": "Lee y escribe",
+ "place": "La casa, un día entero",
+ "scene": "sala_dia",
+ "next": "el-telefono",
+ "goal": "Give each child what abuela says he does now (the book to read, a sheet of paper to write) so that Carmen's pad keeps its three clean sheets for the big frog she draws at the end: a sheet given to a reader flies out of the window as a paper plane, and a book given to a writer gets written in, so Carmen tears a clean sheet out to cover the page.",
+ "stake": {
+  "thing": "hojas",
+  "steps": 3
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "libro",
+  "papel",
+  "lee",
+  "escribe"
+ ],
+ "formas_foco": {
+  "lee": [
+   "leo"
+  ],
+  "escribe": [
+   "escribo"
+  ]
+ },
+ "back_again": [
+  "me llamo",
+  "¿cómo te llamas?",
+  "nombre",
+  "bonito",
+  "me gusta",
+  "mira",
+  "ahora",
+  "yo",
+  "mi",
+  "después",
+  "para",
+  "ventana",
+  "no",
+  "sí"
+ ],
+ "also_heard": [],
+ "names": {
+  "abuela": "abuela",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {},
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c102_ab_libro": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, mira: un libro."
+  },
+  "c102_ab_lee_luis": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Luis lee el libro."
+  },
+  "c102_ab_papel": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y aquí hay papel."
+  },
+  "c102_ab_escribe_carmen": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Carmen escribe en el papel."
+  },
+  "c102_ca_nombre": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Escribo mi nombre. ¿Y tú? ¿Cómo te llamas?"
+  },
+  "c102_cq_llamo": {
+   "who": "tu",
+   "text": "¡Me llamo Coquí!",
+   "tu_turno": [
+    {
+     "palabra": "me llamo",
+     "formas": [
+      "me llamo coquí",
+      "me llamo coqui",
+      "coquí",
+      "coqui"
+     ]
+    }
+   ]
+  },
+  "c102_l_yo_escribo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Ahora yo escribo."
+  },
+  "c102_ca_yo_leo": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Y yo leo."
+  },
+  "c102_donde_libro": {
+   "who": "narr",
+   "text": "Ahora Carmen lee. ¿Dónde está el libro?"
+  },
+  "c102_ab_luis_carmen": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Luis escribe. Carmen lee."
+  },
+  "c102_ca_para_ti": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Después, el papel es para ti, Coquí."
+  },
+  "c102_ca_te_gusta": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Para ti, Coquí. ¿Te gusta?"
+  },
+  "c102_cq_bonito": {
+   "who": "tu",
+   "text": "¡Qué bonito!",
+   "tu_turno": [
+    {
+     "palabra": "bonito",
+     "formas": [
+      "qué bonito",
+      "que bonito",
+      "bonito",
+      "muy bonito"
+     ]
+    }
+   ]
+  },
+  "c102_fin": {
+   "who": "narr",
+   "text": "Luis lee un libro. Carmen escribe en el papel: Coquí."
+  },
+  "c102_ahora_luis_lee": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Ahora Luis lee."
+  },
+  "c102_no_luis_lee": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No, Coquí! Luis lee."
+  },
+  "c102_ahora_luis_escribe": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Ahora Luis escribe."
+  },
+  "c102_no_luis_escribe": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No, Coquí! Luis escribe."
+  },
+  "c102_ahora_carmen_lee": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Ahora Carmen lee."
+  },
+  "c102_no_carmen_lee": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No, Coquí! Carmen lee."
+  },
+  "c102_ahora_carmen_escribe": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Ahora Carmen escribe."
+  },
+  "c102_no_carmen_escribe": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No, Coquí! Carmen escribe."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "tarde"
+   }
+  },
+  {
+   "act": "hojas",
+   "n": 5
+  },
+  {
+   "act": "llega",
+   "quien": "luis",
+   "a": "cojin1",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "carmen",
+   "a": "cojin2",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "abuela",
+   "a": "estante",
+   "suelto": 1
+  },
+  {
+   "act": "ir",
+   "a": "mesa_coqui",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  {
+   "ask": "libro",
+   "lead": [],
+   "line": "c102_ab_libro",
+   "then": [],
+   "after": [
+    {
+     "act": "lee102",
+     "quien": "luis"
+    }
+   ]
+  },
+  "c102_ab_lee_luis",
+  {
+   "dots": 2
+  },
+  {
+   "ask": "papel",
+   "lead": [],
+   "line": "c102_ab_papel",
+   "then": [],
+   "after": [
+    {
+     "act": "escribe102",
+     "quien": "carmen"
+    },
+    {
+     "act": "hojas",
+     "n": 4
+    }
+   ]
+  },
+  "c102_ab_escribe_carmen",
+  "c102_ca_nombre",
+  "c102_cq_llamo",
+  {
+   "act": "nombres102"
+  },
+  {
+   "dots": 3
+  },
+  "c102_l_yo_escribo",
+  {
+   "act": "escribe102",
+   "quien": "luis"
+  },
+  {
+   "act": "hojas",
+   "n": 3
+  },
+  "c102_ca_yo_leo",
+  {
+   "ask": "libro",
+   "lead": [],
+   "line": "c102_donde_libro",
+   "then": [],
+   "after": [
+    {
+     "act": "lee102",
+     "quien": "carmen"
+    }
+   ]
+  },
+  "c102_ab_luis_carmen",
+  {
+   "dots": 4
+  },
+  {
+   "act": "cuenta102"
+  },
+  "c102_ca_para_ti",
+  {
+   "dots": 5
+  },
+  {
+   "act": "llega",
+   "quien": "abuela",
+   "a": "cocina"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "harina"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "qa",
+   "options": [
+    "luis",
+    "carmen"
+   ]
+  },
+  {
+   "draw": "wa",
+   "options": [
+    "lee",
+    "escribe"
+   ]
+  },
+  {
+   "calc": "pa",
+   "cond": "wa=lee",
+   "then": "libro",
+   "else": "papel"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "harina"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "libro",
+    "papel"
+   ],
+   "pick": "$pa",
+   "tests": "$wa",
+   "lock": true,
+   "lead": [],
+   "line": "c102_ahora_$qa_$wa",
+   "right": [
+    {
+     "act": "da102",
+     "que": "$pa",
+     "a": "$qa",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "da102",
+     "que": "$x",
+     "a": "$qa",
+     "ok": 0
+    },
+    "c102_no_$qa_$wa",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "hojas",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "hojas",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "qb",
+   "options": [
+    "luis",
+    "carmen"
+   ]
+  },
+  {
+   "draw": "wb",
+   "options": [
+    "lee",
+    "escribe"
+   ]
+  },
+  {
+   "calc": "pb",
+   "cond": "wb=lee",
+   "then": "libro",
+   "else": "papel"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "harina"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "libro",
+    "papel"
+   ],
+   "pick": "$pb",
+   "tests": "$wb",
+   "lock": true,
+   "lead": [],
+   "line": "c102_ahora_$qb_$wb",
+   "right": [
+    {
+     "act": "da102",
+     "que": "$pb",
+     "a": "$qb",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "da102",
+     "que": "$x",
+     "a": "$qb",
+     "ok": 0
+    },
+    "c102_no_$qb_$wb",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "hojas",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "hojas",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final102",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final102",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final102",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 9
+  },
+  "c102_ca_te_gusta",
+  "c102_cq_bonito",
+  "c102_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c102_ab_libro",
+  "c102_ab_lee_luis",
+  "c102_ab_papel",
+  "c102_ab_escribe_carmen",
+  "c102_ca_nombre",
+  "c102_cq_llamo",
+  "c102_l_yo_escribo",
+  "c102_ca_yo_leo",
+  "c102_donde_libro",
+  "c102_ab_luis_carmen",
+  "c102_ca_para_ti",
+  "c102_ahora_luis_lee",
+  "c102_ahora_carmen_escribe",
+  "c102_ca_te_gusta",
+  "c102_cq_bonito",
+  "c102_fin"
+ ]
+}

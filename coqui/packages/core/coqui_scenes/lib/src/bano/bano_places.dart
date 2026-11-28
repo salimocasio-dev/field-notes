@@ -1,0 +1,123 @@
+// Every place El baño uses, read from its sheet (docs/proyecto/pixel/bano-sheet.json, SceneSheet) once:
+// the 21 spots, the set thing boxes (ducha, llave_ducha, llave_lavamanos, espejo, calentador, canasta, manos_luis),
+// the heater gauge bars (`calentador.bars` and `calentador.gauge`), the view (`wide`, x0 20), the depth rule, and the
+// shadows. No number of the sheet is typed in Dart: a world point is projected by the set's engine.
+import 'package:coqui_pixel/coqui_pixel.dart';
+import 'package:coqui_scenes/src/bano/bano_set.dart';
+
+/// A place on the picture: its world point, its screen point (the projection, not rounded) and its depth.
+typedef BanoAt = ({
+  double x,
+  double y,
+  double z,
+  double sx,
+  double sy,
+  double d,
+});
+
+/// El baño's places, from its sheet.
+class BanoPlaces {
+  BanoPlaces(this.sheet) : e = banoEngine();
+
+  final SceneSheet sheet;
+
+  /// The engine of the picture, for its projection.
+  final PpEngine e;
+
+  /// Whether the sheet names spot [name].
+  bool has(String name) => sheet.spots.containsKey(name);
+
+  /// Whether spot [name] has a world point.
+  bool hasWorld(String name) => sheet.spots[name]?.world != null;
+
+  /// The world point of spot [name]; a spot the sheet does not name throws [SheetError].
+  List<double> world(String name) {
+    final s = sheet.spot(name);
+    return s.world ??
+        (throw SheetError('spot $name is not drawn (it has no world point)'));
+  }
+
+  /// A world point with its projection.
+  BanoAt atWorld(num x, num y, num z) {
+    final p = e.project(x, y, z);
+    return (
+      x: x.toDouble(),
+      y: y.toDouble(),
+      z: z.toDouble(),
+      sx: p.sx,
+      sy: p.sy,
+      d: p.d,
+    );
+  }
+
+  /// Spot [name], with its projection.
+  BanoAt at(String name) {
+    final w = world(name);
+    return atWorld(w[0], w[1], w[2]);
+  }
+
+  /// The world point at height [z] under screen point (sx, sy) (pp-engine.js project, inverted on the plane z).
+  BanoAt fromScreen(num sx, num sy, num z) {
+    final u = (sx - e.OX) / e.S,
+        v = (sy - e.OY + z * e.COS * e.S) / (e.S * e.SIN);
+    return atWorld((u + v) / e.R2, (v - u) / e.R2, z);
+  }
+
+  /// The view [name] as `cam`: `[x, y, w, h]`.
+  List<num> view(String name) => sheet.view(name).cam;
+
+  /// The screen box of set thing [id] (the sheet's `box`).
+  List<int> box(String id) =>
+      sheet.thing(id).box ?? (throw SheetError('thing $id has no box'));
+
+  /// The screen box of spot [name].
+  List<int> spotBox(String name) {
+    final spots = sheet.raw['spots'];
+    if (spots is Map && spots[name] is Map) {
+      final b = (spots[name] as Map)['box'];
+      if (b is List && b.length == 4) {
+        return [for (final n in b) (n as num).toInt()];
+      }
+    }
+    throw SheetError('spot $name has no box');
+  }
+
+  /// The gauge `(u, z)` centre (`things.calentador.gauge`).
+  List<double> get gaugeUv {
+    final things = sheet.raw['things'];
+    if (things is Map && things['calentador'] is Map) {
+      final g = (things['calentador'] as Map)['gauge'];
+      if (g is List && g.length == 2) {
+        return [(g[0] as num).toDouble(), (g[1] as num).toDouble()];
+      }
+    }
+    throw SheetError('thing calentador has no gauge');
+  }
+
+  /// The three red bar boxes on the heater gauge (`things.calentador.bars`).
+  List<List<int>> get gaugeBars {
+    final things = sheet.raw['things'];
+    if (things is Map && things['calentador'] is Map) {
+      final bars = (things['calentador'] as Map)['bars'];
+      if (bars is List) {
+        return [
+          for (final b in bars) [for (final n in b as List) (n as num).toInt()],
+        ];
+      }
+    }
+    throw SheetError('thing calentador has no bars');
+  }
+
+  /// front.bias: how much nearer than a character's feet a set pixel must be to hide it.
+  double get bias => sheet.front.bias;
+
+  /// The shadow radius of [character] (`shadows.byCharacter`), or null: none.
+  double? radius(String character) => sheet.shadows.byCharacter[character];
+
+  /// Whether a spot casts no shadow (`shadows.none`).
+  bool noShadow(String spot) => sheet.shadows.none.contains(spot);
+
+  /// The spots of group [name].
+  List<String> group(String name) =>
+      sheet.groups[name] ?? (throw SheetError('no group $name'));
+}
