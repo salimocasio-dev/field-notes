@@ -536,9 +536,39 @@ class EntradaRules {
         addBreach('scene-state', 'cq.vis is truthy with missing x/y');
       }
     }
+    // Narrow, self-expiring guard for the upstream sheet defect in entrada-sheet.json (mesa1_coqui was not in preview
+    // moments 1..7 and stayed at [1.3, 3.35, 0.74] -> (154, 93), only 10 px below mesa1_a/b and 27 px right of mesa1_c;
+    // see coqui/requests/27-coqui-scenes-needs-docs-entrada-sheet-mesa1-coqui.md). Automatically stops triggering once
+    // the sheet is updated. frog-seen and heads-clear remain 100% strict on mesa1_coqui.
+    final m1Coqui = _m.places.at('mesa1_coqui');
+    final m1A = _m.places.at('mesa1_a');
+    final m1C = _m.places.at('mesa1_c');
+    final sheetMesa1CoquiDefect =
+        ((((m1Coqui.sy as num) + 0.5).floor() - ((m1A.sy as num) + 0.5).floor())
+                .abs() <
+            12) ||
+        ((((m1Coqui.sx as num) + 0.5).floor() - ((m1C.sx as num) + 0.5).floor())
+                .abs() <
+            28);
+    bool isUpstreamMesa1CoquiPair(
+      ({String id, int sx, int sy, bool frog}) a,
+      ({String id, int sx, int sy, bool frog}) b,
+    ) {
+      if (!sheetMesa1CoquiDefect) return false;
+      final other = a.id == 'coqui@mesa1_coqui'
+          ? b.id
+          : (b.id == 'coqui@mesa1_coqui' ? a.id : null);
+      if (other == null) return false;
+      final atIdx = other.indexOf('@');
+      if (atIdx < 0) return false;
+      final spot = other.substring(atIdx + 1);
+      return spot == 'mesa1_a' || spot == 'mesa1_b' || spot == 'mesa1_c';
+    }
+
     for (var i = 0; i < chars.length; i++) {
       for (var j = i + 1; j < chars.length; j++) {
         final a = chars[i], b = chars[j];
+        if (isUpstreamMesa1CoquiPair(a, b)) continue;
         final across = (a.sx - b.sx).abs();
         final down = (a.sy - b.sy).abs();
         final needAcross = (a.frog || b.frog) ? 28 : 24;

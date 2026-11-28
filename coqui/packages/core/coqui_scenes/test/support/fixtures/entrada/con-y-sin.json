@@ -5,812 +5,133 @@
  "scene": "entrada",
  "next": "que-hay-de-comer",
  "goal": "Push across the glass or plate each person asked for, with or without, so the three candles on the family's table stay lit: every wrong one is snatched back with a splash and a candle goes out.",
- "stake": {
-  "thing": "velas",
-  "steps": 3
- },
+ "stake": {"thing":"velas","steps":3},
  "dots": 9,
  "bien": "si_muy_bien",
- "focus_words": [
-  "menú",
-  "con",
-  "sin"
- ],
+ "focus_words": ["menú","con","sin"],
  "formas_foco": {},
- "back_again": [
-  "mesero",
-  "mesera",
-  "café",
-  "leche",
-  "agua",
-  "limón",
-  "pan",
-  "mantequilla",
-  "negro",
-  "quiero",
-  "quieres",
-  "para",
-  "tengo sed",
-  "toma",
-  "aquí tiene",
-  "por favor",
-  "gracias",
-  "sí",
-  "no",
-  "mira"
- ],
- "also_heard": [
-  "quieren",
-  "tomar",
-  "ayúdame"
- ],
- "names": {
-  "abuela": "abuela",
-  "abuelo": "n_abuelo",
-  "luis": "p_n_luis",
-  "carmen": "p_n_carmen",
-  "coqui": "yo_coqui"
- },
+ "back_again": ["mesero","mesera","café","leche","agua","limón","pan","mantequilla","negro","quiero","quieres","para","tengo sed","toma","aquí tiene","por favor","gracias","sí","no","mira"],
+ "also_heard": ["quieren","tomar","ayúdame"],
+ "names": {"abuela":"abuela","abuelo":"n_abuelo","luis":"p_n_luis","carmen":"p_n_carmen","coqui":"yo_coqui"},
  "palabras": {},
  "clips": {
-  "si_muy_bien": {
-   "who": "narr",
-   "text": "¡Sí! ¡Muy bien!"
-  },
-  "yo_coqui": {
-   "who": "tu",
-   "text": "¡Coquí!"
-  },
-  "abuela": {
-   "who": "narr",
-   "text": "Esta es abuela."
-  },
-  "n_abuelo": {
-   "who": "narr",
-   "text": "Este es abuelo."
-  },
-  "p_n_luis": {
-   "who": "narr",
-   "text": "Este es Luis."
-  },
-  "p_n_carmen": {
-   "who": "narr",
-   "text": "Esta es Carmen."
-  },
-  "c86_me_menu": {
-   "who": "narr",
-   "habla": "mesera",
-   "text": "La mesera dice: Aquí tiene el menú."
-  },
-  "c86_donde_menu": {
-   "who": "narr",
-   "text": "¿Dónde está el menú?"
-  },
-  "c86_ab_gracias": {
-   "who": "narr",
-   "habla": "abuela",
-   "text": "Abuela dice: Gracias. Mira el menú, Coquí."
-  },
-  "c86_me_quieren": {
-   "who": "narr",
-   "habla": "mesera",
-   "text": "La mesera dice: ¿Qué quieren tomar?"
-  },
-  "c86_l_sed": {
-   "who": "narr",
-   "habla": "luis",
-   "text": "Luis dice: Tengo sed. Agua con limón, por favor."
-  },
-  "c86_cual_luis": {
-   "who": "narr",
-   "text": "Luis quiere agua con limón. ¿Cuál es?"
-  },
-  "c86_ca_sin": {
-   "who": "narr",
-   "habla": "carmen",
-   "text": "Carmen dice: Para mí, agua sin limón."
-  },
-  "c86_cual_sin": {
-   "who": "narr",
-   "text": "¿Cuál es el agua sin limón?"
-  },
-  "c86_abo_cafe": {
-   "who": "narr",
-   "habla": "abuelo",
-   "text": "Abuelo dice: Un café con leche, por favor."
-  },
-  "c86_ab_negro": {
-   "who": "narr",
-   "habla": "abuela",
-   "text": "Abuela dice: Y para mí, un café negro. Sin leche."
-  },
-  "c86_me_y_tu": {
-   "who": "narr",
-   "habla": "mesera",
-   "text": "La mesera dice: ¿Y tú, Coquí? ¿Quieres agua?"
-  },
-  "c36_cq_si_por_favor": {
-   "who": "tu",
-   "text": "¡Sí, por favor!",
-   "tu_turno": [
-    {
-     "palabra": "sí",
-     "formas": [
-      "sí",
-      "si"
-     ]
-    }
-   ]
-  },
-  "c86_me_conosin": {
-   "who": "narr",
-   "habla": "mesera",
-   "text": "La mesera dice: ¿Con limón o sin limón?"
-  },
-  "c86_mo_ay": {
-   "who": "narr",
-   "habla": "mesero",
-   "text": "El mesero dice: ¡Ay! ¿Con limón? ¿Sin limón? ¡Ayúdame, Coquí!"
-  },
-  "c86_ab_pan": {
-   "who": "narr",
-   "habla": "abuela",
-   "text": "Abuela dice: Coquí, ¿quieres pan?"
-  },
-  "c38_cq_si_quiero": {
-   "who": "tu",
-   "text": "¡Sí, quiero!",
-   "tu_turno": [
-    {
-     "palabra": "quiero",
-     "formas": [
-      "quiero",
-      "sí quiero"
-     ]
-    }
-   ]
-  },
-  "c86_ab_con": {
-   "who": "narr",
-   "habla": "abuela",
-   "text": "Abuela dice: ¿Con mantequilla o sin mantequilla?"
-  },
-  "c86_fin": {
-   "who": "narr",
-   "text": "Coquí quiere pan con mantequilla."
-  },
-  "c86_a_abuela_con": {
-   "who": "narr",
-   "habla": "abuela",
-   "text": "Abuela dice: Para mí, pan con mantequilla."
-  },
-  "c86_b_abuela_con": {
-   "who": "narr",
-   "habla": "abuela",
-   "text": "Abuela dice: Agua con limón, por favor."
-  },
-  "c86_noa_abuela_con": {
-   "who": "narr",
-   "habla": "abuela",
-   "text": "Abuela dice: No, Coquí. Con mantequilla."
-  },
-  "c86_nob_abuela_con": {
-   "who": "narr",
-   "habla": "abuela",
-   "text": "Abuela dice: No, Coquí. Con limón."
-  },
-  "c86_a_abuela_sin": {
-   "who": "narr",
-   "habla": "abuela",
-   "text": "Abuela dice: Para mí, pan sin mantequilla."
-  },
-  "c86_b_abuela_sin": {
-   "who": "narr",
-   "habla": "abuela",
-   "text": "Abuela dice: Agua sin limón, por favor."
-  },
-  "c86_noa_abuela_sin": {
-   "who": "narr",
-   "habla": "abuela",
-   "text": "Abuela dice: No, Coquí. Sin mantequilla."
-  },
-  "c86_nob_abuela_sin": {
-   "who": "narr",
-   "habla": "abuela",
-   "text": "Abuela dice: No, Coquí. Sin limón."
-  },
-  "c86_a_abuelo_con": {
-   "who": "narr",
-   "habla": "abuelo",
-   "text": "Abuelo dice: Para mí, pan con mantequilla."
-  },
-  "c86_b_abuelo_con": {
-   "who": "narr",
-   "habla": "abuelo",
-   "text": "Abuelo dice: Agua con limón, por favor."
-  },
-  "c86_noa_abuelo_con": {
-   "who": "narr",
-   "habla": "abuelo",
-   "text": "Abuelo dice: No, Coquí. Con mantequilla."
-  },
-  "c86_nob_abuelo_con": {
-   "who": "narr",
-   "habla": "abuelo",
-   "text": "Abuelo dice: No, Coquí. Con limón."
-  },
-  "c86_a_abuelo_sin": {
-   "who": "narr",
-   "habla": "abuelo",
-   "text": "Abuelo dice: Para mí, pan sin mantequilla."
-  },
-  "c86_b_abuelo_sin": {
-   "who": "narr",
-   "habla": "abuelo",
-   "text": "Abuelo dice: Agua sin limón, por favor."
-  },
-  "c86_noa_abuelo_sin": {
-   "who": "narr",
-   "habla": "abuelo",
-   "text": "Abuelo dice: No, Coquí. Sin mantequilla."
-  },
-  "c86_nob_abuelo_sin": {
-   "who": "narr",
-   "habla": "abuelo",
-   "text": "Abuelo dice: No, Coquí. Sin limón."
-  },
-  "c86_a_luis_con": {
-   "who": "narr",
-   "habla": "luis",
-   "text": "Luis dice: Para mí, pan con mantequilla."
-  },
-  "c86_b_luis_con": {
-   "who": "narr",
-   "habla": "luis",
-   "text": "Luis dice: Agua con limón, por favor."
-  },
-  "c86_noa_luis_con": {
-   "who": "narr",
-   "habla": "luis",
-   "text": "Luis dice: No, Coquí. Con mantequilla."
-  },
-  "c86_nob_luis_con": {
-   "who": "narr",
-   "habla": "luis",
-   "text": "Luis dice: No, Coquí. Con limón."
-  },
-  "c86_a_luis_sin": {
-   "who": "narr",
-   "habla": "luis",
-   "text": "Luis dice: Para mí, pan sin mantequilla."
-  },
-  "c86_b_luis_sin": {
-   "who": "narr",
-   "habla": "luis",
-   "text": "Luis dice: Agua sin limón, por favor."
-  },
-  "c86_noa_luis_sin": {
-   "who": "narr",
-   "habla": "luis",
-   "text": "Luis dice: No, Coquí. Sin mantequilla."
-  },
-  "c86_nob_luis_sin": {
-   "who": "narr",
-   "habla": "luis",
-   "text": "Luis dice: No, Coquí. Sin limón."
-  },
-  "c86_a_carmen_con": {
-   "who": "narr",
-   "habla": "carmen",
-   "text": "Carmen dice: Para mí, pan con mantequilla."
-  },
-  "c86_b_carmen_con": {
-   "who": "narr",
-   "habla": "carmen",
-   "text": "Carmen dice: Agua con limón, por favor."
-  },
-  "c86_noa_carmen_con": {
-   "who": "narr",
-   "habla": "carmen",
-   "text": "Carmen dice: No, Coquí. Con mantequilla."
-  },
-  "c86_nob_carmen_con": {
-   "who": "narr",
-   "habla": "carmen",
-   "text": "Carmen dice: No, Coquí. Con limón."
-  },
-  "c86_a_carmen_sin": {
-   "who": "narr",
-   "habla": "carmen",
-   "text": "Carmen dice: Para mí, pan sin mantequilla."
-  },
-  "c86_b_carmen_sin": {
-   "who": "narr",
-   "habla": "carmen",
-   "text": "Carmen dice: Agua sin limón, por favor."
-  },
-  "c86_noa_carmen_sin": {
-   "who": "narr",
-   "habla": "carmen",
-   "text": "Carmen dice: No, Coquí. Sin mantequilla."
-  },
-  "c86_nob_carmen_sin": {
-   "who": "narr",
-   "habla": "carmen",
-   "text": "Carmen dice: No, Coquí. Sin limón."
-  }
+  "si_muy_bien": {"who":"narr","text":"¡Sí! ¡Muy bien!"},
+  "yo_coqui": {"who":"tu","text":"¡Coquí!"},
+  "abuela": {"who":"narr","text":"Esta es abuela."},
+  "n_abuelo": {"who":"narr","text":"Este es abuelo."},
+  "p_n_luis": {"who":"narr","text":"Este es Luis."},
+  "p_n_carmen": {"who":"narr","text":"Esta es Carmen."},
+  "c86_me_menu": {"who":"narr","habla":"mesera","text":"La mesera dice: Aquí tiene el menú."},
+  "c86_donde_menu": {"who":"narr","text":"¿Dónde está el menú?"},
+  "c86_ab_gracias": {"who":"narr","habla":"abuela","text":"Abuela dice: Gracias. Mira el menú, Coquí."},
+  "c86_me_quieren": {"who":"narr","habla":"mesera","text":"La mesera dice: ¿Qué quieren tomar?"},
+  "c86_l_sed": {"who":"narr","habla":"luis","text":"Luis dice: Tengo sed. Agua con limón, por favor."},
+  "c86_cual_luis": {"who":"narr","text":"Luis quiere agua con limón. ¿Cuál es?"},
+  "c86_ca_sin": {"who":"narr","habla":"carmen","text":"Carmen dice: Para mí, agua sin limón."},
+  "c86_cual_sin": {"who":"narr","text":"¿Cuál es el agua sin limón?"},
+  "c86_abo_cafe": {"who":"narr","habla":"abuelo","text":"Abuelo dice: Un café con leche, por favor."},
+  "c86_ab_negro": {"who":"narr","habla":"abuela","text":"Abuela dice: Y para mí, un café negro. Sin leche."},
+  "c86_me_y_tu": {"who":"narr","habla":"mesera","text":"La mesera dice: ¿Y tú, Coquí? ¿Quieres agua?"},
+  "c36_cq_si_por_favor": {"who":"tu","text":"¡Sí, por favor!","tu_turno":[{"palabra":"sí","formas":["sí","si"]}]},
+  "c86_me_conosin": {"who":"narr","habla":"mesera","text":"La mesera dice: ¿Con limón o sin limón?"},
+  "c86_mo_ay": {"who":"narr","habla":"mesero","text":"El mesero dice: ¡Ay! ¿Con limón? ¿Sin limón? ¡Ayúdame, Coquí!"},
+  "c86_ab_pan": {"who":"narr","habla":"abuela","text":"Abuela dice: Coquí, ¿quieres pan?"},
+  "c38_cq_si_quiero": {"who":"tu","text":"¡Sí, quiero!","tu_turno":[{"palabra":"quiero","formas":["quiero","sí quiero"]}]},
+  "c86_ab_con": {"who":"narr","habla":"abuela","text":"Abuela dice: ¿Con mantequilla o sin mantequilla?"},
+  "c86_fin": {"who":"narr","text":"Coquí quiere pan con mantequilla."},
+  "c86_a_abuela_con": {"who":"narr","habla":"abuela","text":"Abuela dice: Para mí, pan con mantequilla."},
+  "c86_b_abuela_con": {"who":"narr","habla":"abuela","text":"Abuela dice: Agua con limón, por favor."},
+  "c86_noa_abuela_con": {"who":"narr","habla":"abuela","text":"Abuela dice: No, Coquí. Con mantequilla."},
+  "c86_nob_abuela_con": {"who":"narr","habla":"abuela","text":"Abuela dice: No, Coquí. Con limón."},
+  "c86_a_abuela_sin": {"who":"narr","habla":"abuela","text":"Abuela dice: Para mí, pan sin mantequilla."},
+  "c86_b_abuela_sin": {"who":"narr","habla":"abuela","text":"Abuela dice: Agua sin limón, por favor."},
+  "c86_noa_abuela_sin": {"who":"narr","habla":"abuela","text":"Abuela dice: No, Coquí. Sin mantequilla."},
+  "c86_nob_abuela_sin": {"who":"narr","habla":"abuela","text":"Abuela dice: No, Coquí. Sin limón."},
+  "c86_a_abuelo_con": {"who":"narr","habla":"abuelo","text":"Abuelo dice: Para mí, pan con mantequilla."},
+  "c86_b_abuelo_con": {"who":"narr","habla":"abuelo","text":"Abuelo dice: Agua con limón, por favor."},
+  "c86_noa_abuelo_con": {"who":"narr","habla":"abuelo","text":"Abuelo dice: No, Coquí. Con mantequilla."},
+  "c86_nob_abuelo_con": {"who":"narr","habla":"abuelo","text":"Abuelo dice: No, Coquí. Con limón."},
+  "c86_a_abuelo_sin": {"who":"narr","habla":"abuelo","text":"Abuelo dice: Para mí, pan sin mantequilla."},
+  "c86_b_abuelo_sin": {"who":"narr","habla":"abuelo","text":"Abuelo dice: Agua sin limón, por favor."},
+  "c86_noa_abuelo_sin": {"who":"narr","habla":"abuelo","text":"Abuelo dice: No, Coquí. Sin mantequilla."},
+  "c86_nob_abuelo_sin": {"who":"narr","habla":"abuelo","text":"Abuelo dice: No, Coquí. Sin limón."},
+  "c86_a_luis_con": {"who":"narr","habla":"luis","text":"Luis dice: Para mí, pan con mantequilla."},
+  "c86_b_luis_con": {"who":"narr","habla":"luis","text":"Luis dice: Agua con limón, por favor."},
+  "c86_noa_luis_con": {"who":"narr","habla":"luis","text":"Luis dice: No, Coquí. Con mantequilla."},
+  "c86_nob_luis_con": {"who":"narr","habla":"luis","text":"Luis dice: No, Coquí. Con limón."},
+  "c86_a_luis_sin": {"who":"narr","habla":"luis","text":"Luis dice: Para mí, pan sin mantequilla."},
+  "c86_b_luis_sin": {"who":"narr","habla":"luis","text":"Luis dice: Agua sin limón, por favor."},
+  "c86_noa_luis_sin": {"who":"narr","habla":"luis","text":"Luis dice: No, Coquí. Sin mantequilla."},
+  "c86_nob_luis_sin": {"who":"narr","habla":"luis","text":"Luis dice: No, Coquí. Sin limón."},
+  "c86_a_carmen_con": {"who":"narr","habla":"carmen","text":"Carmen dice: Para mí, pan con mantequilla."},
+  "c86_b_carmen_con": {"who":"narr","habla":"carmen","text":"Carmen dice: Agua con limón, por favor."},
+  "c86_noa_carmen_con": {"who":"narr","habla":"carmen","text":"Carmen dice: No, Coquí. Con mantequilla."},
+  "c86_nob_carmen_con": {"who":"narr","habla":"carmen","text":"Carmen dice: No, Coquí. Con limón."},
+  "c86_a_carmen_sin": {"who":"narr","habla":"carmen","text":"Carmen dice: Para mí, pan sin mantequilla."},
+  "c86_b_carmen_sin": {"who":"narr","habla":"carmen","text":"Carmen dice: Agua sin limón, por favor."},
+  "c86_noa_carmen_sin": {"who":"narr","habla":"carmen","text":"Carmen dice: No, Coquí. Sin mantequilla."},
+  "c86_nob_carmen_sin": {"who":"narr","habla":"carmen","text":"Carmen dice: No, Coquí. Sin limón."}
  },
  "beats": [
-  {
-   "set": {
-    "hora": "noche"
-   }
-  },
-  {
-   "act": "velas",
-   "n": 3
-  },
-  {
-   "act": "ir",
-   "a": "mesa2_coqui"
-  },
-  {
-   "wait": 500
-  },
-  {
-   "dots": 1
-  },
+  {"set":{"hora":"noche"}},
+  {"act":"velas","n":3},
+  {"act":"ir","a":"mesa2_coqui"},
+  {"wait":500},
+  {"dots":1},
   "c86_me_menu",
-  {
-   "ask": "menu",
-   "lead": [],
-   "line": "c86_donde_menu",
-   "then": [],
-   "after": [
-    {
-     "act": "menu86"
-    }
-   ]
-  },
+  {"ask":"menu","lead":[],"line":"c86_donde_menu","then":[],"after":[{"act":"menu86"}]},
   "c86_ab_gracias",
-  {
-   "dots": 2
-  },
+  {"dots":2},
   "c86_me_quieren",
   "c86_l_sed",
-  {
-   "act": "llega",
-   "quien": "mesero",
-   "a": "bandeja"
-  },
-  {
-   "act": "bandeja86",
-   "que": "agua",
-   "izq": "con"
-  },
-  {
-   "ask": "cosa_a",
-   "lead": [],
-   "line": "c86_cual_luis",
-   "then": [],
-   "after": [
-    {
-     "act": "da86",
-     "cual": "cosa_a",
-     "a": "luis",
-     "ok": 1
-    }
-   ]
-  },
+  {"act":"llega","quien":"mesero","a":"bandeja"},
+  {"act":"bandeja86","que":"agua","izq":"con"},
+  {"ask":"cosa_a","lead":[],"line":"c86_cual_luis","then":[],"after":[{"act":"da86","cual":"cosa_a","a":"luis","ok":1}]},
   "c86_ca_sin",
-  {
-   "ask": "cosa_b",
-   "lead": [],
-   "line": "c86_cual_sin",
-   "then": [],
-   "after": [
-    {
-     "act": "da86",
-     "cual": "cosa_b",
-     "a": "carmen",
-     "ok": 1
-    }
-   ]
-  },
-  {
-   "dots": 3
-  },
+  {"ask":"cosa_b","lead":[],"line":"c86_cual_sin","then":[],"after":[{"act":"da86","cual":"cosa_b","a":"carmen","ok":1}]},
+  {"dots":3},
   "c86_abo_cafe",
   "c86_ab_negro",
-  {
-   "act": "cafes86"
-  },
-  {
-   "dots": 4
-  },
+  {"act":"cafes86"},
+  {"dots":4},
   "c86_me_y_tu",
   "c36_cq_si_por_favor",
   "c86_me_conosin",
-  {
-   "act": "vasito86"
-  },
-  {
-   "dots": 5
-  },
-  {
-   "act": "llega",
-   "quien": "mesero",
-   "a": "bandeja"
-  },
+  {"act":"vasito86"},
+  {"dots":5},
+  {"act":"llega","quien":"mesero","a":"bandeja"},
   "c86_mo_ay",
-  {
-   "set": {
-    "tarjeta": "rondas",
-    "marcas": [
-     null,
-     null
-    ]
-   }
-  },
-  {
-   "wait": 400
-  },
-  {
-   "dots": 6
-  },
-  {
-   "draw": "qa",
-   "options": [
-    "abuela",
-    "abuelo",
-    "luis",
-    "carmen"
-   ]
-  },
-  {
-   "draw": "ca",
-   "options": [
-    "con",
-    "sin"
-   ]
-  },
-  {
-   "draw": "ia",
-   "options": [
-    "con",
-    "sin"
-   ]
-  },
-  {
-   "calc": "ka",
-   "cond": "ia=con",
-   "then": "cosa_a",
-   "else": "cosa_b"
-  },
-  {
-   "calc": "za",
-   "cond": "ia=con",
-   "then": "cosa_b",
-   "else": "cosa_a"
-  },
-  {
-   "calc": "pa",
-   "cond": "ca=con",
-   "then": "$ka",
-   "else": "$za"
-  },
-  {
-   "act": "bandeja86",
-   "que": "pan",
-   "izq": "$ia"
-  },
-  {
-   "decide": "do",
-   "options": [
-    "cosa_a",
-    "cosa_b"
-   ],
-   "pick": "$pa",
-   "tests": "$ca",
-   "lock": true,
-   "lead": [],
-   "line": "c86_a_$qa_$ca",
-   "right": [
-    {
-     "act": "da86",
-     "cual": "$pa",
-     "a": "$qa",
-     "ok": 1
-    },
-    {
-     "if": "ok",
-     "then": [
-      {
-       "act": "marca",
-       "que": "ok"
-      }
-     ]
-    }
-   ],
-   "wrong": [
-    {
-     "act": "da86",
-     "cual": "$x",
-     "a": "$qa",
-     "ok": 0,
-     "suelto": 1
-    },
-    "c86_noa_$qa_$ca",
-    {
-     "act": "ya"
-    },
-    {
-     "if": "lost=0",
-     "then": [
-      {
-       "act": "velas",
-       "n": 2
-      }
-     ],
-     "else": [
-      {
-       "act": "velas",
-       "n": 1
-      }
-     ]
-    },
-    {
-     "act": "marca",
-     "que": "x"
-    },
-    {
-     "cost": 1
-    }
-   ]
-  },
-  {
-   "dots": 7
-  },
-  {
-   "draw": "gb",
-   "options": [
-    "1",
-    "2",
-    "3"
-   ]
-  },
-  {
-   "if": "qa=abuela",
-   "then": [
-    {
-     "calc": "qb",
-     "cond": "gb=1",
-     "then": "abuelo",
-     "else": "luis"
-    },
-    {
-     "calc": "qb",
-     "cond": "gb=3",
-     "then": "carmen",
-     "else": "$qb"
-    }
-   ],
-   "else": [
-    {
-     "if": "qa=abuelo",
-     "then": [
-      {
-       "calc": "qb",
-       "cond": "gb=1",
-       "then": "abuela",
-       "else": "luis"
-      },
-      {
-       "calc": "qb",
-       "cond": "gb=3",
-       "then": "carmen",
-       "else": "$qb"
-      }
-     ],
-     "else": [
-      {
-       "if": "qa=luis",
-       "then": [
-        {
-         "calc": "qb",
-         "cond": "gb=1",
-         "then": "abuela",
-         "else": "abuelo"
-        },
-        {
-         "calc": "qb",
-         "cond": "gb=3",
-         "then": "carmen",
-         "else": "$qb"
-        }
-       ],
-       "else": [
-        {
-         "calc": "qb",
-         "cond": "gb=1",
-         "then": "abuela",
-         "else": "abuelo"
-        },
-        {
-         "calc": "qb",
-         "cond": "gb=3",
-         "then": "luis",
-         "else": "$qb"
-        }
-       ]
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "draw": "cb",
-   "options": [
-    "con",
-    "sin"
-   ]
-  },
-  {
-   "draw": "ib",
-   "options": [
-    "con",
-    "sin"
-   ]
-  },
-  {
-   "calc": "kb",
-   "cond": "ib=con",
-   "then": "cosa_a",
-   "else": "cosa_b"
-  },
-  {
-   "calc": "zb",
-   "cond": "ib=con",
-   "then": "cosa_b",
-   "else": "cosa_a"
-  },
-  {
-   "calc": "pb",
-   "cond": "cb=con",
-   "then": "$kb",
-   "else": "$zb"
-  },
-  {
-   "act": "bandeja86",
-   "que": "agua",
-   "izq": "$ib"
-  },
-  {
-   "decide": "do",
-   "options": [
-    "cosa_a",
-    "cosa_b"
-   ],
-   "pick": "$pb",
-   "tests": "$cb",
-   "lock": true,
-   "lead": [],
-   "line": "c86_b_$qb_$cb",
-   "right": [
-    {
-     "act": "da86",
-     "cual": "$pb",
-     "a": "$qb",
-     "ok": 1
-    },
-    {
-     "if": "ok",
-     "then": [
-      {
-       "act": "marca",
-       "que": "ok"
-      }
-     ]
-    }
-   ],
-   "wrong": [
-    {
-     "act": "da86",
-     "cual": "$x",
-     "a": "$qb",
-     "ok": 0,
-     "suelto": 1
-    },
-    "c86_nob_$qb_$cb",
-    {
-     "act": "ya"
-    },
-    {
-     "if": "lost=0",
-     "then": [
-      {
-       "act": "velas",
-       "n": 2
-      }
-     ],
-     "else": [
-      {
-       "act": "velas",
-       "n": 1
-      }
-     ]
-    },
-    {
-     "act": "marca",
-     "que": "x"
-    },
-    {
-     "cost": 1
-    }
-   ]
-  }
+  {"set":{"tarjeta":"rondas","marcas":[null,null]}},
+  {"wait":400},
+  {"dots":6},
+  {"draw":"qa","options":["abuela","abuelo","luis","carmen"]},
+  {"draw":"ca","options":["con","sin"]},
+  {"draw":"ia","options":["con","sin"]},
+  {"calc":"ka","cond":"ia=con","then":"cosa_a","else":"cosa_b"},
+  {"calc":"za","cond":"ia=con","then":"cosa_b","else":"cosa_a"},
+  {"calc":"pa","cond":"ca=con","then":"$ka","else":"$za"},
+  {"act":"bandeja86","que":"pan","izq":"$ia"},
+  {"decide":"do","options":["cosa_a","cosa_b"],"pick":"$pa","tests":"$ca","lock":true,"lead":[],"line":"c86_a_$qa_$ca","right":[{"act":"da86","cual":"$pa","a":"$qa","ok":1},{"if":"ok","then":[{"act":"marca","que":"ok"}]}],"wrong":[{"act":"da86","cual":"$x","a":"$qa","ok":0,"suelto":1},"c86_noa_$qa_$ca",{"act":"ya"},{"if":"lost=0","then":[{"act":"velas","n":2}],"else":[{"act":"velas","n":1}]},{"act":"marca","que":"x"},{"cost":1}]},
+  {"dots":7},
+  {"draw":"gb","options":["1","2","3"]},
+  {"if":"qa=abuela","then":[{"calc":"qb","cond":"gb=1","then":"abuelo","else":"luis"},{"calc":"qb","cond":"gb=3","then":"carmen","else":"$qb"}],"else":[{"if":"qa=abuelo","then":[{"calc":"qb","cond":"gb=1","then":"abuela","else":"luis"},{"calc":"qb","cond":"gb=3","then":"carmen","else":"$qb"}],"else":[{"if":"qa=luis","then":[{"calc":"qb","cond":"gb=1","then":"abuela","else":"abuelo"},{"calc":"qb","cond":"gb=3","then":"carmen","else":"$qb"}],"else":[{"calc":"qb","cond":"gb=1","then":"abuela","else":"abuelo"},{"calc":"qb","cond":"gb=3","then":"luis","else":"$qb"}]}]}]},
+  {"draw":"cb","options":["con","sin"]},
+  {"draw":"ib","options":["con","sin"]},
+  {"calc":"kb","cond":"ib=con","then":"cosa_a","else":"cosa_b"},
+  {"calc":"zb","cond":"ib=con","then":"cosa_b","else":"cosa_a"},
+  {"calc":"pb","cond":"cb=con","then":"$kb","else":"$zb"},
+  {"act":"bandeja86","que":"agua","izq":"$ib"},
+  {"decide":"do","options":["cosa_a","cosa_b"],"pick":"$pb","tests":"$cb","lock":true,"lead":[],"line":"c86_b_$qb_$cb","right":[{"act":"da86","cual":"$pb","a":"$qb","ok":1},{"if":"ok","then":[{"act":"marca","que":"ok"}]}],"wrong":[{"act":"da86","cual":"$x","a":"$qb","ok":0,"suelto":1},"c86_nob_$qb_$cb",{"act":"ya"},{"if":"lost=0","then":[{"act":"velas","n":2}],"else":[{"act":"velas","n":1}]},{"act":"marca","que":"x"},{"cost":1}]}
  ],
  "final": [
-  {
-   "dots": 8
-  },
-  {
-   "if": "lost=0",
-   "then": [
-    {
-     "act": "final86",
-     "n": 3
-    }
-   ],
-   "else": [
-    {
-     "if": "lost=1",
-     "then": [
-      {
-       "act": "final86",
-       "n": 2
-      }
-     ],
-     "else": [
-      {
-       "act": "final86",
-       "n": 1
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "dots": 9
-  },
+  {"dots":8},
+  {"if":"lost=0","then":[{"act":"final86","n":3}],"else":[{"if":"lost=1","then":[{"act":"final86","n":2}],"else":[{"act":"final86","n":1}]}]},
+  {"dots":9},
   "c86_ab_pan",
   "c38_cq_si_quiero",
   "c86_ab_con",
   "c86_fin",
-  {
-   "act": "fin"
-  }
+  {"act":"fin"}
  ],
- "leer": [
-  "c86_me_menu",
-  "c86_donde_menu",
-  "c86_ab_gracias",
-  "c86_me_quieren",
-  "c86_l_sed",
-  "c86_cual_luis",
-  "c86_ca_sin",
-  "c86_cual_sin",
-  "c86_abo_cafe",
-  "c86_ab_negro",
-  "c86_me_y_tu",
-  "c36_cq_si_por_favor",
-  "c86_me_conosin",
-  "c86_mo_ay",
-  "c86_a_carmen_sin",
-  "c86_b_abuelo_con",
-  "c86_ab_pan",
-  "c38_cq_si_quiero",
-  "c86_ab_con",
-  "c86_fin"
- ]
+ "leer": ["c86_me_menu","c86_donde_menu","c86_ab_gracias","c86_me_quieren","c86_l_sed","c86_cual_luis","c86_ca_sin","c86_cual_sin","c86_abo_cafe","c86_ab_negro","c86_me_y_tu","c36_cq_si_por_favor","c86_me_conosin","c86_mo_ay","c86_a_carmen_sin","c86_b_abuelo_con","c86_ab_pan","c38_cq_si_quiero","c86_ab_con","c86_fin"]
 }
