@@ -375,7 +375,7 @@ class MusicaRules {
     for (final en in gente.entries) {
       final who = en.key;
       final p = en.value as Map?;
-      if (p == null || p['vis'] == 0) continue;
+      if (p == null || !jsTruthy(p['vis'])) continue;
       final spot = p['spot'] as String?;
       if (spot == null || !_seatSpots.contains(spot)) continue;
       for (final it in items) {
@@ -438,7 +438,9 @@ class MusicaRules {
     for (final en in gente.entries) {
       final who = en.key;
       final p = en.value as Map?;
-      if (p == null || p['vis'] == 0 || p['spot'] != 'ante_micro') continue;
+      if (p == null || !jsTruthy(p['vis']) || p['spot'] != 'ante_micro') {
+        continue;
+      }
       for (final it in items) {
         if (it.tag != 'persona:$who' || it.ink == null) continue;
         final r = checkCover(it, maxHeadRows: 14, zAgainst: noFrogBounceZ);
@@ -456,7 +458,9 @@ class MusicaRules {
       for (final en in gente.entries) {
         final who = en.key;
         final p = en.value as Map?;
-        if (p == null || p['vis'] == 0 || p['rondaRole'] == null) continue;
+        if (p == null || !jsTruthy(p['vis']) || p['rondaRole'] == null) {
+          continue;
+        }
         for (final it in items) {
           if (it.tag != 'persona:$who' || it.ink == null) continue;
           final r = checkCover(it, maxHeadRows: 14, zAgainst: noFrogBounceZ);

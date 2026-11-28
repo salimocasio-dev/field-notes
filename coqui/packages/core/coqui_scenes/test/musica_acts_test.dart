@@ -272,6 +272,13 @@ void main() {
       expect((g['carmen'] as Map)['spot'], 'ronda5');
       expect((g['senor'] as Map)['spot'], 'ronda1');
       expect((g['senora'] as Map)['spot'], 'banco3');
+      expect((g['luis'] as Map)['sing'], 1);
+
+      // `gesto(carmen, rie)` preserves laughing expression across opening asks until moved
+      await sc.acts['gesto']!({'quien': 'carmen', 'que': 'rie'});
+      expect((g['carmen'] as Map)['laugh'], 1);
+      await sc.acts['llega']!({'quien': 'carmen', 'a': 'banco1'});
+      expect((g['carmen'] as Map)['laugh'], 0);
 
       // Held instrument and hang-back cycle in Story 111
       final story111 = jsonDecode(

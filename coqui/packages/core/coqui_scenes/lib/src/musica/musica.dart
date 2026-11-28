@@ -189,6 +189,7 @@ class Musica extends Escena implements SetScene, SetOverSprites {
       'laugh': 0,
       'yawn': 0,
       'eat': 0,
+      'sing': 0,
       'coverEars': 0,
       'fan': 0,
       'rondaRole': null,
@@ -319,14 +320,15 @@ class Musica extends Escena implements SetScene, SetOverSprites {
     // 1. People
     for (final id in MUSICA_NAMED_PEOPLE) {
       final p = gente[id] as Map<String, dynamic>?;
-      if (p == null || p['vis'] == 0) continue;
+      if (p == null || !jsTruthy(p['vis'])) continue;
       final spot = p['spot'] as String?;
       final sent = _isSeat(spot);
       final at = _atOf(p);
       final sx = _round(at.sx) + _n(p['dx']);
       final sy = _round(at.sy) + _n(p['dy']);
       final pose = (p['pose'] as String?) ?? 'idle';
-      final open = talk == id && a % 2 != 0;
+      final sing = _n(p['sing']) == 1 || p['rondaRole'] == 'canta';
+      final open = sing || (talk == id && a % 2 != 0);
       final eyesShut = _n(p['eyesShut']) == 1;
       final laugh = _n(p['laugh']) == 1;
       final yawn = _n(p['yawn']) == 1;

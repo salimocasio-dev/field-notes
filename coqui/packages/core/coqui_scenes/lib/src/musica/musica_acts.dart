@@ -76,8 +76,10 @@ extension _MusicaActs on Musica {
       ..['laugh'] = 0
       ..['yawn'] = 0
       ..['eat'] = 0
+      ..['sing'] = 0
       ..['coverEars'] = 0
-      ..['fan'] = 0;
+      ..['fan'] = 0
+      ..['rondaRole'] = null;
   }
 
   bool _spotOccupied(String spot, {String? exceptId}) {
@@ -264,7 +266,8 @@ extension _MusicaActs on Musica {
             p['dy'] = dy;
             await wait(80);
           }
-          p['laugh'] = 0;
+        // Preserve `laugh = 1` so Carmen stays laughing through `c113_ab_rie` and `c113_q_rie`;
+        // `_placePerson` / `ronda113` clears it when her activity changes.
         case 'abanico':
           p['fan'] = 1;
           for (final dx in const [-1, 1, 0]) {
@@ -447,6 +450,7 @@ extension _MusicaActs on Musica {
           }
         }
         _placePerson(p, 'ante_micro');
+        p['sing'] = 1;
         W['micVis'] = 1;
         W['micMode'] = quien == 'carmen' || quien == 'luis' ? 'low' : 'high';
         W['notasFloat'] = 1;
@@ -576,6 +580,7 @@ extension _MusicaActs on Musica {
           case 'baila':
             p['pose'] = 'offer';
           case 'canta':
+            p['sing'] = 1;
             W['micMode'] = who == 'carmen' || who == 'luis' ? 'low' : 'high';
         }
       }
