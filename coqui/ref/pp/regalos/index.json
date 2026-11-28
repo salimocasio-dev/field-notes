@@ -1,0 +1,47 @@
+{
+  "what": "engine reference: regalos",
+  "files": 8,
+  "totalBytes": 477670,
+  "entries": [
+    {
+      "path": "noche/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c184ea6895866640a134a728612d34e2fa967577444288e590957102ddaab6c9"
+    },
+    {
+      "path": "noche/kinds.json",
+      "bytes": 305,
+      "sha256": "a1441a87bac51401c15a6e8526fe1eca31e77e35c1b1db6efb3c93f4643dc7a6"
+    },
+    {
+      "path": "noche/pix.bin",
+      "bytes": 207360,
+      "sha256": "bf3cbe9d62d4a2a9903f6651446256029279bdd85f5c0ac95b1b7d8766d6a488"
+    },
+    {
+      "path": "noche/pix.json",
+      "bytes": 370,
+      "sha256": "32285254eddce9cb28ee9a0c50ec2598c1662db86e2ab79491555a3ef6069230"
+    },
+    {
+      "path": "noche/pix.png",
+      "bytes": 9200,
+      "sha256": "07bfb5e4438bd5c784fc7fa01ebd005ef6c7f573e51c7d46649a1259281d5083"
+    },
+    {
+      "path": "noche/state.json",
+      "bytes": 913,
+      "sha256": "c85f7df856092fae7cb0c7776a19b54d8fe0047c8740dc2536d62157f1ba4bf1"
+    },
+    {
+      "path": "noche/zb.bin",
+      "bytes": 207360,
+      "sha256": "61b0be60513a6885afa05c516aa09574606c998779a8d9cb9c7d16eb4104858d"
+    },
+    {
+      "path": "noche/zb.json",
+      "bytes": 322,
+      "sha256": "f12f2c3c91220bcc7a5e97fb396cc79f34a0faef473fec46977c364717718638"
+    }
+  ]
+}
