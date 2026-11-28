@@ -397,6 +397,7 @@ extension _SalaDiaActs on SalaDia {
         W['telefonoRing'] = 1;
         W['telefonoHolder'] = 'mesa';
         W['telefonoDonde'] = null;
+        W['abuelaPhone'] = null;
         await wait(320);
         W['telefonoRing'] = 0;
       }),
@@ -415,7 +416,6 @@ extension _SalaDiaActs on SalaDia {
         W['telefonoDonde'] = null;
         W['abuelaPhone'] = 'mouth';
         await wait(260);
-        W['abuelaPhone'] = null;
       }),
 
       'anillos103': (o) => run(o, () async {
@@ -432,6 +432,7 @@ extension _SalaDiaActs on SalaDia {
         W['telefonoLit'] = 1;
         W['telefonoHolder'] = 'coqui';
         W['telefonoDonde'] = donde;
+        W['abuelaPhone'] = null;
         await bounceFrog(dx: 3, dy: -3, ms: 110);
         if (ok) {
           if (donde == 'oreja_abuelo') {
@@ -469,6 +470,7 @@ extension _SalaDiaActs on SalaDia {
         W['abueloHoldPhone'] = 1;
         W['telefonoHolder'] = 'abuelo';
         W['telefonoDonde'] = null;
+        W['abuelaPhone'] = null;
         if (n >= 3) {
           // Three bars: sings twice; mamá's laugh comes out as hearts + stars!
           for (var i = 0; i < 2; i++) {
