@@ -11,9 +11,11 @@
 //       (workspace packages and third-party packages both)
 //   [b] a Dart file imports a package its pubspec does not list
 //   [c] a Dart file imports another package's src/
-//   [d] the branch is `lane/<lane>/...` or `story/<n>` and changes a file
-//       outside the paths allowed by tools/lanes.json (plus shared_paths and
-//       generated_paths), or tools/lanes.json itself fails schema/overlap checks
+//   [d] the branch is `lane/<lane>/...`, `story/<n>`, or `contracts/<n>` and
+//       changes a file outside the paths allowed by tools/lanes.json (plus
+//       shared_paths and generated_paths), or edits conformance paths on
+//       `contracts/<n>` without changing `coqui_contracts`, or tools/lanes.json
+//       itself fails schema/overlap checks
 //   [e] a feature's pubspec or imports name another feature
 // Added by the orchestrator on Nov 19, 2026 (not in the plan's rules):
 //   [f] a Dart file imports package:flutter/material.dart (deprecated in
@@ -664,11 +666,20 @@ class _BranchRules {
     required this.lanePrefix,
     required this.storyPrefix,
     required this.storyDefaultLane,
+    this.contractsPrefix = 'contracts/',
+    this.contractsOwnerLane = 'coqui_contracts',
+    this.contractsConformancePaths = const [
+      'coqui/packages/**',
+      'coqui/app/**',
+    ],
   });
 
   final String lanePrefix;
   final String storyPrefix;
   final String storyDefaultLane;
+  final String contractsPrefix;
+  final String contractsOwnerLane;
+  final List<String> contractsConformancePaths;
 }
 
 class _LaneMap {
@@ -710,6 +721,7 @@ class _BranchResolution {
     this.allowedPaths = const [],
     this.generatedPaths = const [],
     this.sharedPaths = const [],
+    this.requiredOwnerPaths = const [],
     this.error,
   });
 
@@ -719,6 +731,7 @@ class _BranchResolution {
   final List<String> allowedPaths;
   final List<String> generatedPaths;
   final List<String> sharedPaths;
+  final List<String> requiredOwnerPaths;
   final String? error;
 
   List<String> get allAllowedPatterns =>
@@ -1041,6 +1054,9 @@ String _expandTemplatePath(
   var lanePrefix = 'lane/';
   var storyPrefix = 'story/';
   var storyDefaultLane = '';
+  var contractsPrefix = 'contracts/';
+  var contractsOwnerLane = '';
+  var contractsConformancePaths = const <String>[];
   final rawBranchRules = data['branch_rules'];
   if (rawBranchRules is! Map) {
     errors.add('branch_rules must be an object');
@@ -1049,6 +1065,9 @@ String _expandTemplatePath(
     final lp = br['lane_prefix'];
     final sp = br['story_prefix'];
     final sdl = br['story_default_lane'];
+    final cp = br['contracts_prefix'];
+    final col = br['contracts_owner_lane'];
+    final ccp = br['contracts_conformance_paths'];
     if (lp is! String || !lp.endsWith('/')) {
       errors.add("branch_rules.lane_prefix must be a string ending with '/'");
     } else {
@@ -1064,6 +1083,26 @@ String _expandTemplatePath(
     } else {
       storyDefaultLane = sdl;
     }
+    if (cp is! String || !cp.endsWith('/')) {
+      errors.add(
+        "branch_rules.contracts_prefix must be a string ending with '/'",
+      );
+    } else {
+      contractsPrefix = cp;
+    }
+    if (col is! String || col.isEmpty) {
+      errors.add(
+        'branch_rules.contracts_owner_lane must be a non-empty string',
+      );
+    } else {
+      contractsOwnerLane = col;
+    }
+    contractsConformancePaths = _asStringList(
+      ccp,
+      'branch_rules.contracts_conformance_paths',
+      errors,
+      allowEmpty: false,
+    );
   }
 
   final generatedPathGroups = <String, List<String>>{};
@@ -1312,6 +1351,9 @@ String _expandTemplatePath(
       lanePrefix: lanePrefix,
       storyPrefix: storyPrefix,
       storyDefaultLane: storyDefaultLane,
+      contractsPrefix: contractsPrefix,
+      contractsOwnerLane: contractsOwnerLane,
+      contractsConformancePaths: contractsConformancePaths,
     ),
     generatedPathGroups: generatedPathGroups,
     sanctionedMultiPackage: sanctioned,
@@ -1361,6 +1403,15 @@ List<String> _validateLaneMap(_LaneMap map) {
       "branch_rules.story_default_lane references unknown lane "
       "'${map.branchRules.storyDefaultLane}'",
     );
+  }
+  if (!map.lanes.containsKey(map.branchRules.contractsOwnerLane)) {
+    errors.add(
+      "branch_rules.contracts_owner_lane references unknown lane "
+      "'${map.branchRules.contractsOwnerLane}'",
+    );
+  }
+  for (final p in map.branchRules.contractsConformancePaths) {
+    checkPat(p, 'branch_rules.contracts_conformance_paths');
   }
   map.sanctionedMultiPackage.forEach((name, rule) {
     for (final combo in rule.combinations) {
@@ -1533,6 +1584,7 @@ _SanctionedMultiPackage? _findSanctionedMultiPackage(
 _BranchResolution _resolveBranch(_LaneMap map, String branch) {
   final lanePrefix = map.branchRules.lanePrefix;
   final storyPrefix = map.branchRules.storyPrefix;
+  final contractsPrefix = map.branchRules.contractsPrefix;
 
   if (branch.startsWith(lanePrefix)) {
     final after = branch.substring(lanePrefix.length);
@@ -1642,6 +1694,30 @@ _BranchResolution _resolveBranch(_LaneMap map, String branch) {
     );
   }
 
+  if (branch.startsWith(contractsPrefix)) {
+    final rest = branch.substring(contractsPrefix.length);
+    if (!_digitsRe.hasMatch(rest)) {
+      return _BranchResolution(
+        branch: branch,
+        restricted: true,
+        error: "branch $branch must match '$contractsPrefix<number>'",
+      );
+    }
+    final ownerLane = map.lanes[map.branchRules.contractsOwnerLane]!;
+    return _BranchResolution(
+      branch: branch,
+      restricted: true,
+      laneIds: [ownerLane.id],
+      allowedPaths: _dedupeStrings([
+        ...ownerLane.paths,
+        ...map.branchRules.contractsConformancePaths,
+      ]),
+      generatedPaths: ownerLane.generatedPaths,
+      sharedPaths: map.sharedPaths,
+      requiredOwnerPaths: ownerLane.paths,
+    );
+  }
+
   return _BranchResolution(
     branch: branch,
     restricted: false,
@@ -1683,10 +1759,12 @@ Future<List<String>> _checkLane(
   final laneFile = laneMapFile ?? File('${repoRoot.path}/tools/lanes.json');
 
   if (!laneFile.existsSync()) {
-    final isLaneOrStory =
-        branch.startsWith('lane/') || branch.startsWith('story/');
+    final isRestrictedBranch =
+        branch.startsWith('lane/') ||
+        branch.startsWith('story/') ||
+        branch.startsWith('contracts/');
     final hasBoard = File('${repoRoot.path}/tools/board.py').existsSync();
-    if (laneMapFile != null || isLaneOrStory || hasBoard) {
+    if (laneMapFile != null || isRestrictedBranch || hasBoard) {
       return ['[d] missing lane map ${laneFile.path}'];
     }
     return const [];
@@ -1733,13 +1811,43 @@ Future<List<String>> _checkLane(
     return ['[d] branch $branch: git diff failed: ${diff.err}'];
   }
 
+  final files = [
+    for (final f in diff.raw.split('\u0000'))
+      if (f.isNotEmpty) f,
+  ];
   final allowed = resolution.allAllowedPatterns;
   final allowedSummary = _formatAllowedSummary(allowed);
   final problems = <String>[];
-  for (final file in diff.raw.split('\u0000')) {
-    if (file.isEmpty) continue;
-    if (allowed.any((pat) => _matchLanePattern(pat, file))) continue;
+  final allowedFiles = <String>[];
+  for (final file in files) {
+    if (allowed.any((pat) => _matchLanePattern(pat, file))) {
+      allowedFiles.add(file);
+      continue;
+    }
     problems.add('$file: [d] branch $branch may change only $allowedSummary');
+  }
+  if (resolution.requiredOwnerPaths.isNotEmpty) {
+    final ownerTouched = files.any(
+      (file) => resolution.requiredOwnerPaths.any(
+        (pat) => _matchLanePattern(pat, file),
+      ),
+    );
+    if (!ownerTouched) {
+      final ownerSummary = _formatAllowedSummary(resolution.requiredOwnerPaths);
+      final exemptPatterns = [
+        ...resolution.sharedPaths,
+        ...resolution.generatedPaths,
+      ];
+      for (final file in allowedFiles) {
+        if (exemptPatterns.any((pat) => _matchLanePattern(pat, file))) {
+          continue;
+        }
+        problems.add(
+          "$file: [d] branch $branch may edit '$file' for conformance only "
+          'alongside changes in $ownerSummary',
+        );
+      }
+    }
   }
   return problems;
 }

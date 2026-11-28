@@ -232,14 +232,17 @@ void main() {
   });
 
   group('DeletableKeyValueStore and KeyValueStoreDelete', () {
-    test('acts as a no-op when store omits DeletableKeyValueStore', () async {
-      final legacy = _LegacyKeyValueStore();
-      await legacy.write('k', 'v');
-      final KeyValueStore store = legacy;
+    test(
+      'fails with UnsupportedError when store omits DeletableKeyValueStore',
+      () async {
+        final legacy = _LegacyKeyValueStore();
+        await legacy.write('k', 'v');
+        final KeyValueStore store = legacy;
 
-      await store.delete('k');
-      expect(store.read('k'), 'v');
-    });
+        await expectLater(store.delete('k'), throwsUnsupportedError);
+        expect(store.read('k'), 'v');
+      },
+    );
 
     test('delegates delete asynchronously when implemented', () async {
       final deletable = _DeletableStore();

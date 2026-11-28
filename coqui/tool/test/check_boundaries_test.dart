@@ -1172,6 +1172,169 @@ import 'package:material_ui/material_ui.dart';
       expect(problems, hasLength(1));
       expect(problems.single, startsWith('docs/stray.md: [d]'));
     });
+
+    test('passes: contracts/<n> allows contracts-only, requests-only, and contracts + conformance edits', () async {
+      // Contracts only
+      git.branch('contracts/260');
+      package('coqui_contracts', deps: []);
+      src('coqui_contracts', 'lib/src/platform.dart', '// contracts\n');
+      git.commit('contracts only');
+      expect(await check(branch: null), isEmpty);
+
+      // Contracts + conformance across packages, app, and requests/
+      package('coqui_platform', deps: ['coqui_contracts']);
+      package('coqui_testing', deps: ['coqui_contracts', 'coqui_ui']);
+      package('feature_library', deps: ['coqui_contracts', 'coqui_ui']);
+      package('app', deps: ['coqui_contracts']);
+      src('coqui_platform', 'lib/src/store.dart', '// conform\n');
+      src('coqui_testing', 'lib/src/fakes.dart', '// conform\n');
+      src('feature_library', 'lib/src/reader.dart', '// conform\n');
+      src('app', 'lib/src/main.dart', '// conform\n');
+      write('requests/260-note.md', '# note\n');
+      git.commit('conformance edits');
+      expect(await check(branch: null), isEmpty);
+
+      // Requests-only on contracts/<n>
+      git.run(['checkout', '-q', 'main']);
+      git.branch('contracts/261');
+      write('requests/261-note.md', '# req only\n');
+      git.commit('requests only');
+      expect(await check(branch: null), isEmpty);
+    });
+
+    test('fails: contracts/<n> rejects non-package paths (docs/, .github/, tools/, coqui/tool/)', () async {
+      git.branch('contracts/260');
+      package('coqui_contracts', deps: []);
+      src('coqui_contracts', 'lib/src/platform.dart', '// contracts\n');
+      writeRepo('docs/guide.md', '# nope\n');
+      writeRepo('.github/scripts/helper.py', '# nope\n');
+      writeRepo('tools/helper.py', '# nope\n');
+      write('tool/helper.dart', '// nope\n');
+      git.commit('non-package paths on contracts branch');
+      final problems = await check(branch: null);
+      expect(problems, hasLength(4));
+      for (final path in [
+        'docs/guide.md',
+        '.github/scripts/helper.py',
+        'tools/helper.py',
+        'coqui/tool/helper.dart',
+      ]) {
+        expect(
+          problems.any((p) => p.startsWith('$path: [d]')),
+          isTrue,
+          reason: 'expected $path to be rejected',
+        );
+      }
+    });
+
+    test('fails: contracts/<n> rejects conformance edits without changing coqui_contracts', () async {
+      git.branch('contracts/260');
+      src('feature_words', 'lib/src/a.dart', '// conform without contracts\n');
+      package('app', deps: ['coqui_ui']);
+      src('app', 'lib/src/main.dart', '// app without contracts\n');
+      write('requests/260-note.md', '# shared request is exempt\n');
+      git.commit('conformance without contracts');
+      final problems = await check(branch: null);
+      expect(problems, hasLength(3));
+      final joined = problems.join('\n');
+      expect(
+        joined,
+        contains('coqui/packages/features/feature_words/lib/src/a.dart: [d]'),
+      );
+      expect(joined, contains('coqui/app/pubspec.yaml: [d]'));
+      expect(joined, contains('coqui/app/lib/src/main.dart: [d]'));
+      expect(joined, contains('for conformance only alongside changes in'));
+      expect(joined, contains('coqui/packages/core/coqui_contracts/**'));
+      expect(joined, isNot(contains('requests/260-note.md')));
+    });
+
+    test('fails: malformed contracts/ branch names are rejected', () async {
+      for (final bad in [
+        'contracts/',
+        'contracts/abc',
+        'contracts/260/extra',
+        'contracts/260-fix',
+      ]) {
+        final problems = await check(branch: bad);
+        expect(problems, hasLength(1), reason: bad);
+        expect(problems.single, contains('[d]'), reason: bad);
+        expect(problems.single, contains("contracts/<number>"), reason: bad);
+      }
+    });
+
+    test('contracts/<n> respects CI branch override argument', () async {
+      git.branch('work-in-progress');
+      src('feature_map', 'lib/src/m.dart', '// changed without contracts\n');
+      git.commit('work');
+      final problems = await check(branch: 'contracts/260');
+      expect(problems, hasLength(1));
+      expect(problems.single, contains('branch contracts/260'));
+      expect(problems.single, contains('for conformance only'));
+
+      package('coqui_contracts', deps: []);
+      src('coqui_contracts', 'lib/src/platform.dart', '// contracts\n');
+      git.commit('add contracts change');
+      expect(await check(branch: 'contracts/260'), isEmpty);
+    });
+
+    test(
+      'fails: missing tools/lanes.json fails on contracts/<n> branch',
+      () async {
+        File('${repo.path}/tools/lanes.json').deleteSync();
+        final onContracts = await check(branch: 'contracts/260');
+        expect(onContracts, hasLength(1));
+        expect(onContracts.single, contains('[d] missing lane map'));
+      },
+    );
+
+    test('fails: custom tools/lanes.json rejects invalid contracts_* fields in branch_rules', () async {
+      final baseRaw = jsonDecode(
+        realLaneMapFile().readAsStringSync(),
+      ) as Map<String, Object?>;
+
+      Map<String, Object?> cloneRaw() =>
+          jsonDecode(jsonEncode(baseRaw)) as Map<String, Object?>;
+
+      // Bad contracts_prefix
+      final badPrefix = cloneRaw();
+      (badPrefix['branch_rules'] as Map)['contracts_prefix'] = 'contracts';
+      writeRepo('tools/lanes.json', '${jsonEncode(badPrefix)}\n');
+      expect(
+        (await check(branch: 'main')).join('\n'),
+        contains('branch_rules.contracts_prefix'),
+      );
+
+      // Unknown contracts_owner_lane
+      final unknownOwner = cloneRaw();
+      (unknownOwner['branch_rules'] as Map)['contracts_owner_lane'] = 'nope';
+      writeRepo('tools/lanes.json', '${jsonEncode(unknownOwner)}\n');
+      expect(
+        (await check(branch: 'main')).join('\n'),
+        contains(
+          "branch_rules.contracts_owner_lane references unknown lane 'nope'",
+        ),
+      );
+
+      // Empty contracts_conformance_paths
+      final emptyPaths = cloneRaw();
+      (emptyPaths['branch_rules'] as Map)['contracts_conformance_paths'] = [];
+      writeRepo('tools/lanes.json', '${jsonEncode(emptyPaths)}\n');
+      expect(
+        (await check(branch: 'main')).join('\n'),
+        contains('branch_rules.contracts_conformance_paths'),
+      );
+
+      // Malformed glob in contracts_conformance_paths
+      final badGlob = cloneRaw();
+      (badGlob['branch_rules'] as Map)['contracts_conformance_paths'] = [
+        'coqui/**/lib.dart',
+      ];
+      writeRepo('tools/lanes.json', '${jsonEncode(badGlob)}\n');
+      expect(
+        (await check(branch: 'main')).join('\n'),
+        contains('branch_rules.contracts_conformance_paths'),
+      );
+    });
   });
 
   group('[h] new code uses start/end, not left/right (#55)', () {

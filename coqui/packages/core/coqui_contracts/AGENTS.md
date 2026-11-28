@@ -50,6 +50,13 @@ Models, interfaces, routes. Pure Dart.
   (with `repasoServing` forwarding `course.language`); `VariableSpeedClipPlayer` + `ClipPlayerSpeed.playAtRate`;
   and `DeletableKeyValueStore` + `KeyValueStoreDelete.delete`.
 
+## How contracts change
+
+- **New capability = new interface; existing interfaces never gain members.** Adding an abstract member to an existing interface breaks implementers and fakes in other packages. Declare a new small `abstract interface class` for the capability and, when callers need a helper on the base interface, expose it via an `extension` that checks `this is NewCapability`.
+- **No `abstract mixin class` defaults for contracts.** Most implementers use `implements`, which inherits no default implementation and would still break if a member were added.
+- **Explicit fallback rule (never quiet success on sensitive capabilities).** When a store or platform lacks a capability, the caller must be told. For **delete, grant, pay, sign-in, and call tokens**, the fallback refuses or throws (for example `UnsupportedError`) and never reports quiet success. Safe read-only queries may return a documented default only when that default cannot mask a failed write, deletion, grant, payment, sign-in, or token request.
+- **Conformance branches (`contracts/<n>`).** A `contracts/<n>` branch may pair changes in `coqui_contracts` with one-line conformance edits in packages that implement the contract; both `coqui/tool/check_boundaries.dart` and `.github/scripts/check_lanes.py` (via `tools/lanes.json`) allow `^contracts/[0-9]+$` when `coqui_contracts` is changed.
+
 ## Run and test it alone
 
 ```

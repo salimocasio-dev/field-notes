@@ -8,7 +8,13 @@
   "branch_rules": {
     "lane_prefix": "lane/",
     "story_prefix": "story/",
-    "story_default_lane": "scene_port"
+    "story_default_lane": "scene_port",
+    "contracts_prefix": "contracts/",
+    "contracts_owner_lane": "coqui_contracts",
+    "contracts_conformance_paths": [
+      "coqui/packages/**",
+      "coqui/app/**"
+    ]
   },
   "generated_path_groups": {
     "scene_manifests": [
