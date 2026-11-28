@@ -369,12 +369,23 @@ Sprite mkVasoMantecado() => _mk(7, 8, (b) {
 });
 
 /// Night guagua bus glimpsed through the open doorway (`final95`): 24 x 26.
-Sprite mkGuaguaPuerta() => _mk(24, 26, (b) {
+/// [doorShut]: false while boarding (open lit doorway), true after the family and Coquí board.
+Sprite mkGuaguaPuerta({bool doorShut = false}) => _mk(24, 26, (b) {
   b.rect(1, 2, 22, 20, _h('#4682B4'));
   b.rect(1, 2, 22, 2, _h('#96BEDC'));
   b.rect(3, 5, 10, 7, _h('#D8ECFA'));
-  b.rect(15, 5, 6, 14, _h('#2C4C70'));
-  b.rect(16, 6, 4, 6, _h('#FFF2A0'));
+  if (doorShut) {
+    // Passengers seated in the windshield and door shut behind the frog
+    b.rect(4, 8, 2, 3, _h('#504068'));
+    b.rect(7, 8, 2, 3, _h('#6C5644'));
+    b.rect(10, 9, 2, 2, _h('#3C7848'));
+    b.rect(15, 5, 6, 14, _h('#366898'));
+    b.rect(16, 6, 4, 6, _h('#B8D4E8'));
+    b.rect(18, 5, 1, 14, _h('#243E5C'));
+  } else {
+    b.rect(15, 5, 6, 14, _h('#2C4C70'));
+    b.rect(16, 6, 4, 12, _h('#FFF2A0'));
+  }
   b.rect(3, 15, 4, 3, _h('#FFFA90'));
   b.rect(9, 15, 4, 3, _h('#FFFA90'));
   b.rect(2, 21, 5, 4, _h('#363A48'));
@@ -445,6 +456,7 @@ List<(String, Sprite)> cuentaSpritesSheet() => [
   ('plato flan', mkPlatoFlan()),
   ('vaso mantecado', mkVasoMantecado()),
   ('guagua puerta', mkGuaguaPuerta()),
+  ('guagua puerta shut', mkGuaguaPuerta(doorShut: true)),
   ('estrellas', mkEstrellasCuenta()),
   ('corazon', mkCorazonCuenta()),
 ];

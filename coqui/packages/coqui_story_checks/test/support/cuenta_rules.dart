@@ -159,7 +159,11 @@ class CuentaRules {
       ..write('|')
       ..write(setKey)
       ..write('|')
-      ..write(story);
+      ..write(story)
+      ..write('|')
+      ..write(jsTruthy(W['carritoVis']) ? 1 : 0)
+      ..write(jsTruthy(W['maquinaVis']) ? 1 : 0)
+      ..write(jsTruthy(W['frascoVis']) ? 1 : 0);
     for (final k in _cuentaPersonas) {
       final p = gente[k] as Map?;
       if (p == null) continue;

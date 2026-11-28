@@ -270,6 +270,7 @@ class Cuenta extends Escena implements SetScene, SetOverSprites {
       'sillaManoFx': 0,
       'final94': 0,
       'final95': 0,
+      'guaguaDoor': null, // 'open' | 'shut' | null
       // HUD card
       'tarjeta': null,
       'marcas': null,
@@ -495,9 +496,13 @@ class Cuenta extends Escena implements SetScene, SetOverSprites {
     final gente = (w['gente'] as Map<String, dynamic>?) ?? const {};
     final storyNum = _n(w['story']);
 
-    // 1. Night guagua glimpsed in doorway behind umbral family in final95
+    // 1. Night guagua glimpsed in doorway in final95 (open door while boarding, shut after boarding)
     if (_n(w['final95']) > 0) {
-      final bus = _spr('cu_guagua_puerta', mkGuaguaPuerta);
+      final shut = w['guaguaDoor'] == 'shut';
+      final bus = _spr(
+        'cu_guagua_puerta_$shut',
+        () => mkGuaguaPuerta(doorShut: shut),
+      );
       // Doorway hole is [181, 16, 34, 50]; d=0.15 places bus behind umbral (d=0.433) and in front of outside wall (d=-1.04).
       out.add(CuentaItem(bus, 186, 34, 66, 0.15, tag: 'fx:guagua_puerta'));
     }
@@ -1570,7 +1575,75 @@ class Cuenta extends Escena implements SetScene, SetOverSprites {
       final n = _n(o['n']).clamp(1, 3);
       W['final95'] = n;
       W['gavetaAbierta'] = 0;
-      await wait(360);
+      // Outcome-dependent pace (cuenta.md story 95 step 9):
+      // n=3: guagua still far -> family walks calmly, bus arrives, seats for everyone + stars/heart;
+      // n=2: middle lamp -> family walks fast and boards;
+      // n=1: already at the stop -> family runs, abuelo holds his hat, jumps on, door shuts behind frog.
+      final stepMs = n == 3 ? 130 : (n == 2 ? 80 : 45);
+      final strideDy = n == 3 ? -1 : (n == 2 ? -2 : -4);
+      final exitPt = _p.at('sale');
+      // Slightly outside the open doorway (v = -0.35 -> depth toward the street bus)
+      final outPt = _p.fromScreen(_round(exitPt.sx), _round(exitPt.sy) - 10, 0);
+
+      if (n == 1) {
+        // Bus is already waiting at the stop with its door open; abuelo holds his hat as they run.
+        W['guagua'] = 'cerca';
+        W['guaguaDoor'] = 'open';
+        final abo = _gente['abuelo'];
+        if (abo is Map<String, dynamic> && abo['vis'] != 0) {
+          abo['pose'] = 'yo';
+        }
+      } else if (n == 2) {
+        W['guagua'] = 'medio';
+        W['guaguaDoor'] = 'open';
+      } else {
+        W['guaguaDoor'] = 'open';
+      }
+
+      // Family heads out through the doorway toward the stop in order (abuela, abuelo, luis, carmen)
+      for (final who in const ['abuela', 'abuelo', 'luis', 'carmen']) {
+        final p = _gente[who];
+        if (p is! Map<String, dynamic> || p['vis'] == 0) continue;
+        final sx = (p['x'] as num).toDouble();
+        final sy = (p['y'] as num).toDouble();
+        final steps = n == 3 ? 3 : 2;
+        for (var i = 1; i <= steps; i++) {
+          final t = i / steps;
+          p['x'] = sx + (outPt.x - sx) * t;
+          p['y'] = sy + (outPt.y - sy) * t;
+          p['z'] = 0.0;
+          p['dy'] = i.isOdd ? strideDy : 0;
+          await wait(stepMs);
+        }
+        p['dy'] = 0;
+        p['pose'] = 'idle';
+        p['vis'] = 0;
+      }
+
+      // For n=3 and n=2 the guagua pulls right up to the stop as they reach it.
+      W['guagua'] = 'cerca';
+
+      // Coquí hops out through the doorway and jumps aboard right behind the family.
+      final q = W['cq'] as Map<String, dynamic>?;
+      if (q != null && jsTruthy(q['vis'])) {
+        final qsx = (q['x'] as num).toDouble();
+        final qsy = (q['y'] as num).toDouble();
+        final dest = _frogAt(outPt);
+        final hops = n == 3 ? 3 : 2;
+        for (var i = 1; i <= hops; i++) {
+          final t = i / hops;
+          q['x'] = _round(qsx + (dest[0] - qsx) * t);
+          q['y'] = _round(qsy + (dest[1] - qsy) * t);
+          q['dy'] = n == 1 ? -6 : -4;
+          await wait(stepMs);
+        }
+        q['dy'] = 0;
+        q['vis'] = 0;
+      }
+
+      // The guagua door shuts behind the frog as the staff wave from inside.
+      W['guaguaDoor'] = 'shut';
+      await wait(n == 3 ? 200 : 120);
     }),
 
     /* ----- Shared gestures & engine acts ----- */

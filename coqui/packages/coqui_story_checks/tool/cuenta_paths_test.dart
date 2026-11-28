@@ -26,7 +26,16 @@ void main() {
     await course.load();
   });
 
-  final parts = _shard.split('/').map(int.parse).toList();
+  final rawParts = _shard.split('/');
+  if (rawParts.length != 2) {
+    throw FormatException('Invalid SHARD "$_shard": expected "index/count"');
+  }
+  final parts = rawParts.map(int.parse).toList();
+  if (parts[1] <= 0 || parts[0] < 0 || parts[0] >= parts[1]) {
+    throw RangeError(
+      'Invalid SHARD "$_shard": expected 0 <= index < count and count > 0',
+    );
+  }
   test('La cuenta: every path of its three stories ($_shard)', () async {
     final make = await realSceneFor('cuenta');
     var n = 0;

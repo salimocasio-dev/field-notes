@@ -328,4 +328,56 @@ void main() {
     expect((gente['senora'] as Map)['spot'], 'otra_mesa1');
     expect((gente['joven'] as Map)['spot'], 'otra_mesa2');
   });
+
+  test(
+    'story 95 final95 departs family and frog into the guagua for n=3, 2, 1',
+    () async {
+      final story = _story('buenas-noches');
+      for (final n in const [3, 2, 1]) {
+        final scene = createCuenta() as Cuenta;
+        final host = StillHost(scene);
+        host.S = story;
+        host.W = {
+          ...host.W,
+          'lost': 3 - n,
+          'resp': null,
+          'twinkle': null,
+          ...scene.fresh(story),
+        };
+        for (final (who, spot) in const [
+          ('abuela', 'umbral1'),
+          ('abuelo', 'umbral2'),
+          ('luis', 'umbral3'),
+          ('carmen', 'umbral4'),
+        ]) {
+          await scene.acts['llega']!({'quien': who, 'a': spot});
+        }
+        await scene.acts['ir']!({'a': 'puerta_coqui'});
+        await scene.acts['final95']!({'n': n});
+
+        expect(host.W['final95'], n);
+        expect(host.W['guagua'], 'cerca');
+        expect(host.W['guaguaDoor'], 'shut');
+        final gente = host.W['gente'] as Map<String, dynamic>;
+        for (final who in const ['abuela', 'abuelo', 'luis', 'carmen']) {
+          expect(
+            (gente[who] as Map)['vis'],
+            0,
+            reason: 'final95(n=$n): $who must have boarded and left doorway',
+          );
+        }
+        expect(
+          (host.W['cq'] as Map)['vis'],
+          0,
+          reason: 'final95(n=$n): coqui must have boarded the guagua',
+        );
+        expect((gente['mesera'] as Map)['vis'], 1);
+        expect((gente['mesero'] as Map)['vis'], 1);
+        expect((gente['cocinero'] as Map)['vis'], 1);
+        final items = scene.items(host.W, 0);
+        expect(items.any((it) => it.tag == 'fx:guagua_puerta'), isTrue);
+        expect(items.any((it) => it.tag == 'fx:corazon'), n == 3);
+      }
+    },
+  );
 }
