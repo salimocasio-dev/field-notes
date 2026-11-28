@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
-  "files": 1740,
-  "totalBytes": 107253337,
+  "files": 1748,
+  "totalBytes": 107727207,
   "entries": [
     {
       "path": "balcon/door-open-win-open/kinds.bin",
@@ -6732,6 +6732,46 @@
       "path": "patio/hora-tarde2-door-shut-gate-shut/zb.json",
       "bytes": 322,
       "sha256": "878485454123b77649b758e58201ec906e254e47bacc74c8f106dffc8947895b"
+    },
+    {
+      "path": "pedido/noche/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "pedido/noche/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "pedido/noche/pix.bin",
+      "bytes": 207360,
+      "sha256": "b062d2ccc1b95bc28212b74f08e1ccf4472ca5af3af2b34df96bc67cfd81e65a"
+    },
+    {
+      "path": "pedido/noche/pix.json",
+      "bytes": 370,
+      "sha256": "b3f4b2088e3b2402342417447b54eac18e463031a23ff87f1db1b01f9a154096"
+    },
+    {
+      "path": "pedido/noche/pix.png",
+      "bytes": 5392,
+      "sha256": "87174fb72d8dceb67565e74f6364a0868b17c1a96904e4b9d80adf0296d081ad"
+    },
+    {
+      "path": "pedido/noche/state.json",
+      "bytes": 921,
+      "sha256": "480a81f5c51cb834df08f17ad4af1f85c3576f92d7452cb99e37f6a807990c5b"
+    },
+    {
+      "path": "pedido/noche/zb.bin",
+      "bytes": 207360,
+      "sha256": "05a712eacd49877cdb300b300dada9728d6e0279647c1922290c134d93ea1d09"
+    },
+    {
+      "path": "pedido/noche/zb.json",
+      "bytes": 322,
+      "sha256": "0a21aa7fb2fd0b86a227db9ac969d6ec718cb295b0598495d71ed9bd157adf66"
     },
     {
       "path": "plaza/manana-0-0/kinds.bin",

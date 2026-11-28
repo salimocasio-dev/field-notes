@@ -1,0 +1,859 @@
+{
+ "id": "tostones-y-mofongo",
+ "title": "Tostones y mofongo",
+ "place": "La fonda",
+ "scene": "pedido",
+ "next": "las-bebidas",
+ "goal": "Touch the plate on the board that the guest asks for (meat or fish, with tostones or with mofongo) so that the three green plantains tied with a red ribbon stay on the hook for the frog's own plate: every wrong plate comes back and the cocinero has to use one of the three to make the right one.",
+ "stake": {
+  "thing": "platanos",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "tostones",
+  "mofongo",
+  "me da"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "carne",
+  "pescado",
+  "con",
+  "plátano",
+  "cocinero",
+  "mesera",
+  "menú",
+  "plato",
+  "caliente",
+  "cuidado",
+  "rico",
+  "me gusta",
+  "mucho",
+  "otro",
+  "familia",
+  "come",
+  "esto",
+  "eso",
+  "mira",
+  "ahora",
+  "por favor",
+  "gracias",
+  "sí",
+  "no"
+ ],
+ "also_heard": [
+  "te gustan"
+ ],
+ "names": {
+  "abuela": "abuela",
+  "abuelo": "n_abuelo",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "carne_tostones_cuadro1_cuadro1": "carne",
+  "carne_tostones_cuadro1_cuadro2": "tostones",
+  "carne_tostones_cuadro1_cuadro3": "tostones",
+  "carne_tostones_cuadro1_cuadro4": "tostones",
+  "carne_tostones_cuadro2_cuadro1": "tostones",
+  "carne_tostones_cuadro2_cuadro2": "carne",
+  "carne_tostones_cuadro2_cuadro3": "tostones",
+  "carne_tostones_cuadro2_cuadro4": "tostones",
+  "carne_tostones_cuadro3_cuadro1": "tostones",
+  "carne_tostones_cuadro3_cuadro2": "tostones",
+  "carne_tostones_cuadro3_cuadro3": "carne",
+  "carne_tostones_cuadro3_cuadro4": "tostones",
+  "carne_tostones_cuadro4_cuadro1": "tostones",
+  "carne_tostones_cuadro4_cuadro2": "tostones",
+  "carne_tostones_cuadro4_cuadro3": "tostones",
+  "carne_tostones_cuadro4_cuadro4": "carne",
+  "carne_mofongo_cuadro1_cuadro1": "carne",
+  "carne_mofongo_cuadro1_cuadro2": "mofongo",
+  "carne_mofongo_cuadro1_cuadro3": "mofongo",
+  "carne_mofongo_cuadro1_cuadro4": "mofongo",
+  "carne_mofongo_cuadro2_cuadro1": "mofongo",
+  "carne_mofongo_cuadro2_cuadro2": "carne",
+  "carne_mofongo_cuadro2_cuadro3": "mofongo",
+  "carne_mofongo_cuadro2_cuadro4": "mofongo",
+  "carne_mofongo_cuadro3_cuadro1": "mofongo",
+  "carne_mofongo_cuadro3_cuadro2": "mofongo",
+  "carne_mofongo_cuadro3_cuadro3": "carne",
+  "carne_mofongo_cuadro3_cuadro4": "mofongo",
+  "carne_mofongo_cuadro4_cuadro1": "mofongo",
+  "carne_mofongo_cuadro4_cuadro2": "mofongo",
+  "carne_mofongo_cuadro4_cuadro3": "mofongo",
+  "carne_mofongo_cuadro4_cuadro4": "carne",
+  "pescado_tostones_cuadro1_cuadro1": "pescado",
+  "pescado_tostones_cuadro1_cuadro2": "tostones",
+  "pescado_tostones_cuadro1_cuadro3": "tostones",
+  "pescado_tostones_cuadro1_cuadro4": "tostones",
+  "pescado_tostones_cuadro2_cuadro1": "tostones",
+  "pescado_tostones_cuadro2_cuadro2": "pescado",
+  "pescado_tostones_cuadro2_cuadro3": "tostones",
+  "pescado_tostones_cuadro2_cuadro4": "tostones",
+  "pescado_tostones_cuadro3_cuadro1": "tostones",
+  "pescado_tostones_cuadro3_cuadro2": "tostones",
+  "pescado_tostones_cuadro3_cuadro3": "pescado",
+  "pescado_tostones_cuadro3_cuadro4": "tostones",
+  "pescado_tostones_cuadro4_cuadro1": "tostones",
+  "pescado_tostones_cuadro4_cuadro2": "tostones",
+  "pescado_tostones_cuadro4_cuadro3": "tostones",
+  "pescado_tostones_cuadro4_cuadro4": "pescado",
+  "pescado_mofongo_cuadro1_cuadro1": "pescado",
+  "pescado_mofongo_cuadro1_cuadro2": "mofongo",
+  "pescado_mofongo_cuadro1_cuadro3": "mofongo",
+  "pescado_mofongo_cuadro1_cuadro4": "mofongo",
+  "pescado_mofongo_cuadro2_cuadro1": "mofongo",
+  "pescado_mofongo_cuadro2_cuadro2": "pescado",
+  "pescado_mofongo_cuadro2_cuadro3": "mofongo",
+  "pescado_mofongo_cuadro2_cuadro4": "mofongo",
+  "pescado_mofongo_cuadro3_cuadro1": "mofongo",
+  "pescado_mofongo_cuadro3_cuadro2": "mofongo",
+  "pescado_mofongo_cuadro3_cuadro3": "pescado",
+  "pescado_mofongo_cuadro3_cuadro4": "mofongo",
+  "pescado_mofongo_cuadro4_cuadro1": "mofongo",
+  "pescado_mofongo_cuadro4_cuadro2": "mofongo",
+  "pescado_mofongo_cuadro4_cuadro3": "mofongo",
+  "pescado_mofongo_cuadro4_cuadro4": "pescado"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c88_co_mira": {
+   "who": "narr",
+   "habla": "cocinero",
+   "text": "El cocinero dice: Mira, Coquí. Un plátano."
+  },
+  "c88_co_tostones": {
+   "who": "narr",
+   "habla": "cocinero",
+   "text": "El cocinero dice: ¡Tostones!"
+  },
+  "c88_donde_tostones": {
+   "who": "narr",
+   "text": "¿Dónde están los tostones?"
+  },
+  "c88_co_cuidado": {
+   "who": "narr",
+   "habla": "cocinero",
+   "text": "El cocinero dice: ¡Cuidado! Los tostones están calientes."
+  },
+  "c88_cq_otro": {
+   "who": "tu",
+   "text": "¡Otro, por favor!",
+   "tu_turno": [
+    {
+     "palabra": "otro",
+     "formas": [
+      "otro",
+      "otro por favor"
+     ]
+    }
+   ]
+  },
+  "c88_co_mofongo": {
+   "who": "narr",
+   "habla": "cocinero",
+   "text": "El cocinero dice: Y esto es mofongo."
+  },
+  "c88_donde_mofongo": {
+   "who": "narr",
+   "text": "¿Dónde está el mofongo?"
+  },
+  "c88_co_dos": {
+   "who": "narr",
+   "habla": "cocinero",
+   "text": "El cocinero dice: Tostones y mofongo. Los dos son de plátano."
+  },
+  "c88_se_pide": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Me da carne con tostones, por favor."
+  },
+  "c88_sa_pide": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y a mí me da pescado con mofongo."
+  },
+  "c88_cual": {
+   "who": "narr",
+   "text": "La señora quiere pescado con mofongo. ¿Cuál es?"
+  },
+  "c88_se_gracias": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: ¡Tostones! Gracias."
+  },
+  "c88_sa_rico": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Mmm. El mofongo está rico."
+  },
+  "c88_ms_ahora": {
+   "who": "narr",
+   "habla": "mesera",
+   "text": "La mesera dice: Ahora tú, Coquí. Mira el menú. ¿Qué plato quieren?"
+  },
+  "c88_co_para": {
+   "who": "narr",
+   "habla": "cocinero",
+   "text": "El cocinero dice: Tostones para Coquí."
+  },
+  "c88_ab_gustan": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Te gustan los tostones, Coquí?"
+  },
+  "c88_cq_mucho": {
+   "who": "tu",
+   "text": "¡Sí, mucho!",
+   "tu_turno": [
+    {
+     "palabra": "mucho",
+     "formas": [
+      "mucho",
+      "sí mucho",
+      "si mucho"
+     ]
+    }
+   ]
+  },
+  "c88_fin_come": {
+   "who": "narr",
+   "text": "Coquí come tostones con la familia."
+  },
+  "c88_o_joven_carne_tostones": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: Me da carne con tostones, por favor."
+  },
+  "c88_no_joven_carne_tostones": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: No, eso no. Carne con tostones, por favor."
+  },
+  "c88_o_joven_carne_mofongo": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: Me da carne con mofongo, por favor."
+  },
+  "c88_no_joven_carne_mofongo": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: No, eso no. Carne con mofongo, por favor."
+  },
+  "c88_o_joven_pescado_tostones": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: Me da pescado con tostones, por favor."
+  },
+  "c88_no_joven_pescado_tostones": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: No, eso no. Pescado con tostones, por favor."
+  },
+  "c88_o_joven_pescado_mofongo": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: Me da pescado con mofongo, por favor."
+  },
+  "c88_no_joven_pescado_mofongo": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: No, eso no. Pescado con mofongo, por favor."
+  },
+  "c88_o_mujer_carne_tostones": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: Me da carne con tostones, por favor."
+  },
+  "c88_no_mujer_carne_tostones": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: No, eso no. Carne con tostones, por favor."
+  },
+  "c88_o_mujer_carne_mofongo": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: Me da carne con mofongo, por favor."
+  },
+  "c88_no_mujer_carne_mofongo": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: No, eso no. Carne con mofongo, por favor."
+  },
+  "c88_o_mujer_pescado_tostones": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: Me da pescado con tostones, por favor."
+  },
+  "c88_no_mujer_pescado_tostones": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: No, eso no. Pescado con tostones, por favor."
+  },
+  "c88_o_mujer_pescado_mofongo": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: Me da pescado con mofongo, por favor."
+  },
+  "c88_no_mujer_pescado_mofongo": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: No, eso no. Pescado con mofongo, por favor."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "noche",
+    "tablero": "platos"
+   }
+  },
+  {
+   "act": "ir",
+   "a": "repisa_coqui"
+  },
+  {
+   "act": "platanos",
+   "n": 3
+  },
+  {
+   "act": "llega",
+   "quien": "senor",
+   "a": "otra_mesa"
+  },
+  {
+   "act": "llega",
+   "quien": "senora",
+   "a": "otra_mesa"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c88_co_mira",
+  {
+   "act": "frie88",
+   "que": "tostones"
+  },
+  "c88_co_tostones",
+  {
+   "ask": "plato1",
+   "lead": [],
+   "line": "c88_donde_tostones",
+   "then": [],
+   "after": []
+  },
+  "c88_co_cuidado",
+  {
+   "act": "gesto",
+   "quien": "coqui",
+   "que": "come"
+  },
+  "c88_cq_otro",
+  {
+   "act": "gesto",
+   "quien": "cocinero",
+   "que": "rie"
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "frie88",
+   "que": "mofongo"
+  },
+  "c88_co_mofongo",
+  {
+   "ask": "plato2",
+   "lead": [],
+   "line": "c88_donde_mofongo",
+   "then": [],
+   "after": [
+    {
+     "act": "gesto",
+     "quien": "coqui",
+     "que": "come"
+    },
+    {
+     "act": "gesto",
+     "quien": "coqui",
+     "que": "si"
+    }
+   ]
+  },
+  "c88_co_dos",
+  {
+   "dots": 3
+  },
+  {
+   "act": "llega",
+   "quien": "mesera",
+   "a": "otra_mesa"
+  },
+  "c88_se_pide",
+  {
+   "act": "gesto",
+   "quien": "mesera",
+   "que": "senala",
+   "a": "cuadro1"
+  },
+  {
+   "act": "cuadro",
+   "n": 1
+  },
+  "c88_sa_pide",
+  {
+   "ask": "cuadro4",
+   "lead": [],
+   "line": "c88_cual",
+   "then": [],
+   "after": [
+    {
+     "act": "pide88",
+     "cual": "cuadro4",
+     "ok": 1
+    }
+   ]
+  },
+  "c88_se_gracias",
+  "c88_sa_rico",
+  {
+   "dots": 4
+  },
+  {
+   "act": "sale",
+   "quien": "mesera",
+   "suelto": 1
+  },
+  "c88_ms_ahora",
+  {
+   "act": "ya"
+  },
+  {
+   "act": "gesto",
+   "quien": "cocinero",
+   "que": "senala",
+   "a": "platito"
+  },
+  {
+   "draw": "guesta",
+   "options": [
+    "joven",
+    "mujer"
+   ],
+   "other": "guestb"
+  },
+  {
+   "act": "llega",
+   "quien": "$guesta",
+   "a": "otra_mesa"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "platea",
+   "options": [
+    "carne",
+    "pescado"
+   ]
+  },
+  {
+   "draw": "sidea",
+   "options": [
+    "tostones",
+    "mofongo"
+   ]
+  },
+  {
+   "reparte": [
+    "layaa",
+    "layba",
+    "layca",
+    "layda"
+   ],
+   "options": [
+    "carne_tostones",
+    "carne_mofongo",
+    "pescado_tostones",
+    "pescado_mofongo"
+   ]
+  },
+  {
+   "calc": "otherplatea",
+   "cond": "platea=carne",
+   "then": "pescado",
+   "else": "carne"
+  },
+  {
+   "calc": "pickplacea",
+   "cond": "layaa=$platea_$sidea",
+   "then": "cuadro1",
+   "else": "cuadro4"
+  },
+  {
+   "calc": "pickplacea",
+   "cond": "layba=$platea_$sidea",
+   "then": "cuadro2",
+   "else": "$pickplacea"
+  },
+  {
+   "calc": "pickplacea",
+   "cond": "layca=$platea_$sidea",
+   "then": "cuadro3",
+   "else": "$pickplacea"
+  },
+  {
+   "calc": "sibplacea",
+   "cond": "layaa=$otherplatea_$sidea",
+   "then": "cuadro1",
+   "else": "cuadro4"
+  },
+  {
+   "calc": "sibplacea",
+   "cond": "layba=$otherplatea_$sidea",
+   "then": "cuadro2",
+   "else": "$sibplacea"
+  },
+  {
+   "calc": "sibplacea",
+   "cond": "layca=$otherplatea_$sidea",
+   "then": "cuadro3",
+   "else": "$sibplacea"
+  },
+  {
+   "act": "tablero88",
+   "orden": "$layaa,$layba,$layca,$layda"
+  },
+  {
+   "act": "gesto",
+   "quien": "$guesta",
+   "que": "mira",
+   "a": "coqui"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "cuadro1",
+    "cuadro2",
+    "cuadro3",
+    "cuadro4"
+   ],
+   "pick": "$pickplacea",
+   "tests": "$platea_$sidea_$sibplacea_$x",
+   "lock": true,
+   "lead": [],
+   "line": "c88_o_$guesta_$platea_$sidea",
+   "right": [
+    {
+     "act": "pide88",
+     "cual": "$pickplacea",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "pide88",
+     "cual": "$x",
+     "ok": 0
+    },
+    "c88_no_$guesta_$platea_$sidea",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "platanos",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "platanos",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "act": "llega",
+   "quien": "$guestb",
+   "a": "otra_mesa"
+  },
+  {
+   "draw": "plateb",
+   "options": [
+    "carne",
+    "pescado"
+   ]
+  },
+  {
+   "draw": "sideb",
+   "options": [
+    "tostones",
+    "mofongo"
+   ]
+  },
+  {
+   "reparte": [
+    "layab",
+    "laybb",
+    "laycb",
+    "laydb"
+   ],
+   "options": [
+    "carne_tostones",
+    "carne_mofongo",
+    "pescado_tostones",
+    "pescado_mofongo"
+   ]
+  },
+  {
+   "calc": "otherplateb",
+   "cond": "plateb=carne",
+   "then": "pescado",
+   "else": "carne"
+  },
+  {
+   "calc": "pickplaceb",
+   "cond": "layab=$plateb_$sideb",
+   "then": "cuadro1",
+   "else": "cuadro4"
+  },
+  {
+   "calc": "pickplaceb",
+   "cond": "laybb=$plateb_$sideb",
+   "then": "cuadro2",
+   "else": "$pickplaceb"
+  },
+  {
+   "calc": "pickplaceb",
+   "cond": "laycb=$plateb_$sideb",
+   "then": "cuadro3",
+   "else": "$pickplaceb"
+  },
+  {
+   "calc": "sibplaceb",
+   "cond": "layab=$otherplateb_$sideb",
+   "then": "cuadro1",
+   "else": "cuadro4"
+  },
+  {
+   "calc": "sibplaceb",
+   "cond": "laybb=$otherplateb_$sideb",
+   "then": "cuadro2",
+   "else": "$sibplaceb"
+  },
+  {
+   "calc": "sibplaceb",
+   "cond": "laycb=$otherplateb_$sideb",
+   "then": "cuadro3",
+   "else": "$sibplaceb"
+  },
+  {
+   "act": "tablero88",
+   "orden": "$layab,$laybb,$laycb,$laydb"
+  },
+  {
+   "act": "gesto",
+   "quien": "$guestb",
+   "que": "mira",
+   "a": "coqui"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "cuadro1",
+    "cuadro2",
+    "cuadro3",
+    "cuadro4"
+   ],
+   "pick": "$pickplaceb",
+   "tests": "$plateb_$sideb_$sibplaceb_$x",
+   "lock": true,
+   "lead": [],
+   "line": "c88_o_$guestb_$plateb_$sideb",
+   "right": [
+    {
+     "act": "pide88",
+     "cual": "$pickplaceb",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "pide88",
+     "cual": "$x",
+     "ok": 0
+    },
+    "c88_no_$guestb_$plateb_$sideb",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "platanos",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "platanos",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 7
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final88",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final88",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final88",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "act": "ir",
+   "a": "mesa_coqui"
+  },
+  {
+   "dots": 8
+  },
+  "c88_co_para",
+  "c88_ab_gustan",
+  "c88_cq_mucho",
+  {
+   "act": "gesto",
+   "quien": "coqui",
+   "que": "come",
+   "suelto": 1
+  },
+  "c88_fin_come",
+  {
+   "act": "ya"
+  },
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c88_co_mira",
+  "c88_co_tostones",
+  "c88_donde_tostones",
+  "c88_co_cuidado",
+  "c88_cq_otro",
+  "c88_co_mofongo",
+  "c88_donde_mofongo",
+  "c88_co_dos",
+  "c88_se_pide",
+  "c88_sa_pide",
+  "c88_cual",
+  "c88_se_gracias",
+  "c88_sa_rico",
+  "c88_ms_ahora",
+  "c88_o_joven_pescado_tostones",
+  "c88_co_para",
+  "c88_ab_gustan",
+  "c88_cq_mucho",
+  "c88_fin_come"
+ ]
+}

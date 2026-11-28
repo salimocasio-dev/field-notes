@@ -1,0 +1,899 @@
+{
+ "id": "las-bebidas",
+ "title": "Las bebidas",
+ "place": "La fonda",
+ "scene": "pedido",
+ "next": "prueba",
+ "goal": "Give each drink to whoever it is for (the soda or the lemonade by name, or the person by para mí, para él, para ella) so that the tall glass of orange juice the mesero made for the frog stays full: at each mix-up the hot, flustered mesero takes a long pull at its straw and a third is gone.",
+ "stake": {
+  "thing": "jugo",
+  "steps": 3
+ },
+ "dots": 10,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "bebida",
+  "refresco",
+  "limonada",
+  "para mí",
+  "para él"
+ ],
+ "formas_foco": {
+  "bebida": [
+   "bebidas"
+  ]
+ },
+ "back_again": [
+  "mesero",
+  "jugo",
+  "china",
+  "café",
+  "agua",
+  "hay",
+  "ella",
+  "él",
+  "quiero",
+  "quieres",
+  "toma",
+  "también",
+  "otro",
+  "tengo sed",
+  "hace calor",
+  "me gusta",
+  "después",
+  "ahora",
+  "aquí",
+  "esto",
+  "por favor",
+  "gracias",
+  "sí",
+  "no"
+ ],
+ "also_heard": [
+  "quién",
+  "tomar",
+  "para ella"
+ ],
+ "names": {
+  "abuela": "abuela",
+  "abuelo": "n_abuelo",
+  "luis": "p_n_luis",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "refresco": "refresco",
+  "limonada": "limonada",
+  "mi": "para mí",
+  "el": "para él",
+  "ella": "ella"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "c89_l_calor": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Hace calor! Tengo sed."
+  },
+  "c89_mo_bebidas": {
+   "who": "narr",
+   "habla": "mesero",
+   "text": "El mesero dice: Aquí están las bebidas. Hay refresco, hay limonada, hay jugo de china y hay café."
+  },
+  "c89_donde_bebidas": {
+   "who": "narr",
+   "text": "¿Dónde están las bebidas?"
+  },
+  "c89_mo_refresco": {
+   "who": "narr",
+   "habla": "mesero",
+   "text": "El mesero dice: ¿El refresco?"
+  },
+  "c89_l_mi": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Para mí, para mí! Me gusta el refresco."
+  },
+  "c89_quien_refresco": {
+   "who": "narr",
+   "text": "¿Para quién es el refresco?"
+  },
+  "c89_mo_cafe": {
+   "who": "narr",
+   "habla": "mesero",
+   "text": "El mesero dice: ¿El café?"
+  },
+  "c89_quien_el": {
+   "who": "narr",
+   "text": "El café es para él. ¿Quién es él?"
+  },
+  "c89_abo_gracias": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Sí, para mí. Gracias."
+  },
+  "c89_mo_limonada_y": {
+   "who": "narr",
+   "habla": "mesero",
+   "text": "El mesero dice: ¿Y la limonada?"
+  },
+  "c89_quien_ella": {
+   "who": "narr",
+   "text": "La limonada es para ella. ¿Quién es ella?"
+  },
+  "c89_ab_mi": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Para mí. Mmm, limonada."
+  },
+  "c89_l_todos": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: El café es para él, la limonada es para ella... ¡y el refresco es para mí!"
+  },
+  "c89_mo_ti": {
+   "who": "narr",
+   "habla": "mesero",
+   "text": "El mesero dice: ¿Y para ti, Coquí? ¿Qué quieres de tomar?"
+  },
+  "c89_cq_jugo": {
+   "who": "tu",
+   "text": "Jugo de china, por favor.",
+   "tu_turno": [
+    {
+     "palabra": "jugo",
+     "formas": [
+      "jugo de china",
+      "un jugo de china",
+      "jugo"
+     ]
+    }
+   ]
+  },
+  "c89_mo_bebida": {
+   "who": "narr",
+   "habla": "mesero",
+   "text": "El mesero dice: Una bebida para Coquí. Ahora no. Después."
+  },
+  "c89_mo_limonada": {
+   "who": "narr",
+   "habla": "mesero",
+   "text": "El mesero dice: ¿La limonada?"
+  },
+  "c89_l_otro": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Yo quiero otro refresco!"
+  },
+  "p_cq_yo_tambien": {
+   "who": "tu",
+   "text": "¡Yo también!",
+   "tu_turno": [
+    {
+     "palabra": "también",
+     "formas": [
+      "también",
+      "tambien",
+      "yo también",
+      "yo tambien"
+     ]
+    }
+   ]
+  },
+  "c89_ab_agua": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, no. Ahora, agua."
+  },
+  "c89_a_abuelo_refresco": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Para mí, un refresco, por favor."
+  },
+  "c89_na_abuelo_refresco_limonada": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: No, Coquí. Esto es limonada. Un refresco, por favor."
+  },
+  "c89_na_abuelo_refresco_cafe": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: No, Coquí. Esto es café. Un refresco, por favor."
+  },
+  "c89_a_abuelo_limonada": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Para mí, una limonada, por favor."
+  },
+  "c89_na_abuelo_limonada_refresco": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: No, Coquí. Esto es refresco. Una limonada, por favor."
+  },
+  "c89_na_abuelo_limonada_cafe": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: No, Coquí. Esto es café. Una limonada, por favor."
+  },
+  "c89_a_abuela_refresco": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Para mí, un refresco, por favor."
+  },
+  "c89_na_abuela_refresco_limonada": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Esto es limonada. Un refresco, por favor."
+  },
+  "c89_na_abuela_refresco_cafe": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Esto es café. Un refresco, por favor."
+  },
+  "c89_a_abuela_limonada": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Para mí, una limonada, por favor."
+  },
+  "c89_na_abuela_limonada_refresco": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Esto es refresco. Una limonada, por favor."
+  },
+  "c89_na_abuela_limonada_cafe": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Esto es café. Una limonada, por favor."
+  },
+  "c89_a_luis_refresco": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Para mí, un refresco, por favor."
+  },
+  "c89_na_luis_refresco_limonada": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: No, Coquí. Esto es limonada. Un refresco, por favor."
+  },
+  "c89_na_luis_refresco_cafe": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: No, Coquí. Esto es café. Un refresco, por favor."
+  },
+  "c89_a_luis_limonada": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Para mí, una limonada, por favor."
+  },
+  "c89_na_luis_limonada_refresco": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: No, Coquí. Esto es refresco. Una limonada, por favor."
+  },
+  "c89_na_luis_limonada_cafe": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: No, Coquí. Esto es café. Una limonada, por favor."
+  },
+  "c89_r_abuelo_mi": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Para mí."
+  },
+  "c89_nb_abuelo_mi": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: No, Coquí. Para mí."
+  },
+  "c89_r_abuelo_el": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Para él."
+  },
+  "c89_nb_abuelo_el": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: No, Coquí. Para él."
+  },
+  "c89_r_abuelo_ella": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Para ella."
+  },
+  "c89_nb_abuelo_ella": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: No, Coquí. Para ella."
+  },
+  "c89_r_luis_mi": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Para mí."
+  },
+  "c89_nb_luis_mi": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: No, Coquí. Para mí."
+  },
+  "c89_r_luis_el": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Para él."
+  },
+  "c89_nb_luis_el": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: No, Coquí. Para él."
+  },
+  "c89_r_luis_ella": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Para ella."
+  },
+  "c89_nb_luis_ella": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: No, Coquí. Para ella."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "noche"
+   }
+  },
+  {
+   "act": "ir",
+   "a": "mesa_coqui"
+  },
+  {
+   "act": "sale",
+   "quien": "carmen"
+  },
+  {
+   "act": "llega",
+   "quien": "mesero",
+   "a": "junto_mesa"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c89_l_calor",
+  {
+   "act": "gesto",
+   "quien": "mesero",
+   "que": "senala",
+   "a": "bebidas"
+  },
+  {
+   "act": "cuadro",
+   "n": "todos",
+   "suelto": 1
+  },
+  "c89_mo_bebidas",
+  {
+   "act": "ya"
+  },
+  {
+   "ask": "bebidas",
+   "lead": [],
+   "line": "c89_donde_bebidas",
+   "then": [],
+   "after": [
+    {
+     "act": "cuadro",
+     "n": 1,
+     "suelto": 1
+    },
+    {
+     "act": "cuadro",
+     "n": 2,
+     "suelto": 1
+    },
+    {
+     "act": "cuadro",
+     "n": 3,
+     "suelto": 1
+    },
+    {
+     "act": "cuadro",
+     "n": 4,
+     "suelto": 1
+    },
+    {
+     "act": "ya"
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "llega",
+   "quien": "mesero",
+   "a": "bandeja"
+  },
+  {
+   "act": "bandeja89",
+   "orden": "refresco,cafe,limonada"
+  },
+  {
+   "act": "alza89",
+   "que": "refresco"
+  },
+  "c89_mo_refresco",
+  "c89_l_mi",
+  {
+   "ask": "luis",
+   "lead": [],
+   "line": "c89_quien_refresco",
+   "then": [],
+   "after": [
+    {
+     "act": "da89",
+     "que": "refresco",
+     "a": "luis",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "alza89",
+   "que": "cafe"
+  },
+  "c89_mo_cafe",
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "cabeza",
+   "a": "abuelo"
+  },
+  "c89_r_luis_el",
+  {
+   "ask": "abuelo",
+   "lead": [],
+   "line": "c89_quien_el",
+   "then": [],
+   "after": [
+    {
+     "act": "da89",
+     "que": "cafe",
+     "a": "abuelo",
+     "ok": 1
+    }
+   ]
+  },
+  "c89_abo_gracias",
+  {
+   "dots": 4
+  },
+  {
+   "act": "alza89",
+   "que": "limonada"
+  },
+  "c89_mo_limonada_y",
+  {
+   "act": "gesto",
+   "quien": "abuelo",
+   "que": "cabeza",
+   "a": "abuela"
+  },
+  "c89_r_abuelo_ella",
+  {
+   "ask": "abuela",
+   "lead": [],
+   "line": "c89_quien_ella",
+   "then": [],
+   "after": [
+    {
+     "act": "da89",
+     "que": "limonada",
+     "a": "abuela",
+     "ok": 1
+    }
+   ]
+  },
+  "c89_ab_mi",
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "senala",
+   "a": "abuelo"
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "senala",
+   "a": "abuela"
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "senala",
+   "a": "luis"
+  },
+  "c89_l_todos",
+  {
+   "dots": 5
+  },
+  "c89_mo_ti",
+  "c89_cq_jugo",
+  {
+   "act": "jugo",
+   "n": 3
+  },
+  "c89_mo_bebida",
+  {
+   "dots": 6
+  },
+  {
+   "act": "llega",
+   "quien": "mesero",
+   "a": "bandeja"
+  },
+  {
+   "act": "gesto",
+   "quien": "mesero",
+   "que": "abanico"
+  },
+  {
+   "act": "gesto",
+   "quien": "mesero",
+   "que": "mira",
+   "a": "vasito"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "asker",
+   "options": [
+    "abuelo",
+    "abuela",
+    "luis"
+   ]
+  },
+  {
+   "draw": "drink",
+   "options": [
+    "refresco",
+    "limonada"
+   ]
+  },
+  {
+   "reparte": [
+    "trayone",
+    "traytwo",
+    "traythree"
+   ],
+   "options": [
+    "refresco",
+    "limonada",
+    "cafe"
+   ]
+  },
+  {
+   "calc": "pickplace",
+   "cond": "trayone=$drink",
+   "then": "bebida1",
+   "else": "bebida3"
+  },
+  {
+   "calc": "pickplace",
+   "cond": "traytwo=$drink",
+   "then": "bebida2",
+   "else": "$pickplace"
+  },
+  {
+   "act": "bandeja89",
+   "orden": "$trayone,$traytwo,$traythree"
+  },
+  {
+   "act": "gesto",
+   "quien": "$asker",
+   "que": "mira",
+   "a": "coqui"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "bebida1",
+    "bebida2",
+    "bebida3"
+   ],
+   "pick": "$pickplace",
+   "tests": "$drink",
+   "lock": true,
+   "lead": [],
+   "line": "c89_a_$asker_$drink",
+   "right": [
+    {
+     "act": "da89",
+     "que": "$drink",
+     "a": "$asker",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "calc": "wrongdrink",
+     "cond": "x=bebida1",
+     "then": "$trayone",
+     "else": "$traytwo"
+    },
+    {
+     "calc": "wrongdrink",
+     "cond": "x=bebida3",
+     "then": "$traythree",
+     "else": "$wrongdrink"
+    },
+    {
+     "act": "da89",
+     "que": "$wrongdrink",
+     "a": "$asker",
+     "ok": 0
+    },
+    "c89_na_$asker_$drink_$wrongdrink",
+    {
+     "act": "sorbo89"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "jugo",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "jugo",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 8
+  },
+  {
+   "draw": "lifted",
+   "options": [
+    "refresco",
+    "limonada",
+    "cafe"
+   ]
+  },
+  {
+   "draw": "answerer",
+   "options": [
+    "abuelo",
+    "luis"
+   ]
+  },
+  {
+   "draw": "para",
+   "options": [
+    "mi",
+    "el",
+    "ella"
+   ]
+  },
+  {
+   "calc": "otherman",
+   "cond": "answerer=abuelo",
+   "then": "luis",
+   "else": "abuelo"
+  },
+  {
+   "calc": "target",
+   "cond": "para=mi",
+   "then": "$answerer",
+   "else": "abuela"
+  },
+  {
+   "calc": "target",
+   "cond": "para=el",
+   "then": "$otherman",
+   "else": "$target"
+  },
+  {
+   "act": "bandeja89",
+   "orden": "refresco,limonada,cafe"
+  },
+  {
+   "act": "alza89",
+   "que": "$lifted"
+  },
+  "c89_mo_$lifted",
+  {
+   "act": "gesto",
+   "quien": "$answerer",
+   "que": "mira",
+   "a": "coqui"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "abuelo",
+    "abuela",
+    "luis"
+   ],
+   "pick": "$target",
+   "tests": "$para",
+   "lock": true,
+   "lead": [],
+   "line": "c89_r_$answerer_$para",
+   "right": [
+    {
+     "act": "da89",
+     "que": "$lifted",
+     "a": "$target",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "da89",
+     "que": "$lifted",
+     "a": "$x",
+     "ok": 0
+    },
+    "c89_nb_$answerer_$para",
+    {
+     "act": "sorbo89"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "jugo",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "jugo",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 9
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final89",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final89",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final89",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 10
+  },
+  "c89_l_otro",
+  "p_cq_yo_tambien",
+  "c89_ab_agua",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c89_l_calor",
+  "c89_mo_bebidas",
+  "c89_donde_bebidas",
+  "c89_mo_refresco",
+  "c89_l_mi",
+  "c89_quien_refresco",
+  "c89_mo_cafe",
+  "c89_r_luis_el",
+  "c89_quien_el",
+  "c89_abo_gracias",
+  "c89_mo_limonada_y",
+  "c89_r_abuelo_ella",
+  "c89_quien_ella",
+  "c89_ab_mi",
+  "c89_l_todos",
+  "c89_mo_ti",
+  "c89_cq_jugo",
+  "c89_mo_bebida",
+  "c89_a_abuelo_refresco",
+  "c89_mo_limonada",
+  "c89_r_luis_ella",
+  "c89_l_otro",
+  "p_cq_yo_tambien",
+  "c89_ab_agua"
+ ]
+}
