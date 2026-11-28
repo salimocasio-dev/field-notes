@@ -1,0 +1,636 @@
+{
+ "id": "buenos-dias",
+ "title": "Buenos días",
+ "place": "La casa, un día entero",
+ "scene": "cuarto",
+ "next": "a-las-siete",
+ "goal": "Find Luis's lost shirt and shoes by looking near the bed, the big pillow or the chair, where Carmen says, so that the three pieces of bread abuela set on the night table are still there for Luis: every wrong place lets Canelo take one.",
+ "stake": {
+  "thing": "plato",
+  "steps": 3
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "cuarto",
+  "cama",
+  "almohada",
+  "luz",
+  "tiene sueño"
+ ],
+ "formas_foco": {
+  "tiene sueño": [
+   "tengo sueño",
+   "tienes sueño"
+  ]
+ },
+ "back_again": [
+  "buenos días",
+  "hola",
+  "busca",
+  "cerca",
+  "silla",
+  "camisa",
+  "zapatos",
+  "duerme",
+  "perro",
+  "quiero",
+  "mira",
+  "¿dónde está?",
+  "mi",
+  "tu",
+  "yo",
+  "tú",
+  "no",
+  "sí",
+  "gracias",
+  "por favor",
+  "ahora",
+  "viene"
+ ],
+ "also_heard": [],
+ "names": {
+  "abuela": "abuela",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "perro": "c_n_perro",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "cama": "cama",
+  "almohada": "almohada",
+  "silla": "silla"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c_n_perro": {
+   "who": "narr",
+   "text": "Es el perro. Se llama Canelo."
+  },
+  "c96_ab_buenos": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Buenos días, Coquí. Mira: el cuarto de Luis y Carmen. Luis duerme en la cama."
+  },
+  "c96_donde_cama": {
+   "who": "narr",
+   "text": "¿Dónde está la cama de Luis?"
+  },
+  "c96_l_no": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: No... Tengo sueño. ¡Mi cama!"
+  },
+  "c96_ab_luz": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Luis tiene sueño. Coquí, la luz, por favor."
+  },
+  "c96_l_luz_no": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡No! ¡La luz no!"
+  },
+  "c96_ca_ay": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Ay, la luz! ¡Hola, Coquí!"
+  },
+  "c69_cq_buenos": {
+   "who": "tu",
+   "text": "¡Buenos días!",
+   "tu_turno": [
+    {
+     "palabra": "buenos días",
+     "formas": [
+      "buenos días",
+      "buenos dias"
+     ]
+    }
+   ]
+  },
+  "c96_ca_toma": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Luis, toma mi almohada!"
+  },
+  "c96_l_no_quiero": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Ay! ¡No quiero tu almohada!"
+  },
+  "c96_donde_almohada": {
+   "who": "narr",
+   "text": "¿Dónde está la almohada de Carmen?"
+  },
+  "c96_l_camisa": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¿Dónde está mi camisa?"
+  },
+  "c96_ca_se": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Yo sé dónde está. Yo tengo sueño... Busca tú, Coquí."
+  },
+  "c96_ab_cuarto": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Este cuarto! Vengo ahora."
+  },
+  "c96_l_zapatos": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¿Y mis zapatos?"
+  },
+  "c96_l_gracias_camisa": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Mi camisa! Gracias, Coquí."
+  },
+  "c96_l_gracias_zapatos": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Mis zapatos! Gracias."
+  },
+  "c96_ab_tienes": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Y tú, Coquí? ¿Tienes sueño?"
+  },
+  "cq_si": {
+   "who": "tu",
+   "text": "¡Sí!",
+   "tu_turno": [
+    {
+     "palabra": "sí",
+     "formas": [
+      "sí",
+      "si"
+     ]
+    }
+   ]
+  },
+  "c96_fin": {
+   "who": "narr",
+   "text": "Coquí tiene sueño. Duerme en la almohada, en el cuarto de Luis y Carmen."
+  },
+  "c96_busca_cama": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Busca cerca de la cama."
+  },
+  "c96_no_cama": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: No, Coquí. Cerca de la cama."
+  },
+  "c96_busca_almohada": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Busca cerca de la almohada."
+  },
+  "c96_no_almohada": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: No, Coquí. Cerca de la almohada."
+  },
+  "c96_busca_silla": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Busca cerca de la silla."
+  },
+  "c96_no_silla": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: No, Coquí. Cerca de la silla."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "alba",
+    "luz": 0,
+    "cuna": 0,
+    "butaca": 0
+   }
+  },
+  {
+   "act": "plato96",
+   "n": 3
+  },
+  {
+   "act": "llega",
+   "quien": "luis",
+   "a": "cama_luis",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "carmen",
+   "a": "cama_carmen",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "abuela",
+   "a": "puerta",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "perro",
+   "a": "bajo_cama",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "act": "ir",
+   "a": "alfombra"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c96_ab_buenos",
+  {
+   "ask": "cama",
+   "lead": [],
+   "line": "c96_donde_cama",
+   "then": [],
+   "after": [
+    {
+     "act": "ir",
+     "a": "cama_coqui"
+    }
+   ]
+  },
+  "c96_l_no",
+  {
+   "dots": 2
+  },
+  {
+   "ask": "luz",
+   "lead": [],
+   "line": "c96_ab_luz",
+   "then": [],
+   "after": [
+    {
+     "act": "luz96",
+     "on": 1
+    }
+   ]
+  },
+  "c96_l_luz_no",
+  {
+   "act": "llega",
+   "quien": "carmen",
+   "a": "sentado_carmen"
+  },
+  "c96_ca_ay",
+  "c69_cq_buenos",
+  {
+   "dots": 3
+  },
+  {
+   "act": "almohada96"
+  },
+  "c96_ca_toma",
+  "c96_l_no_quiero",
+  {
+   "ask": "almohada",
+   "lead": [],
+   "line": "c96_donde_almohada",
+   "then": [],
+   "after": [
+    {
+     "act": "ir",
+     "a": "almohada_suelo"
+    }
+   ]
+  },
+  {
+   "act": "llega",
+   "quien": "luis",
+   "a": "sentado_luis"
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "palpa"
+  },
+  "c96_l_camisa",
+  {
+   "dots": 4
+  },
+  "c96_ca_se",
+  {
+   "act": "llega",
+   "quien": "carmen",
+   "a": "cama_carmen"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "no"
+  },
+  "c96_ab_cuarto",
+  {
+   "act": "sale",
+   "quien": "abuela"
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "llega",
+   "quien": "perro",
+   "a": "junto_mesita"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "da",
+   "options": [
+    "cama",
+    "almohada",
+    "silla"
+   ]
+  },
+  "c96_l_camisa",
+  {
+   "decide": "do",
+   "options": [
+    "cama",
+    "almohada",
+    "silla"
+   ],
+   "pick": "$da",
+   "tests": "$da",
+   "lock": true,
+   "lead": [],
+   "line": "c96_busca_$da",
+   "right": [
+    {
+     "act": "busca96",
+     "donde": "$da",
+     "que": "camisa",
+     "ok": 1
+    },
+    "c96_l_gracias_camisa",
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "busca96",
+     "donde": "$x",
+     "que": "camisa",
+     "ok": 0
+    },
+    "c96_no_$da",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "plato96",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "plato96",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "gb",
+   "options": [
+    "1",
+    "2"
+   ]
+  },
+  {
+   "if": "da=cama",
+   "then": [
+    {
+     "calc": "db",
+     "cond": "gb=1",
+     "then": "almohada",
+     "else": "silla"
+    }
+   ],
+   "else": [
+    {
+     "if": "da=almohada",
+     "then": [
+      {
+       "calc": "db",
+       "cond": "gb=1",
+       "then": "cama",
+       "else": "silla"
+      }
+     ],
+     "else": [
+      {
+       "calc": "db",
+       "cond": "gb=1",
+       "then": "cama",
+       "else": "almohada"
+      }
+     ]
+    }
+   ]
+  },
+  "c96_l_zapatos",
+  {
+   "decide": "do",
+   "options": [
+    "cama",
+    "almohada",
+    "silla"
+   ],
+   "pick": "$db",
+   "tests": "$db",
+   "lock": true,
+   "lead": [],
+   "line": "c96_busca_$db",
+   "right": [
+    {
+     "act": "busca96",
+     "donde": "$db",
+     "que": "zapatos",
+     "ok": 1
+    },
+    "c96_l_gracias_zapatos",
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "busca96",
+     "donde": "$x",
+     "que": "zapatos",
+     "ok": 0
+    },
+    "c96_no_$db",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "plato96",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "plato96",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final96",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final96",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final96",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 9
+  },
+  {
+   "act": "llega",
+   "quien": "abuela",
+   "a": "puerta"
+  },
+  "c96_ab_tienes",
+  "cq_si",
+  {
+   "act": "duerme96"
+  },
+  "c96_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c96_ab_buenos",
+  "c96_donde_cama",
+  "c96_l_no",
+  "c96_ab_luz",
+  "c96_l_luz_no",
+  "c96_ca_ay",
+  "c69_cq_buenos",
+  "c96_ca_toma",
+  "c96_l_no_quiero",
+  "c96_donde_almohada",
+  "c96_l_camisa",
+  "c96_ca_se",
+  "c96_ab_cuarto",
+  "c96_busca_almohada",
+  "c96_l_gracias_camisa",
+  "c96_l_zapatos",
+  "c96_busca_cama",
+  "c96_l_gracias_zapatos",
+  "c96_ab_tienes",
+  "cq_si",
+  "c96_fin"
+ ]
+}
