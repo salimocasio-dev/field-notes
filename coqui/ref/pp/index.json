@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
-  "files": 1748,
-  "totalBytes": 107727207,
+  "files": 1780,
+  "totalBytes": 109622249,
   "entries": [
     {
       "path": "balcon/door-open-win-open/kinds.bin",
@@ -5772,6 +5772,166 @@
       "path": "nevera/nev-2-cajon-0-pila-0-banco-1/zb.json",
       "bytes": 322,
       "sha256": "161c2e74723cd0c2a2a5eb4d5a8337c0f5e7e32c50330adc6f0335c51bfc5021"
+    },
+    {
+      "path": "noche/0-0-0-0-0-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0c005d7ef5703a260844e8fb89d997cae0962860bf7a9017d0020efebb689d38"
+    },
+    {
+      "path": "noche/0-0-0-0-0-1/kinds.json",
+      "bytes": 305,
+      "sha256": "345ecc5e0033791b41e30d54b90f6f63f34d1f0b8e314cd7f2813d6f1140fa70"
+    },
+    {
+      "path": "noche/0-0-0-0-0-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "3337cc396c0244d60865ea1738253ad20ede0308b0b24ec39a706d7481520e87"
+    },
+    {
+      "path": "noche/0-0-0-0-0-1/pix.json",
+      "bytes": 370,
+      "sha256": "671e5b7ca4bf98ff3a1a008413cc275157d5608394ecbe5806dca1343d41dc78"
+    },
+    {
+      "path": "noche/0-0-0-0-0-1/pix.png",
+      "bytes": 4986,
+      "sha256": "f2b7d2c5e9067bb78cad3e9fbcb9b93bd6acef5469d6d69fdd1bf7cd01916c56"
+    },
+    {
+      "path": "noche/0-0-0-0-0-1/state.json",
+      "bytes": 958,
+      "sha256": "829be07d0d8f1d4b45b1fc01eb6721a31559f83c6a579baf48b5f53c827c0331"
+    },
+    {
+      "path": "noche/0-0-0-0-0-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "3b03d8f458da542056862b06de0bfe143cbc96d40cf863ebd2660df663fa30f5"
+    },
+    {
+      "path": "noche/0-0-0-0-0-1/zb.json",
+      "bytes": 322,
+      "sha256": "62d05afec9ba098158b4d09b6aba743549ef2cd6bfa621669e0da77b2622a336"
+    },
+    {
+      "path": "noche/0-1-0-0-0-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0c005d7ef5703a260844e8fb89d997cae0962860bf7a9017d0020efebb689d38"
+    },
+    {
+      "path": "noche/0-1-0-0-0-0/kinds.json",
+      "bytes": 305,
+      "sha256": "345ecc5e0033791b41e30d54b90f6f63f34d1f0b8e314cd7f2813d6f1140fa70"
+    },
+    {
+      "path": "noche/0-1-0-0-0-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "fc9e16b9204f1ef2935dab53ee4136d9a1fd84a27a9d32caaa204702d7390e67"
+    },
+    {
+      "path": "noche/0-1-0-0-0-0/pix.json",
+      "bytes": 370,
+      "sha256": "588ad7080a86040fed42ccffc42d02a68ce748441e955bb74d0b8b2bb8b55eef"
+    },
+    {
+      "path": "noche/0-1-0-0-0-0/pix.png",
+      "bytes": 5035,
+      "sha256": "58d69cce9f251d4e69bbd91f8033497da2297a48fa59f1e50bf9b2eb50d02aa2"
+    },
+    {
+      "path": "noche/0-1-0-0-0-0/state.json",
+      "bytes": 958,
+      "sha256": "c8e1c96e62649e07bfaaf62cada4a6601870ea5a6425d21293413d2d9f9d3151"
+    },
+    {
+      "path": "noche/0-1-0-0-0-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "3b03d8f458da542056862b06de0bfe143cbc96d40cf863ebd2660df663fa30f5"
+    },
+    {
+      "path": "noche/0-1-0-0-0-0/zb.json",
+      "bytes": 322,
+      "sha256": "62d05afec9ba098158b4d09b6aba743549ef2cd6bfa621669e0da77b2622a336"
+    },
+    {
+      "path": "noche/0-1-0-1-0-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0c005d7ef5703a260844e8fb89d997cae0962860bf7a9017d0020efebb689d38"
+    },
+    {
+      "path": "noche/0-1-0-1-0-0/kinds.json",
+      "bytes": 305,
+      "sha256": "345ecc5e0033791b41e30d54b90f6f63f34d1f0b8e314cd7f2813d6f1140fa70"
+    },
+    {
+      "path": "noche/0-1-0-1-0-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "cfd63b19a9773bf2a1fae4b2a73825a20aab8f4a15ff918411370efcb8e6722e"
+    },
+    {
+      "path": "noche/0-1-0-1-0-0/pix.json",
+      "bytes": 370,
+      "sha256": "2c2bff517a7fa3a4e1e1a3548aca7c67d05a51f27f93af51240fa51e4041cde6"
+    },
+    {
+      "path": "noche/0-1-0-1-0-0/pix.png",
+      "bytes": 5106,
+      "sha256": "d091879b2013a6fa3ba5380d3a293678b0b620c30ba1e839bd107c875a5da3c5"
+    },
+    {
+      "path": "noche/0-1-0-1-0-0/state.json",
+      "bytes": 958,
+      "sha256": "b64277215aa4cc604ab1c339fe8d52dc62dbc403be728e5558a3c92935b61c2c"
+    },
+    {
+      "path": "noche/0-1-0-1-0-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "3b03d8f458da542056862b06de0bfe143cbc96d40cf863ebd2660df663fa30f5"
+    },
+    {
+      "path": "noche/0-1-0-1-0-0/zb.json",
+      "bytes": 322,
+      "sha256": "62d05afec9ba098158b4d09b6aba743549ef2cd6bfa621669e0da77b2622a336"
+    },
+    {
+      "path": "noche/1-1-1-0-1-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0c005d7ef5703a260844e8fb89d997cae0962860bf7a9017d0020efebb689d38"
+    },
+    {
+      "path": "noche/1-1-1-0-1-0/kinds.json",
+      "bytes": 305,
+      "sha256": "345ecc5e0033791b41e30d54b90f6f63f34d1f0b8e314cd7f2813d6f1140fa70"
+    },
+    {
+      "path": "noche/1-1-1-0-1-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "d8e986d118a94ad4d14d8e5803e9c7b0dee24459a7412667833cbe9d4d79309c"
+    },
+    {
+      "path": "noche/1-1-1-0-1-0/pix.json",
+      "bytes": 370,
+      "sha256": "57cc855e5c76b200561827ebf44dfd6ff5cdd8d46862d51cce0c5d10ba4d435e"
+    },
+    {
+      "path": "noche/1-1-1-0-1-0/pix.png",
+      "bytes": 5855,
+      "sha256": "4a72564dcb9e1e6b6303d935641b54cdfaf1e58d05f86bd125d7e99d19be7d01"
+    },
+    {
+      "path": "noche/1-1-1-0-1-0/state.json",
+      "bytes": 958,
+      "sha256": "5fae373e2598823c0c432b3247730f3019a01cda98f875ede94edac054f80ee4"
+    },
+    {
+      "path": "noche/1-1-1-0-1-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "d63a825b2dc32686d0c7b593d4ccf4b3ed2515e2dd6225774a1adb8581b17849"
+    },
+    {
+      "path": "noche/1-1-1-0-1-0/zb.json",
+      "bytes": 322,
+      "sha256": "c213c8e3c6e4ce71d16bf651312b9ad112f6c3bd98f81fe3f343f4fb589456f3"
     },
     {
       "path": "orilla/manana-0-0/kinds.bin",

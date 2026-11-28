@@ -1,0 +1,638 @@
+{
+ "id": "antes-y-despues",
+ "title": "Antes y después",
+ "place": "La casa, un día entero",
+ "scene": "noche",
+ "next": "se-acuesta",
+ "goal": "Carry what is on the frog's tray to the dinner table or to the sideboard's shelf as abuela says, before dinner or after it, so that the tall candle on the table stays tall for dinner by candlelight: every mix-up takes time to put right and the candle burns down.",
+ "stake": {
+  "thing": "vela",
+  "steps": 3
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "cena",
+  "antes",
+  "siempre",
+  "nunca"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "después",
+  "limpio",
+  "mano",
+  "mesa",
+  "perro",
+  "come",
+  "jugo",
+  "queso",
+  "fruta",
+  "flan",
+  "caliente",
+  "rico",
+  "te lavas",
+  "va",
+  "pone",
+  "mira",
+  "tú",
+  "no",
+  "sí"
+ ],
+ "also_heard": [],
+ "names": {
+  "abuela": "abuela",
+  "abuelo": "n_abuelo",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "perro": "c_n_perro",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "despues": "después"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c_n_perro": {
+   "who": "narr",
+   "text": "Es el perro. Se llama Canelo."
+  },
+  "c106_ab_mira": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, mira: la cena. Está caliente."
+  },
+  "c106_q_cena": {
+   "who": "narr",
+   "text": "¿Dónde está la cena?"
+  },
+  "c106_ab_manos": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No, Luis! Antes de la cena te lavas las manos."
+  },
+  "c106_ab_limpias": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Las manos limpias, siempre. ¿Y tú, Coquí?"
+  },
+  "c106_cq_limpias": {
+   "who": "tu",
+   "text": "¡Sí, limpias!",
+   "tu_turno": [
+    {
+     "palabra": "limpio",
+     "formas": [
+      "sí limpias",
+      "si limpias",
+      "limpias",
+      "están limpias",
+      "estan limpias",
+      "limpio"
+     ]
+    }
+   ]
+  },
+  "c106_ab_siempre": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Siempre limpias!"
+  },
+  "c106_ab_perro": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Canelo! El perro nunca come en la mesa."
+  },
+  "c106_ca_nunca": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Nunca, Canelo! Tú comes antes de la cena."
+  },
+  "c106_ab_jugo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: El jugo va antes de la cena."
+  },
+  "c106_ab_flan": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: El flan va después de la cena."
+  },
+  "c106_a_antes": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: El queso va antes de la cena."
+  },
+  "c106_a_despues": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: El queso va después de la cena."
+  },
+  "c106_b_antes": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Las frutas van antes de la cena."
+  },
+  "c106_b_despues": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Las frutas van después de la cena."
+  },
+  "c106_no_antes": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No, Coquí! Antes de la cena."
+  },
+  "c106_no_despues": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No, Coquí! Después de la cena."
+  },
+  "c106_abo_cena": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¿Cómo está la cena, Coquí?"
+  },
+  "c106_cq_rica": {
+   "who": "tu",
+   "text": "¡Rica!",
+   "tu_turno": [
+    {
+     "palabra": "rico",
+     "formas": [
+      "rica",
+      "está rica",
+      "esta rica",
+      "muy rica",
+      "rico"
+     ]
+    }
+   ]
+  },
+  "c106_ab_final": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Las manos limpias, siempre. El perro en la mesa, nunca."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "noche",
+    "tele": 0,
+    "mesa": 1,
+    "oscuro": 0
+   }
+  },
+  {
+   "act": "vela",
+   "n": 3
+  },
+  {
+   "act": "llega",
+   "quien": "abuela",
+   "a": "junto_mesa"
+  },
+  {
+   "act": "llega",
+   "quien": "abuelo",
+   "a": "silla4"
+  },
+  {
+   "act": "llega",
+   "quien": "perro",
+   "a": "plato_perro"
+  },
+  {
+   "act": "ir",
+   "a": "aparador_coqui"
+  },
+  {
+   "act": "llega",
+   "quien": "luis",
+   "a": "silla1",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "carmen",
+   "a": "silla2",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "tapa106"
+  },
+  "c106_ab_mira",
+  {
+   "ask": "mesa",
+   "lead": [],
+   "line": "c106_q_cena",
+   "then": [],
+   "after": [
+    {
+     "set": {
+      "twinkle": "mesa"
+     }
+    },
+    {
+     "wait": 700
+    },
+    {
+     "set": {
+      "twinkle": null
+     }
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  "c106_ab_manos",
+  {
+   "act": "manos106"
+  },
+  "c106_ab_limpias",
+  {
+   "act": "gesto",
+   "quien": "coqui",
+   "que": "manos"
+  },
+  "c106_cq_limpias",
+  "c106_ab_siempre",
+  {
+   "dots": 3
+  },
+  {
+   "act": "perro106",
+   "n": 1
+  },
+  {
+   "ask": "perro",
+   "lead": [],
+   "line": "c106_ab_perro",
+   "then": [],
+   "after": [
+    {
+     "act": "llega",
+     "quien": "perro",
+     "a": "plato_perro"
+    }
+   ]
+  },
+  {
+   "act": "perro106",
+   "n": 2
+  },
+  "c106_ca_nunca",
+  {
+   "act": "llega",
+   "quien": "perro",
+   "a": "plato_perro"
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "vela106"
+  },
+  {
+   "ask": "mesa",
+   "lead": [],
+   "line": "c106_ab_jugo",
+   "then": [],
+   "after": [
+    {
+     "act": "lleva106",
+     "que": "jugo",
+     "a": "mesa",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "ask": "aparador",
+   "lead": [],
+   "line": "c106_ab_flan",
+   "then": [],
+   "after": [
+    {
+     "act": "lleva106",
+     "que": "flan",
+     "a": "aparador",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "llega",
+   "quien": "abuela",
+   "a": "ensalada"
+  },
+  {
+   "act": "llega",
+   "quien": "luis",
+   "a": "sofa2",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "carmen",
+   "a": "sofa3",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "wa",
+   "options": [
+    "antes",
+    "despues"
+   ]
+  },
+  {
+   "calc": "pa",
+   "cond": "wa=antes",
+   "then": "mesa",
+   "else": "aparador"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "mesa",
+    "aparador"
+   ],
+   "pick": "$pa",
+   "tests": "$wa",
+   "lock": true,
+   "lead": [],
+   "line": "c106_a_$wa",
+   "right": [
+    {
+     "act": "lleva106",
+     "que": "queso",
+     "a": "$pa",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "lleva106",
+     "que": "queso",
+     "a": "$x",
+     "ok": 0
+    },
+    "c106_no_$wa",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "vela",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "vela",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "wb",
+   "options": [
+    "antes",
+    "despues"
+   ]
+  },
+  {
+   "calc": "pb",
+   "cond": "wb=antes",
+   "then": "mesa",
+   "else": "aparador"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "mesa",
+    "aparador"
+   ],
+   "pick": "$pb",
+   "tests": "$wb",
+   "lock": true,
+   "lead": [],
+   "line": "c106_b_$wb",
+   "right": [
+    {
+     "act": "lleva106",
+     "que": "frutas",
+     "a": "$pb",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "lleva106",
+     "que": "frutas",
+     "a": "$x",
+     "ok": 0
+    },
+    "c106_no_$wb",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "vela",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "vela",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final106",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final106",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final106",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 9
+  },
+  "c106_abo_cena",
+  "c106_cq_rica",
+  {
+   "act": "nariz106",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "mira",
+   "a": "perro",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "abuelo",
+   "que": "mira",
+   "a": "perro",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "mira",
+   "a": "perro",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "mira",
+   "a": "perro",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  "c106_ab_final",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c106_ab_mira",
+  "c106_q_cena",
+  "c106_ab_manos",
+  "c106_ab_limpias",
+  "c106_cq_limpias",
+  "c106_ab_siempre",
+  "c106_ab_perro",
+  "c106_ca_nunca",
+  "c106_ab_jugo",
+  "c106_ab_flan",
+  "c106_a_antes",
+  "c106_b_despues",
+  "c106_abo_cena",
+  "c106_cq_rica",
+  "c106_ab_final"
+ ]
+}
