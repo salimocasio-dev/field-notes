@@ -152,6 +152,11 @@ void main(List<String> args) {
       constant: 'cieloSetRefs',
       what: "cielo's baked states",
     ),
+    'entrada': (
+      file: 'entrada_set_refs.dart',
+      constant: 'entradaSetRefs',
+      what: "entrada's baked states",
+    ),
     'comida': (
       file: 'comida_set_refs.dart',
       constant: 'comidaSetRefs',

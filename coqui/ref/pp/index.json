@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
-  "files": 1692,
-  "totalBytes": 104395838,
+  "files": 1740,
+  "totalBytes": 107253337,
   "entries": [
     {
       "path": "balcon/door-open-win-open/kinds.bin",
@@ -2002,6 +2002,246 @@
       "path": "cuenta/no-arriba/zb.json",
       "bytes": 322,
       "sha256": "dcdad71069a38249a028f33ba528a7cac75ffa93ae883566927576fff67d02ae"
+    },
+    {
+      "path": "entrada/noche-abierta/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "entrada/noche-abierta/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "entrada/noche-abierta/pix.bin",
+      "bytes": 207360,
+      "sha256": "7fb2355464ab99340f93226e307611bf2d4164e3d676f5d9dc2b9d671a195a59"
+    },
+    {
+      "path": "entrada/noche-abierta/pix.json",
+      "bytes": 370,
+      "sha256": "31938650ea3c560f1e3c2513e09fdafa19b74868357899d0697f3247ca80acc8"
+    },
+    {
+      "path": "entrada/noche-abierta/pix.png",
+      "bytes": 7527,
+      "sha256": "6fbbcf81cbd54490fe77147deb843a77b9e24eff59c51e23a5a0d38b53c97a86"
+    },
+    {
+      "path": "entrada/noche-abierta/state.json",
+      "bytes": 946,
+      "sha256": "e3eb7683968ddd9d5595bada912897b72f862e038715f23e5495cf3e227abd33"
+    },
+    {
+      "path": "entrada/noche-abierta/zb.bin",
+      "bytes": 207360,
+      "sha256": "c12318a3a1f71d1b0dc7b01ceb6267b22174022b55615a2a5e3e6cdbc9ac480e"
+    },
+    {
+      "path": "entrada/noche-abierta/zb.json",
+      "bytes": 322,
+      "sha256": "d46ef66526a286e7bd0326cab21510d6dd2b3d39c27d5351c7e044a7cc5bd956"
+    },
+    {
+      "path": "entrada/noche-puesta/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "entrada/noche-puesta/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "entrada/noche-puesta/pix.bin",
+      "bytes": 207360,
+      "sha256": "a73a2e0fea910e96b7de1e904b727e91f4484fbb32f813c64dbfd84b64782d97"
+    },
+    {
+      "path": "entrada/noche-puesta/pix.json",
+      "bytes": 370,
+      "sha256": "1d9bfa4c9523024ac4716acfe1d0f7b395e20ee2906cba105bbfc62859c9ae83"
+    },
+    {
+      "path": "entrada/noche-puesta/pix.png",
+      "bytes": 7726,
+      "sha256": "f55b6788a2a349a1270b55413b858390389587d6f8305619b449e85dde6d0f3b"
+    },
+    {
+      "path": "entrada/noche-puesta/state.json",
+      "bytes": 944,
+      "sha256": "c45fc01a077b81722f8acee65ac0e33df44e4a52f7fe0a76b7b91bcf73f575f5"
+    },
+    {
+      "path": "entrada/noche-puesta/zb.bin",
+      "bytes": 207360,
+      "sha256": "353911237dcf348c39a073b705668c2d49f2f28ebe1a2fb313a0b95313601e22"
+    },
+    {
+      "path": "entrada/noche-puesta/zb.json",
+      "bytes": 322,
+      "sha256": "b878f7c985e8e8b3e02b5691236011be11d716473a390a93514584d99d0761d8"
+    },
+    {
+      "path": "entrada/ocaso-abierta/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "entrada/ocaso-abierta/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "entrada/ocaso-abierta/pix.bin",
+      "bytes": 207360,
+      "sha256": "43dbe35477a5f1f8a86647122aa0b06553274c5902a3cf93a8e4f73e0f4fe52a"
+    },
+    {
+      "path": "entrada/ocaso-abierta/pix.json",
+      "bytes": 370,
+      "sha256": "89ca198ccefacaf68bd8e15b53ff34bb09b13907b00362f6d9602f085f6db1f7"
+    },
+    {
+      "path": "entrada/ocaso-abierta/pix.png",
+      "bytes": 7837,
+      "sha256": "e18e34421dd7b89f30348ba7d7555dcbc8d69f807aaeaf35eef3c84893d0643e"
+    },
+    {
+      "path": "entrada/ocaso-abierta/state.json",
+      "bytes": 946,
+      "sha256": "5cd685ea9ed084ad2f0f136ee9b95f5936225cb52aa74ba8af82451ee92dd461"
+    },
+    {
+      "path": "entrada/ocaso-abierta/zb.bin",
+      "bytes": 207360,
+      "sha256": "c12318a3a1f71d1b0dc7b01ceb6267b22174022b55615a2a5e3e6cdbc9ac480e"
+    },
+    {
+      "path": "entrada/ocaso-abierta/zb.json",
+      "bytes": 322,
+      "sha256": "d46ef66526a286e7bd0326cab21510d6dd2b3d39c27d5351c7e044a7cc5bd956"
+    },
+    {
+      "path": "entrada/ocaso-puesta/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "entrada/ocaso-puesta/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "entrada/ocaso-puesta/pix.bin",
+      "bytes": 207360,
+      "sha256": "c76987449237f682e8728569289db1b309f67eed0ddb2f4328b83cc34823aaa8"
+    },
+    {
+      "path": "entrada/ocaso-puesta/pix.json",
+      "bytes": 370,
+      "sha256": "d754870e8b2d6c8c7697b2bee2d9c8bab53ebcad9489870aa8b8ccb982704b38"
+    },
+    {
+      "path": "entrada/ocaso-puesta/pix.png",
+      "bytes": 8029,
+      "sha256": "867eb6791e27f0b60e29deb754506560b7322d5ce1da1a1ca806753c813ab910"
+    },
+    {
+      "path": "entrada/ocaso-puesta/state.json",
+      "bytes": 944,
+      "sha256": "bdc45a385083feb419da0768b6f9126f76f2ce356374db7d0d09d286a87bcbb2"
+    },
+    {
+      "path": "entrada/ocaso-puesta/zb.bin",
+      "bytes": 207360,
+      "sha256": "353911237dcf348c39a073b705668c2d49f2f28ebe1a2fb313a0b95313601e22"
+    },
+    {
+      "path": "entrada/ocaso-puesta/zb.json",
+      "bytes": 322,
+      "sha256": "b878f7c985e8e8b3e02b5691236011be11d716473a390a93514584d99d0761d8"
+    },
+    {
+      "path": "entrada/tarde_noche-abierta/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "entrada/tarde_noche-abierta/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "entrada/tarde_noche-abierta/pix.bin",
+      "bytes": 207360,
+      "sha256": "97df27ffd4f31921d2d2ac9d94a1a178174dc2fe7e1f613a5a7080b09d31c025"
+    },
+    {
+      "path": "entrada/tarde_noche-abierta/pix.json",
+      "bytes": 370,
+      "sha256": "f97fcd6299a645a24c06222ba4ced488af01ac0a13ba5bcb6e15b4d042aa1a69"
+    },
+    {
+      "path": "entrada/tarde_noche-abierta/pix.png",
+      "bytes": 7573,
+      "sha256": "093e65ec898c1acdadbe0f834310dee1a9bf8ac243c640ede83f46bf3658dc32"
+    },
+    {
+      "path": "entrada/tarde_noche-abierta/state.json",
+      "bytes": 958,
+      "sha256": "31a7f4e7ecb3b376cd4e5d2ac56ef94916cbf492cffa937301863dc4709daf06"
+    },
+    {
+      "path": "entrada/tarde_noche-abierta/zb.bin",
+      "bytes": 207360,
+      "sha256": "c12318a3a1f71d1b0dc7b01ceb6267b22174022b55615a2a5e3e6cdbc9ac480e"
+    },
+    {
+      "path": "entrada/tarde_noche-abierta/zb.json",
+      "bytes": 322,
+      "sha256": "d46ef66526a286e7bd0326cab21510d6dd2b3d39c27d5351c7e044a7cc5bd956"
+    },
+    {
+      "path": "entrada/tarde_noche-puesta/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "entrada/tarde_noche-puesta/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "entrada/tarde_noche-puesta/pix.bin",
+      "bytes": 207360,
+      "sha256": "d9b1318d725225ecebc6b288ea1c38c48ba5c2472418e558925efd285bcf3b34"
+    },
+    {
+      "path": "entrada/tarde_noche-puesta/pix.json",
+      "bytes": 370,
+      "sha256": "9bce2fbbbdeda8373d06996d5d8f3c2d7ac2bba43e39ad3e3013678717a08830"
+    },
+    {
+      "path": "entrada/tarde_noche-puesta/pix.png",
+      "bytes": 7771,
+      "sha256": "9c6fb06628cd9361f3f0f83eb57d75d7d563de7dc9d5cafaf8ab0ca9419bb698"
+    },
+    {
+      "path": "entrada/tarde_noche-puesta/state.json",
+      "bytes": 956,
+      "sha256": "47452ddea72815a3662310fc94eddfcc6478eabc2a94e598b542038d2a8ecb42"
+    },
+    {
+      "path": "entrada/tarde_noche-puesta/zb.bin",
+      "bytes": 207360,
+      "sha256": "353911237dcf348c39a073b705668c2d49f2f28ebe1a2fb313a0b95313601e22"
+    },
+    {
+      "path": "entrada/tarde_noche-puesta/zb.json",
+      "bytes": 322,
+      "sha256": "b878f7c985e8e8b3e02b5691236011be11d716473a390a93514584d99d0761d8"
     },
     {
       "path": "esquina/manana-0-open/kinds.bin",
