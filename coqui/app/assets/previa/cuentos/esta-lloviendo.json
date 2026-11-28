@@ -1,0 +1,740 @@
+{
+ "id": "esta-lloviendo",
+ "title": "Está lloviendo",
+ "place": "La playa",
+ "scene": "cielo",
+ "next": "la-luna",
+ "goal": "Make ready for the weather the radio says is coming (the blind's cord for rain, the shawl for cold, the glass cover for wind) so that the three candles burning on the porch table stay lit: every wrong thing lets the weather put one out or carry it indoors.",
+ "stake": {
+  "thing": "velas",
+  "steps": 3
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "lluvia",
+  "está lloviendo",
+  "hace frío",
+  "bonito",
+  "feo"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "cielo",
+  "nube",
+  "viento",
+  "¿cómo está el tiempo?",
+  "hace calor",
+  "sol",
+  "viene",
+  "ahora",
+  "mañana",
+  "día",
+  "abuela",
+  "mesa",
+  "come",
+  "comida",
+  "caliente",
+  "frío",
+  "tengo",
+  "tengo hambre",
+  "gracias",
+  "no",
+  "sí",
+  "mira",
+  "grande",
+  "me gusta"
+ ],
+ "also_heard": [
+  "bajamos"
+ ],
+ "names": {
+  "abuela": "abuela",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "lluvia": "lluvia",
+  "frio": "hace frío",
+  "viento": "viento"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c82_ca_feo": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Mira el cielo. Hay nubes grandes. ¡Qué feo!"
+  },
+  "c82_ab_feo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Sí. El cielo está feo."
+  },
+  "c82_radio_lluvia": {
+   "who": "narr",
+   "habla": "radio",
+   "text": "El radio dice: ¿Cómo está el tiempo? Viene lluvia. Mucha lluvia."
+  },
+  "c82_l_lluvia": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Lluvia! ¡Está lloviendo!"
+  },
+  "c82_que_bajamos": {
+   "who": "narr",
+   "text": "Está lloviendo. ¿Qué bajamos?"
+  },
+  "c82_l_ya_no": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Ya no está lloviendo."
+  },
+  "c82_ab_frio": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Uy! Ahora hace frío. Tengo frío."
+  },
+  "c82_l_frio": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Sí, hace frío."
+  },
+  "c82_que_necesita": {
+   "who": "narr",
+   "text": "Hace frío. ¿Qué necesita abuela?"
+  },
+  "c82_ab_gracias": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Gracias, Coquí. Ya no tengo frío."
+  },
+  "c82_ca_viento": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Viento!"
+  },
+  "c82_que_ponemos": {
+   "who": "narr",
+   "text": "Hay viento. ¿Qué ponemos en la mesa?"
+  },
+  "c82_radio_dia": {
+   "who": "narr",
+   "habla": "radio",
+   "text": "El radio dice: Hoy, lluvia, viento y frío. ¡Qué día feo! Mañana hay sol: un día bonito."
+  },
+  "c82_ca_bonito": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Un día bonito! Me gusta."
+  },
+  "c42_ab_tienes_hambre": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, ¿tienes hambre?"
+  },
+  "c42_cq_tengo_hambre": {
+   "who": "tu",
+   "text": "¡Sí, tengo hambre!",
+   "tu_turno": [
+    {
+     "palabra": "tengo hambre",
+     "formas": [
+      "tengo hambre",
+      "sí tengo hambre",
+      "si tengo hambre"
+     ]
+    }
+   ]
+  },
+  "c82_ab_comer": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡A comer! Coquí, ¿qué dice el radio?"
+  },
+  "c82_ca_gusta": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Mira, Coquí. Ahora el cielo está bonito. ¿Te gusta?"
+  },
+  "c43_cq_me_gusta": {
+   "who": "tu",
+   "text": "¡Sí, me gusta!",
+   "tu_turno": [
+    {
+     "palabra": "me gusta",
+     "formas": [
+      "me gusta",
+      "sí me gusta",
+      "si me gusta"
+     ]
+    }
+   ]
+  },
+  "c82_fin": {
+   "who": "narr",
+   "text": "La comida está caliente. Y mañana hay sol."
+  },
+  "c82_no_lluvia": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡No, Coquí! ¡Está lloviendo!"
+  },
+  "c82_a_lluvia": {
+   "who": "narr",
+   "habla": "radio",
+   "text": "El radio dice: Viene lluvia."
+  },
+  "c82_b_lluvia": {
+   "who": "narr",
+   "habla": "radio",
+   "text": "El radio dice: Ahora viene lluvia."
+  },
+  "c82_no_frio": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No, Coquí! Hace frío."
+  },
+  "c82_a_frio": {
+   "who": "narr",
+   "habla": "radio",
+   "text": "El radio dice: Viene frío."
+  },
+  "c82_b_frio": {
+   "who": "narr",
+   "habla": "radio",
+   "text": "El radio dice: Ahora viene frío."
+  },
+  "c82_no_viento": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No, Coquí! Hay viento."
+  },
+  "c81_a_viento": {
+   "who": "narr",
+   "habla": "radio",
+   "text": "El radio dice: Viene viento."
+  },
+  "c81_b_viento": {
+   "who": "narr",
+   "habla": "radio",
+   "text": "El radio dice: Ahora viene viento."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "cielo": "gris"
+   }
+  },
+  {
+   "act": "ir",
+   "a": "piso"
+  },
+  {
+   "act": "velas",
+   "n": 3
+  },
+  {
+   "act": "toldo",
+   "abajo": 0
+  },
+  {
+   "act": "chal",
+   "puesto": 0
+  },
+  {
+   "act": "tapa82",
+   "puesta": 0
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "mira",
+   "a": "cielo"
+  },
+  "c82_ca_feo",
+  "c82_ab_feo",
+  {
+   "act": "radio",
+   "on": 1
+  },
+  "c82_radio_lluvia",
+  "c82_l_lluvia",
+  {
+   "ask": "cuerda",
+   "lead": [],
+   "line": "c82_que_bajamos",
+   "then": [],
+   "after": [
+    {
+     "act": "toldo",
+     "abajo": 1
+    },
+    {
+     "act": "tiempo82",
+     "que": "lluvia"
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "toldo",
+   "abajo": 0
+  },
+  "c82_l_ya_no",
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "brazos"
+  },
+  "c82_ab_frio",
+  "c82_l_frio",
+  {
+   "ask": "chal",
+   "lead": [],
+   "line": "c82_que_necesita",
+   "then": [],
+   "after": [
+    {
+     "act": "chal",
+     "puesto": 1
+    }
+   ]
+  },
+  "c82_ab_gracias",
+  {
+   "dots": 3
+  },
+  "c82_ca_viento",
+  {
+   "ask": "tapa",
+   "lead": [],
+   "line": "c82_que_ponemos",
+   "then": [],
+   "after": [
+    {
+     "act": "tapa82",
+     "puesta": 1
+    }
+   ]
+  },
+  {
+   "act": "radio",
+   "on": 1
+  },
+  "c82_radio_dia",
+  {
+   "act": "radio",
+   "sol": 1
+  },
+  "c82_ca_bonito",
+  {
+   "dots": 4
+  },
+  "c42_ab_tienes_hambre",
+  "c42_cq_tengo_hambre",
+  {
+   "dots": 5
+  },
+  {
+   "act": "chal",
+   "puesto": 0
+  },
+  {
+   "act": "tapa82",
+   "puesta": 0
+  },
+  "c82_ab_comer",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "viene",
+   "options": [
+    "lluvia",
+    "frio",
+    "viento"
+   ]
+  },
+  {
+   "calc": "p",
+   "cond": "viene=lluvia",
+   "then": "cuerda",
+   "else": "tapa"
+  },
+  {
+   "calc": "p",
+   "cond": "viene=frio",
+   "then": "chal",
+   "else": "$p"
+  },
+  {
+   "calc": "la",
+   "cond": "viene=viento",
+   "then": "c81_a_viento",
+   "else": "c82_a_$viene"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "cuerda",
+    "chal",
+    "tapa"
+   ],
+   "pick": "$p",
+   "tests": "$viene",
+   "lock": true,
+   "lead": [],
+   "line": "$la",
+   "right": [
+    {
+     "if": "viene=lluvia",
+     "then": [
+      {
+       "act": "toldo",
+       "abajo": 1,
+       "suelto": 1
+      },
+      {
+       "act": "tiempo82",
+       "que": "lluvia",
+       "suelto": 1
+      },
+      {
+       "act": "ya"
+      }
+     ],
+     "else": [
+      {
+       "if": "viene=frio",
+       "then": [
+        {
+         "act": "chal",
+         "puesto": 1,
+         "suelto": 1
+        },
+        {
+         "act": "tiempo82",
+         "que": "frio",
+         "suelto": 1
+        },
+        {
+         "act": "ya"
+        }
+       ],
+       "else": [
+        {
+         "act": "tapa82",
+         "puesta": 1,
+         "suelto": 1
+        },
+        {
+         "act": "tiempo82",
+         "que": "viento",
+         "suelto": 1
+        },
+        {
+         "act": "ya"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "tiempo82",
+     "que": "$viene"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "velas",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "velas",
+       "n": 1
+      }
+     ]
+    },
+    "c82_no_$viene",
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "act": "toldo",
+   "abajo": 0
+  },
+  {
+   "act": "chal",
+   "puesto": 0
+  },
+  {
+   "act": "tapa82",
+   "puesta": 0
+  },
+  {
+   "draw": "viene",
+   "options": [
+    "lluvia",
+    "frio",
+    "viento"
+   ]
+  },
+  {
+   "calc": "p",
+   "cond": "viene=lluvia",
+   "then": "cuerda",
+   "else": "tapa"
+  },
+  {
+   "calc": "p",
+   "cond": "viene=frio",
+   "then": "chal",
+   "else": "$p"
+  },
+  {
+   "calc": "la",
+   "cond": "viene=viento",
+   "then": "c81_b_viento",
+   "else": "c82_b_$viene"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "cuerda",
+    "chal",
+    "tapa"
+   ],
+   "pick": "$p",
+   "tests": "$viene",
+   "lock": true,
+   "lead": [],
+   "line": "$la",
+   "right": [
+    {
+     "if": "viene=lluvia",
+     "then": [
+      {
+       "act": "toldo",
+       "abajo": 1,
+       "suelto": 1
+      },
+      {
+       "act": "tiempo82",
+       "que": "lluvia",
+       "suelto": 1
+      },
+      {
+       "act": "ya"
+      }
+     ],
+     "else": [
+      {
+       "if": "viene=frio",
+       "then": [
+        {
+         "act": "chal",
+         "puesto": 1,
+         "suelto": 1
+        },
+        {
+         "act": "tiempo82",
+         "que": "frio",
+         "suelto": 1
+        },
+        {
+         "act": "ya"
+        }
+       ],
+       "else": [
+        {
+         "act": "tapa82",
+         "puesta": 1,
+         "suelto": 1
+        },
+        {
+         "act": "tiempo82",
+         "que": "viento",
+         "suelto": 1
+        },
+        {
+         "act": "ya"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "tiempo82",
+     "que": "$viene"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "velas",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "velas",
+       "n": 1
+      }
+     ]
+    },
+    "c82_no_$viene",
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "set": {
+    "cielo": "rosa"
+   }
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final82",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final82",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final82",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 9
+  },
+  "c82_ca_gusta",
+  "c43_cq_me_gusta",
+  "c82_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c82_ca_feo",
+  "c82_ab_feo",
+  "c82_radio_lluvia",
+  "c82_l_lluvia",
+  "c82_que_bajamos",
+  "c82_l_ya_no",
+  "c82_ab_frio",
+  "c82_l_frio",
+  "c82_que_necesita",
+  "c82_ab_gracias",
+  "c82_ca_viento",
+  "c82_que_ponemos",
+  "c82_radio_dia",
+  "c82_ca_bonito",
+  "c42_ab_tienes_hambre",
+  "c42_cq_tengo_hambre",
+  "c82_ab_comer",
+  "c82_a_lluvia",
+  "c82_b_frio",
+  "c82_ca_gusta",
+  "c43_cq_me_gusta",
+  "c82_fin"
+ ]
+}
