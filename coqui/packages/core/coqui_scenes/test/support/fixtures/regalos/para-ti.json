@@ -1,0 +1,767 @@
+{
+ "id": "para-ti",
+ "title": "Para ti",
+ "place": "El fuerte",
+ "scene": "regalos",
+ "next": "todos-en-la-foto",
+ "goal": "Push each packet across the stool to the one who gets it, Carmen or the guest, as abuela says whether the guest gives or receives, so that the three packets stay a surprise: a packet pushed to the one who was giving it is opened by him on the spot, the paper torn and the bow off, and everybody has seen what is inside before the right person gets it.",
+ "stake": {
+  "thing": "sorpresas",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "da",
+  "recibe",
+  "para ti"
+ ],
+ "formas_foco": {
+  "da": [
+   "doy"
+  ]
+ },
+ "back_again": [
+  "regalo",
+  "cumpleaños",
+  "sorpresa",
+  "sombrero",
+  "ella",
+  "él",
+  "tiene",
+  "tengo",
+  "¿quién?",
+  "viento",
+  "para mí",
+  "también",
+  "ahora",
+  "bonito",
+  "gracias",
+  "sí",
+  "no"
+ ],
+ "also_heard": [],
+ "names": {
+  "abuela": "abuela",
+  "abuelo": "n_abuelo",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "piraguero": "b_n_piraguero",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {},
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "b_n_piraguero": {
+   "who": "narr",
+   "text": "Es el piragüero."
+  },
+  "c116_ab_tiene": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Carmen, abuelo tiene un regalo."
+  },
+  "c116_abo_para_ti": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Para ti, Carmen."
+  },
+  "c116_ab_da": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Abuelo le da el regalo a Carmen. Carmen recibe el regalo."
+  },
+  "c116_ca_sombrero": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Un sombrero! ¡Gracias, abuelo!"
+  },
+  "c116_ca_tengo": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Y yo tengo un regalo para ti, abuelo."
+  },
+  "c116_ab_ahora": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Ahora Carmen da y abuelo recibe."
+  },
+  "c116_l_doy": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Yo también te doy un regalo. Para ti, Carmen."
+  },
+  "c116_ab_luis_da": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Luis da. ¿Y quién recibe?"
+  },
+  "c116_cq_ella": {
+   "who": "tu",
+   "text": "¡Ella!",
+   "tu_turno": [
+    {
+     "palabra": "ella",
+     "formas": [
+      "ella",
+      "carmen"
+     ]
+    }
+   ]
+  },
+  "c116_ab_si": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Sí! Carmen recibe."
+  },
+  "c116_ab_viento": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Ay, el viento!"
+  },
+  "c116_ca_para_ti": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Coquí, este regalo es para ti."
+  },
+  "c116_cq_para_mi": {
+   "who": "tu",
+   "text": "¿Para mí?",
+   "tu_turno": [
+    {
+     "palabra": "para mí",
+     "formas": [
+      "para mí",
+      "para mi"
+     ]
+    }
+   ]
+  },
+  "c116_ca_si": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Sí, para ti!"
+  },
+  "c116_fin": {
+   "who": "narr",
+   "text": "Carmen recibe regalos. Y Carmen da regalos también."
+  },
+  "c116_pepe_da": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Don Pepe da el regalo."
+  },
+  "c116_no_pepe_da": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No, Coquí! Don Pepe da el regalo."
+  },
+  "c116_pepe_recibe": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Don Pepe recibe el regalo."
+  },
+  "c116_no_pepe_recibe": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No, Coquí! Don Pepe recibe el regalo."
+  },
+  "c116_maestra_da": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La maestra da el regalo."
+  },
+  "c116_no_maestra_da": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No, Coquí! La maestra da el regalo."
+  },
+  "c116_maestra_recibe": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La maestra recibe el regalo."
+  },
+  "c116_no_maestra_recibe": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No, Coquí! La maestra recibe el regalo."
+  },
+  "c116_piraguero_da": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: El piragüero da el regalo."
+  },
+  "c116_no_piraguero_da": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No, Coquí! El piragüero da el regalo."
+  },
+  "c116_piraguero_recibe": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: El piragüero recibe el regalo."
+  },
+  "c116_no_piraguero_recibe": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No, Coquí! El piragüero recibe el regalo."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "noche"
+   }
+  },
+  {
+   "act": "sorpresas",
+   "n": 3
+  },
+  {
+   "act": "llega",
+   "quien": "carmen",
+   "a": "banqueta_izq",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "abuelo",
+   "a": "banqueta_der",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "abuela",
+   "a": "tras_mesa",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "luis",
+   "a": "arco",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "pepe",
+   "a": "espera1",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "maestra",
+   "a": "espera2",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "piraguero",
+   "a": "espera3",
+   "suelto": 1
+  },
+  {
+   "act": "ir",
+   "a": "mesa_coqui",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c116_ab_tiene",
+  {
+   "ask": "carmen",
+   "lead": [],
+   "line": "c116_abo_para_ti",
+   "then": [],
+   "after": [
+    {
+     "act": "empuja116",
+     "a": "carmen",
+     "ok": 1
+    }
+   ]
+  },
+  "c116_ab_da",
+  {
+   "dots": 2
+  },
+  {
+   "act": "abre116",
+   "quien": "carmen",
+   "que": "sombrero"
+  },
+  "c116_ca_sombrero",
+  {
+   "ask": "abuelo",
+   "lead": [],
+   "line": "c116_ca_tengo",
+   "then": [],
+   "after": [
+    {
+     "act": "empuja116",
+     "a": "abuelo",
+     "ok": 1
+    },
+    {
+     "act": "abre116",
+     "quien": "abuelo",
+     "que": "abanico"
+    }
+   ]
+  },
+  "c116_ab_ahora",
+  {
+   "dots": 3
+  },
+  "c116_l_doy",
+  {
+   "act": "empuja116",
+   "a": "carmen",
+   "ok": 1
+  },
+  "c116_ab_luis_da",
+  {
+   "act": "gesto",
+   "quien": "coqui",
+   "que": "senala",
+   "a": "carmen"
+  },
+  "c116_cq_ella",
+  "c116_ab_si",
+  {
+   "dots": 4
+  },
+  {
+   "act": "etiquetas116"
+  },
+  "c116_ab_viento",
+  {
+   "act": "llega",
+   "quien": "abuelo",
+   "a": "junto_banco"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "reparte": [
+    "ga",
+    "gb"
+   ],
+   "options": [
+    "pepe",
+    "maestra",
+    "piraguero"
+   ]
+  },
+  {
+   "draw": "va",
+   "options": [
+    "da",
+    "recibe"
+   ]
+  },
+  {
+   "calc": "pa",
+   "cond": "va=da",
+   "then": "carmen",
+   "else": "$ga"
+  },
+  {
+   "calc": "oa",
+   "cond": "va=da",
+   "then": "$ga",
+   "else": "carmen"
+  },
+  {
+   "calc": "ea",
+   "cond": "ga=pepe",
+   "then": "espera1",
+   "else": "espera3"
+  },
+  {
+   "calc": "ea",
+   "cond": "ga=maestra",
+   "then": "espera2",
+   "else": "$ea"
+  },
+  {
+   "act": "pareja116",
+   "quien": "$ga"
+  },
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "manos",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "$ga",
+   "que": "manos",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "mira",
+   "a": "abuela",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "$ga",
+   "que": "mira",
+   "a": "abuela",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "carmen",
+    "$ga"
+   ],
+   "pick": "$pa",
+   "tests": "$va",
+   "lock": true,
+   "lead": [],
+   "line": "c116_$ga_$va",
+   "right": [
+    {
+     "act": "empuja116",
+     "a": "$pa",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "gesto",
+       "quien": "$oa",
+       "que": "aplaude"
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "empuja116",
+     "a": "$x",
+     "ok": 0
+    },
+    "c116_no_$ga_$va",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "sorpresas",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "sorpresas",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "act": "llega",
+   "quien": "$ga",
+   "a": "$ea"
+  },
+  {
+   "draw": "vb",
+   "options": [
+    "da",
+    "recibe"
+   ]
+  },
+  {
+   "calc": "pb",
+   "cond": "vb=da",
+   "then": "carmen",
+   "else": "$gb"
+  },
+  {
+   "calc": "ob",
+   "cond": "vb=da",
+   "then": "$gb",
+   "else": "carmen"
+  },
+  {
+   "act": "pareja116",
+   "quien": "$gb"
+  },
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "manos",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "$gb",
+   "que": "manos",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "mira",
+   "a": "abuela",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "$gb",
+   "que": "mira",
+   "a": "abuela",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "carmen",
+    "$gb"
+   ],
+   "pick": "$pb",
+   "tests": "$vb",
+   "lock": true,
+   "lead": [],
+   "line": "c116_$gb_$vb",
+   "right": [
+    {
+     "act": "empuja116",
+     "a": "$pb",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "gesto",
+       "quien": "$ob",
+       "que": "aplaude"
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "empuja116",
+     "a": "$x",
+     "ok": 0
+    },
+    "c116_no_$gb_$vb",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "sorpresas",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "sorpresas",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 7
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final116",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final116",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final116",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "mira",
+   "a": "coqui",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "abuelo",
+   "que": "mira",
+   "a": "coqui",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "mira",
+   "a": "coqui",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "mira",
+   "a": "coqui",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "pepe",
+   "que": "mira",
+   "a": "coqui",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "maestra",
+   "que": "mira",
+   "a": "coqui",
+   "suelto": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "piraguero",
+   "que": "mira",
+   "a": "coqui",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "dots": 8
+  },
+  "c116_ca_para_ti",
+  "c116_cq_para_mi",
+  {
+   "act": "abre116",
+   "quien": "coqui",
+   "que": "sombrerito"
+  },
+  "c116_ca_si",
+  "c116_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c116_ab_tiene",
+  "c116_abo_para_ti",
+  "c116_ab_da",
+  "c116_ca_sombrero",
+  "c116_ca_tengo",
+  "c116_ab_ahora",
+  "c116_l_doy",
+  "c116_ab_luis_da",
+  "c116_cq_ella",
+  "c116_ab_si",
+  "c116_ab_viento",
+  "c116_pepe_da",
+  "c116_no_pepe_da",
+  "c116_maestra_recibe",
+  "c116_ca_para_ti",
+  "c116_cq_para_mi",
+  "c116_ca_si",
+  "c116_fin"
+ ]
+}

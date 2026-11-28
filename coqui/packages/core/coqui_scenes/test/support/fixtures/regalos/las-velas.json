@@ -1,0 +1,663 @@
+{
+ "id": "las-velas",
+ "title": "Las velas",
+ "place": "El fuerte",
+ "scene": "regalos",
+ "next": "para-ti",
+ "goal": "Hang the photo abuelo asks for, by how old Carmen is in it (tres or siete, meses or años), on the line over the table, so that the seven candles on her cake keep burning in the wind: a wrong photo has to come down again, and while abuelo changes it the wind gets past abuela's hands and blows out two candles.",
+ "stake": {
+  "thing": "velas",
+  "steps": 7
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "vela",
+  "año",
+  "mes",
+  "¡felicidades!"
+ ],
+ "formas_foco": {
+  "mes": [
+   "meses"
+  ],
+  "año": [
+   "años"
+  ],
+  "vela": [
+   "velas",
+   "velitas"
+  ]
+ },
+ "back_again": [
+  "cumpleaños",
+  "bizcocho",
+  "feliz",
+  "bebé",
+  "¿cuántos años tienes?",
+  "tengo … años",
+  "siete",
+  "tres",
+  "¿quién?",
+  "tú",
+  "trae",
+  "falta",
+  "un momento",
+  "viento",
+  "un poco",
+  "aquí",
+  "ahora",
+  "tiene",
+  "mira",
+  "sí",
+  "no"
+ ],
+ "also_heard": [],
+ "names": {
+  "abuela": "abuela",
+  "abuelo": "n_abuelo",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "ano": "año"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c115_ab_feliz": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Feliz cumpleaños, Carmen! ¿Cuántos años tienes?"
+  },
+  "c115_ca_siete": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Tengo siete años!"
+  },
+  "c115_pepe_felicidades": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡Felicidades, Carmen!"
+  },
+  "c115_ab_velas": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, trae las velas, por favor."
+  },
+  "c115_l_cuenta": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Una, dos, tres, cuatro, cinco, seis... ¡siete velitas!"
+  },
+  "c115_abo_bebe": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Mira, Coquí. Aquí Carmen es una bebé. Tiene tres meses."
+  },
+  "c115_abo_tres": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Y aquí Carmen tiene tres años."
+  },
+  "c115_ca_chiquita": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¿Tres meses? ¡Qué chiquita!"
+  },
+  "c115_abo_siete": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Aquí tiene siete meses. Y aquí, siete años."
+  },
+  "c115_ca_quien": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Mira, Coquí. ¿Quién es?"
+  },
+  "c115_cq_tu": {
+   "who": "tu",
+   "text": "¡Tú!",
+   "tu_turno": [
+    {
+     "palabra": "tú",
+     "formas": [
+      "tú",
+      "tu",
+      "eres tú",
+      "eres tu"
+     ]
+    }
+   ]
+  },
+  "c115_ca_momento": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Un momento! Faltan mis fotos."
+  },
+  "c115_ab_feliz2": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Feliz cumpleaños, Carmen!"
+  },
+  "c115_mae_felicidades": {
+   "who": "narr",
+   "habla": "maestra",
+   "text": "La maestra dice: ¡Felicidades!"
+  },
+  "c115_abo_quieres": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Coquí, ¿quieres bizcocho?"
+  },
+  "c115_cq_poco": {
+   "who": "tu",
+   "text": "¡Sí, un poco!",
+   "tu_turno": [
+    {
+     "palabra": "un poco",
+     "formas": [
+      "un poco",
+      "sí un poco",
+      "si un poco"
+     ]
+    }
+   ]
+  },
+  "c115_fin": {
+   "who": "narr",
+   "text": "Carmen tiene siete años. Hay siete velitas en el bizcocho. ¡Felicidades!"
+  },
+  "c115_foto_3m": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Ahora, la foto de los tres meses."
+  },
+  "c115_no_3m": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¡No, Coquí! La foto de los tres meses."
+  },
+  "c115_foto_3a": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Ahora, la foto de los tres años."
+  },
+  "c115_no_3a": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¡No, Coquí! La foto de los tres años."
+  },
+  "c115_foto_7m": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Ahora, la foto de los siete meses."
+  },
+  "c115_no_7m": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¡No, Coquí! La foto de los siete meses."
+  },
+  "c115_foto_7a": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Ahora, la foto de los siete años."
+  },
+  "c115_no_7a": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¡No, Coquí! La foto de los siete años."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "noche"
+   }
+  },
+  {
+   "act": "llega",
+   "quien": "carmen",
+   "a": "tras_mesa2",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "abuela",
+   "a": "tras_mesa",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "abuelo",
+   "a": "junto_banco",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "luis",
+   "a": "arco",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "pepe",
+   "a": "espera1",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "maestra",
+   "a": "espera2",
+   "suelto": 1
+  },
+  {
+   "act": "ir",
+   "a": "mesa_coqui",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c115_ab_feliz",
+  "c115_ca_siete",
+  "c115_pepe_felicidades",
+  {
+   "ask": "caja_velas",
+   "lead": [],
+   "line": "c115_ab_velas",
+   "then": [],
+   "after": []
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "dedos",
+   "suelto": 1
+  },
+  {
+   "act": "velas115",
+   "suelto": 1
+  },
+  "c115_l_cuenta",
+  {
+   "act": "ya"
+  },
+  {
+   "dots": 2
+  },
+  {
+   "ask": "foto_3m",
+   "lead": [],
+   "line": "c115_abo_bebe",
+   "then": [],
+   "after": [
+    {
+     "act": "foto115",
+     "cual": "foto_3m",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "ask": "foto_3a",
+   "lead": [],
+   "line": "c115_abo_tres",
+   "then": [],
+   "after": [
+    {
+     "act": "foto115",
+     "cual": "foto_3a",
+     "ok": 1
+    }
+   ]
+  },
+  "c115_ca_chiquita",
+  {
+   "dots": 3
+  },
+  "c115_abo_siete",
+  {
+   "act": "foto115",
+   "cual": "foto_7m",
+   "ok": 1
+  },
+  {
+   "act": "foto115",
+   "cual": "foto_7a",
+   "ok": 1
+  },
+  "c115_ca_quien",
+  "c115_cq_tu",
+  {
+   "dots": 4
+  },
+  {
+   "reparte": [
+    "fa",
+    "fb",
+    "fc",
+    "fd"
+   ],
+   "options": [
+    "foto_3m",
+    "foto_3a",
+    "foto_7m",
+    "foto_7a"
+   ]
+  },
+  {
+   "act": "viento115",
+   "fotos1": "$fa",
+   "fotos2": "$fb",
+   "fotos3": "$fc",
+   "fotos4": "$fd"
+  },
+  {
+   "act": "prende115"
+  },
+  {
+   "act": "velas",
+   "n": 7
+  },
+  "c115_ca_momento",
+  {
+   "act": "llega",
+   "quien": "abuelo",
+   "a": "taburete"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "na",
+   "options": [
+    "3",
+    "7"
+   ],
+   "other": "nb"
+  },
+  {
+   "draw": "ma",
+   "options": [
+    "m",
+    "a"
+   ]
+  },
+  {
+   "calc": "ta",
+   "cond": "ma=m",
+   "then": "mes",
+   "else": "ano"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "foto_3m",
+    "foto_3a",
+    "foto_7m",
+    "foto_7a"
+   ],
+   "pick": "foto_$na$ma",
+   "tests": "$ta",
+   "lock": true,
+   "lead": [],
+   "line": "c115_foto_$na$ma",
+   "right": [
+    {
+     "act": "foto115",
+     "cual": "foto_$na$ma",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "foto115",
+     "cual": "$x",
+     "ok": 0,
+     "suelto": 1
+    },
+    "c115_no_$na$ma",
+    {
+     "act": "ya"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "velas",
+       "n": 5
+      }
+     ],
+     "else": [
+      {
+       "act": "velas",
+       "n": 3
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "mb",
+   "options": [
+    "m",
+    "a"
+   ]
+  },
+  {
+   "calc": "tb",
+   "cond": "mb=m",
+   "then": "mes",
+   "else": "ano"
+  },
+  {
+   "calc": "oa",
+   "cond": "ma=m",
+   "then": "a",
+   "else": "m"
+  },
+  {
+   "calc": "bm",
+   "cond": "nb=3",
+   "then": "foto_3m",
+   "else": "foto_7m"
+  },
+  {
+   "calc": "bn",
+   "cond": "nb=3",
+   "then": "foto_3a",
+   "else": "foto_7a"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "$bm",
+    "$bn",
+    "foto_$na$oa"
+   ],
+   "pick": "foto_$nb$mb",
+   "tests": "$tb",
+   "lock": true,
+   "lead": [],
+   "line": "c115_foto_$nb$mb",
+   "right": [
+    {
+     "act": "foto115",
+     "cual": "foto_$nb$mb",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "foto115",
+     "cual": "$x",
+     "ok": 0,
+     "suelto": 1
+    },
+    "c115_no_$nb$mb",
+    {
+     "act": "ya"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "velas",
+       "n": 5
+      }
+     ],
+     "else": [
+      {
+       "act": "velas",
+       "n": 3
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 7
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final115",
+     "n": 7
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final115",
+       "n": 5
+      }
+     ],
+     "else": [
+      {
+       "act": "final115",
+       "n": 3
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 8
+  },
+  "c115_ab_feliz2",
+  {
+   "act": "sopla115"
+  },
+  "c115_mae_felicidades",
+  "c115_abo_quieres",
+  "c115_cq_poco",
+  "c115_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c115_ab_feliz",
+  "c115_ca_siete",
+  "c115_pepe_felicidades",
+  "c115_ab_velas",
+  "c115_l_cuenta",
+  "c115_abo_bebe",
+  "c115_abo_tres",
+  "c115_ca_chiquita",
+  "c115_abo_siete",
+  "c115_ca_quien",
+  "c115_cq_tu",
+  "c115_ca_momento",
+  "c115_foto_3m",
+  "c115_no_3m",
+  "c115_foto_7a",
+  "c115_ab_feliz2",
+  "c115_mae_felicidades",
+  "c115_abo_quieres",
+  "c115_cq_poco",
+  "c115_fin"
+ ]
+}
