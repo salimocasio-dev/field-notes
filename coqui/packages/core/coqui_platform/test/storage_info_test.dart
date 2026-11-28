@@ -1,3 +1,4 @@
+import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_platform/coqui_platform.dart';
 import 'package:coqui_platform/src/info/app_info.dart';
 import 'package:coqui_platform/src/storage/spaces.dart';
@@ -100,6 +101,29 @@ void main() {
         expect(s.space('leer').read('tam'), '2');
 
         await s.progress.delete('coqui.palabras.v1');
+        expect(s.progress.read('coqui.palabras.v1'), isNull);
+        expect(m.containsKey('coqui.palabras.v1'), isFalse);
+        expect(m['coqui.juego.ult'], old['coqui.juego.ult']);
+      },
+    );
+    test(
+      'SpaceStore implements DeletableKeyValueStore via KeyValueStoreDelete',
+      () async {
+        final m = Map.of(old);
+        final s = CoquiStorage(_Map(m));
+        expect(s.space('leer'), isA<DeletableKeyValueStore>());
+        expect(s.progress, isA<DeletableKeyValueStore>());
+
+        await s.space('leer').write('extra', '1');
+        await s.space('juego').write('extra', '2');
+
+        await (s.space('leer') as KeyValueStore).delete('extra');
+        expect(s.space('leer').read('extra'), isNull);
+        expect(m.containsKey('coqui.leer.extra'), isFalse);
+        expect(s.space('juego').read('extra'), '2');
+        expect(s.space('leer').read('tam'), '2');
+
+        await (s.progress as KeyValueStore).delete('coqui.palabras.v1');
         expect(s.progress.read('coqui.palabras.v1'), isNull);
         expect(m.containsKey('coqui.palabras.v1'), isFalse);
         expect(m['coqui.juego.ult'], old['coqui.juego.ult']);
