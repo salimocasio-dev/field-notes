@@ -3,8 +3,8 @@
 
 Stdlib-only Python 3.12 gate script invoked by `.github/workflows/coqui-sitio.yml`.
 Validates `coqui/.flutter-version` and `coqui/BUILD`, evaluates git diff / Pages
-deployment state to skip no-op rebuilds, and provides the `#262` green-`main`
-CI check extension point (`check_main_ci_green`).
+deployment state to skip no-op rebuilds, and enforces the `#262` green-`main`
+CI check (`check_main_ci_green`) by default.
 """
 
 from __future__ import annotations
@@ -15,6 +15,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -27,6 +28,10 @@ BUILD_RE = re.compile(r"^[0-9]+$")
 HEX40_RE = re.compile(r"^[0-9a-fA-F]{40}$")
 ZERO_SHA = "0" * 40
 TRUTHY = {"1", "true", "yes", "on"}
+FALSY = {"0", "false", "no", "off"}
+DEFAULT_PUSH_WAIT_TIMEOUT_SECONDS = 1500.0
+DEFAULT_WAIT_POLL_SECONDS = 30.0
+REGISTRATION_GRACE_SECONDS = 120.0
 
 ApiGetFn = Callable[[str, str], Any]
 
@@ -42,6 +47,12 @@ class GateDecision:
 
 def _env_truthy(value: str | None) -> bool:
     return (value or "").strip().lower() in TRUTHY
+
+
+def _env_bool_default_true(value: str | None) -> bool:
+    if value is None or not value.strip():
+        return True
+    return value.strip().lower() not in FALSY
 
 
 def _normalize_repo_path(path: str) -> str:
@@ -85,6 +96,16 @@ def is_site_content_path(path: str) -> bool:
     return False
 
 
+def is_coqui_main_ci_path(path: str) -> bool:
+    """Return True if a repo-relative path triggers the push-to-main `coqui.yml` workflow."""
+    norm = _normalize_repo_path(path).rstrip("/")
+    return (
+        norm == "coqui"
+        or norm.startswith("coqui/")
+        or norm in {".github/workflows/coqui.yml", ".github/scripts/coqui_ci_gate.sh"}
+    )
+
+
 def read_flutter_and_build(repo_root: Path) -> tuple[str, str]:
     """Read and validate `coqui/.flutter-version` and `coqui/BUILD`."""
     flutter_path = repo_root / "coqui" / ".flutter-version"
@@ -118,6 +139,11 @@ def _commit_exists(repo_root: Path, sha: str) -> bool:
     if not sha or not HEX40_RE.match(sha) or sha == ZERO_SHA:
         return False
     res = _run_git(repo_root, "cat-file", "-e", f"{sha}^{{commit}}")
+    return res.returncode == 0
+
+
+def _is_ancestor(repo_root: Path, ancestor: str, descendant: str) -> bool:
+    res = _run_git(repo_root, "merge-base", "--is-ancestor", ancestor, descendant)
     return res.returncode == 0
 
 
@@ -215,27 +241,38 @@ def find_latest_actions_pages_deployment_sha(
     return None
 
 
-def check_main_ci_green(
+def _evaluate_main_ci_once(
     repository: str,
     sha: str,
     token: str,
     *,
-    require_green_main: bool = False,
+    repo_root: Path | None = None,
     api_get: ApiGetFn = github_api_get_json,
-) -> tuple[bool, str]:
-    """Extension point for #262 (E6): require green `coqui` check-run on `main`."""
-    if not require_green_main:
-        return True, "green-main gate not yet enabled (#262)"
+) -> tuple[str, str]:
+    """Single poll of the latest full `coqui.yml` workflow run on `main`.
 
+    Returns `(outcome, message)` where `outcome` is one of:
+      - `"pass"`: latest full `coqui.yml` run on `main` succeeded and covers `sha`
+      - `"pending"`: latest full `coqui.yml` run on `main` is still running/queued
+      - `"awaiting_registration"`: latest green run is an ancestor and Coquí CI
+        paths changed since, so GitHub may not have listed the new run yet
+      - `"fail"`: terminal refusal (failed/cancelled run, API error, missing
+        credentials, empty runs, non-ancestor, or git diff error)
+
+    Checking `full_runs[0]` strictly blocks publishing an earlier SHA while a
+    newer commit's run on `main` is pending or red (intentional fail-closed
+    safety). `coqui-sitio.yml` checks out with `fetch-depth: 0`, so ancestor
+    commits exist locally for `_is_ancestor` / `_git_diff_names`.
+    """
     if not repository or not sha or not token:
         return (
-            False,
+            "fail",
             "cannot verify green main CI: repository, sha, and GITHUB_TOKEN are required",
         )
 
     url = (
-        f"{API_BASE}/repos/{repository}/commits/{sha}/check-runs"
-        "?check_name=coqui&per_page=20"
+        f"{API_BASE}/repos/{repository}/actions/workflows/coqui.yml/runs"
+        "?branch=main&per_page=20"
     )
     try:
         payload = api_get(url, token)
@@ -246,30 +283,165 @@ def check_main_ci_green(
         json.JSONDecodeError,
         OSError,
     ) as exc:
-        return False, f"failed to query 'coqui' check-runs for {sha[:12]}: {exc}"
+        return (
+            "fail",
+            f"failed to query 'coqui' workflow runs on main for {sha[:12]}: {exc}",
+        )
 
-    runs = payload.get("check_runs") if isinstance(payload, dict) else None
+    runs = payload.get("workflow_runs") if isinstance(payload, dict) else None
     if not isinstance(runs, list):
-        return False, f"unexpected check-runs payload for {sha[:12]}"
+        return "fail", f"unexpected workflow runs payload for {sha[:12]}"
 
-    for run in runs:
-        if (
-            isinstance(run, dict)
-            and run.get("status") == "completed"
-            and run.get("conclusion") == "success"
-        ):
-            return True, f"check 'coqui' succeeded on {sha[:12]}"
-
-    states = [
-        f"{r.get('status')}/{r.get('conclusion')}"
+    full_runs = [
+        r
         for r in runs
         if isinstance(r, dict)
+        and r.get("head_branch") == "main"
+        and r.get("event") in {"push", "workflow_dispatch"}
     ]
-    summary = ", ".join(states) if states else "no check-runs found"
+    if not full_runs:
+        return (
+            "fail",
+            f"refusing to publish {sha[:12]}: no full 'coqui' workflow runs found on main",
+        )
+
+    latest = full_runs[0]
+    status = latest.get("status")
+    conclusion = latest.get("conclusion")
+    latest_sha = (latest.get("head_sha") or "").strip()
+
+    if status != "completed":
+        return (
+            "pending",
+            f"refusing to publish {sha[:12]}: latest full 'coqui' run on main is pending "
+            f"(status={status}, run_sha={latest_sha[:12]})",
+        )
+
+    if conclusion != "success":
+        return (
+            "fail",
+            f"refusing to publish {sha[:12]}: latest full 'coqui' run on main is not green "
+            f"(conclusion={conclusion}, run_sha={latest_sha[:12]})",
+        )
+
+    if not latest_sha:
+        return (
+            "fail",
+            f"refusing to publish {sha[:12]}: latest full 'coqui' run on main has missing head_sha",
+        )
+
+    if latest_sha == sha:
+        return "pass", f"latest full 'coqui' run on main succeeded on {sha[:12]}"
+
+    if repo_root is None:
+        return (
+            "fail",
+            f"refusing to publish {sha[:12]}: latest green full 'coqui' run on main is on "
+            f"{latest_sha[:12]}, not {sha[:12]}",
+        )
+
+    if (
+        not _commit_exists(repo_root, latest_sha)
+        or not _commit_exists(repo_root, sha)
+        or not _is_ancestor(repo_root, latest_sha, sha)
+    ):
+        return (
+            "fail",
+            f"refusing to publish {sha[:12]}: latest green full 'coqui' run "
+            f"({latest_sha[:12]}) does not cover {sha[:12]}",
+        )
+
+    changed = _git_diff_names(repo_root, latest_sha, sha)
+    if changed is None:
+        return (
+            "fail",
+            f"refusing to publish {sha[:12]}: failed to diff {latest_sha[:12]}..{sha[:12]}",
+        )
+
+    ci_changed = [p for p in changed if is_coqui_main_ci_path(p)]
+    if ci_changed:
+        return (
+            "awaiting_registration",
+            f"refusing to publish {sha[:12]}: Coquí CI paths changed since last green full "
+            f"'coqui' run ({latest_sha[:12]}): {', '.join(ci_changed[:5])}",
+        )
+
     return (
-        False,
-        f"refusing to publish {sha[:12]}: required check 'coqui' is not green ({summary})",
+        "pass",
+        f"latest full 'coqui' run on main succeeded on {latest_sha[:12]} and no Coquí CI paths changed since",
     )
+
+
+def check_main_ci_green(
+    repository: str,
+    sha: str,
+    token: str,
+    *,
+    require_green_main: bool = True,
+    repo_root: Path | None = None,
+    wait_timeout_seconds: float = 0.0,
+    poll_interval_seconds: float = DEFAULT_WAIT_POLL_SECONDS,
+    registration_grace_seconds: float = REGISTRATION_GRACE_SECONDS,
+    api_get: ApiGetFn = github_api_get_json,
+    sleep_fn: Callable[[float], None] = time.sleep,
+    monotonic_fn: Callable[[], float] = time.monotonic,
+    stderr: Any = None,
+) -> tuple[bool, str]:
+    """Verify the latest full `coqui.yml` workflow run on `main` succeeded (#262).
+
+    When `wait_timeout_seconds > 0` (the default on `push` to `main`, where
+    `coqui.yml` and `coqui-sitio.yml` start in parallel), polls while the latest
+    full `coqui.yml` run is pending or awaiting API registration. Terminal
+    failures (`failure`, `cancelled`, API errors, etc.) always refuse
+    immediately without sleeping.
+
+    Note: inspecting `full_runs[0]` strictly blocks publishing an earlier SHA
+    while a newer commit's run on `main` is pending (intentional fail-closed
+    safety), and `coqui-sitio.yml` uses `fetch-depth: 0` so ancestor commits
+    exist locally.
+    """
+    if not require_green_main:
+        return True, "green-main gate explicitly disabled"
+
+    err = stderr if stderr is not None else sys.stderr
+    start = monotonic_fn()
+
+    while True:
+        outcome, msg = _evaluate_main_ci_once(
+            repository,
+            sha,
+            token,
+            repo_root=repo_root,
+            api_get=api_get,
+        )
+        if outcome == "pass":
+            return True, msg
+        if outcome == "fail":
+            return False, msg
+
+        elapsed = monotonic_fn() - start
+        if outcome == "pending":
+            limit = wait_timeout_seconds
+        else:  # "awaiting_registration"
+            limit = min(wait_timeout_seconds, registration_grace_seconds)
+
+        if limit <= 0 or elapsed >= limit:
+            if wait_timeout_seconds > 0:
+                return False, f"timed out after {int(elapsed)}s waiting for main CI: {msg}"
+            return False, msg
+
+        sleep_for = min(max(poll_interval_seconds, 0.0), max(limit - elapsed, 0.0))
+        if sleep_for <= 0:
+            if wait_timeout_seconds > 0:
+                return False, f"timed out after {int(elapsed)}s waiting for main CI: {msg}"
+            return False, msg
+
+        print(
+            f"sitio_publish_gate: waiting for full 'coqui' CI on main "
+            f"({outcome}, elapsed={int(elapsed)}s/{int(limit)}s); retrying in {int(sleep_for)}s",
+            file=err,
+        )
+        sleep_fn(sleep_for)
 
 
 def evaluate_gate(
@@ -283,8 +455,13 @@ def evaluate_gate(
     token: str,
     force: bool = False,
     skip_api: bool = False,
-    require_green_main: bool = False,
+    require_green_main: bool = True,
+    wait_timeout_seconds: float | None = None,
+    poll_interval_seconds: float = DEFAULT_WAIT_POLL_SECONDS,
+    registration_grace_seconds: float = REGISTRATION_GRACE_SECONDS,
     api_get: ApiGetFn = github_api_get_json,
+    sleep_fn: Callable[[float], None] = time.sleep,
+    monotonic_fn: Callable[[], float] = time.monotonic,
     stderr: Any = None,
 ) -> tuple[GateDecision, int]:
     """Evaluate build/deploy decision and return `(decision, exit_code)`."""
@@ -397,12 +574,26 @@ def evaluate_gate(
                         0,
                     )
 
+    if wait_timeout_seconds is None:
+        resolved_wait_timeout = (
+            DEFAULT_PUSH_WAIT_TIMEOUT_SECONDS if event == "push" else 0.0
+        )
+    else:
+        resolved_wait_timeout = wait_timeout_seconds
+
     green, green_msg = check_main_ci_green(
         repository,
         resolved_sha,
         token,
         require_green_main=require_green_main,
+        repo_root=repo_root,
+        wait_timeout_seconds=resolved_wait_timeout,
+        poll_interval_seconds=poll_interval_seconds,
+        registration_grace_seconds=registration_grace_seconds,
         api_get=api_get,
+        sleep_fn=sleep_fn,
+        monotonic_fn=monotonic_fn,
+        stderr=err,
     )
     if not green:
         print(f"ERROR: {green_msg}", file=err)
@@ -448,6 +639,13 @@ def write_github_output(output_path: str, decision: GateDecision) -> None:
         fh.write("\n".join(lines) + "\n")
 
 
+def _env_float(name: str, default: float | None) -> float | None:
+    raw = (os.environ.get(name) or "").strip()
+    if not raw:
+        return default
+    return float(raw)
+
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     default_root = Path(__file__).resolve().parents[2]
     parser = argparse.ArgumentParser(
@@ -472,8 +670,28 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument(
         "--require-green-main",
-        action="store_true",
-        default=_env_truthy(os.environ.get("REQUIRE_GREEN_MAIN")),
+        action=argparse.BooleanOptionalAction,
+        default=_env_bool_default_true(os.environ.get("REQUIRE_GREEN_MAIN")),
+        help=(
+            "Require the latest full 'coqui' CI workflow run on main to be green before "
+            "publishing (default: true; pass --no-require-green-main for local dry runs "
+            "without a GITHUB_TOKEN)."
+        ),
+    )
+    parser.add_argument(
+        "--wait-ci-timeout",
+        type=float,
+        default=_env_float("WAIT_MAIN_CI_TIMEOUT_SECONDS", None),
+        help=(
+            "Max seconds to wait for an in-progress full 'coqui' CI run on main "
+            f"(default: {int(DEFAULT_PUSH_WAIT_TIMEOUT_SECONDS)}s on push, 0s otherwise)."
+        ),
+    )
+    parser.add_argument(
+        "--wait-ci-interval",
+        type=float,
+        default=_env_float("WAIT_MAIN_CI_POLL_SECONDS", DEFAULT_WAIT_POLL_SECONDS),
+        help=f"Seconds between CI status polls while waiting (default: {int(DEFAULT_WAIT_POLL_SECONDS)}s).",
     )
     parser.add_argument("--skip-api", action="store_true", default=False)
     return parser.parse_args(argv)
@@ -494,6 +712,8 @@ def main(argv: list[str] | None = None) -> int:
             force=args.force,
             skip_api=args.skip_api,
             require_green_main=args.require_green_main,
+            wait_timeout_seconds=args.wait_ci_timeout,
+            poll_interval_seconds=args.wait_ci_interval,
         )
     except ValueError as exc:
         print(f"ERROR: {exc}", file=sys.stderr)

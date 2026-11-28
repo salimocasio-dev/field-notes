@@ -51,6 +51,16 @@ emit_output() {
   printf 'coqui_ci_gate: run=%s (%s)\n' "$value" "$reason"
 }
 
+emit_env() {
+  local key="$1"
+  local value="$2"
+  local clean_value="${value//$'\r'/}"
+  clean_value="${clean_value//$'\n'/}"
+  if [ -n "${GITHUB_ENV:-}" ]; then
+    printf '%s=%s\n' "$key" "$clean_value" >> "$GITHUB_ENV"
+  fi
+}
+
 resolve_diff_base() {
   local env_base="${BASE_REF:-}"
   local env_base_sha="${BASE_SHA:-}"
@@ -105,6 +115,8 @@ resolve_diff_base() {
 event_name="${event_arg:-${EVENT_NAME:-pull_request}}"
 
 if [ "$event_name" != "pull_request" ]; then
+  emit_env COQUI_FULL_SUITE 1
+  emit_env COQUI_CI_EVENT "$event_name"
   emit_output true "event=${event_name}; running full Coquí check suite"
   exit 0
 fi
@@ -117,7 +129,7 @@ if [ -n "$CHANGED" ]; then
   while IFS= read -r path; do
     [ -n "$path" ] || continue
     case "$path" in
-      coqui|coqui/*|.github/workflows/coqui.yml|.github/scripts/coqui_ci_gate.sh)
+      coqui|coqui/*|content|content/*|historia/datos/*|historia/cuentos/*|historia/libros/*|.github/workflows/coqui.yml|.github/scripts/coqui_ci_gate.sh)
         MATCHED+=("$path")
         ;;
     esac
@@ -136,10 +148,22 @@ if [ "${#MATCHED[@]}" -gt 0 ]; then
   if [ "${#MATCHED[@]}" -gt 20 ]; then
     printf '  ... and %d more\n' "$(( ${#MATCHED[@]} - 20 ))"
   fi
+  if [ -n "${GITHUB_ENV:-}" ]; then
+    temp_dir="${RUNNER_TEMP:-/tmp}"
+    mkdir -p "$temp_dir"
+    changed_file="$(mktemp "${temp_dir}/coqui_changed_paths.XXXXXX")"
+    while IFS= read -r path; do
+      [ -n "$path" ] || continue
+      printf '%s\n' "$path" >> "$changed_file"
+    done <<< "$CHANGED"
+    emit_env COQUI_FULL_SUITE 0
+    emit_env COQUI_CI_EVENT "$event_name"
+    emit_env COQUI_CHANGED_PATHS_FILE "$changed_file"
+  fi
   emit_output true "${#MATCHED[@]} matching path(s) changed against ${DIFF_BASE}"
   exit 0
 fi
 
-echo "No changes under coqui/, .github/workflows/coqui.yml, or .github/scripts/coqui_ci_gate.sh; skipping heavy Flutter steps."
+echo "No changes under coqui/, content/, historia/{datos,cuentos,libros}/, .github/workflows/coqui.yml, or .github/scripts/coqui_ci_gate.sh; skipping heavy Flutter steps."
 emit_output false "no matching paths changed against ${DIFF_BASE}"
 exit 0

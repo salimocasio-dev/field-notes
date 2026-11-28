@@ -226,7 +226,7 @@ class SitioPublishGateTests(unittest.TestCase):
             self.assertFalse(dec2.should_build)
             self.assertFalse(dec2.should_deploy)
 
-            # 3. coqui/BUILD bumped -> build and deploy
+            # 3. coqui/BUILD bumped -> build and deploy (isolating push trigger logic)
             _write_file(root / "coqui" / "BUILD", "18\n")
             sha3 = _commit_all(root, "bump BUILD to 18")
             dec3, rc3 = gate.evaluate_gate(
@@ -238,13 +238,14 @@ class SitioPublishGateTests(unittest.TestCase):
                 repository="salimocasio-dev/field-notes",
                 token="",
                 skip_api=True,
+                require_green_main=False,
             )
             self.assertEqual(rc3, 0)
             self.assertEqual(dec3.build, "18")
             self.assertTrue(dec3.should_build)
             self.assertTrue(dec3.should_deploy)
 
-            # 4. Runtime historia file changed -> build and deploy
+            # 4. Runtime historia file changed -> build and deploy (isolating push trigger logic)
             _write_file(root / "historia" / "audio" / "ready.json", '{"v":2}\n')
             sha4 = _commit_all(root, "audio ready update")
             dec4, rc4 = gate.evaluate_gate(
@@ -256,6 +257,7 @@ class SitioPublishGateTests(unittest.TestCase):
                 repository="salimocasio-dev/field-notes",
                 token="",
                 skip_api=True,
+                require_green_main=False,
             )
             self.assertEqual(rc4, 0)
             self.assertTrue(dec4.should_build)
@@ -265,6 +267,19 @@ class SitioPublishGateTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             sha0 = self._make_base_repo(root)
+
+            def green_runs(head_sha: str, event: str = "push") -> dict[str, Any]:
+                return {
+                    "workflow_runs": [
+                        {
+                            "head_branch": "main",
+                            "event": event,
+                            "status": "completed",
+                            "conclusion": "success",
+                            "head_sha": head_sha,
+                        }
+                    ]
+                }
 
             # Legacy github-pages app deployment on same SHA MUST NOT suppress first Actions deploy.
             def api_legacy_only(url: str, _token: str) -> Any:
@@ -276,6 +291,8 @@ class SitioPublishGateTests(unittest.TestCase):
                             "performed_via_github_app": {"slug": "github-pages"},
                         }
                     ]
+                if "/actions/workflows/coqui.yml/runs" in url:
+                    return green_runs(sha0)
                 raise AssertionError(f"unexpected URL: {url}")
 
             dec, rc = gate.evaluate_gate(
@@ -293,6 +310,8 @@ class SitioPublishGateTests(unittest.TestCase):
             self.assertTrue(dec.should_deploy)
 
             # Successful github-actions deployment on same SHA suppresses deploy.
+            current_green_sha = sha0
+
             def api_actions_success(url: str, _token: str) -> Any:
                 if "/deployments?" in url:
                     return [
@@ -310,6 +329,8 @@ class SitioPublishGateTests(unittest.TestCase):
                 if url.startswith("https://api.github.com/repos/o/r/deployments/3/statuses"):
                     self.assertIn("per_page=1", url)
                     return [{"state": "success"}]
+                if "/actions/workflows/coqui.yml/runs" in url:
+                    return green_runs(current_green_sha)
                 raise AssertionError(f"unexpected URL: {url}")
 
             dec_same, rc_same = gate.evaluate_gate(
@@ -326,7 +347,7 @@ class SitioPublishGateTests(unittest.TestCase):
             self.assertFalse(dec_same.should_build)
             self.assertFalse(dec_same.should_deploy)
 
-            # Force overrides already-deployed SHA.
+            # Force overrides already-deployed SHA (when main CI is green).
             dec_force, rc_force = gate.evaluate_gate(
                 repo_root=root,
                 event="workflow_dispatch",
@@ -352,6 +373,8 @@ class SitioPublishGateTests(unittest.TestCase):
                             "performed_via_github_app": {"slug": "github-actions"},
                         }
                     ]
+                if "/actions/workflows/coqui.yml/runs" in url:
+                    return green_runs(sha0)
                 return [{"state": "failure"}]
 
             dec_fail, rc_fail = gate.evaluate_gate(
@@ -385,9 +408,10 @@ class SitioPublishGateTests(unittest.TestCase):
             self.assertFalse(dec_dispatch_noop.should_build)
             self.assertFalse(dec_dispatch_noop.should_deploy)
 
-            # workflow_dispatch with coqui/ app change since deployed_sha -> build & deploy.
+            # workflow_dispatch with coqui/ app change since deployed_sha -> build & deploy (when green on sha2).
             _write_file(root / "coqui" / "app" / "lib" / "main.dart", "void main() {}\n")
             sha2 = _commit_all(root, "app dart change")
+            current_green_sha = sha2
             dec_dispatch_go, rc_dispatch_go = gate.evaluate_gate(
                 repo_root=root,
                 event="workflow_dispatch",
@@ -408,8 +432,22 @@ class SitioPublishGateTests(unittest.TestCase):
             sha = self._make_base_repo(root)
             stderr_buf = io.StringIO()
 
-            def api_boom(_url: str, _token: str) -> Any:
-                raise urllib.error.URLError("temporary network error")
+            def api_deployments_boom(url: str, _token: str) -> Any:
+                if "/deployments?" in url:
+                    raise urllib.error.URLError("temporary network error")
+                if "/actions/workflows/coqui.yml/runs" in url:
+                    return {
+                        "workflow_runs": [
+                            {
+                                "head_branch": "main",
+                                "event": "push",
+                                "status": "completed",
+                                "conclusion": "success",
+                                "head_sha": sha,
+                            }
+                        ]
+                    }
+                raise AssertionError(f"unexpected URL: {url}")
 
             dec, rc = gate.evaluate_gate(
                 repo_root=root,
@@ -419,7 +457,7 @@ class SitioPublishGateTests(unittest.TestCase):
                 before_sha="",
                 repository="o/r",
                 token="tok",
-                api_get=api_boom,
+                api_get=api_deployments_boom,
                 stderr=stderr_buf,
             )
             self.assertEqual(rc, 0)
@@ -427,65 +465,571 @@ class SitioPublishGateTests(unittest.TestCase):
             self.assertTrue(dec.should_deploy)
             self.assertIn("warning", stderr_buf.getvalue().lower())
 
-    def test_green_main_check_extension_point(self) -> None:
+    def test_is_coqui_main_ci_path_predicate(self) -> None:
+        for p in (
+            "coqui",
+            "coqui/BUILD",
+            "coqui/app/lib/main.dart",
+            ".github/workflows/coqui.yml",
+            ".github/scripts/coqui_ci_gate.sh",
+            "./coqui/pubspec.yaml",
+        ):
+            with self.subTest(expected=True, path=p):
+                self.assertTrue(gate.is_coqui_main_ci_path(p))
+
+        for p in (
+            "historia/audio/ready.json",
+            "index.html",
+            "prueba/index.html",
+            "docs/readme.md",
+            ".github/workflows/coqui-sitio.yml",
+            "coqui_other/foo.dart",
+        ):
+            with self.subTest(expected=False, path=p):
+                self.assertFalse(gate.is_coqui_main_ci_path(p))
+
+    def test_parse_args_require_green_main_default_and_overrides(self) -> None:
+        old_req = os.environ.pop("REQUIRE_GREEN_MAIN", None)
+        old_to = os.environ.pop("WAIT_MAIN_CI_TIMEOUT_SECONDS", None)
+        old_poll = os.environ.pop("WAIT_MAIN_CI_POLL_SECONDS", None)
+        try:
+            defaults = gate.parse_args([])
+            self.assertTrue(defaults.require_green_main)
+            self.assertIsNone(defaults.wait_ci_timeout)
+            self.assertEqual(defaults.wait_ci_interval, gate.DEFAULT_WAIT_POLL_SECONDS)
+
+            self.assertFalse(gate.parse_args(["--no-require-green-main"]).require_green_main)
+            self.assertTrue(gate.parse_args(["--require-green-main"]).require_green_main)
+            self.assertEqual(gate.parse_args(["--wait-ci-timeout", "90"]).wait_ci_timeout, 90.0)
+            self.assertEqual(gate.parse_args(["--wait-ci-interval", "5"]).wait_ci_interval, 5.0)
+
+            for falsy in ("0", "false", "FALSE", "no", "off"):
+                os.environ["REQUIRE_GREEN_MAIN"] = falsy
+                self.assertFalse(gate.parse_args([]).require_green_main)
+                self.assertTrue(gate.parse_args(["--require-green-main"]).require_green_main)
+
+            os.environ["REQUIRE_GREEN_MAIN"] = "1"
+            os.environ["WAIT_MAIN_CI_TIMEOUT_SECONDS"] = "600"
+            os.environ["WAIT_MAIN_CI_POLL_SECONDS"] = "15"
+            parsed = gate.parse_args([])
+            self.assertTrue(parsed.require_green_main)
+            self.assertEqual(parsed.wait_ci_timeout, 600.0)
+            self.assertEqual(parsed.wait_ci_interval, 15.0)
+            self.assertFalse(gate.parse_args(["--no-require-green-main"]).require_green_main)
+        finally:
+            for k, old in (
+                ("REQUIRE_GREEN_MAIN", old_req),
+                ("WAIT_MAIN_CI_TIMEOUT_SECONDS", old_to),
+                ("WAIT_MAIN_CI_POLL_SECONDS", old_poll),
+            ):
+                if old is None:
+                    os.environ.pop(k, None)
+                else:
+                    os.environ[k] = old
+
+    def test_green_main_ci_gate_passes_and_refuses_correctly(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            sha = self._make_base_repo(root)
+            sha0 = self._make_base_repo(root)
 
-            # Disabled by default -> returns True without API calls.
-            ok, msg = gate.check_main_ci_green("o/r", sha, "tok", require_green_main=False)
-            self.assertTrue(ok)
-            self.assertIn("#262", msg)
+            # Explicit disable returns True without API calls
+            ok_off, msg_off = gate.check_main_ci_green(
+                "o/r", sha0, "tok", require_green_main=False
+            )
+            self.assertTrue(ok_off)
+            self.assertIn("disabled", msg_off)
 
-            # Enabled + green coqui check-run -> passes.
-            def api_green(url: str, _token: str) -> Any:
-                self.assertIn(f"/commits/{sha}/check-runs?check_name=coqui", url)
+            # Passes on green push or workflow_dispatch on exact sha (default require_green_main=True)
+            for ev in ("push", "workflow_dispatch"):
+                with self.subTest(pass_event=ev):
+                    def api_green(url: str, _token: str, event_name: str = ev) -> Any:
+                        self.assertIn(
+                            "/repos/o/r/actions/workflows/coqui.yml/runs?branch=main&per_page=20",
+                            url,
+                        )
+                        return {
+                            "workflow_runs": [
+                                {
+                                    "head_branch": "main",
+                                    "event": event_name,
+                                    "status": "completed",
+                                    "conclusion": "success",
+                                    "head_sha": sha0,
+                                }
+                            ]
+                        }
+
+                    dec_ok, rc_ok = gate.evaluate_gate(
+                        repo_root=root,
+                        event="workflow_dispatch",
+                        ref="refs/heads/main",
+                        sha=sha0,
+                        before_sha="",
+                        repository="o/r",
+                        token="tok",
+                        skip_api=True,
+                        api_get=api_green,
+                    )
+                    self.assertEqual(rc_ok, 0)
+                    self.assertTrue(dec_ok.should_build)
+                    self.assertTrue(dec_ok.should_deploy)
+
+            # Passes when latest green run is an ancestor and only non-coqui files changed since
+            _write_file(root / "historia" / "audio" / "ready.json", '{"v": 2}\n')
+            _write_file(root / "index.html", "<html>updated</html>\n")
+            sha_non_coqui = _commit_all(root, "historia audio and index.html")
+
+            def api_green_on_sha0(_url: str, _token: str) -> Any:
                 return {
-                    "check_runs": [
-                        {"name": "coqui", "status": "completed", "conclusion": "success"}
+                    "workflow_runs": [
+                        {
+                            "head_branch": "main",
+                            "event": "push",
+                            "status": "completed",
+                            "conclusion": "success",
+                            "head_sha": sha0,
+                        }
                     ]
                 }
 
-            dec_ok, rc_ok = gate.evaluate_gate(
+            dec_anc, rc_anc = gate.evaluate_gate(
+                repo_root=root,
+                event="push",
+                ref="refs/heads/main",
+                sha=sha_non_coqui,
+                before_sha=sha0,
+                repository="o/r",
+                token="tok",
+                skip_api=True,
+                api_get=api_green_on_sha0,
+            )
+            self.assertEqual(rc_anc, 0)
+            self.assertTrue(dec_anc.should_build)
+            self.assertTrue(dec_anc.should_deploy)
+
+            # Refuses immediately when wait_timeout_seconds=0 and coqui/BUILD changed since last green ancestor run
+            _write_file(root / "coqui" / "BUILD", "18\n")
+            sha_build = _commit_all(root, "bump coqui/BUILD")
+            stderr_build = io.StringIO()
+            dec_build, rc_build = gate.evaluate_gate(
+                repo_root=root,
+                event="push",
+                ref="refs/heads/main",
+                sha=sha_build,
+                before_sha=sha_non_coqui,
+                repository="o/r",
+                token="tok",
+                skip_api=True,
+                wait_timeout_seconds=0.0,
+                api_get=api_green_on_sha0,
+                stderr=stderr_build,
+            )
+            self.assertEqual(rc_build, 1)
+            self.assertFalse(dec_build.should_build)
+            self.assertFalse(dec_build.should_deploy)
+            self.assertIn("coqui/BUILD", dec_build.reason)
+
+            # Refuses when coqui/app/... changed since last green ancestor run
+            _write_file(root / "coqui" / "app" / "lib" / "main.dart", "void main() {}\n")
+            sha_app = _commit_all(root, "change coqui/app")
+            stderr_app = io.StringIO()
+            dec_app, rc_app = gate.evaluate_gate(
                 repo_root=root,
                 event="workflow_dispatch",
                 ref="refs/heads/main",
-                sha=sha,
+                sha=sha_app,
                 before_sha="",
                 repository="o/r",
                 token="tok",
                 skip_api=True,
-                require_green_main=True,
-                api_get=api_green,
+                api_get=api_green_on_sha0,
+                stderr=stderr_app,
             )
-            self.assertEqual(rc_ok, 0)
-            self.assertTrue(dec_ok.should_deploy)
+            self.assertEqual(rc_app, 1)
+            self.assertFalse(dec_app.should_build)
+            self.assertFalse(dec_app.should_deploy)
+            self.assertIn("coqui/app/lib/main.dart", dec_app.reason)
 
-            # Enabled + failed/pending coqui check-run -> exits 1 refusing publish.
-            def api_red(_url: str, _token: str) -> Any:
-                return {
-                    "check_runs": [
-                        {"name": "coqui", "status": "completed", "conclusion": "failure"}
-                    ]
-                }
+            # Refuses on red, pending (in_progress, queued), cancelled, empty, PR-only, missing token, API error
+            refusal_cases: list[tuple[str, Any, str]] = [
+                (
+                    "failure",
+                    lambda _u, _t: {
+                        "workflow_runs": [
+                            {
+                                "head_branch": "main",
+                                "event": "push",
+                                "status": "completed",
+                                "conclusion": "failure",
+                                "head_sha": sha_app,
+                            }
+                        ]
+                    },
+                    "not green",
+                ),
+                (
+                    "in_progress",
+                    lambda _u, _t: {
+                        "workflow_runs": [
+                            {
+                                "head_branch": "main",
+                                "event": "push",
+                                "status": "in_progress",
+                                "conclusion": None,
+                                "head_sha": sha_app,
+                            }
+                        ]
+                    },
+                    "pending",
+                ),
+                (
+                    "queued",
+                    lambda _u, _t: {
+                        "workflow_runs": [
+                            {
+                                "head_branch": "main",
+                                "event": "workflow_dispatch",
+                                "status": "queued",
+                                "conclusion": None,
+                                "head_sha": sha_app,
+                            }
+                        ]
+                    },
+                    "pending",
+                ),
+                (
+                    "cancelled",
+                    lambda _u, _t: {
+                        "workflow_runs": [
+                            {
+                                "head_branch": "main",
+                                "event": "push",
+                                "status": "completed",
+                                "conclusion": "cancelled",
+                                "head_sha": sha_app,
+                            }
+                        ]
+                    },
+                    "not green",
+                ),
+                (
+                    "empty_runs",
+                    lambda _u, _t: {"workflow_runs": []},
+                    "no full 'coqui' workflow runs",
+                ),
+                (
+                    "pr_only_runs",
+                    lambda _u, _t: {
+                        "workflow_runs": [
+                            {
+                                "head_branch": "main",
+                                "event": "pull_request",
+                                "status": "completed",
+                                "conclusion": "success",
+                                "head_sha": sha_app,
+                            }
+                        ]
+                    },
+                    "no full 'coqui' workflow runs",
+                ),
+                (
+                    "api_error",
+                    lambda _u, _t: (_ for _ in ()).throw(urllib.error.URLError("offline")),
+                    "failed to query",
+                ),
+                (
+                    "malformed_payload",
+                    lambda _u, _t: {"unexpected": True},
+                    "unexpected workflow runs payload",
+                ),
+            ]
 
-            stderr_buf = io.StringIO()
-            dec_red, rc_red = gate.evaluate_gate(
+            for label, fake_api, expected_substr in refusal_cases:
+                with self.subTest(refusal=label):
+                    err_buf = io.StringIO()
+                    dec_bad, rc_bad = gate.evaluate_gate(
+                        repo_root=root,
+                        event="workflow_dispatch",
+                        ref="refs/heads/main",
+                        sha=sha_app,
+                        before_sha="",
+                        repository="o/r",
+                        token="tok",
+                        force=True,  # force=True MUST NOT bypass green-main check!
+                        skip_api=True,
+                        api_get=fake_api,
+                        stderr=err_buf,
+                    )
+                    self.assertEqual(rc_bad, 1)
+                    self.assertFalse(dec_bad.should_build)
+                    self.assertFalse(dec_bad.should_deploy)
+                    self.assertIn(expected_substr, dec_bad.reason)
+                    self.assertIn("ERROR:", err_buf.getvalue())
+
+            # Refuses when token is missing (even with force=True)
+            err_tok = io.StringIO()
+            dec_tok, rc_tok = gate.evaluate_gate(
                 repo_root=root,
                 event="workflow_dispatch",
                 ref="refs/heads/main",
-                sha=sha,
+                sha=sha_app,
+                before_sha="",
+                repository="o/r",
+                token="",
+                force=True,
+                skip_api=True,
+                stderr=err_tok,
+            )
+            self.assertEqual(rc_tok, 1)
+            self.assertFalse(dec_tok.should_build)
+            self.assertFalse(dec_tok.should_deploy)
+            self.assertIn("GITHUB_TOKEN", dec_tok.reason)
+
+    def test_green_main_bounded_wait_and_polling(self) -> None:
+        def make_run(
+            head_sha: str,
+            *,
+            status: str = "completed",
+            conclusion: str | None = "success",
+            event: str = "push",
+        ) -> dict[str, Any]:
+            return {
+                "head_branch": "main",
+                "event": event,
+                "status": status,
+                "conclusion": conclusion,
+                "head_sha": head_sha,
+            }
+
+        def make_clock() -> tuple[list[float], Any, Any]:
+            now = [0.0]
+            sleeps: list[float] = []
+
+            def fake_monotonic() -> float:
+                return now[0]
+
+            def fake_sleep(dt: float) -> None:
+                sleeps.append(dt)
+                now[0] += dt
+
+            return sleeps, fake_sleep, fake_monotonic
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            sha0 = self._make_base_repo(root)
+            _write_file(root / "coqui" / "BUILD", "18\n")
+            sha1 = _commit_all(root, "bump BUILD to 18")
+            _write_file(root / "coqui" / "BUILD", "19\n")
+            sha2 = _commit_all(root, "bump BUILD to 19")
+
+            # 1. Push waiting: pending -> pending -> success => PASS with exact sleeps
+            sleeps, fake_sleep, fake_monotonic = make_clock()
+            responses = iter(
+                [
+                    {"workflow_runs": [make_run(sha1, status="queued", conclusion=None)]},
+                    {"workflow_runs": [make_run(sha1, status="in_progress", conclusion=None)]},
+                    {"workflow_runs": [make_run(sha1, status="completed", conclusion="success")]},
+                ]
+            )
+            err_buf = io.StringIO()
+            dec, rc = gate.evaluate_gate(
+                repo_root=root,
+                event="push",
+                ref="refs/heads/main",
+                sha=sha1,
+                before_sha=sha0,
+                repository="o/r",
+                token="tok",
+                skip_api=True,
+                poll_interval_seconds=30.0,
+                api_get=lambda _u, _t: next(responses),
+                sleep_fn=fake_sleep,
+                monotonic_fn=fake_monotonic,
+                stderr=err_buf,
+            )
+            self.assertEqual(rc, 0)
+            self.assertTrue(dec.should_build)
+            self.assertTrue(dec.should_deploy)
+            self.assertEqual(sleeps, [30.0, 30.0])
+            self.assertIn("waiting for full 'coqui' CI on main", err_buf.getvalue())
+
+            # 2. Push registration race: ancestor green (coqui/BUILD changed) -> pending -> success => PASS
+            sleeps, fake_sleep, fake_monotonic = make_clock()
+            race_responses = iter(
+                [
+                    {"workflow_runs": [make_run(sha0, status="completed", conclusion="success")]},
+                    {"workflow_runs": [make_run(sha1, status="in_progress", conclusion=None)]},
+                    {"workflow_runs": [make_run(sha1, status="completed", conclusion="success")]},
+                ]
+            )
+            err_buf = io.StringIO()
+            dec, rc = gate.evaluate_gate(
+                repo_root=root,
+                event="push",
+                ref="refs/heads/main",
+                sha=sha1,
+                before_sha=sha0,
+                repository="o/r",
+                token="tok",
+                skip_api=True,
+                poll_interval_seconds=25.0,
+                registration_grace_seconds=120.0,
+                api_get=lambda _u, _t: next(race_responses),
+                sleep_fn=fake_sleep,
+                monotonic_fn=fake_monotonic,
+                stderr=err_buf,
+            )
+            self.assertEqual(rc, 0)
+            self.assertTrue(dec.should_build)
+            self.assertTrue(dec.should_deploy)
+            self.assertEqual(sleeps, [25.0, 25.0])
+            self.assertIn("awaiting_registration", err_buf.getvalue())
+
+            # 3. Push registration race timeout beyond registration_grace_seconds => REFUSE (exit 1)
+            sleeps, fake_sleep, fake_monotonic = make_clock()
+            err_buf = io.StringIO()
+            dec, rc = gate.evaluate_gate(
+                repo_root=root,
+                event="push",
+                ref="refs/heads/main",
+                sha=sha1,
+                before_sha=sha0,
+                repository="o/r",
+                token="tok",
+                skip_api=True,
+                poll_interval_seconds=50.0,
+                registration_grace_seconds=120.0,
+                api_get=lambda _u, _t: {
+                    "workflow_runs": [make_run(sha0, status="completed", conclusion="success")]
+                },
+                sleep_fn=fake_sleep,
+                monotonic_fn=fake_monotonic,
+                stderr=err_buf,
+            )
+            self.assertEqual(rc, 1)
+            self.assertFalse(dec.should_build)
+            self.assertFalse(dec.should_deploy)
+            self.assertEqual(sleeps, [50.0, 50.0, 20.0])
+            self.assertIn("timed out", err_buf.getvalue())
+            self.assertIn("coqui/BUILD", dec.reason)
+
+            # 4. Push pending -> failure => REFUSE IMMEDIATELY (no further polling after failure)
+            sleeps, fake_sleep, fake_monotonic = make_clock()
+            poll_count = [0]
+            fail_seq = [
+                {"workflow_runs": [make_run(sha1, status="in_progress", conclusion=None)]},
+                {"workflow_runs": [make_run(sha1, status="completed", conclusion="failure")]},
+                {"workflow_runs": [make_run(sha1, status="completed", conclusion="success")]},
+            ]
+
+            def api_fail_seq(_u: str, _t: str) -> Any:
+                idx = poll_count[0]
+                poll_count[0] += 1
+                return fail_seq[idx]
+
+            err_buf = io.StringIO()
+            dec, rc = gate.evaluate_gate(
+                repo_root=root,
+                event="push",
+                ref="refs/heads/main",
+                sha=sha1,
+                before_sha=sha0,
+                repository="o/r",
+                token="tok",
+                skip_api=True,
+                poll_interval_seconds=30.0,
+                api_get=api_fail_seq,
+                sleep_fn=fake_sleep,
+                monotonic_fn=fake_monotonic,
+                stderr=err_buf,
+            )
+            self.assertEqual(rc, 1)
+            self.assertFalse(dec.should_build)
+            self.assertFalse(dec.should_deploy)
+            self.assertEqual(poll_count[0], 2)
+            self.assertEqual(sleeps, [30.0])
+            self.assertIn("not green", dec.reason)
+
+            # 5. Push pending until wait_timeout_seconds expires => REFUSE (exit 1, "timed out" in stderr)
+            sleeps, fake_sleep, fake_monotonic = make_clock()
+            err_buf = io.StringIO()
+            dec, rc = gate.evaluate_gate(
+                repo_root=root,
+                event="push",
+                ref="refs/heads/main",
+                sha=sha1,
+                before_sha=sha0,
+                repository="o/r",
+                token="tok",
+                skip_api=True,
+                wait_timeout_seconds=75.0,
+                poll_interval_seconds=30.0,
+                api_get=lambda _u, _t: {
+                    "workflow_runs": [make_run(sha1, status="in_progress", conclusion=None)]
+                },
+                sleep_fn=fake_sleep,
+                monotonic_fn=fake_monotonic,
+                stderr=err_buf,
+            )
+            self.assertEqual(rc, 1)
+            self.assertFalse(dec.should_build)
+            self.assertFalse(dec.should_deploy)
+            self.assertEqual(sleeps, [30.0, 30.0, 15.0])
+            self.assertIn("timed out", err_buf.getvalue())
+
+            # 6. workflow_dispatch on pending main fails fast (0 sleeps, exit 1) by default
+            sleeps, fake_sleep, fake_monotonic = make_clock()
+            err_buf = io.StringIO()
+            dec, rc = gate.evaluate_gate(
+                repo_root=root,
+                event="workflow_dispatch",
+                ref="refs/heads/main",
+                sha=sha1,
                 before_sha="",
                 repository="o/r",
                 token="tok",
                 skip_api=True,
-                require_green_main=True,
-                api_get=api_red,
-                stderr=stderr_buf,
+                api_get=lambda _u, _t: {
+                    "workflow_runs": [make_run(sha1, status="in_progress", conclusion=None)]
+                },
+                sleep_fn=fake_sleep,
+                monotonic_fn=fake_monotonic,
+                stderr=err_buf,
             )
-            self.assertEqual(rc_red, 1)
-            self.assertFalse(dec_red.should_deploy)
-            self.assertIn("refusing to publish", stderr_buf.getvalue())
+            self.assertEqual(rc, 1)
+            self.assertFalse(dec.should_build)
+            self.assertFalse(dec.should_deploy)
+            self.assertEqual(sleeps, [])
+            self.assertIn("pending", dec.reason)
+
+            # 7. Newer commit (sha2) pending on main blocks publishing earlier already-green sha1 (strict full_runs[0])
+            sleeps, fake_sleep, fake_monotonic = make_clock()
+            err_buf = io.StringIO()
+            dec, rc = gate.evaluate_gate(
+                repo_root=root,
+                event="workflow_dispatch",
+                ref="refs/heads/main",
+                sha=sha1,
+                before_sha="",
+                repository="o/r",
+                token="tok",
+                skip_api=True,
+                api_get=lambda _u, _t: {
+                    "workflow_runs": [
+                        make_run(sha2, status="in_progress", conclusion=None),
+                        make_run(sha1, status="completed", conclusion="success"),
+                    ]
+                },
+                sleep_fn=fake_sleep,
+                monotonic_fn=fake_monotonic,
+                stderr=err_buf,
+            )
+            self.assertEqual(rc, 1)
+            self.assertFalse(dec.should_build)
+            self.assertFalse(dec.should_deploy)
+            self.assertEqual(sleeps, [])
+            self.assertIn("pending", dec.reason)
+            self.assertIn(sha2[:12], dec.reason)
 
 
 class StagePagesSiteTests(unittest.TestCase):
