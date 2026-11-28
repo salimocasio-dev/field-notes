@@ -624,14 +624,14 @@ void main() {
             Directionality(
               textDirection: TextDirection.ltr,
               child: Align(
-                alignment: Alignment.topLeft,
+                alignment: AlignmentDirectional.topStart,
                 child: RepaintBoundary(
                   key: probeKey,
                   child: Container(
                     width: 360,
                     height: 60,
                     color: NocheColors.ground,
-                    alignment: Alignment.centerLeft,
+                    alignment: AlignmentDirectional.centerStart,
                     child: Text(
                       sample,
                       style: style.copyWith(color: NocheColors.text),

@@ -922,7 +922,9 @@ class _NocheSegmentedState<T> extends State<NocheSegmented<T>>
           color: widget.backgroundColor,
           border: Border.all(color: NocheColors.line, width: 1),
           borderRadius: BorderRadius.circular(
-            compact ? NocheSize.pillRadius + 1 : 28,
+            compact
+                ? NocheSize.pillRadius + 1
+                : NocheSize.pillRadius + widget.padding.top,
           ),
         ),
         child: compact

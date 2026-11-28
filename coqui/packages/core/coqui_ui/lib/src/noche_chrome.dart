@@ -958,8 +958,12 @@ class NocheSheetOverlay extends StatelessWidget {
   }
 }
 
-/// Opens a [NocheSheet] over `NocheColors.scrim` (or without a scrim when
+/// Opens a [NocheSheet] over `NocheColors.scrim` (or without a dim scrim when
 /// [scrim] is `false`) on the root navigator.
+///
+/// When [scrim] is `false`, the route remains modal (no tap-through to the
+/// underlying route): tapping above the sheet dismisses it while dismissible,
+/// or absorbs taps while locked.
 ///
 /// Pass [dismissibleListenable] to dynamically lock and unlock user-triggered
 /// dismissals (scrim or tap-above, drag-down, close button, system back) while

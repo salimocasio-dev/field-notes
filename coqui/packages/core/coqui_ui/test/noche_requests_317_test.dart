@@ -556,6 +556,55 @@ void main() {
       await t.pump(NocheMotion.quick);
       expect(t.widget<Opacity>(surf).opacity, closeTo(1.0, 0.01));
     });
+
+    testWidgets(
+      'scrollable NocheSheet body scrolls vertically without dismissing the sheet',
+      (t) async {
+        await t.pumpWidget(
+          _app(
+            Builder(
+              builder: (c) => Scaffold(
+                body: Center(
+                  child: NocheOutlineButton(
+                    label: 'Open long sheet',
+                    onPressed: () => showNocheSheet<void>(
+                      c,
+                      title: 'Long sheet',
+                      builder: (sc, close) => Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          for (var i = 0; i < 30; i++)
+                            SizedBox(height: 48, child: Text('Row $i')),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+
+        await t.tap(find.text('Open long sheet'));
+        await t.pumpAndSettle();
+        expect(find.text('Long sheet'), findsOneWidget);
+
+        // Dragging vertically inside the overflowing body scrolls rather than
+        // dismissing the sheet.
+        await t.drag(find.text('Row 3'), const Offset(0, -160));
+        await t.pumpAndSettle();
+        expect(find.text('Long sheet'), findsOneWidget);
+
+        await t.drag(find.text('Row 6'), const Offset(0, 140));
+        await t.pumpAndSettle();
+        expect(find.text('Long sheet'), findsOneWidget);
+
+        // Dragging down on the header still dismisses.
+        await t.drag(find.text('Long sheet'), const Offset(0, 120));
+        await t.pumpAndSettle();
+        expect(find.text('Long sheet'), findsNothing);
+      },
+    );
   });
 
   group('NochePillOption key support', () {
