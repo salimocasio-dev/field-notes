@@ -126,7 +126,24 @@ void main() {
       isFalse,
     );
     expect(_same(mkPagina(1), mkPagina(1, glow: true)), isFalse);
-    expect(_same(mkPagina(2), mkPagina(2, hasPhoto: true)), isFalse);
+    expect(
+      _same(mkPagina(2), mkPagina(2, photos: const ['luis_computadora'])),
+      isFalse,
+    );
+    expect(
+      _same(
+        mkPagina(2, photos: const ['luis_computadora']),
+        mkPagina(2, photos: const ['luis_computadora', 'abuelo_lee']),
+      ),
+      isFalse,
+    );
+    expect(
+      _same(
+        mkPagina(2, photos: const ['luis_computadora']),
+        mkPagina(2, photos: const ['abuela_libro']),
+      ),
+      isFalse,
+    );
     expect(_same(mkPagina(3), mkPagina(3, torn: true)), isFalse);
     expect(_same(mkEstrellasBox(3), mkEstrellasBox(2)), isFalse);
     expect(_same(mkEstrellasBox(2), mkEstrellasBox(1)), isFalse);
@@ -140,6 +157,33 @@ void main() {
       _same(
         mkAbueloSalaDia('idle', false, phone: 'ear'),
         mkAbueloSalaDia('idle', false, phone: 'mouth'),
+      ),
+      isFalse,
+    );
+    expect(
+      _same(
+        mkAbueloSalaDia('idle', false, phone: 'ear', phoneBars: 3),
+        mkAbueloSalaDia('idle', false, phone: 'ear', phoneBars: 1),
+      ),
+      isFalse,
+    );
+    expect(
+      _same(
+        mkAbueloSalaDia('idle', false, phone: 'ear', phoneBars: 2),
+        mkAbueloSalaDia(
+          'idle',
+          false,
+          phone: 'ear',
+          phoneBars: 2,
+          phoneBlink: true,
+        ),
+      ),
+      isFalse,
+    );
+    expect(
+      _same(
+        mkAbueloSalaDia('idle', false, holdPhone: true, phoneLit: true),
+        mkAbueloSalaDia('idle', false, holdPhone: true, phoneLit: false),
       ),
       isFalse,
     );

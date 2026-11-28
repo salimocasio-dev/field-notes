@@ -39,6 +39,58 @@ int salaDiaSeatedLap(Who w) => 16 + 2 * (w.nino ? 7 : 11) + 3;
 
 /* ---------- cast variants (same canvas & anchor as base makers) ---------- */
 
+/// Paints a held telephone (`vertical`: 3x6 at ear; horizontal: 6x4 at mouth/hand) showing screen lit/dark state
+/// and 0..3 battery bars (green/amber/red-blink) matching `mkTelefono`.
+void _paintHeldPhone(
+  Buf b,
+  int x,
+  int y, {
+  required bool vertical,
+  required bool lit,
+  required int bars,
+  required bool blink,
+}) {
+  final n = bars.clamp(0, 3);
+  if (vertical) {
+    b.rect(x, y, 3, 6, _h('#2C2E38'));
+    if (!lit) {
+      b.rect(x + 1, y + 1, 1, 4, _h('#242834'));
+      return;
+    }
+    b.rect(x + 1, y + 1, 1, 4, _h('#9CCBDE'));
+    for (var i = 0; i < 3; i++) {
+      final by = y + 4 - i; // bottom-to-top battery bars
+      if (i < n) {
+        final col = (blink && i == n - 1)
+            ? _h('#E84030')
+            : (n == 1 ? _h('#F0A030') : _h('#52D058'));
+        b.px(x + 1, by, col);
+      } else {
+        b.px(x + 1, by, _h('#3A4A58'));
+      }
+    }
+  } else {
+    b.rect(x, y, 6, 4, _h('#2C2E38'));
+    if (!lit) {
+      b.rect(x + 1, y + 1, 4, 2, _h('#242834'));
+      return;
+    }
+    b.rect(x + 1, y + 1, 4, 2, _h('#9CCBDE'));
+    for (var i = 0; i < 3; i++) {
+      final bx = x + 2 + i;
+      if (i < n) {
+        final col = (blink && i == n - 1)
+            ? _h('#E84030')
+            : (n == 1 ? _h('#F0A030') : _h('#52D058'));
+        b.px(bx, y + 1, col);
+        b.px(bx, y + 2, col);
+      } else {
+        b.px(bx, y + 1, _h('#3A4A58'));
+      }
+    }
+  }
+}
+
 /// Standing abuela (`mkAbuela`) with optional story overlays: white flour on hands (`harina`), shush finger
 /// (`silencio`), or holding the telephone to her ear (`phone == 'ear'`) or before her mouth (`phone == 'mouth'`).
 Sprite mkAbuelaSalaDia(
@@ -47,6 +99,9 @@ Sprite mkAbuelaSalaDia(
   bool harina = false,
   bool silencio = false,
   String? phone,
+  bool phoneLit = true,
+  int phoneBars = 3,
+  bool phoneBlink = false,
 }) {
   final base = mkAbuela(pose, open);
   if (!harina && !silencio && phone == null) return base;
@@ -66,14 +121,26 @@ Sprite mkAbuelaSalaDia(
     }
     if (phone == 'ear') {
       // Telephone held against her left ear (cols 23..25, rows 12..17).
-      b.rect(23, 12, 3, 6, _h('#2C2E38'));
-      b.rect(24, 13, 1, 4, _h('#9CCBDE'));
-      b.px(24, 13, _h('#FFE070'));
+      _paintHeldPhone(
+        b,
+        23,
+        12,
+        vertical: true,
+        lit: phoneLit,
+        bars: phoneBars,
+        blink: phoneBlink,
+      );
     } else if (phone == 'mouth') {
       // Telephone held before her mouth (cols 27..32, rows 16..19).
-      b.rect(27, 16, 6, 4, _h('#2C2E38'));
-      b.rect(28, 17, 4, 2, _h('#9CCBDE'));
-      b.px(31, 17, _h('#FFE070'));
+      _paintHeldPhone(
+        b,
+        27,
+        16,
+        vertical: false,
+        lit: phoneLit,
+        bars: phoneBars,
+        blink: phoneBlink,
+      );
     }
   });
 }
@@ -90,6 +157,9 @@ Sprite mkAbueloSalaDia(
   bool nod = false,
   bool holdPhone = false,
   String? phone,
+  bool phoneLit = true,
+  int phoneBars = 3,
+  bool phoneBlink = false,
 }) {
   final base = mkPersona(FAM['abuelo']!, pose, open, true);
   if (!doze && !cupEar && !smile && !nod && !holdPhone && phone == null) {
@@ -117,20 +187,38 @@ Sprite mkAbueloSalaDia(
     }
     if (holdPhone) {
       // Holding telephone out to his left toward the frog (cols 12..17, rows 24..28).
-      b.rect(12, 24, 6, 4, _h('#2C2E38'));
-      b.rect(13, 25, 4, 2, _h('#9CCBDE'));
-      b.px(16, 25, _h('#FFE070'));
+      _paintHeldPhone(
+        b,
+        12,
+        24,
+        vertical: false,
+        lit: phoneLit,
+        bars: phoneBars,
+        blink: phoneBlink,
+      );
     }
     if (phone == 'ear') {
-      // Lit telephone held at abuelo's left ear (inside oreja_abuelo box: cols 14..16, rows 10..15).
-      b.rect(14, 10, 3, 6, _h('#2C2E38'));
-      b.rect(15, 11, 1, 4, _h('#9CCBDE'));
-      b.px(15, 11, _h('#FFE070'));
+      // Telephone held at abuelo's left ear (inside oreja_abuelo box: cols 14..16, rows 10..15).
+      _paintHeldPhone(
+        b,
+        14,
+        10,
+        vertical: true,
+        lit: phoneLit,
+        bars: phoneBars,
+        blink: phoneBlink,
+      );
     } else if (phone == 'mouth') {
-      // Lit telephone held before abuelo's mouth (inside boca_abuelo box: cols 18..23, rows 15..18).
-      b.rect(18, 15, 6, 4, _h('#2C2E38'));
-      b.rect(19, 16, 4, 2, _h('#9CCBDE'));
-      b.px(22, 16, _h('#FFE070'));
+      // Telephone held before abuelo's mouth (inside boca_abuelo box: cols 18..23, rows 15..18).
+      _paintHeldPhone(
+        b,
+        18,
+        15,
+        vertical: false,
+        lit: phoneLit,
+        bars: phoneBars,
+        blink: phoneBlink,
+      );
     }
   });
 }
@@ -293,13 +381,26 @@ Sprite mkTelefono({
   }
 });
 
+/// Accent colour for a miniature photo tile stuck onto an album page (`mkPagina`).
+int _miniPhotoAccent(String key) => switch (key) {
+  'luis_computadora' => _h('#7CE0F8'),
+  'abuela_libro' => _h('#D0403A'),
+  'abuelo_lee' => _h('#E8A030'),
+  'abuela_escribe' => _h('#5080D8'),
+  'carmen_juega' => _h('#E85840'),
+  'luis_lee' => _h('#4AA850'),
+  'abuela_juega' => _h('#C860C0'),
+  _ => _h('#78A8E0'),
+};
+
 /// One of the album's three pages (16 × 12, matching sala_dia-sheet.json `pagina1..pagina3` boxes):
 /// 1 = morning (low rising sun), 2 = afternoon (high orange sun), 3 = night (moon & stars).
-/// [glow]: gold highlight border; [hasPhoto]: miniature photo stuck in corner; [torn]: peeled corner with gold star.
+/// [glow]: gold highlight border; [photos]: ordered photo keys stuck onto this page (each rendered in its own slot);
+/// [torn]: peeled corner with gold star.
 Sprite mkPagina(
   int n, {
   bool glow = false,
-  bool hasPhoto = false,
+  List<String> photos = const [],
   bool torn = false,
 }) => _mk(16, 12, (b) {
   if (n == 1) {
@@ -320,11 +421,12 @@ Sprite mkPagina(
     b.px(12, 7, _h('#FFE070'));
     b.px(12, 2, _h('#FFE070'));
   }
-  if (hasPhoto) {
-    // Stuck photo tile on bottom-left of page
-    b.rect(2, 5, 5, 5, _h('#FFFFFF'));
-    b.rect(3, 6, 3, 3, _h('#78A8E0'));
-    b.px(4, 7, _h('#3A3A46'));
+  // Draw each stuck photo in its own miniature 4x4 tile slot along the lower half of the page (up to 3 slots).
+  for (var i = 0; i < photos.length && i < 3; i++) {
+    final tx = 2 + i * 4;
+    b.rect(tx, 6, 4, 4, _h('#FFFFFF'));
+    b.rect(tx + 1, 7, 2, 2, _miniPhotoAccent(photos[i]));
+    b.px(tx + 2, 8, _h('#3A3A46'));
   }
   if (torn) {
     // Torn top-right corner patched with a gold star
@@ -722,7 +824,10 @@ List<(String, Sprite)> salaDiaSpritesSheet() => [
   ('pagina1', mkPagina(1)),
   ('pagina1_glow', mkPagina(1, glow: true)),
   ('pagina2', mkPagina(2)),
-  ('pagina2_photo', mkPagina(2, hasPhoto: true)),
+  (
+    'pagina2_photo',
+    mkPagina(2, photos: const ['luis_computadora', 'abuelo_lee']),
+  ),
   ('pagina3', mkPagina(3)),
   ('pagina3_torn', mkPagina(3, torn: true)),
   ('estrellas_3', mkEstrellasBox(3)),

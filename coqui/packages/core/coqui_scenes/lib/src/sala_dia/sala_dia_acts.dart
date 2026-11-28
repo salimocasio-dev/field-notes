@@ -542,12 +542,16 @@ extension _SalaDiaActs on SalaDia {
           _ => 2,
         };
         await bounceFrog(dx: 4, dy: -4, ms: 120);
-        final photos = (W['paginaPhoto'] as Set<int>?) ?? <int>{};
-        W['paginaPhoto'] = photos;
+        final photosByPage =
+            (W['paginaPhotos'] as Map<int, List<String>>?) ??
+            <int, List<String>>{};
+        W['paginaPhotos'] = photosByPage;
         final torns = (W['paginaTorn'] as Set<int>?) ?? <int>{};
         W['paginaTorn'] = torns;
         if (ok) {
-          photos.add(idx);
+          final que = (W['foto'] as String?) ?? 'foto';
+          final list = photosByPage.putIfAbsent(idx, () => <String>[]);
+          list.add(que);
           W['paginaGlow'] = idx;
           W['foto'] = null;
           await wait(220);

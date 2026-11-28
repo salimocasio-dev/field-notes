@@ -253,7 +253,8 @@ class SalaDia extends Escena implements SetScene, SetOverSprites {
       // Story 104 state (Por la tarde)
       'paginasVis': is104 ? 1 : 0,
       'paginaGlow': 0, // 0, 1, 2, 3
-      'paginaPhoto': <int>{}, // pages (1..3) with a photo stuck on
+      'paginaPhotos':
+          <int, List<String>>{}, // page (1..3) -> photo keys stuck on it
       'paginaTorn': <int>{}, // pages (1..3) with a torn corner + gold star
       'estrellasVis': is104 ? 1 : 0,
       'estrellas': 3,
@@ -346,22 +347,29 @@ class SalaDia extends Escena implements SetScene, SetOverSprites {
     Map<String, dynamic> p,
     Map<String, dynamic> w,
     bool open,
+    int anim,
   ) {
     final pose = (p['pose'] as String?) ?? 'idle';
     final sent = _n(p['sent']) == 1;
     final kp = _kitPoseOf(pose);
+    final phoneLit = _n(w['telefonoLit']) == 1;
+    final phoneBars = _n(w['bateria']).clamp(0, 3);
+    final phoneBlink = _n(w['bateriaBlink']) == 1 && anim % 2 == 1;
     if (id == 'abuela') {
       final harina = _n(w['abuelaHarina']) == 1;
       final silencio = _n(w['abuelaSilencio']) == 1;
       final phone = w['abuelaPhone'] as String?;
       final s = _spr(
-        'sd_ab_${kp}_${open}_${harina}_${silencio}_$phone',
+        'sd_ab_${kp}_${open}_${harina}_${silencio}_${phone}_${phoneLit}_${phoneBars}_$phoneBlink',
         () => mkAbuelaSalaDia(
           kp,
           open,
           harina: harina,
           silencio: silencio,
           phone: phone,
+          phoneLit: phoneLit,
+          phoneBars: phoneBars,
+          phoneBlink: phoneBlink,
         ),
       );
       // sala_dia-sheet.json rules.anchor: abuela standing (mkAbuela, 48 wide): col 30, lowest drawn row.
@@ -380,7 +388,7 @@ class SalaDia extends Escena implements SetScene, SetOverSprites {
         _ => null,
       };
       final s = _spr(
-        'sd_abo_${kp}_${open}_${doze}_${cupEar}_${smile}_${nod}_${holdPhone}_$phone',
+        'sd_abo_${kp}_${open}_${doze}_${cupEar}_${smile}_${nod}_${holdPhone}_${phone}_${phoneLit}_${phoneBars}_$phoneBlink',
         () => mkAbueloSalaDia(
           kp,
           open,
@@ -390,6 +398,9 @@ class SalaDia extends Escena implements SetScene, SetOverSprites {
           nod: nod,
           holdPhone: holdPhone,
           phone: phone,
+          phoneLit: phoneLit,
+          phoneBars: phoneBars,
+          phoneBlink: phoneBlink,
         ),
       );
       return (s: s, ax: PX, ay: salaDiaSeatedLap(FAM['abuelo']!));
@@ -484,7 +495,7 @@ class SalaDia extends Escena implements SetScene, SetOverSprites {
       final p = gente[id] as Map<String, dynamic>?;
       if (p == null || p['vis'] == 0) continue;
       final open = talk == id && a % 2 == 1;
-      final sp = _personSprite(id, p, w, open);
+      final sp = _personSprite(id, p, w, open, anim);
       final at = _atOf(p);
       final sx = _round(at.sx) + _n(p['dx']);
       final sy = _round(at.sy) + _n(p['dy']);
@@ -546,17 +557,19 @@ class SalaDia extends Escena implements SetScene, SetOverSprites {
     // 4. Story 104 table & hand props: pagina1..pagina3, estrellas, foto
     if (_n(w['paginasVis']) == 1) {
       final glowN = _n(w['paginaGlow']);
-      final photos = (w['paginaPhoto'] as Set?) ?? const <int>{};
+      final photosByPage = (w['paginaPhotos'] as Map?) ?? const {};
       final torns = (w['paginaTorn'] as Set?) ?? const <int>{};
       for (var i = 1; i <= 3; i++) {
         final spot = 'pagina$i';
         final at = _p.at(spot);
         final g = glowN == i;
-        final hp = photos.contains(i);
+        final pagePhotos =
+            (photosByPage[i] as List?)?.cast<String>() ?? const <String>[];
         final tr = torns.contains(i);
+        final pKey = pagePhotos.join(',');
         final s = _spr(
-          'sd_pag_${i}_${g}_${hp}_$tr',
-          () => mkPagina(i, glow: g, hasPhoto: hp, torn: tr),
+          'sd_pag_${i}_${g}_${pKey}_$tr',
+          () => mkPagina(i, glow: g, photos: pagePhotos, torn: tr),
         );
         final sx = _round(at.sx), sy = _round(at.sy);
         out.add(
