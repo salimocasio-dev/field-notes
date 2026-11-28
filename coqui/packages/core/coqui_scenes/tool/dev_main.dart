@@ -47,6 +47,7 @@ import 'package:coqui_scenes/src/orilla/orilla_set.dart';
 import 'package:coqui_scenes/src/sombrilla/sombrilla_set.dart';
 import 'package:coqui_scenes/src/ropa/ropa_set.dart';
 import 'package:coqui_scenes/src/cielo/cielo_set.dart';
+import 'package:coqui_scenes/src/entrada/entrada_set.dart';
 import 'package:coqui_scenes/src/pedido/pedido_set.dart';
 import 'package:coqui_scenes/src/comida/comida_set.dart';
 import 'package:coqui_scenes/src/cuenta/cuenta_set.dart';
@@ -349,6 +350,7 @@ const Set<String> _newSceneIds = {
   'sombrilla',
   'ropa',
   'cielo',
+  'entrada',
   'pedido',
   'comida',
   'cuenta',
@@ -382,6 +384,7 @@ String _setKeyFromQuery(String id, String query) => switch (id) {
   'sombrilla' => SombrillaState.fromQuery(query).key,
   'ropa' => RopaState.fromQuery(query).key,
   'cielo' => CieloState.fromQuery(query).key,
+  'entrada' => EntradaState.fromQuery(query).key,
   'pedido' => PedidoState.fromQuery(query).key,
   'comida' => ComidaState.fromQuery(query).key,
   'cuenta' => CuentaState.fromQuery(query).key,
