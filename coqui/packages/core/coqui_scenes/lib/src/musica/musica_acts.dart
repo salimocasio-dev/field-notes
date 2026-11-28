@@ -612,9 +612,52 @@ extension _MusicaActs on Musica {
       W['camaraCoqui'] = 0;
       W['badFoto'] = 0;
       W['hojas'] = n;
+
+      // Story 113 ending: abuela uses the remaining n sheets (3: músicos, floor, frog; 2: floor, frog; 1: frog).
+      Map<String, dynamic>? floorPerson() {
+        final gente = (W['gente'] as Map<String, dynamic>?) ?? const {};
+        for (final en in gente.entries) {
+          final p = en.value as Map<String, dynamic>;
+          final sp = p['spot'] as String? ?? '';
+          if (jsTruthy(p['vis']) &&
+              (sp.startsWith('ronda') || sp.startsWith('pista'))) {
+            return p;
+          }
+        }
+        return null;
+      }
+
+      final shots = <(String kind, List<Map<String, dynamic>> targets)>[
+        if (n >= 3) ('musicos', [?_personOf('musico1'), ?_personOf('musico2')]),
+        if (n >= 2) ('pista', [?floorPerson()]),
+        (
+          'coqui',
+          [
+            if (W['cq'] is Map<String, dynamic>)
+              W['cq'] as Map<String, dynamic>,
+          ],
+        ),
+      ];
+
+      for (var i = 0; i < shots.length; i++) {
+        W['hojas'] = (n - 1 - i).clamp(0, 3);
+        for (final t in shots[i].$2) {
+          t['dy'] = -1;
+        }
+        W['flashFx'] = 1;
+        W['fotoFx'] = 1;
+        await wait(120);
+        W['flashFx'] = 0;
+        for (final t in shots[i].$2) {
+          t['dy'] = 0;
+        }
+        await wait(100);
+        W['fotoFx'] = 0;
+      }
+
       W['corazonFx'] = n == 3 ? 1 : 0;
       W['estrellaFx'] = n == 3 ? 1 : 0;
-      await wait(240);
+      await wait(180);
     }),
   };
 }

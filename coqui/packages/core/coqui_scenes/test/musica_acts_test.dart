@@ -300,6 +300,13 @@ void main() {
         isFalse,
       );
 
+      // final113 consumes remaining sheets visibly and clears transient flash/photo
+      await sc.acts['final113']!({'n': 3});
+      expect(fr.host.W['camaraCoqui'], 0);
+      expect(fr.host.W['hojas'], 0);
+      expect(fr.host.W['corazonFx'], 1);
+      expect(fr.host.W['estrellaFx'], 1);
+
       // `gesto(carmen, rie)` preserves laughing expression across opening asks until moved
       await sc.acts['gesto']!({'quien': 'carmen', 'que': 'rie'});
       expect((g['carmen'] as Map)['laugh'], 1);
