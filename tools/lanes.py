@@ -50,6 +50,26 @@ class BranchRules:
     lane_prefix: str
     story_prefix: str
     story_default_lane: str
+    contracts_prefix: str = "contracts/"
+    contracts_owner_lane: str = "coqui_contracts"
+    contracts_required_lib_paths: tuple[str, ...] = (
+        "coqui/packages/core/coqui_contracts/lib/**",
+    )
+    contracts_conformance_paths: tuple[str, ...] = (
+        "coqui/packages/**",
+        "coqui/app/**",
+    )
+    contracts_denied_paths: tuple[str, ...] = ()
+    contracts_max_conformance_changed_lines: int = 6
+
+
+@dataclass(frozen=True)
+class ChangedFileStat:
+    path: str
+    status: str = "M"
+    added_lines: int | None = None
+    deleted_lines: int | None = None
+    is_binary: bool = False
 
 
 @dataclass(frozen=True)
@@ -73,6 +93,11 @@ class BranchResolution:
     allowed_paths: tuple[str, ...] = ()
     generated_paths: tuple[str, ...] = ()
     shared_paths: tuple[str, ...] = ()
+    owner_paths: tuple[str, ...] = ()
+    required_lib_paths: tuple[str, ...] = ()
+    denied_paths: tuple[str, ...] = ()
+    conformance_max_changed_lines: int | None = None
+    conformance_extensions: tuple[str, ...] = ()
     error: str | None = None
 
     @property
@@ -347,6 +372,12 @@ def parse_lane_map(data: object, *, source_path: Path | None = None) -> tuple[La
         lane_prefix = raw_branch_rules.get("lane_prefix")
         story_prefix = raw_branch_rules.get("story_prefix")
         story_default_lane = raw_branch_rules.get("story_default_lane")
+        contracts_prefix = raw_branch_rules.get("contracts_prefix")
+        contracts_owner_lane = raw_branch_rules.get("contracts_owner_lane")
+        raw_contracts_required_lib = raw_branch_rules.get("contracts_required_lib_paths")
+        raw_contracts_conformance = raw_branch_rules.get("contracts_conformance_paths")
+        raw_contracts_denied = raw_branch_rules.get("contracts_denied_paths", [])
+        raw_max_conformance_lines = raw_branch_rules.get("contracts_max_conformance_changed_lines")
         if not isinstance(lane_prefix, str) or not lane_prefix.endswith("/"):
             errors.append("branch_rules.lane_prefix must be a string ending with '/'")
             lane_prefix = "lane/"
@@ -356,7 +387,58 @@ def parse_lane_map(data: object, *, source_path: Path | None = None) -> tuple[La
         if not isinstance(story_default_lane, str) or not story_default_lane:
             errors.append("branch_rules.story_default_lane must be a non-empty string")
             story_default_lane = ""
-        branch_rules = BranchRules(lane_prefix, story_prefix, story_default_lane)
+        if not isinstance(contracts_prefix, str) or not contracts_prefix.endswith("/"):
+            errors.append("branch_rules.contracts_prefix must be a string ending with '/'")
+            contracts_prefix = "contracts/"
+        if not isinstance(contracts_owner_lane, str) or not contracts_owner_lane:
+            errors.append("branch_rules.contracts_owner_lane must be a non-empty string")
+            contracts_owner_lane = ""
+        contracts_required_lib_paths = tuple(
+            _as_str_list(
+                raw_contracts_required_lib,
+                "branch_rules.contracts_required_lib_paths",
+                errors,
+                allow_empty=False,
+            )
+        )
+        contracts_conformance_paths = tuple(
+            _as_str_list(
+                raw_contracts_conformance,
+                "branch_rules.contracts_conformance_paths",
+                errors,
+                allow_empty=False,
+            )
+        )
+        contracts_denied_paths = tuple(
+            _as_str_list(
+                raw_contracts_denied,
+                "branch_rules.contracts_denied_paths",
+                errors,
+                allow_empty=True,
+            )
+        )
+        if (
+            isinstance(raw_max_conformance_lines, bool)
+            or not isinstance(raw_max_conformance_lines, int)
+            or raw_max_conformance_lines <= 0
+        ):
+            errors.append(
+                "branch_rules.contracts_max_conformance_changed_lines must be a positive integer"
+            )
+            contracts_max_conformance_changed_lines = 6
+        else:
+            contracts_max_conformance_changed_lines = raw_max_conformance_lines
+        branch_rules = BranchRules(
+            lane_prefix,
+            story_prefix,
+            story_default_lane,
+            contracts_prefix,
+            contracts_owner_lane,
+            contracts_required_lib_paths,
+            contracts_conformance_paths,
+            contracts_denied_paths,
+            contracts_max_conformance_changed_lines,
+        )
 
     raw_gen_groups = data.get("generated_path_groups", {})
     generated_path_groups: dict[str, tuple[str, ...]] = {}
@@ -567,6 +649,22 @@ def validate_lane_map(lane_map: LaneMap) -> list[str]:
     if lane_map.branch_rules.story_default_lane not in lane_map.lanes:
         errors.append(
             f"branch_rules.story_default_lane references unknown lane {lane_map.branch_rules.story_default_lane!r}"
+        )
+
+    if lane_map.branch_rules.contracts_owner_lane not in lane_map.lanes:
+        errors.append(
+            f"branch_rules.contracts_owner_lane references unknown lane {lane_map.branch_rules.contracts_owner_lane!r}"
+        )
+    for p in lane_map.branch_rules.contracts_required_lib_paths:
+        check_pat(p, "branch_rules.contracts_required_lib_paths")
+    for p in lane_map.branch_rules.contracts_conformance_paths:
+        check_pat(p, "branch_rules.contracts_conformance_paths")
+    for p in lane_map.branch_rules.contracts_denied_paths:
+        check_pat(p, "branch_rules.contracts_denied_paths")
+    max_lines = lane_map.branch_rules.contracts_max_conformance_changed_lines
+    if isinstance(max_lines, bool) or not isinstance(max_lines, int) or max_lines <= 0:
+        errors.append(
+            "branch_rules.contracts_max_conformance_changed_lines must be a positive integer"
         )
 
     for rule_name, rule in lane_map.sanctioned_multi_package.items():
@@ -806,6 +904,7 @@ def resolve_branch(lane_map: LaneMap, branch: str) -> BranchResolution:
     """Resolve a git branch name against the lane map."""
     lane_prefix = lane_map.branch_rules.lane_prefix
     story_prefix = lane_map.branch_rules.story_prefix
+    contracts_prefix = lane_map.branch_rules.contracts_prefix
 
     if branch.startswith(lane_prefix):
         after = branch[len(lane_prefix) :]
@@ -893,7 +992,13 @@ def resolve_branch(lane_map: LaneMap, branch: str) -> BranchResolution:
                 error=f"branch '{branch}' must match '{story_prefix}<number>'",
             )
         default_id = lane_map.branch_rules.story_default_lane
-        lane = lane_map.lanes[default_id]
+        lane = lane_map.lanes.get(default_id)
+        if lane is None:
+            return BranchResolution(
+                branch=branch,
+                restricted=True,
+                error=f"branch '{branch}' references unknown story_default_lane '{default_id}'",
+            )
         return BranchResolution(
             branch=branch,
             restricted=True,
@@ -901,6 +1006,38 @@ def resolve_branch(lane_map: LaneMap, branch: str) -> BranchResolution:
             allowed_paths=lane.paths,
             generated_paths=lane.generated_paths,
             shared_paths=lane_map.shared_paths,
+        )
+
+    if branch.startswith(contracts_prefix):
+        rest = branch[len(contracts_prefix) :]
+        if not _DIGITS_RE.match(rest):
+            return BranchResolution(
+                branch=branch,
+                restricted=True,
+                error=f"branch '{branch}' must match '{contracts_prefix}<number>'",
+            )
+        owner_id = lane_map.branch_rules.contracts_owner_lane
+        owner_lane = lane_map.lanes.get(owner_id)
+        if owner_lane is None:
+            return BranchResolution(
+                branch=branch,
+                restricted=True,
+                error=f"branch '{branch}' references unknown contracts_owner_lane '{owner_id}'",
+            )
+        return BranchResolution(
+            branch=branch,
+            restricted=True,
+            lane_ids=(owner_lane.id,),
+            allowed_paths=_dedupe(
+                (*owner_lane.paths, *lane_map.branch_rules.contracts_conformance_paths)
+            ),
+            generated_paths=owner_lane.generated_paths,
+            shared_paths=lane_map.shared_paths,
+            owner_paths=owner_lane.paths,
+            required_lib_paths=lane_map.branch_rules.contracts_required_lib_paths,
+            denied_paths=lane_map.branch_rules.contracts_denied_paths,
+            conformance_max_changed_lines=lane_map.branch_rules.contracts_max_conformance_changed_lines,
+            conformance_extensions=(".dart",),
         )
 
     return BranchResolution(
@@ -929,6 +1066,7 @@ def check_changed_files(
     changed_files: Iterable[str],
     *,
     block_packages_on_unrestricted: bool = False,
+    file_stats: dict[str, ChangedFileStat] | None = None,
 ) -> list[tuple[str | None, str]]:
     """Check changed file paths against a BranchResolution.
 
@@ -945,8 +1083,18 @@ def check_changed_files(
     if resolution.restricted:
         patterns = resolution.all_allowed_patterns
         summary = format_allowed_summary(patterns)
+        allowed_files: list[str] = []
         for path in files:
+            if any(match_pattern(pat, path) for pat in resolution.denied_paths):
+                violations.append(
+                    (
+                        path,
+                        f"branch '{resolution.branch}' may not modify locked/denied path '{path}'",
+                    )
+                )
+                continue
             if any(match_pattern(pat, path) for pat in patterns):
+                allowed_files.append(path)
                 continue
             violations.append(
                 (
@@ -955,6 +1103,85 @@ def check_changed_files(
                     f"may not modify '{path}' (allowed: {summary})",
                 )
             )
+        if resolution.required_lib_paths or resolution.conformance_max_changed_lines is not None:
+            exempt_patterns = (
+                *resolution.owner_paths,
+                *resolution.shared_paths,
+                *resolution.generated_paths,
+            )
+            conformance_files = [
+                path
+                for path in allowed_files
+                if not any(match_pattern(pat, path) for pat in exempt_patterns)
+            ]
+            if conformance_files:
+                lib_touched = any(
+                    match_pattern(pat, path)
+                    for path in files
+                    for pat in resolution.required_lib_paths
+                )
+                if resolution.required_lib_paths and not lib_touched:
+                    lib_summary = format_allowed_summary(resolution.required_lib_paths)
+                    for path in conformance_files:
+                        violations.append(
+                            (
+                                path,
+                                f"branch '{resolution.branch}' may edit '{path}' for conformance only "
+                                f"alongside changes in {lib_summary}",
+                            )
+                        )
+                for path in conformance_files:
+                    if resolution.conformance_extensions and not path.endswith(
+                        resolution.conformance_extensions
+                    ):
+                        exts = ", ".join(resolution.conformance_extensions)
+                        violations.append(
+                            (
+                                path,
+                                f"branch '{resolution.branch}' conformance edit on '{path}' "
+                                f"must target {exts} files only",
+                            )
+                        )
+                    stat = file_stats.get(path) if file_stats is not None else None
+                    if stat is None:
+                        violations.append(
+                            (
+                                path,
+                                f"branch '{resolution.branch}' requires diff stats to verify "
+                                f"conformance edit size/status on '{path}'",
+                            )
+                        )
+                    elif stat.status != "M":
+                        violations.append(
+                            (
+                                path,
+                                f"branch '{resolution.branch}' conformance edit on '{path}' "
+                                f"must modify an existing file in place (got status '{stat.status}')",
+                            )
+                        )
+                    elif stat.is_binary or stat.added_lines is None or stat.deleted_lines is None:
+                        violations.append(
+                            (
+                                path,
+                                f"branch '{resolution.branch}' binary file '{path}' is not allowed "
+                                "as a conformance edit",
+                            )
+                        )
+                    elif (
+                        resolution.conformance_max_changed_lines is not None
+                        and (stat.added_lines + stat.deleted_lines)
+                        > resolution.conformance_max_changed_lines
+                    ):
+                        changed_lines = stat.added_lines + stat.deleted_lines
+                        violations.append(
+                            (
+                                path,
+                                f"branch '{resolution.branch}' conformance edit on '{path}' "
+                                f"changed {changed_lines} lines "
+                                f"({stat.added_lines} added + {stat.deleted_lines} deleted), "
+                                f"exceeding max {resolution.conformance_max_changed_lines}",
+                            )
+                        )
         return violations
 
     if block_packages_on_unrestricted:
@@ -965,8 +1192,9 @@ def check_changed_files(
                     (
                         path,
                         f"branch '{resolution.branch}' modifies '{prefix}' with an unauthorized prefix. "
-                        f"Use {lane_map.branch_rules.lane_prefix}<lane>/<n> or "
-                        f"{lane_map.branch_rules.story_prefix}<n>.",
+                        f"Use {lane_map.branch_rules.lane_prefix}<lane>/<n>, "
+                        f"{lane_map.branch_rules.story_prefix}<n>, or "
+                        f"{lane_map.branch_rules.contracts_prefix}<n>.",
                     )
                 )
     return violations

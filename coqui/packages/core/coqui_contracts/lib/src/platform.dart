@@ -9,22 +9,28 @@ abstract interface class KeyValueStore {
 /// Kept separate from [KeyValueStore] (same pattern as `LanguageCatalog` and
 /// `CallProgressStore`): adding an abstract member directly to [KeyValueStore]
 /// would break stores implemented in other packages. Stores that do not
-/// implement this treat [KeyValueStoreDelete.delete] as a no-op.
+/// implement this fail [KeyValueStoreDelete.delete] with an [UnsupportedError]
+/// rather than silently reporting success.
 abstract interface class DeletableKeyValueStore {
   /// Removes [key] from this store if present.
   Future<void> delete(String key);
 }
 
 /// Key-removal helper on [KeyValueStore], delegating to
-/// [DeletableKeyValueStore] when implemented and acting as a no-op otherwise.
+/// [DeletableKeyValueStore] when implemented and failing with an
+/// [UnsupportedError] otherwise.
 extension KeyValueStoreDelete on KeyValueStore {
   /// Removes [key] when this store implements [DeletableKeyValueStore], or
-  /// returns an already-completed future otherwise.
+  /// returns a future that fails with [UnsupportedError] otherwise.
   Future<void> delete(String key) {
     final s = this;
     return s is DeletableKeyValueStore
         ? (s as DeletableKeyValueStore).delete(key)
-        : Future<void>.value();
+        : Future<void>.error(
+            UnsupportedError(
+              '$runtimeType does not implement DeletableKeyValueStore',
+            ),
+          );
   }
 }
 

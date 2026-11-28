@@ -69,26 +69,74 @@ def _resolve_head_ref(head_ref_arg: str | None, repo_root: Path) -> str:
     return res.stdout.strip()
 
 
-def _changed_files(base_ref: str, repo_root: Path) -> list[str]:
+def _changed_file_stats(base_ref: str, repo_root: Path) -> tuple[list[str], dict[str, lane_lib.ChangedFileStat]]:
     mb = _git(["merge-base", "HEAD", base_ref], cwd=repo_root)
     if mb.returncode != 0 or not mb.stdout.strip():
         raise RuntimeError(f"git merge-base HEAD {base_ref} failed: {mb.stderr.strip()}")
     merge_base = mb.stdout.strip()
-    diff = _git(
+    status_diff = _git(
         [
             "-c",
             "core.quotepath=false",
             "diff",
-            "--name-only",
+            "--name-status",
             "--no-renames",
             "-z",
             f"{merge_base}..HEAD",
         ],
         cwd=repo_root,
     )
-    if diff.returncode != 0:
-        raise RuntimeError(f"git diff failed: {diff.stderr.strip()}")
-    return [f for f in diff.stdout.split("\x00") if f]
+    if status_diff.returncode != 0:
+        raise RuntimeError(f"git diff --name-status failed: {status_diff.stderr.strip()}")
+
+    numstat_diff = _git(
+        [
+            "-c",
+            "core.quotepath=false",
+            "diff",
+            "--numstat",
+            "--no-renames",
+            "-z",
+            f"{merge_base}..HEAD",
+        ],
+        cwd=repo_root,
+    )
+    if numstat_diff.returncode != 0:
+        raise RuntimeError(f"git diff --numstat failed: {numstat_diff.stderr.strip()}")
+
+    numstats: dict[str, tuple[int | None, int | None, bool]] = {}
+    for entry in numstat_diff.stdout.split("\x00"):
+        if not entry:
+            continue
+        parts = entry.split("\t", 2)
+        if len(parts) != 3:
+            continue
+        added_raw, deleted_raw, path = parts
+        if added_raw == "-" or deleted_raw == "-":
+            numstats[path] = (None, None, True)
+        else:
+            numstats[path] = (int(added_raw), int(deleted_raw), False)
+
+    files: list[str] = []
+    stats: dict[str, lane_lib.ChangedFileStat] = {}
+    tokens = status_diff.stdout.split("\x00")
+    i = 0
+    while i + 1 < len(tokens):
+        status = tokens[i]
+        path = tokens[i + 1]
+        i += 2
+        if not status or not path:
+            continue
+        files.append(path)
+        added, deleted, is_binary = numstats.get(path, (None, None, False))
+        stats[path] = lane_lib.ChangedFileStat(
+            path=path,
+            status=status,
+            added_lines=added,
+            deleted_lines=deleted,
+            is_binary=is_binary,
+        )
+    return files, stats
 
 
 def _emit_error(file_path: str | None, message: str) -> None:
@@ -118,7 +166,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         base_ref = _resolve_base(args.base, repo_root)
         head_ref = _resolve_head_ref(args.head_ref, repo_root)
-        changed = _changed_files(base_ref, repo_root)
+        changed, file_stats = _changed_file_stats(base_ref, repo_root)
     except RuntimeError as exc:
         _emit_error(None, str(exc))
         return 1
@@ -129,6 +177,7 @@ def main(argv: list[str] | None = None) -> int:
         resolution,
         changed,
         block_packages_on_unrestricted=True,
+        file_stats=file_stats,
     )
 
     if violations:

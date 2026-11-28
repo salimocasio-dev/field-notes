@@ -1172,6 +1172,434 @@ import 'package:material_ui/material_ui.dart';
       expect(problems, hasLength(1));
       expect(problems.single, startsWith('docs/stray.md: [d]'));
     });
+
+    test('passes: contracts/<n> allows contracts lib + small in-place .dart conformance edits, owner-only AGENTS.md, and requests-only', () async {
+      // Pre-create existing packages and .dart files on main so conformance edits are status M.
+      package('coqui_contracts', deps: []);
+      package('coqui_platform', deps: ['coqui_contracts']);
+      package('coqui_testing', deps: ['coqui_contracts', 'coqui_ui']);
+      package('feature_library', deps: ['coqui_contracts', 'coqui_ui']);
+      package('app', deps: ['coqui_contracts']);
+      src('coqui_contracts', 'lib/src/platform.dart', '// old contracts\n');
+      src('coqui_contracts', 'AGENTS.md', '# coqui_contracts\n');
+      src('coqui_platform', 'lib/src/store.dart', '// old store\n');
+      src('coqui_testing', 'lib/src/fakes.dart', '// old fakes\n');
+      src('feature_library', 'lib/src/reader.dart', '// old reader\n');
+      src('app', 'lib/src/main.dart', '// old app\n');
+      git.commit('seed existing files on main');
+
+      // (a) Contracts lib + small in-place (<= 6 changed lines) .dart conformance edits + requests/
+      git.branch('contracts/260');
+      src('coqui_contracts', 'lib/src/platform.dart', '// new contracts\n');
+      src('coqui_platform', 'lib/src/store.dart', '// conform store\n');
+      src('coqui_testing', 'lib/src/fakes.dart', '// conform fakes\n');
+      src('feature_library', 'lib/src/reader.dart', '// conform reader\n');
+      src('app', 'lib/src/main.dart', '// conform app\n');
+      write('requests/260-note.md', '# note\n');
+      git.commit('contracts lib plus small conformance edits');
+      expect(await check(branch: null), isEmpty);
+
+      // (b) Owner-only AGENTS.md edit (no other packages)
+      git.run(['checkout', '-q', 'main']);
+      git.branch('contracts/261');
+      src(
+        'coqui_contracts',
+        'AGENTS.md',
+        '# coqui_contracts\n- Standing rule.\n',
+      );
+      git.commit('owner-only AGENTS.md');
+      expect(await check(branch: null), isEmpty);
+
+      // Requests-only on contracts/<n>
+      git.run(['checkout', '-q', 'main']);
+      git.branch('contracts/262');
+      write('requests/262-note.md', '# req only\n');
+      git.commit('requests only');
+      expect(await check(branch: null), isEmpty);
+    });
+
+    test('fails: contracts/<n> rejects conformance edits when only coqui_contracts/AGENTS.md changed (lib/** required)', () async {
+      package('coqui_contracts', deps: []);
+      package('coqui_platform', deps: ['coqui_contracts']);
+      src('coqui_contracts', 'AGENTS.md', '# coqui_contracts\n');
+      src('coqui_platform', 'lib/src/store.dart', '// old store\n');
+      git.commit('seed on main');
+
+      git.branch('contracts/260');
+      src(
+        'coqui_contracts',
+        'AGENTS.md',
+        '# coqui_contracts\n- Standing rule.\n',
+      );
+      src('coqui_platform', 'lib/src/store.dart', '// conform store\n');
+      git.commit('docs-only contracts plus conformance');
+      final problems = await check(branch: null);
+      expect(problems, hasLength(1));
+      expect(
+        problems.single,
+        startsWith(
+          'coqui/packages/core/coqui_platform/lib/src/store.dart: [d]',
+        ),
+      );
+      expect(
+        problems.single,
+        contains(
+          'for conformance only alongside changes in '
+          'coqui/packages/core/coqui_contracts/lib/**',
+        ),
+      );
+    });
+
+    test('fails: contracts/<n> rejects conformance edits exceeding 6 changed lines', () async {
+      package('coqui_contracts', deps: []);
+      package('coqui_platform', deps: ['coqui_contracts']);
+      src('coqui_contracts', 'lib/src/platform.dart', '// old\n');
+      src(
+        'coqui_platform',
+        'lib/src/store.dart',
+        'line1\nline2\nline3\nline4\n',
+      );
+      git.commit('seed on main');
+
+      git.branch('contracts/260');
+      src('coqui_contracts', 'lib/src/platform.dart', '// new\n');
+      // 4 deleted + 4 added = 8 changed lines (> 6)
+      src('coqui_platform', 'lib/src/store.dart', 'new1\nnew2\nnew3\nnew4\n');
+      git.commit('oversized conformance edit');
+      final problems = await check(branch: null);
+      expect(problems, hasLength(1));
+      expect(
+        problems.single,
+        startsWith(
+          'coqui/packages/core/coqui_platform/lib/src/store.dart: [d]',
+        ),
+      );
+      expect(problems.single, contains('changed 8 lines'));
+      expect(problems.single, contains('exceeding max 6'));
+    });
+
+    test('fails: contracts/<n> rejects adding (A) or deleting (D) a .dart file in another package', () async {
+      package('coqui_contracts', deps: []);
+      package('coqui_platform', deps: ['coqui_contracts']);
+      src('coqui_contracts', 'lib/src/platform.dart', '// old\n');
+      src('coqui_platform', 'lib/src/old_store.dart', '// to delete\n');
+      git.commit('seed on main');
+
+      git.branch('contracts/260');
+      src('coqui_contracts', 'lib/src/platform.dart', '// new\n');
+      src('coqui_platform', 'lib/src/new_store.dart', '// added\n');
+      File('${coqui.path}/packages/core/coqui_platform/lib/src/old_store.dart')
+          .deleteSync();
+      git.commit('add and delete in conformance package');
+      final problems = await check(branch: null);
+      expect(problems, hasLength(2));
+      final joined = problems.join('\n');
+      expect(
+        joined,
+        contains(
+          "coqui/packages/core/coqui_platform/lib/src/new_store.dart: [d] "
+          "branch contracts/260 conformance edit on "
+          "'coqui/packages/core/coqui_platform/lib/src/new_store.dart' must "
+          "modify an existing file in place (got status 'A')",
+        ),
+      );
+      expect(
+        joined,
+        contains(
+          "coqui/packages/core/coqui_platform/lib/src/old_store.dart: [d] "
+          "branch contracts/260 conformance edit on "
+          "'coqui/packages/core/coqui_platform/lib/src/old_store.dart' must "
+          "modify an existing file in place (got status 'D')",
+        ),
+      );
+    });
+
+    test('fails: contracts/<n> rejects non-.dart conformance edits (pubspec.yaml, AGENTS.md)', () async {
+      package('coqui_contracts', deps: []);
+      package('coqui_platform', deps: ['coqui_contracts']);
+      src('coqui_contracts', 'lib/src/platform.dart', '// old\n');
+      src('coqui_platform', 'AGENTS.md', '# coqui_platform\n');
+      git.commit('seed on main');
+
+      git.branch('contracts/260');
+      src('coqui_contracts', 'lib/src/platform.dart', '// new\n');
+      src('coqui_platform', 'AGENTS.md', '# coqui_platform\n- Extra note.\n');
+      final pubspecFile = File(
+        '${coqui.path}/packages/core/coqui_platform/pubspec.yaml',
+      );
+      pubspecFile.writeAsStringSync(
+        '${pubspecFile.readAsStringSync()}# comment\n',
+      );
+      git.commit('non-dart conformance edits');
+      final problems = await check(branch: null);
+      expect(problems, hasLength(2));
+      final joined = problems.join('\n');
+      expect(
+        joined,
+        contains('coqui/packages/core/coqui_platform/AGENTS.md: [d]'),
+      );
+      expect(
+        joined,
+        contains('coqui/packages/core/coqui_platform/pubspec.yaml: [d]'),
+      );
+      expect(joined, contains('must target .dart files only'));
+    });
+
+    test('fails: contracts/<n> rejects locked/denied paths even with 1-line edit alongside coqui_contracts/lib/**', () async {
+      package('coqui_contracts', deps: []);
+      package('coqui_platform', deps: ['coqui_contracts']);
+      package('app', deps: ['coqui_contracts']);
+      src('coqui_contracts', 'lib/src/platform.dart', '// old\n');
+      src('coqui_platform', 'lib/src/call/call.dart', '// old call\n');
+      src('coqui_platform', 'lib/src/web/el_conv.dart', '// old el\n');
+      src('coqui_platform', 'assets/elevenlabs/lib.js', '// old js\n');
+      write('app/android/app/build.gradle.kts', '// old gradle\n');
+      git.commit('seed locked files on main');
+
+      git.branch('contracts/260');
+      src('coqui_contracts', 'lib/src/platform.dart', '// new\n');
+      src('coqui_platform', 'lib/src/call/call.dart', '// edited call\n');
+      src('coqui_platform', 'lib/src/web/el_conv.dart', '// edited el\n');
+      src('coqui_platform', 'assets/elevenlabs/lib.js', '// edited js\n');
+      write('app/android/app/build.gradle.kts', '// edited gradle\n');
+      git.commit('edit locked paths on contracts branch');
+      final problems = await check(branch: null);
+      expect(problems, hasLength(4));
+      for (final path in [
+        'coqui/packages/core/coqui_platform/lib/src/call/call.dart',
+        'coqui/packages/core/coqui_platform/lib/src/web/el_conv.dart',
+        'coqui/packages/core/coqui_platform/assets/elevenlabs/lib.js',
+        'coqui/app/android/app/build.gradle.kts',
+      ]) {
+        expect(
+          problems.any(
+            (p) =>
+                p.startsWith('$path: [d]') && p.contains('locked/denied path'),
+          ),
+          isTrue,
+          reason: 'expected locked/denied rejection for $path',
+        );
+      }
+    });
+
+    test('fails: contracts/<n> rejects non-package paths (docs/, .github/, tools/, coqui/tool/)', () async {
+      git.branch('contracts/260');
+      package('coqui_contracts', deps: []);
+      src('coqui_contracts', 'lib/src/platform.dart', '// contracts\n');
+      writeRepo('docs/guide.md', '# nope\n');
+      writeRepo('.github/scripts/helper.py', '# nope\n');
+      writeRepo('tools/helper.py', '# nope\n');
+      write('tool/helper.dart', '// nope\n');
+      git.commit('non-package paths on contracts branch');
+      final problems = await check(branch: null);
+      expect(problems, hasLength(4));
+      for (final path in [
+        'docs/guide.md',
+        '.github/scripts/helper.py',
+        'tools/helper.py',
+        'coqui/tool/helper.dart',
+      ]) {
+        expect(
+          problems.any((p) => p.startsWith('$path: [d]')),
+          isTrue,
+          reason: 'expected $path to be rejected',
+        );
+      }
+    });
+
+    test('fails: contracts/<n> rejects conformance edits without changing coqui_contracts', () async {
+      package('app', deps: ['coqui_ui']);
+      src('app', 'lib/src/main.dart', '// old app\n');
+      git.commit('seed app on main');
+
+      git.branch('contracts/260');
+      src('feature_words', 'lib/src/a.dart', '// conform without contracts\n');
+      src('app', 'lib/src/main.dart', '// app without contracts\n');
+      write('requests/260-note.md', '# shared request is exempt\n');
+      git.commit('conformance without contracts');
+      final problems = await check(branch: null);
+      expect(problems, hasLength(2));
+      final joined = problems.join('\n');
+      expect(
+        joined,
+        contains('coqui/packages/features/feature_words/lib/src/a.dart: [d]'),
+      );
+      expect(joined, contains('coqui/app/lib/src/main.dart: [d]'));
+      expect(joined, contains('for conformance only alongside changes in'));
+      expect(joined, contains('coqui/packages/core/coqui_contracts/lib/**'));
+      expect(joined, isNot(contains('requests/260-note.md')));
+    });
+
+    test('fails: malformed contracts/ branch names are rejected', () async {
+      for (final bad in [
+        'contracts/',
+        'contracts/abc',
+        'contracts/260/extra',
+        'contracts/260-fix',
+      ]) {
+        final problems = await check(branch: bad);
+        expect(problems, hasLength(1), reason: bad);
+        expect(problems.single, contains('[d]'), reason: bad);
+        expect(problems.single, contains('contracts/<number>'), reason: bad);
+      }
+    });
+
+    test('contracts/<n> respects CI branch override argument', () async {
+      git.branch('work-in-progress');
+      src('feature_map', 'lib/src/m.dart', '// changed without contracts\n');
+      git.commit('work');
+      final problems = await check(branch: 'contracts/260');
+      expect(problems, hasLength(1));
+      expect(problems.single, contains('branch contracts/260'));
+      expect(problems.single, contains('for conformance only'));
+
+      package('coqui_contracts', deps: []);
+      src('coqui_contracts', 'lib/src/platform.dart', '// contracts\n');
+      git.commit('add contracts change');
+      expect(await check(branch: 'contracts/260'), isEmpty);
+    });
+
+    test(
+      'fails: missing tools/lanes.json fails on contracts/<n> branch',
+      () async {
+        File('${repo.path}/tools/lanes.json').deleteSync();
+        final onContracts = await check(branch: 'contracts/260');
+        expect(onContracts, hasLength(1));
+        expect(onContracts.single, contains('[d] missing lane map'));
+      },
+    );
+
+    test('safe error without crash when resolving story/contracts against unvalidated lane map with missing lanes', () {
+      final baseRaw = jsonDecode(
+        realLaneMapFile().readAsStringSync(),
+      ) as Map<String, Object?>;
+
+      Map<String, Object?> cloneRaw() =>
+          jsonDecode(jsonEncode(baseRaw)) as Map<String, Object?>;
+
+      final missingStory = cloneRaw();
+      (missingStory['branch_rules'] as Map)['story_default_lane'] =
+          'missing_scene_port';
+      final storyErr = resolveBranchErrorForTest(missingStory, 'story/42');
+      expect(storyErr, isNotNull);
+      expect(storyErr, contains('story_default_lane'));
+      expect(storyErr, contains('missing_scene_port'));
+
+      final missingOwner = cloneRaw();
+      (missingOwner['branch_rules'] as Map)['contracts_owner_lane'] =
+          'missing_contracts';
+      final ownerErr = resolveBranchErrorForTest(missingOwner, 'contracts/260');
+      expect(ownerErr, isNotNull);
+      expect(ownerErr, contains('contracts_owner_lane'));
+      expect(ownerErr, contains('missing_contracts'));
+    });
+
+    test('fails: custom tools/lanes.json rejects invalid contracts_* fields in branch_rules', () async {
+      final baseRaw = jsonDecode(
+        realLaneMapFile().readAsStringSync(),
+      ) as Map<String, Object?>;
+
+      Map<String, Object?> cloneRaw() =>
+          jsonDecode(jsonEncode(baseRaw)) as Map<String, Object?>;
+
+      // Bad contracts_prefix
+      final badPrefix = cloneRaw();
+      (badPrefix['branch_rules'] as Map)['contracts_prefix'] = 'contracts';
+      writeRepo('tools/lanes.json', '${jsonEncode(badPrefix)}\n');
+      expect(
+        (await check(branch: 'main')).join('\n'),
+        contains('branch_rules.contracts_prefix'),
+      );
+
+      // Unknown contracts_owner_lane
+      final unknownOwner = cloneRaw();
+      (unknownOwner['branch_rules'] as Map)['contracts_owner_lane'] = 'nope';
+      writeRepo('tools/lanes.json', '${jsonEncode(unknownOwner)}\n');
+      expect(
+        (await check(branch: 'main')).join('\n'),
+        contains(
+          "branch_rules.contracts_owner_lane references unknown lane 'nope'",
+        ),
+      );
+
+      // Empty and bad glob in contracts_required_lib_paths
+      final emptyLib = cloneRaw();
+      (emptyLib['branch_rules'] as Map)['contracts_required_lib_paths'] = [];
+      writeRepo('tools/lanes.json', '${jsonEncode(emptyLib)}\n');
+      expect(
+        (await check(branch: 'main')).join('\n'),
+        contains('branch_rules.contracts_required_lib_paths'),
+      );
+
+      final badLibGlob = cloneRaw();
+      (badLibGlob['branch_rules'] as Map)['contracts_required_lib_paths'] = [
+        'coqui/**/platform.dart',
+      ];
+      writeRepo('tools/lanes.json', '${jsonEncode(badLibGlob)}\n');
+      expect(
+        (await check(branch: 'main')).join('\n'),
+        contains('branch_rules.contracts_required_lib_paths'),
+      );
+
+      // Empty contracts_conformance_paths
+      final emptyPaths = cloneRaw();
+      (emptyPaths['branch_rules'] as Map)['contracts_conformance_paths'] = [];
+      writeRepo('tools/lanes.json', '${jsonEncode(emptyPaths)}\n');
+      expect(
+        (await check(branch: 'main')).join('\n'),
+        contains('branch_rules.contracts_conformance_paths'),
+      );
+
+      // Malformed glob in contracts_conformance_paths
+      final badGlob = cloneRaw();
+      (badGlob['branch_rules'] as Map)['contracts_conformance_paths'] = [
+        'coqui/**/lib.dart',
+      ];
+      writeRepo('tools/lanes.json', '${jsonEncode(badGlob)}\n');
+      expect(
+        (await check(branch: 'main')).join('\n'),
+        contains('branch_rules.contracts_conformance_paths'),
+      );
+
+      // Empty contracts_denied_paths is allowed, non-list and bad glob fail
+      final emptyDenied = cloneRaw();
+      (emptyDenied['branch_rules'] as Map)['contracts_denied_paths'] = [];
+      writeRepo('tools/lanes.json', '${jsonEncode(emptyDenied)}\n');
+      expect(await check(branch: 'main'), isEmpty);
+
+      final nonListDenied = cloneRaw();
+      (nonListDenied['branch_rules'] as Map)['contracts_denied_paths'] =
+          'historia/cuentos/**';
+      writeRepo('tools/lanes.json', '${jsonEncode(nonListDenied)}\n');
+      expect(
+        (await check(branch: 'main')).join('\n'),
+        contains('branch_rules.contracts_denied_paths'),
+      );
+
+      final badDeniedGlob = cloneRaw();
+      (badDeniedGlob['branch_rules'] as Map)['contracts_denied_paths'] = [
+        'coqui/**/call.dart',
+      ];
+      writeRepo('tools/lanes.json', '${jsonEncode(badDeniedGlob)}\n');
+      expect(
+        (await check(branch: 'main')).join('\n'),
+        contains('branch_rules.contracts_denied_paths'),
+      );
+
+      // Invalid contracts_max_conformance_changed_lines (0, -1, "6", true)
+      for (final badMax in <Object?>[0, -1, '6', true]) {
+        final raw = cloneRaw();
+        (raw['branch_rules']
+                as Map)['contracts_max_conformance_changed_lines'] =
+            badMax;
+        writeRepo('tools/lanes.json', '${jsonEncode(raw)}\n');
+        expect(
+          (await check(branch: 'main')).join('\n'),
+          contains('branch_rules.contracts_max_conformance_changed_lines'),
+          reason: 'expected failure for $badMax',
+        );
+      }
+    });
   });
 
   group('[h] new code uses start/end, not left/right (#55)', () {
