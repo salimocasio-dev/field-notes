@@ -499,14 +499,20 @@ class Noche extends Escena implements SetScene, SetOverSprites {
     final hora = _n(w['relojHora']);
     if (hora > 0) {
       final rb = _p.box('reloj');
+      final rw = _p.sheet.thing('reloj').world!;
+      final rat = _p.atWorld(
+        (rw[0] + rw[3]) / 2,
+        (rw[1] + rw[4]) / 2,
+        (rw[2] + rw[5]) / 2,
+      );
       final hs = _spr('no_reloj_$hora', () => mkRelojHands(hora: hora));
       out.add(
         NocheItem(
           hs,
           rb[0] + 1,
           rb[1] + 1,
-          rb[1] + rb[3] ~/ 2,
-          0.1,
+          _round(rat.sy),
+          rat.d + 0.2,
           tag: 'fx:reloj_hands',
         ),
       );

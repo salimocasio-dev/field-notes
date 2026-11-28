@@ -164,7 +164,7 @@ Future<List<Map<String, dynamic>>> playNocheSummaries(
   ).readAsStringSync();
   final workers = math.min(
     jobs.length,
-    math.max(1, Platform.numberOfProcessors),
+    math.min(4, math.max(1, Platform.numberOfProcessors)),
   );
   final slices = <List<NocheJob>>[for (var w = 0; w < workers; w++) []];
   for (var i = 0; i < jobs.length; i++) {

@@ -285,4 +285,33 @@ void main() {
   test('every one of the 25 Needs things answered a touch', () {
     expect(answered, containsAll(needs));
   });
+
+  test('clock hands in se-acuesta render visibly in front of the wall', () {
+    final scene = createNoche() as Noche;
+    final engine = scene.places.e;
+    final baked = SetBakes(scene).bakeKey('0-1-0-0-0-0');
+    final w = <String, dynamic>{
+      'story': 107,
+      'luz1': 0,
+      'luz2': 1,
+      'luz3': 0,
+      'tele': 0,
+      'abierto': 0,
+      'oscuro': 0,
+      'relojHora': 8,
+      'gente': <String, dynamic>{},
+    };
+    scene.setFramed(engine, baked, w);
+    final frame = Uint32List.fromList(baked.pix);
+    scene.draw(Ctx(frame, 240, 216), w, 0);
+    final rb = scene.places.box('reloj');
+    var changed = 0;
+    for (var y = rb[1]; y < rb[1] + rb[3]; y++) {
+      for (var x = rb[0]; x < rb[0] + rb[2]; x++) {
+        final i = y * 240 + x;
+        if (frame[i] != baked.pix[i]) changed++;
+      }
+    }
+    expect(changed, greaterThan(4));
+  });
 }

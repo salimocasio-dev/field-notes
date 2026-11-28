@@ -53,6 +53,12 @@ void main() {
             : 'w'.allMatches(pat).length;
         if (d.isNotEmpty || id != 'prende-y-apaga') {
           expect(s['lost'], expectLost, reason: what);
+        } else {
+          expect(
+            s['lost'],
+            anyOf(pat.startsWith('w') ? 1 : 0, 'w'.allMatches(pat).length),
+            reason: what,
+          );
         }
         expect(s['breaches'], isEmpty, reason: what);
         expect(s['checks'], greaterThan(10), reason: what);

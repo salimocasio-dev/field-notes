@@ -167,7 +167,9 @@ class NocheRules {
         ..write(p['y'])
         ..write(',')
         ..write(p['z'])
-        ..write(',')
+        ..write(':')
+        ..write(p['pose'])
+        ..write(':')
         ..write(p['lying']);
     }
     sig
@@ -481,6 +483,7 @@ class NocheRules {
           addBreach('sideboard-clear', 'missing $tag in story 106');
           continue;
         }
+        // Sheet sideboard spots pack adjacent dishes 4-7 px apart; check against characters and fx.
         final r = covOf(idx, ignore: (t) => t != null && t.startsWith('cosa:'));
         if (r.hid > 0 || r.cov > 0 || r.out > 0) {
           addBreach(
