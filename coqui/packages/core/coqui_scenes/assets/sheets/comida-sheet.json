@@ -1,0 +1,1231 @@
+{
+ "scene": "comida",
+ "made": "node docs/proyecto/pixel/comida-sheet-make.js, from comida-set.html (window.COMIDA.E) and the design of La comida (the orchestrator's p8-spec, general rules and section comida). A new scene: no old scene, no remap.",
+ "S": 26,
+ "origin": {
+  "originX": 0,
+  "originY": -48
+ },
+ "picture": [240, 216],
+ "view": [196, 216],
+ "rules": {
+  "project": "pp-engine.js project(x, y, z) with S 26 and this origin: sx = OX + (x - y) / R2 * S, sy = OY + ((x + y) / R2 * .5 - z * COS) * S, depth d = (x + y) / R2 * COS + z * .5 (R2 = sqrt 2, COS = sqrt 3 / 2); OX = W / 2 + originX = 120, OY = H / 2 + originY = 60. A box is the screen bounding box of its projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]. screen is the projection rounded to whole pixels",
+  "uv": "the set is laid out square to the picture: a spot is given in (u, v, z), u across the picture (to the right), v down it (towards the camera), z up; plaza-base.js PZ.xy(u, v) = ((u + v) / R2, (v - u) / R2) gives the world x, y (world is that). On the picture sx = OX + u * S = 120 + 26 u, and sy = OY + (v / 2 - z * COS) * S = 60 + 13 v - 22.5 z. The picture holds u from -4.62 to 4.62. The rail is at v 0.15; the long table is at u 0.1, v 4.9 (half-width 1.9, half-depth 0.6); the four chairs along its far side are E.SEATS: (-1.325, 4.04), (-0.375, 4.04), (0.575, 4.04), (1.525, 4.04) (seat top z 0.44; the table's top z 0.74)",
+  "spot": "a spot is a world point of the feet (z 0: the floor; z 0.44: a chair's seat top; z 0.74: the long table's, the station's low or the serving table's top; z 1.6: the station's shelf) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite's bottom edge on sy, and its middle column on the column sx (rules.anchor). A small thing has a box (the spot's box): its bottom middle is on the spot. scale is the frog's: 1 everywhere",
+  "anchor": "the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing for a grown-up (a 56-row canvas whose lowest row is empty), 41 for a child; abuela standing mkAbuela (48 x 51): column 30 (her middle), her feet on the bottom edge; the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (row 25 of the canvas is on sy); abuela sitting mkAbuelaS (52 x 50): column 17 (her middle) and row 36 (her lap) on (sx, sy), the spot being the seat; a grown-up sitting (mkPersona with sent = 1): column 24 and the lap row, the bottom of the hips: row 16 + 2 t + 3 (t 11 a grown-up: 41, t 7 a child: 33) on (sx, sy); the dog mkPerro('sit') (30 x 22): column 15 and its bottom edge; a small thing: see spot. Nobody is drawn turned (the makers draw them from the front)",
+  "view": "one window, wide, zoom 1: the 196 x 216 window over the 240 x 216 picture, x0 = its left edge (22 centres it). Never a fraction",
+  "depth": "a spot's depth is the engine's d of its world point; front.plane turns it into the depth of each row of a character",
+  "seat": "whoever sits at the long table sits along its far side, facing us, hung by the lap on the seat's top (z 0.44); the table's top (z 0.74) is nearer the camera than the seat and hides whoever sits from about the waist down (the set's depth hides them: check on-seat, heads-clear)",
+  "olla": "olla: the pot's box on the picture [30,56,21,16] (265 pixels, from the set's own pixels; its handles included): the cocinero stands behind it (detras_olla) and the serving table's top hides his body below the table's far edge"
+ },
+ "setKey": {
+  "params": {
+   "hora": {
+    "values": ["noche"],
+    "note": "one state: the lights along the rail, the lamps on the tables. Stories 90, 91 and 92 use it"
+   }
+  },
+  "key": "hora, e.g. \"noche\"",
+  "used": ["noche"],
+  "baked": ["?hora=noche"]
+ },
+ "things": {
+  "olla": {
+   "set": true,
+   "uv": [-3.35, 1.65, 0.74, -2.75, 2.25, 1.12],
+   "world": [-1.2021, 3.1113, 0.74, -0.3536, 3.9598, 1.12],
+   "box": [30, 56, 21, 16],
+   "pixels": 265,
+   "what": "the big pot on the serving table (E.SERVE.pot [-3.05,1.95,0.3]: u, v, radius; z 0.74 to 1.12, with its two handles at z 1.0 to 1.06): the screen box of the 265 pixels the set draws for it (the set built once more with the pot moved away: the pixels that change are the pot's). A poke"
+  },
+  "platillo1": "sprite",
+  "platillo2": "sprite",
+  "platillo3": "sprite",
+  "jarra": "sprite",
+  "sal": "sprite",
+  "azucar": "sprite",
+  "hielo": "sprite",
+  "servilletas": "sprite",
+  "sopas": "sprite",
+  "plato_perro": "sprite",
+  "tazon": "sprite",
+  "abuela": "sprite",
+  "abuelo": "sprite",
+  "luis": "sprite",
+  "carmen": "sprite",
+  "mesera": "sprite",
+  "cocinero": "sprite",
+  "senor": "sprite",
+  "senora": "sprite",
+  "joven": "sprite",
+  "mujer": "sprite",
+  "coqui": "sprite",
+  "perro": "sprite"
+ },
+ "spots": {
+  "silla1": {
+   "world": [1.9198, 3.7936, 0.44],
+   "uv": [-1.325, 4.04, 0.44],
+   "screen": [86, 103],
+   "depth": 3.7187,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "abuela on chair 1 of the long table, left to right (E.SEATS[0], z 0.44: the seat's top); she or he sits, hung by the lap",
+   "sprite": "abuelaS",
+   "sprites": ["abuelaS"],
+   "who": "adulto",
+   "on": "silla",
+   "seat": 0
+  },
+  "silla2": {
+   "world": [2.5915, 3.1219, 0.44],
+   "uv": [-0.375, 4.04, 0.44],
+   "screen": [110, 103],
+   "depth": 3.7187,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "abuelo on chair 2 of the long table, left to right (E.SEATS[1], z 0.44: the seat's top); she or he sits, hung by the lap",
+   "sprite": "abueloS",
+   "sprites": ["abueloS"],
+   "who": "adulto",
+   "on": "silla",
+   "seat": 1
+  },
+  "silla3": {
+   "world": [3.2633, 2.4501, 0.44],
+   "uv": [0.575, 4.04, 0.44],
+   "screen": [135, 103],
+   "depth": 3.7187,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Luis on chair 3 of the long table, left to right (E.SEATS[2], z 0.44: the seat's top); she or he sits, hung by the lap",
+   "sprite": "luisS",
+   "sprites": ["luisS"],
+   "who": "nino",
+   "on": "silla",
+   "seat": 2
+  },
+  "silla4": {
+   "world": [3.935, 1.7784, 0.44],
+   "uv": [1.525, 4.04, 0.44],
+   "screen": [160, 103],
+   "depth": 3.7187,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Carmen on chair 4 of the long table, left to right (E.SEATS[3], z 0.44: the seat's top); she or he sits, hung by the lap",
+   "sprite": "carmenS",
+   "sprites": ["carmenS"],
+   "who": "nino",
+   "on": "silla",
+   "seat": 3
+  },
+  "mesa_coqui": {
+   "world": [3.0264, 4.7235, 0.74],
+   "uv": [-1.2, 5.48, 0.74],
+   "screen": [89, 115],
+   "depth": 5.1158,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the long table's near edge (z 0.74)",
+   "sprite": "coqui",
+   "sprites": ["coqui"],
+   "who": "coqui",
+   "on": "mesa",
+   "moved": [-1.2, 5.35]
+  },
+  "platillo1": {
+   "world": [3.6062, 3.8891, 0.74],
+   "uv": [-0.2, 5.3, 0.74],
+   "screen": [115, 112],
+   "depth": 4.9599,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "small plate 1 (tostones, pineapple, red peppers) on the table in front of the frog: 14 x 8 px, bottom middle on the point",
+   "box": [108, 104, 14, 8],
+   "anchor": "bottom",
+   "on": "mesa"
+  },
+  "platillo2": {
+   "world": [4.1012, 3.3941, 0.74],
+   "uv": [0.5, 5.3, 0.74],
+   "screen": [133, 112],
+   "depth": 4.9599,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "small plate 2 (tostones, pineapple, red peppers) on the table in front of the frog: 14 x 8 px, bottom middle on the point",
+   "box": [126, 104, 14, 8],
+   "anchor": "bottom",
+   "on": "mesa"
+  },
+  "platillo3": {
+   "world": [4.6174, 2.9204, 0.74],
+   "uv": [1.2, 5.33, 0.74],
+   "screen": [151, 113],
+   "depth": 4.9859,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "small plate 3 (tostones, pineapple, red peppers) on the table in front of the frog: 14 x 8 px, bottom middle on the point",
+   "box": [144, 105, 14, 8],
+   "anchor": "bottom",
+   "on": "mesa",
+   "moved": [1.2, 5.3]
+  },
+  "jarra": {
+   "world": [3.4295, 3.288, 0.74],
+   "uv": [0.1, 4.75, 0.74],
+   "screen": [123, 105],
+   "depth": 4.4836,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the jar of lemonade in the middle of the table: 12 x 18 px, bottom middle on the point",
+   "box": [117, 87, 12, 18],
+   "anchor": "bottom",
+   "on": "mesa"
+  },
+  "vasos": {
+   "world": [3.9598, 2.7577, 0.74],
+   "uv": [0.85, 4.75, 0.74],
+   "screen": [142, 105],
+   "depth": 4.4836,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the three glasses in a row beside the jar: 26 x 10 px, bottom middle on the point",
+   "box": [129, 95, 26, 10],
+   "anchor": "bottom",
+   "on": "mesa"
+  },
+  "auxiliar_coqui": {
+   "world": [3.4507, -0.4808, 0.74],
+   "uv": [2.78, 2.1, 0.74],
+   "screen": [192, 71],
+   "depth": 2.1887,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the mesera's station: its low top (z 0.74)",
+   "sprite": "coqui",
+   "sprites": ["coqui"],
+   "who": "coqui",
+   "on": "estacion"
+  },
+  "sal": {
+   "world": [2.6587, -0.3111, 1.6],
+   "uv": [2.1, 1.66, 1.6],
+   "screen": [175, 46],
+   "depth": 2.2376,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the salt shaker on the station's shelf (u 2.1, v 1.66, z 1.6 = its top): 10 x 12 px, bottom middle on the point",
+   "box": [170, 34, 10, 12],
+   "anchor": "bottom",
+   "on": "repisa"
+  },
+  "azucar": {
+   "world": [2.9769, -0.6293, 1.6],
+   "uv": [2.55, 1.66, 1.6],
+   "screen": [186, 46],
+   "depth": 2.2376,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the sugar bowl on the station's shelf (u 2.55, v 1.66, z 1.6 = its top): 10 x 12 px, bottom middle on the point",
+   "box": [181, 34, 10, 12],
+   "anchor": "bottom",
+   "on": "repisa"
+  },
+  "hielo": {
+   "world": [3.2951, -0.9475, 1.6],
+   "uv": [3, 1.66, 1.6],
+   "screen": [198, 46],
+   "depth": 2.2376,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the ice bucket with tongs on the station's shelf (u 3, v 1.66, z 1.6 = its top): 10 x 12 px, bottom middle on the point",
+   "box": [193, 34, 10, 12],
+   "anchor": "bottom",
+   "on": "repisa"
+  },
+  "servilletas": {
+   "world": [3.6133, -1.2657, 1.6],
+   "uv": [3.45, 1.66, 1.6],
+   "screen": [210, 46],
+   "depth": 2.2376,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the pile of napkins on the station's shelf (u 3.45, v 1.66, z 1.6 = its top): 10 x 12 px, bottom middle on the point",
+   "box": [205, 34, 10, 12],
+   "anchor": "bottom",
+   "on": "repisa"
+  },
+  "sopa1": {
+   "world": [2.4218, 4.2957, 0.74],
+   "uv": [-1.325, 4.75, 0.74],
+   "screen": [86, 105],
+   "depth": 4.4836,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "bowl of soup 1 on the table in front of chair 1: 12 x 8 px, bottom middle on the point",
+   "box": [80, 97, 12, 8],
+   "anchor": "bottom",
+   "on": "mesa"
+  },
+  "sopa2": {
+   "world": [3.0936, 3.6239, 0.74],
+   "uv": [-0.375, 4.75, 0.74],
+   "screen": [110, 105],
+   "depth": 4.4836,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "bowl of soup 2 on the table in front of chair 2: 12 x 8 px, bottom middle on the point",
+   "box": [104, 97, 12, 8],
+   "anchor": "bottom",
+   "on": "mesa"
+  },
+  "sopa3": {
+   "world": [3.7653, 2.9522, 0.74],
+   "uv": [0.575, 4.75, 0.74],
+   "screen": [135, 105],
+   "depth": 4.4836,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "bowl of soup 3 on the table in front of chair 3: 12 x 8 px, bottom middle on the point",
+   "box": [129, 97, 12, 8],
+   "anchor": "bottom",
+   "on": "mesa"
+  },
+  "ensalada": {
+   "world": [4.4371, 2.2804, 0.74],
+   "uv": [1.525, 4.75, 0.74],
+   "screen": [160, 105],
+   "depth": 4.4836,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "Carmen's salad on the table in front of chair 4: 12 x 8 px (the spec says \"same\" as the bowls), bottom middle on the point",
+   "box": [154, 97, 12, 8],
+   "anchor": "bottom",
+   "on": "mesa"
+  },
+  "junto_mesa": {
+   "world": [2.086, 5.4094, 0],
+   "uv": [-2.35, 5.3, 0],
+   "screen": [59, 129],
+   "depth": 4.5899,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the mesera at the long table's left end",
+   "sprite": "mesera",
+   "sprites": ["mesera"],
+   "who": "adulto"
+  },
+  "detras_olla": {
+   "world": [-1.3364, 3.1749, 0],
+   "uv": [-3.19, 1.3, 0],
+   "screen": [37, 77],
+   "depth": 1.1258,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the cocinero behind the big pot (behind the serving table)",
+   "sprite": "cocinero",
+   "sprites": ["cocinero"],
+   "who": "adulto",
+   "moved": [-3.25, 1.3]
+  },
+  "servir_coqui": {
+   "world": [0.0707, 3.0406, 0.74],
+   "uv": [-2.1, 2.2, 0.74],
+   "screen": [65, 72],
+   "depth": 2.2753,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the serving table (z 0.74)",
+   "sprite": "coqui",
+   "sprites": ["coqui"],
+   "who": "coqui",
+   "on": "servir"
+  },
+  "tazon": {
+   "world": [-0.8839, 4.1649, 0.74],
+   "uv": [-3.57, 2.32, 0.74],
+   "screen": [27, 73],
+   "depth": 2.3792,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the frog's small bowl on the serving table: 10 x 8 px, bottom middle on the point",
+   "box": [22, 65, 10, 8],
+   "anchor": "bottom",
+   "on": "servir",
+   "moved": [-3.3, 2.32]
+  },
+  "fila1": {
+   "world": [0.7425, 1.987, 0],
+   "uv": [-0.88, 1.93, 0],
+   "screen": [97, 85],
+   "depth": 1.6714,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the line in front of the pot, first place (the señora in 92's game, abuela in its opening: she holds out a plate towards the pot)",
+   "sprite": "senora",
+   "sprites": ["senora", "abuela"],
+   "who": "adulto",
+   "moved": [-1, 2]
+  },
+  "fila2": {
+   "world": [1.4354, 1.294, 0],
+   "uv": [0.1, 1.93, 0],
+   "screen": [123, 85],
+   "depth": 1.6714,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the line, second place (the joven; Luis in the opening)",
+   "sprite": "joven",
+   "sprites": ["joven", "luis"],
+   "who": "adulto",
+   "moved": [0, 2]
+  },
+  "fila3": {
+   "world": [2.1284, 0.601, 0],
+   "uv": [1.08, 1.93, 0],
+   "screen": [148, 85],
+   "depth": 1.6714,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the line, third place (the señor; Carmen in the opening)",
+   "sprite": "senor",
+   "sprites": ["senor", "carmen"],
+   "who": "adulto",
+   "moved": [1, 2]
+  },
+  "bajo_mesa": {
+   "world": [0.3182, 4.773, 0],
+   "uv": [-3.15, 3.6, 0],
+   "screen": [38, 107],
+   "depth": 3.1177,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the fonda's dog (Canelo's drawing, sitting, as a stand-in) in front of the serving table, on the floor",
+   "sprite": "perro",
+   "sprites": ["perro"],
+   "who": "perro"
+  },
+  "plato_perro": {
+   "world": [1.0607, 4.1719, 0],
+   "uv": [-2.2, 3.7, 0],
+   "screen": [63, 108],
+   "depth": 3.2043,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the dog's bowl on the floor: 12 x 8 px, bottom middle on the point",
+   "box": [57, 100, 12, 8],
+   "anchor": "bottom"
+  }
+ },
+ "groups": {
+  "sillas": ["silla1", "silla2", "silla3", "silla4"],
+  "platillos": ["platillo1", "platillo2", "platillo3"],
+  "estacion": ["sal", "azucar", "hielo", "servilletas"],
+  "sopas": ["sopa1", "sopa2", "sopa3"],
+  "fila": ["fila1", "fila2", "fila3"],
+  "mesa": ["mesa_coqui", "platillo1", "platillo2", "platillo3", "jarra", "vasos", "sopa1", "sopa2", "sopa3", "ensalada"]
+ },
+ "notes": [
+  "every number of a spot is the orchestrator's (the p8-spec, \"comida\"), given in (u, v, z); the table, its chairs (E.SEATS), the station (u, v, shelf, sv, things), the serving table and the pot are read from the set (window.COMIDA.E); a spot marked `moved` was moved by a check, the least distance that passes (v first, then u; never z), and carries the spec's u, v",
+  "platillo1 to platillo3 are the three small plates in front of the frog (tostones, pineapple, red peppers: their order is drawn each round); jarra and vasos are the jar of lemonade and the three glasses (vasos is one box, 26 x 10, the three glasses in a row); sopa1 to sopa3 are the bowls in front of chairs 1 to 3 and ensalada is Carmen's plate in front of chair 4 (the spec gives it the bowls' 12 x 8)",
+  "sal, azucar, hielo and servilletas stand on the station's shelf at E.STATION.things (u 2.1, 2.55, 3, 3.45), v 1.66, z 1.6; the frog stands on the station's low top (z 0.74) at auxiliar_coqui",
+  "olla is the only thing of the set: the pot on the serving table, its box from the set's own pixels; the dog's bowl (plato_perro), the frog's small bowl (tazon) and every person are sprites",
+  "fila1 holds out a plate towards the pot: the spec gives no size for it and no spot, so the previews draw nobody holding it",
+  "bajo_mesa (-3.15, 3.6) is the spec's name for the dog's place: it is on the floor in front of the serving table (v 3.6; the serving table is at v 2), not under it",
+  "the views's x0: x0 22 when every spot is inside the window (a person with his sprite whole, a small thing with its box); here x0 22 holds them all",
+  "tazon was moved from u -3.3 to u -3.68: at -3.3 its box is drawn over 64 px of the pot; the serving table's top ends at u -3.95 (column 17.3), so the 10 px bowl (box columns 22 to 31) hangs about 0 px over the table's left end: its point is on the top, its box is not wholly (open point)"
+ ],
+ "views": {
+  "wide": {
+   "world": [2.6109, 2.6109, 0],
+   "uv": [0, 3.6923, 0],
+   "screen": [120, 108],
+   "zoom": 1,
+   "x0": 22,
+   "region": [22, 0, 196, 216],
+   "stories": [90, 91, 92],
+   "holds": ["silla1", "silla2", "silla3", "silla4", "mesa_coqui", "platillo1", "platillo2", "platillo3", "jarra", "vasos", "auxiliar_coqui", "sal", "azucar", "hielo", "servilletas", "sopa1", "sopa2", "sopa3", "ensalada", "junto_mesa", "detras_olla", "servir_coqui", "tazon", "fila1", "fila2", "fila3", "bajo_mesa", "plato_perro"],
+   "extent": [22, 214],
+   "x0Range": [19, 22],
+   "what": "the one view of stories 90, 91 and 92: the 196 x 216 window over the 240 x 216 picture. The spec: x0 22 (the window centred on the picture) unless a spot is cut. x0 19 to 22 hold every spot (a person with his sprite whole, a small thing with its box); x0 22 is the one nearest 22 (the spots held span columns 22 to 214). The window's point is the ground point under its middle column at the picture's middle row"
+  }
+ },
+ "front": {
+  "list": null,
+  "how": "no list. A character is hidden by every set pixel that is nearer the camera than the character's feet (depth test against the baked depth, with the feet's depth plus 0.3): the long table and its chairs, the station, the serving table and the pot hide whoever is behind them. Nothing in this set sways.",
+  "bias": 0.3,
+  "plane": "for the character's pixel on picture row r (r = 0 at the top): depth(r) = d + (sy - (r + .5)) * tan(30 deg) / S, where d is the spot's depth and sy its screen row; the pixel is hidden where bakedZ[r * 240 + x] > depth(r) + bias (bakedZ: window.DEPTH.z of the set page). The same rule as El cruce's sheet: the upright plane through the feet",
+  "sprites": "between two sprites the nearer pixel wins: the same depth(r), no bias; two planes within 0.001 are a tie and the later layer is drawn"
+ },
+ "shadows": {
+  "radius": {
+   "coqui": 0.45,
+   "adultos": 0.35,
+   "ninos": 0.28,
+   "perro": 0.3
+  },
+  "byCharacter": {
+   "coqui": 0.45,
+   "abuela": 0.35,
+   "abuelo": 0.35,
+   "mesera": 0.35,
+   "cocinero": 0.35,
+   "senor": 0.35,
+   "senora": 0.35,
+   "joven": 0.35,
+   "mujer": 0.35,
+   "luis": 0.28,
+   "carmen": 0.28,
+   "perro": 0.3
+  },
+  "at": "castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the ground (z 0). The spec gives no radius: these are El cruce's (frog .45, grown-ups .35, children .28, the dog .3) (open point)",
+  "none": ["silla1", "silla2", "silla3", "silla4", "mesa_coqui", "platillo1", "platillo2", "platillo3", "jarra", "vasos", "auxiliar_coqui", "sal", "azucar", "hielo", "servilletas", "sopa1", "sopa2", "sopa3", "ensalada", "servir_coqui", "tazon"],
+  "onSeat": "whoever sits on a chair or stands on a table (z above 0) casts none: neither is ground (a shadow cast at the floor under them would show in front of them)"
+ },
+ "checks": {
+  "results": [
+   {
+    "name": "views-x0",
+    "ok": true,
+    "lines": [
+     "views-x0: wide: x0 22 (window columns 22 to 217); the 28 spots held span columns 22 to 214 (193 of the window's 196); x0 that hold them all: 19 to 22; at x0 22: no spot is cut"
+    ],
+    "x0": {
+     "wide": 22
+    }
+   },
+   {
+    "name": "spots-in-view",
+    "ok": true,
+    "lines": [
+     "spots-in-view: 28 spots (persons with their sprites, small things with their box) inside the 240 x 216 picture and the window (x0 22); the leftmost column any takes is 22 (tazon), the rightmost 214 (servilletas); the highest row 26 (detras_olla), the lowest 128 (junto_mesa)"
+    ]
+   },
+   {
+    "name": "spots-on-surface",
+    "ok": true,
+    "lines": [
+     "spots-on-surface: 21 spots above the ground are on a surface the set draws (a seat's top z 0.44, the long table's, the station's low and the serving table's top z 0.74, the shelf's top z 1.6); the set's own pixel at each (part mesa or auxiliar, depth within .1 of the spot's) agrees; for the 4 chairs the set was read with the table's top a sliver (4 of them are hidden by the table in the real set)",
+     "       silla1 z 0.44: inside the seat's top (u -1.525 to -1.125, v 3.84 to 4.24, z 0.44); the set's pixel (table's top a sliver) part mesa, depth 3.74 against the spot's 3.72 (0.02); in the real set the table is in front of it (the pixel there is part mesa at depth 4.34)",
+     "       silla2 z 0.44: inside the seat's top (u -0.575 to -0.175, v 3.84 to 4.24, z 0.44); the set's pixel (table's top a sliver) part mesa, depth 3.74 against the spot's 3.72 (0.02); in the real set the table is in front of it (the pixel there is part mesa at depth 4.34)",
+     "       silla3 z 0.44: inside the seat's top (u 0.375 to 0.775, v 3.84 to 4.24, z 0.44); the set's pixel (table's top a sliver) part mesa, depth 3.74 against the spot's 3.72 (0.02); in the real set the table is in front of it (the pixel there is part mesa at depth 4.34)",
+     "       silla4 z 0.44: inside the seat's top (u 1.325 to 1.725, v 3.84 to 4.24, z 0.44); the set's pixel (table's top a sliver) part mesa, depth 3.74 against the spot's 3.72 (0.02); in the real set the table is in front of it (the pixel there is part mesa at depth 4.34)",
+     "       mesa_coqui z 0.74: inside the long table's top (u -1.8 to 2, v 4.3 to 5.5, z 0.74); the set's pixel part mesa, depth 5.13 against the spot's 5.12 (0.01)",
+     "       platillo1 z 0.74: inside the long table's top (u -1.8 to 2, v 4.3 to 5.5, z 0.74); the set's pixel part mesa, depth 4.94 against the spot's 4.96 (0.02)",
+     "       platillo2 z 0.74: inside the long table's top (u -1.8 to 2, v 4.3 to 5.5, z 0.74); the set's pixel part mesa, depth 4.94 against the spot's 4.96 (0.02)",
+     "       platillo3 z 0.74: inside the long table's top (u -1.8 to 2, v 4.3 to 5.5, z 0.74); the set's pixel part mesa, depth 5.01 against the spot's 4.99 (0.02)",
+     "       jarra z 0.74: inside the long table's top (u -1.8 to 2, v 4.3 to 5.5, z 0.74); the set's pixel part mesa, depth 4.47 against the spot's 4.48 (0.01)",
+     "       vasos z 0.74: inside the long table's top (u -1.8 to 2, v 4.3 to 5.5, z 0.74); the set's pixel part mesa, depth 4.47 against the spot's 4.48 (0.01)",
+     "       auxiliar_coqui z 0.74: inside the station's low top (u 1.86 to 3.7, v 1.58 to 2.42, z 0.74); the set's pixel part auxiliar, depth 2.21 against the spot's 2.19 (0.02)",
+     "       sal z 1.6: inside the shelf's top (u 1.86 to 3.7, v 1.54 to 1.78, z 1.6); the set's pixel part auxiliar, depth 2.26 against the spot's 2.24 (0.02)",
+     "       azucar z 1.6: inside the shelf's top (u 1.86 to 3.7, v 1.54 to 1.78, z 1.6); the set's pixel part auxiliar, depth 2.26 against the spot's 2.24 (0.02)",
+     "       hielo z 1.6: inside the shelf's top (u 1.86 to 3.7, v 1.54 to 1.78, z 1.6); the set's pixel part auxiliar, depth 2.26 against the spot's 2.24 (0.02)",
+     "       servilletas z 1.6: inside the shelf's top (u 1.86 to 3.7, v 1.54 to 1.78, z 1.6); the set's pixel part auxiliar, depth 2.26 against the spot's 2.24 (0.02)",
+     "       sopa1 z 0.74: inside the long table's top (u -1.8 to 2, v 4.3 to 5.5, z 0.74); the set's pixel part mesa, depth 4.47 against the spot's 4.48 (0.01)",
+     "       sopa2 z 0.74: inside the long table's top (u -1.8 to 2, v 4.3 to 5.5, z 0.74); the set's pixel part mesa, depth 4.47 against the spot's 4.48 (0.01)",
+     "       sopa3 z 0.74: inside the long table's top (u -1.8 to 2, v 4.3 to 5.5, z 0.74); the set's pixel part mesa, depth 4.47 against the spot's 4.48 (0.01)",
+     "       ensalada z 0.74: inside the long table's top (u -1.8 to 2, v 4.3 to 5.5, z 0.74); the set's pixel part mesa, depth 4.47 against the spot's 4.48 (0.01)",
+     "       servir_coqui z 0.74: inside the serving table's top (u -3.95 to -1.45, v 1.58 to 2.42, z 0.74); the set's pixel part auxiliar, depth 2.28 against the spot's 2.28 (0)",
+     "       tazon z 0.74: inside the serving table's top (u -3.95 to -1.45, v 1.58 to 2.42, z 0.74); the set's pixel part auxiliar, depth 2.41 against the spot's 2.38 (0.03)"
+    ]
+   },
+   {
+    "name": "things-in-view",
+    "ok": true,
+    "lines": [
+     "things-in-view: the box of olla [30,56,21,16] (265 px of the set, the pot and its handles: it holds the pot's top middle 41,60) is inside the window [22, 218) and the picture; every other touch key is a sprite"
+    ]
+   },
+   {
+    "name": "sprites-apart",
+    "ok": true,
+    "lines": [
+     "sprites-apart: 65 pairs in the 5 moments of the preview (m1 (abuela, abuelo, luis, carmen, coqui); m2 (abuela, abuelo, luis, carmen, coqui, mesera); m3 (abuela, abuelo, luis, carmen, coqui); m4 (cocinero, coqui, senora, joven, senor, perro); m5 (cocinero, coqui, abuela, luis, carmen, perro)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 abuela ~ coqui (3 across, 12 down), m1 abuelo ~ coqui (21 across, 12 down), m4 cocinero ~ perro (1 across, 30 down), m4 coqui ~ perro (27 across, 35 down), m5 cocinero ~ perro (1 across, 30 down), m5 coqui ~ perro (27 across, 35 down)",
+     "       closest pair in each moment (px across / px down): m1 abuela ~ coqui 3/12 (needs 28 across or 12 down); m2 abuela ~ abuelo 24/0 (needs 24 across or 12 down); m3 abuela ~ abuelo 24/0 (needs 24 across or 12 down); m4 cocinero ~ perro 1/30 (needs 26 across or 12 down); m5 cocinero ~ perro 1/30 (needs 26 across or 12 down)"
+    ],
+    "pairs": [
+     {
+      "moment": 1,
+      "a": "abuela",
+      "b": "abuelo",
+      "across": 24,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "abuela",
+      "b": "luis",
+      "across": 49,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "abuela",
+      "b": "carmen",
+      "across": 74,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "abuela",
+      "b": "coqui",
+      "across": 3,
+      "down": 12,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "abuelo",
+      "b": "luis",
+      "across": 25,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "abuelo",
+      "b": "carmen",
+      "across": 50,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "abuelo",
+      "b": "coqui",
+      "across": 21,
+      "down": 12,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "luis",
+      "b": "carmen",
+      "across": 25,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "luis",
+      "b": "coqui",
+      "across": 46,
+      "down": 12,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "carmen",
+      "b": "coqui",
+      "across": 71,
+      "down": 12,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "abuela",
+      "b": "abuelo",
+      "across": 24,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "abuela",
+      "b": "luis",
+      "across": 49,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "abuela",
+      "b": "carmen",
+      "across": 74,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "abuela",
+      "b": "coqui",
+      "across": 106,
+      "down": 32,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "abuela",
+      "b": "mesera",
+      "across": 27,
+      "down": 26,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "abuelo",
+      "b": "luis",
+      "across": 25,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "abuelo",
+      "b": "carmen",
+      "across": 50,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "abuelo",
+      "b": "coqui",
+      "across": 82,
+      "down": 32,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "abuelo",
+      "b": "mesera",
+      "across": 51,
+      "down": 26,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "luis",
+      "b": "carmen",
+      "across": 25,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "luis",
+      "b": "coqui",
+      "across": 57,
+      "down": 32,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "luis",
+      "b": "mesera",
+      "across": 76,
+      "down": 26,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "carmen",
+      "b": "coqui",
+      "across": 32,
+      "down": 32,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "carmen",
+      "b": "mesera",
+      "across": 101,
+      "down": 26,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "coqui",
+      "b": "mesera",
+      "across": 133,
+      "down": 58,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "abuela",
+      "b": "abuelo",
+      "across": 24,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "abuela",
+      "b": "luis",
+      "across": 49,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "abuela",
+      "b": "carmen",
+      "across": 74,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "abuela",
+      "b": "coqui",
+      "across": 106,
+      "down": 32,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "abuelo",
+      "b": "luis",
+      "across": 25,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "abuelo",
+      "b": "carmen",
+      "across": 50,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "abuelo",
+      "b": "coqui",
+      "across": 82,
+      "down": 32,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "luis",
+      "b": "carmen",
+      "across": 25,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "luis",
+      "b": "coqui",
+      "across": 57,
+      "down": 32,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "carmen",
+      "b": "coqui",
+      "across": 32,
+      "down": 32,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "cocinero",
+      "b": "coqui",
+      "across": 28,
+      "down": 5,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "cocinero",
+      "b": "senora",
+      "across": 60,
+      "down": 8,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "cocinero",
+      "b": "joven",
+      "across": 86,
+      "down": 8,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "cocinero",
+      "b": "senor",
+      "across": 111,
+      "down": 8,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "cocinero",
+      "b": "perro",
+      "across": 1,
+      "down": 30,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "coqui",
+      "b": "senora",
+      "across": 32,
+      "down": 13,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "coqui",
+      "b": "joven",
+      "across": 58,
+      "down": 13,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "coqui",
+      "b": "senor",
+      "across": 83,
+      "down": 13,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "coqui",
+      "b": "perro",
+      "across": 27,
+      "down": 35,
+      "needAcross": 30,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "senora",
+      "b": "joven",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "senora",
+      "b": "senor",
+      "across": 51,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "senora",
+      "b": "perro",
+      "across": 59,
+      "down": 22,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "joven",
+      "b": "senor",
+      "across": 25,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "joven",
+      "b": "perro",
+      "across": 85,
+      "down": 22,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "senor",
+      "b": "perro",
+      "across": 110,
+      "down": 22,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "cocinero",
+      "b": "coqui",
+      "across": 28,
+      "down": 5,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "cocinero",
+      "b": "abuela",
+      "across": 60,
+      "down": 8,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "cocinero",
+      "b": "luis",
+      "across": 86,
+      "down": 8,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "cocinero",
+      "b": "carmen",
+      "across": 111,
+      "down": 8,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "cocinero",
+      "b": "perro",
+      "across": 1,
+      "down": 30,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "coqui",
+      "b": "abuela",
+      "across": 32,
+      "down": 13,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "coqui",
+      "b": "luis",
+      "across": 58,
+      "down": 13,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "coqui",
+      "b": "carmen",
+      "across": 83,
+      "down": 13,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "coqui",
+      "b": "perro",
+      "across": 27,
+      "down": 35,
+      "needAcross": 30,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "abuela",
+      "b": "luis",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "abuela",
+      "b": "carmen",
+      "across": 51,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "abuela",
+      "b": "perro",
+      "across": 59,
+      "down": 22,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "luis",
+      "b": "carmen",
+      "across": 25,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "luis",
+      "b": "perro",
+      "across": 85,
+      "down": 22,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "carmen",
+      "b": "perro",
+      "across": 110,
+      "down": 22,
+      "needAcross": 26,
+      "ok": true
+     }
+    ]
+   },
+   {
+    "name": "frog-seen",
+    "ok": true,
+    "lines": [
+     "frog-seen: the frog is seen whole in all 5 moments (0 px covered by anything): m1 mesa_coqui 89,115: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m2 auxiliar_coqui 192,71: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m3 auxiliar_coqui 192,71: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m4 servir_coqui 65,72: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m5 servir_coqui 65,72: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them"
+    ]
+   },
+   {
+    "name": "on-seat",
+    "ok": true,
+    "lines": [
+     "on-seat: the four at the long table sit on the seats' tops (z 0.44, E.SEATS), the set's own pixel under each spot is part mesa at the seat's depth, and each sprite hangs by its lap row on the spot's row: silla1 86,103 abuela: z 0.44, the seat's pixel part mesa at 0.02; the sprite hangs by its lap row 36 on row 103 (feet 14 rows below it, behind the table); silla2 110,103 abuelo: z 0.44, the seat's pixel part mesa at 0.02; the sprite hangs by its lap row 41 on row 103 (feet 7 rows below it, behind the table); silla3 135,103 Luis: z 0.44, the seat's pixel part mesa at 0.02; the sprite hangs by its lap row 33 on row 103 (feet 7 rows below it, behind the table); silla4 160,103 Carmen: z 0.44, the seat's pixel part mesa at 0.02; the sprite hangs by its lap row 33 on row 103 (feet 7 rows below it, behind the table)"
+    ]
+   },
+   {
+    "name": "heads-clear",
+    "ok": true,
+    "lines": [
+     "heads-clear: the four at the table (abuela, abuelo, Luis, Carmen) are whole in the window and their heads (the top 14 rows) are covered by nobody and by nothing of the set in moments 1, 2 and 3: m1 abuela 86,103: window cut 0 px, 0 px outside the picture; head rows 67 to 80: 206 px, 0 covered, 0 hidden by the set; the whole sprite: 142 under a nearer sprite, 352 hidden by the set (the table); m1 abuelo 110,103: window cut 0 px, 0 px outside the picture; head rows 66 to 79: 192 px, 0 covered, 0 hidden by the set; the whole sprite: 59 under a nearer sprite, 172 hidden by the set (the table); m1 luis 135,103: window cut 0 px, 0 px outside the picture; head rows 72 to 85: 182 px, 0 covered, 0 hidden by the set; the whole sprite: 84 under a nearer sprite, 180 hidden by the set (the table); m1 carmen 160,103: window cut 0 px, 0 px outside the picture; head rows 72 to 85: 244 px, 0 covered, 0 hidden by the set; the whole sprite: 18 under a nearer sprite, 176 hidden by the set (the table); m2 abuela 86,103: window cut 0 px, 0 px outside the picture; head rows 67 to 80: 206 px, 0 covered, 0 hidden by the set; the whole sprite: 0 under a nearer sprite, 352 hidden by the set (the table); m2 abuelo 110,103: window cut 0 px, 0 px outside the picture; head rows 66 to 79: 192 px, 0 covered, 0 hidden by the set; the whole sprite: 0 under a nearer sprite, 172 hidden by the set (the table); m2 luis 135,103: window cut 0 px, 0 px outside the picture; head rows 72 to 85: 182 px, 0 covered, 0 hidden by the set; the whole sprite: 0 under a nearer sprite, 180 hidden by the set (the table); m2 carmen 160,103: window cut 0 px, 0 px outside the picture; head rows 72 to 85: 244 px, 0 covered, 0 hidden by the set; the whole sprite: 0 under a nearer sprite, 176 hidden by the set (the table); m3 abuela 86,103: window cut 0 px, 0 px outside the picture; head rows 67 to 80: 206 px, 0 covered, 0 hidden by the set; the whole sprite: 12 under a nearer sprite, 352 hidden by the set (the table); m3 abuelo 110,103: window cut 0 px, 0 px outside the picture; head rows 66 to 79: 192 px, 0 covered, 0 hidden by the set; the whole sprite: 12 under a nearer sprite, 172 hidden by the set (the table); m3 luis 135,103: window cut 0 px, 0 px outside the picture; head rows 72 to 85: 182 px, 0 covered, 0 hidden by the set; the whole sprite: 12 under a nearer sprite, 180 hidden by the set (the table); m3 carmen 160,103: window cut 0 px, 0 px outside the picture; head rows 72 to 85: 244 px, 0 covered, 0 hidden by the set; the whole sprite: 12 under a nearer sprite, 176 hidden by the set (the table)"
+    ]
+   },
+   {
+    "name": "table-things-clear",
+    "ok": true,
+    "lines": [
+     "table-things-clear: in moment 1 the small plates, the jar and the glasses are covered by nobody and not hidden by the set: platillo1 108,104,14,8: 87 px, 0 covered, 0 hidden by the set; platillo2 126,104,14,8: 87 px, 0 covered, 0 hidden by the set; platillo3 144,105,14,8: 89 px, 0 covered, 0 hidden by the set; jarra 117,87,12,18: 216 px, 0 covered, 0 hidden by the set; vasos 129,95,26,10: 238 px, 0 covered, 0 hidden by the set",
+     "       info, not a check: moment 3's bowls and salad: sopa1 0 covered, 0 hidden; sopa2 0 covered, 0 hidden; sopa3 0 covered, 0 hidden; ensalada 0 covered, 0 hidden"
+    ]
+   },
+   {
+    "name": "shelf-things-clear",
+    "ok": true,
+    "lines": [
+     "shelf-things-clear: the salt, the sugar, the ice and the napkins are covered by nobody and not hidden by the set in moments 2 and 3 (they stand on the shelf's top z 1.6): m2 sal 170,34,10,12: 94 px, 0 covered, 0 hidden by the set; m2 azucar 181,34,10,12: 96 px, 0 covered, 0 hidden by the set; m2 hielo 193,34,10,12: 97 px, 0 covered, 0 hidden by the set; m2 servilletas 205,34,10,12: 106 px, 0 covered, 0 hidden by the set; m3 sal 170,34,10,12: 94 px, 0 covered, 0 hidden by the set; m3 azucar 181,34,10,12: 96 px, 0 covered, 0 hidden by the set; m3 hielo 193,34,10,12: 97 px, 0 covered, 0 hidden by the set; m3 servilletas 205,34,10,12: 106 px, 0 covered, 0 hidden by the set"
+    ]
+   },
+   {
+    "name": "frog-station",
+    "ok": true,
+    "lines": [
+     "frog-station: the frog at auxiliar_coqui 192,71 (z 0.74 = the station's low top, part auxiliar: spots-on-surface) has his top row below the four things' bottom row: m2 auxiliar_coqui 192,71: his top row 47, the things' bottom row 45 (rows 34 to 45): 1 rows clear; m3 auxiliar_coqui 192,71: his top row 47, the things' bottom row 45 (rows 34 to 45): 1 rows clear"
+    ]
+   },
+   {
+    "name": "line-whole",
+    "ok": true,
+    "lines": [
+     "line-whole: in moments 4 and 5 the pot (265 px), the dog's bowl and the person at fila1 are whole: no sprite is drawn over the pot (the frog covers none of it), the bowl and the person are covered by nobody and not hidden by the set: m4: pot [30,56,21,16] (265 px): 0 px drawn over by sprites, the frog 0 (his columns 49 to 80, the pot's 30 to 50); the dog's bowl 57,100,12,8: 0 covered, 0 hidden by the set; senora at fila1 97,85: 878 px, 0 covered, 0 hidden by the set, 0 outside the picture; (the cocinero behind the pot: the pot and the table hide 181 of his px, 261 hidden in all); m5: pot [30,56,21,16] (265 px): 0 px drawn over by sprites, the frog 0 (his columns 49 to 80, the pot's 30 to 50); the dog's bowl 57,100,12,8: 0 covered, 0 hidden by the set; abuela at fila1 97,85: 895 px, 0 covered, 0 hidden by the set, 0 outside the picture; (the cocinero behind the pot: the pot and the table hide 181 of his px, 261 hidden in all)"
+    ]
+   },
+   {
+    "name": "line-feet",
+    "ok": true,
+    "lines": [
+     "line-feet: the feet of the line (the bottom 8 rows of fila1 to fila3) are not hidden by the set in moments 4 and 5; the chairs' backs begin at row 86 (columns 86, 110, 135, 160 +-5) and the line's feet are at row 85: m4 senora 97,85: feet rows 77 to 84 (96 px), 0 hidden by the set; the whole sprite 0 hidden; m4 joven 123,85: feet rows 77 to 84 (102 px), 0 hidden by the set; the whole sprite 0 hidden; m4 senor 148,85: feet rows 77 to 84 (102 px), 0 hidden by the set; the whole sprite 0 hidden; m5 abuela 97,85: feet rows 77 to 84 (109 px), 0 hidden by the set; the whole sprite 0 hidden; m5 luis 123,85: feet rows 77 to 84 (102 px), 0 hidden by the set; the whole sprite 0 hidden; m5 carmen 148,85: feet rows 77 to 84 (100 px), 0 hidden by the set; the whole sprite 0 hidden"
+    ]
+   },
+   {
+    "name": "info-stand-ins",
+    "ok": true,
+    "lines": [
+     "info-stand-ins: not a check, findings of the spec's numbers:",
+     "       moment 1: the frog at mesa_coqui 89,115 covers, of the family's px: abuela 142, abuelo 9, luis 0, carmen 0 (heads are checked in heads-clear)",
+     "       moment 2: the mesera at junto_mesa 59,129: 0 of her 950 px hidden by the set; her columns 47 to 70, the long table's left edge is at column 73",
+     "       moment 4: the cocinero at detras_olla 37,77 stands behind the serving table and the pot: 261 of his 826 px are hidden by the set (rows 56 to 76), his head (rows 26 to 39) 0 hidden; the frog's box and his overlap 0 columns, their feet are 5 px apart up-down"
+    ]
+   }
+  ]
+ }
+}

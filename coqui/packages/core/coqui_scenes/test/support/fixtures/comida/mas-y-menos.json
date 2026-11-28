@@ -1,0 +1,950 @@
+{
+ "id": "mas-y-menos",
+ "title": "Más y menos",
+ "place": "La fonda",
+ "scene": "comida",
+ "next": "el-postre",
+ "goal": "Serve each guest's plate the way the guest asks (a spoonful more from the pot, one less into the dog's bowl, or just as it is), so that the three spoonfuls the cocinero put in the frog's own small bowl are still there afterwards: every plate served wrong goes to the dog, and the new one is topped up out of the frog's bowl.",
+ "stake": {
+  "thing": "tazon",
+  "steps": 3
+ },
+ "dots": 10,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "menos",
+  "está bien",
+  "mejor",
+  "delicioso"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "más",
+  "prueba",
+  "falta",
+  "sal",
+  "arroz",
+  "pollo",
+  "para mí",
+  "cocinero",
+  "pone",
+  "rico",
+  "un poco",
+  "después",
+  "ahora",
+  "esto",
+  "por favor",
+  "gracias",
+  "no",
+  "sí"
+ ],
+ "also_heard": [
+  "pique"
+ ],
+ "names": {
+  "abuela": "abuela",
+  "abuelo": "n_abuelo",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui",
+  "perro": "c_n_perro",
+  "senor": "b_n_senor",
+  "senora": "b_n_senora",
+  "joven": "b_n_joven",
+  "mujer": "b_n_mujer"
+ },
+ "palabras": {
+  "mas": "más",
+  "menos": "menos",
+  "bien": "está bien"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c_n_perro": {
+   "who": "narr",
+   "text": "Es el perro. Se llama Canelo."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "b_n_joven": {
+   "who": "narr",
+   "text": "Es un joven."
+  },
+  "b_n_mujer": {
+   "who": "narr",
+   "text": "Es una mujer."
+  },
+  "c92_co_arroz": {
+   "who": "narr",
+   "habla": "cocinero",
+   "text": "El cocinero dice: Arroz con pollo, Coquí. Prueba."
+  },
+  "c92_co_falta_sal": {
+   "who": "narr",
+   "habla": "cocinero",
+   "text": "El cocinero dice: Mmm... falta sal."
+  },
+  "c92_co_mejor": {
+   "who": "narr",
+   "habla": "cocinero",
+   "text": "El cocinero dice: Mejor."
+  },
+  "c92_co_delicioso": {
+   "who": "narr",
+   "habla": "cocinero",
+   "text": "El cocinero dice: ¡Mejor! Ahora está delicioso. Prueba."
+  },
+  "c92_co_esto": {
+   "who": "narr",
+   "habla": "cocinero",
+   "text": "El cocinero dice: Esto es para ti. Después."
+  },
+  "c92_ab_menos": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Para mí, menos. Menos arroz, por favor."
+  },
+  "c92_donde_perro": {
+   "who": "narr",
+   "text": "Abuela quiere menos arroz. ¿Dónde pones el arroz?"
+  },
+  "c92_ab_asi": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Gracias. Así está bien. Mmm, delicioso."
+  },
+  "c92_l_mas": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Para mí, más! Más arroz, por favor."
+  },
+  "c92_donde_mas": {
+   "who": "narr",
+   "text": "Luis quiere más arroz. ¿Dónde hay más arroz?"
+  },
+  "c92_l_mejor": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Ahora está mejor. Así está bien."
+  },
+  "c92_ca_asi": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Para mí, así está bien."
+  },
+  "c92_donde_carmen": {
+   "who": "narr",
+   "text": "El plato de Carmen está bien. ¿Dónde está Carmen?"
+  },
+  "c92_ca_rico": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Qué rico! Está delicioso."
+  },
+  "c92_au_menos": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Para mí, menos."
+  },
+  "c92_au_asi": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Así está bien. Gracias."
+  },
+  "c92_co_tu": {
+   "who": "narr",
+   "habla": "cocinero",
+   "text": "El cocinero dice: ¿Y tú, Coquí? ¿Más arroz o menos arroz?"
+  },
+  "c92_cq_mas": {
+   "who": "tu",
+   "text": "¡Más, por favor!",
+   "tu_turno": [
+    {
+     "palabra": "más",
+     "formas": [
+      "más",
+      "mas",
+      "más por favor",
+      "mas por favor"
+     ]
+    }
+   ]
+  },
+  "c92_co_pique": {
+   "who": "narr",
+   "habla": "cocinero",
+   "text": "El cocinero dice: ¿Pique, Coquí?"
+  },
+  "c68_cq_un_poco": {
+   "who": "tu",
+   "text": "¡Un poco!",
+   "tu_turno": [
+    {
+     "palabra": "un poco",
+     "formas": [
+      "un poco",
+      "sí un poco",
+      "si un poco",
+      "un poquito",
+      "sí un poquito",
+      "si un poquito"
+     ]
+    }
+   ]
+  },
+  "c92_fin": {
+   "who": "narr",
+   "text": "El arroz con pollo está delicioso. Y con un poco de pique, mejor."
+  },
+  "c92_q_senor_mas": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Para mí, más."
+  },
+  "c92_no_senor_mas": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: No, Coquí. ¡Más!"
+  },
+  "c92_q_senor_menos": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Para mí, menos."
+  },
+  "c92_no_senor_menos": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: No, Coquí. ¡Menos!"
+  },
+  "c92_q_senor_bien": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Para mí, así está bien."
+  },
+  "c92_no_senor_bien": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: No, Coquí. ¡Así está bien!"
+  },
+  "c92_q_senora_mas": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Para mí, más."
+  },
+  "c92_no_senora_mas": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. ¡Más!"
+  },
+  "c92_q_senora_menos": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Para mí, menos."
+  },
+  "c92_no_senora_menos": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. ¡Menos!"
+  },
+  "c92_q_senora_bien": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Para mí, así está bien."
+  },
+  "c92_no_senora_bien": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. ¡Así está bien!"
+  },
+  "c92_q_joven_mas": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: Para mí, más."
+  },
+  "c92_no_joven_mas": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: No, Coquí. ¡Más!"
+  },
+  "c92_q_joven_menos": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: Para mí, menos."
+  },
+  "c92_no_joven_menos": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: No, Coquí. ¡Menos!"
+  },
+  "c92_q_joven_bien": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: Para mí, así está bien."
+  },
+  "c92_no_joven_bien": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: No, Coquí. ¡Así está bien!"
+  },
+  "c92_q_mujer_mas": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: Para mí, más."
+  },
+  "c92_no_mujer_mas": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: No, Coquí. ¡Más!"
+  },
+  "c92_q_mujer_menos": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: Para mí, menos."
+  },
+  "c92_no_mujer_menos": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: No, Coquí. ¡Menos!"
+  },
+  "c92_q_mujer_bien": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: Para mí, así está bien."
+  },
+  "c92_no_mujer_bien": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: No, Coquí. ¡Así está bien!"
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "noche"
+   }
+  },
+  {
+   "act": "ir",
+   "a": "servir_coqui"
+  },
+  {
+   "act": "llega",
+   "quien": "cocinero",
+   "a": "detras_olla"
+  },
+  {
+   "act": "tazon",
+   "n": 0
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c92_co_arroz",
+  {
+   "act": "gesto",
+   "quien": "coqui",
+   "que": "come"
+  },
+  {
+   "act": "prueba92",
+   "que": "prueba"
+  },
+  "c92_co_falta_sal",
+  {
+   "act": "prueba92",
+   "que": "sal"
+  },
+  {
+   "act": "prueba92",
+   "que": "prueba"
+  },
+  "c92_co_mejor",
+  {
+   "act": "prueba92",
+   "que": "salsa"
+  },
+  {
+   "act": "prueba92",
+   "que": "prueba"
+  },
+  "c92_co_delicioso",
+  {
+   "act": "gesto",
+   "quien": "coqui",
+   "que": "come"
+  },
+  {
+   "act": "tazon",
+   "n": 1
+  },
+  {
+   "wait": 300
+  },
+  {
+   "act": "tazon",
+   "n": 2
+  },
+  {
+   "wait": 300
+  },
+  {
+   "act": "tazon",
+   "n": 3
+  },
+  {
+   "act": "gesto",
+   "quien": "cocinero",
+   "que": "senala",
+   "a": "tazon"
+  },
+  "c92_co_esto",
+  {
+   "dots": 2
+  },
+  {
+   "act": "llega",
+   "quien": "abuela",
+   "a": "fila1"
+  },
+  {
+   "act": "monton92",
+   "a": "abuela"
+  },
+  "c92_ab_menos",
+  {
+   "ask": "plato_perro",
+   "lead": [],
+   "line": "c92_donde_perro",
+   "then": [],
+   "after": [
+    {
+     "act": "sirve92",
+     "que": "menos",
+     "ok": 1
+    }
+   ]
+  },
+  "c92_ab_asi",
+  {
+   "dots": 3
+  },
+  {
+   "act": "llega",
+   "quien": "luis",
+   "a": "fila1"
+  },
+  {
+   "act": "monton92",
+   "a": "luis"
+  },
+  "c92_l_mas",
+  {
+   "ask": "olla",
+   "lead": [],
+   "line": "c92_donde_mas",
+   "then": [],
+   "after": [
+    {
+     "act": "sirve92",
+     "que": "mas",
+     "ok": 1
+    }
+   ]
+  },
+  "c92_l_mejor",
+  {
+   "dots": 4
+  },
+  {
+   "act": "llega",
+   "quien": "carmen",
+   "a": "fila1"
+  },
+  {
+   "act": "monton92",
+   "a": "carmen"
+  },
+  "c92_ca_asi",
+  {
+   "ask": "carmen",
+   "lead": [],
+   "line": "c92_donde_carmen",
+   "then": [],
+   "after": [
+    {
+     "act": "sirve92",
+     "que": "bien",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "come"
+  },
+  "c92_ca_rico",
+  {
+   "dots": 5
+  },
+  {
+   "act": "llega",
+   "quien": "abuelo",
+   "a": "fila1"
+  },
+  {
+   "act": "monton92",
+   "a": "abuelo"
+  },
+  "c92_au_menos",
+  {
+   "act": "sirve92",
+   "que": "menos",
+   "ok": 1
+  },
+  "c92_au_asi",
+  "c92_co_tu",
+  "c92_cq_mas",
+  {
+   "act": "gesto",
+   "quien": "cocinero",
+   "que": "rie"
+  },
+  {
+   "act": "gesto",
+   "quien": "cocinero",
+   "que": "senala",
+   "a": "tazon"
+  },
+  {
+   "dots": 6
+  },
+  {
+   "act": "gesto",
+   "quien": "cocinero",
+   "que": "mira",
+   "a": "olla"
+  },
+  {
+   "act": "gesto",
+   "quien": "cocinero",
+   "que": "senala",
+   "a": "tazon"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "ga",
+   "options": [
+    "senor",
+    "senora",
+    "joven",
+    "mujer"
+   ]
+  },
+  {
+   "draw": "sa",
+   "options": [
+    "mas",
+    "menos",
+    "bien"
+   ]
+  },
+  {
+   "calc": "pa",
+   "cond": "sa=mas",
+   "then": "olla",
+   "else": "$ga"
+  },
+  {
+   "calc": "pa",
+   "cond": "sa=menos",
+   "then": "plato_perro",
+   "else": "$pa"
+  },
+  {
+   "act": "llega",
+   "quien": "$ga",
+   "a": "fila1"
+  },
+  {
+   "act": "monton92",
+   "a": "$ga"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "olla",
+    "plato_perro",
+    "$ga"
+   ],
+   "pick": "$pa",
+   "tests": "$sa",
+   "lock": true,
+   "lead": [],
+   "line": "c92_q_$ga_$sa",
+   "right": [
+    {
+     "act": "sirve92",
+     "que": "$sa",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "calc": "ra",
+     "cond": "x=olla",
+     "then": "mas",
+     "else": "bien"
+    },
+    {
+     "calc": "ra",
+     "cond": "x=plato_perro",
+     "then": "menos",
+     "else": "$ra"
+    },
+    {
+     "act": "sirve92",
+     "que": "$ra",
+     "ok": 0,
+     "suelto": 1
+    },
+    "c92_no_$ga_$sa",
+    {
+     "act": "ya"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "tazon",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "tazon",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 8
+  },
+  {
+   "draw": "eb",
+   "options": [
+    "1",
+    "2",
+    "3"
+   ]
+  },
+  {
+   "if": "ga=senor",
+   "then": [
+    {
+     "calc": "gb",
+     "cond": "eb=1",
+     "then": "senora",
+     "else": "joven"
+    },
+    {
+     "calc": "gb",
+     "cond": "eb=3",
+     "then": "mujer",
+     "else": "$gb"
+    }
+   ],
+   "else": [
+    {
+     "if": "ga=senora",
+     "then": [
+      {
+       "calc": "gb",
+       "cond": "eb=1",
+       "then": "senor",
+       "else": "joven"
+      },
+      {
+       "calc": "gb",
+       "cond": "eb=3",
+       "then": "mujer",
+       "else": "$gb"
+      }
+     ],
+     "else": [
+      {
+       "if": "ga=joven",
+       "then": [
+        {
+         "calc": "gb",
+         "cond": "eb=1",
+         "then": "senor",
+         "else": "senora"
+        },
+        {
+         "calc": "gb",
+         "cond": "eb=3",
+         "then": "mujer",
+         "else": "$gb"
+        }
+       ],
+       "else": [
+        {
+         "calc": "gb",
+         "cond": "eb=1",
+         "then": "senor",
+         "else": "senora"
+        },
+        {
+         "calc": "gb",
+         "cond": "eb=3",
+         "then": "joven",
+         "else": "$gb"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "draw": "sb",
+   "options": [
+    "mas",
+    "menos",
+    "bien"
+   ]
+  },
+  {
+   "calc": "pb",
+   "cond": "sb=mas",
+   "then": "olla",
+   "else": "$gb"
+  },
+  {
+   "calc": "pb",
+   "cond": "sb=menos",
+   "then": "plato_perro",
+   "else": "$pb"
+  },
+  {
+   "act": "llega",
+   "quien": "$gb",
+   "a": "fila1"
+  },
+  {
+   "act": "monton92",
+   "a": "$gb"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "olla",
+    "plato_perro",
+    "$gb"
+   ],
+   "pick": "$pb",
+   "tests": "$sb",
+   "lock": true,
+   "lead": [],
+   "line": "c92_q_$gb_$sb",
+   "right": [
+    {
+     "act": "sirve92",
+     "que": "$sb",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "calc": "rb",
+     "cond": "x=olla",
+     "then": "mas",
+     "else": "bien"
+    },
+    {
+     "calc": "rb",
+     "cond": "x=plato_perro",
+     "then": "menos",
+     "else": "$rb"
+    },
+    {
+     "act": "sirve92",
+     "que": "$rb",
+     "ok": 0,
+     "suelto": 1
+    },
+    "c92_no_$gb_$sb",
+    {
+     "act": "ya"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "tazon",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "tazon",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 9
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final92",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final92",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final92",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 10
+  },
+  "c92_co_pique",
+  "c68_cq_un_poco",
+  {
+   "act": "gesto",
+   "quien": "coqui",
+   "que": "come"
+  },
+  "c92_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c92_co_arroz",
+  "c92_co_falta_sal",
+  "c92_co_mejor",
+  "c92_co_delicioso",
+  "c92_co_esto",
+  "c92_ab_menos",
+  "c92_donde_perro",
+  "c92_ab_asi",
+  "c92_l_mas",
+  "c92_donde_mas",
+  "c92_l_mejor",
+  "c92_ca_asi",
+  "c92_donde_carmen",
+  "c92_ca_rico",
+  "c92_au_menos",
+  "c92_au_asi",
+  "c92_co_tu",
+  "c92_cq_mas",
+  "c92_q_senora_menos",
+  "c92_q_joven_bien",
+  "c92_co_pique",
+  "c68_cq_un_poco",
+  "c92_fin"
+ ]
+}
