@@ -319,8 +319,8 @@ Sprite mkNotasFloat({int kind = 0, int anim = 0}) {
   final dy = (anim % 2) == 0 ? 0 : -1;
   if (kind == 2) {
     return _mk(16, 12, (b) {
-      b.line(2, 8 + dy, 5, 3 + dy, _h('#EC5050'));
-      b.line(5, 3 + dy, 8, 9 + dy, _h('#EC5050'));
+      b.line(2, 8 + dy, 5, 3 + dy, _h('#6E7898'));
+      b.line(5, 3 + dy, 8, 9 + dy, _h('#6E7898'));
       b.line(8, 9 + dy, 11, 3 + dy, _h('#F8B038'));
       b.line(11, 3 + dy, 13, 8 + dy, _h('#F8B038'));
     });
@@ -348,7 +348,7 @@ Sprite mkFlashMusica() => _mk(16, 14, (b) {
 
 Sprite mkFotoPapel({bool bad = false}) => _mk(10, 12, (b) {
   b.rect(1, 1, 8, 10, _h('#F4F4FA'));
-  b.rect(2, 2, 6, 6, bad ? _h('#B85050') : _h('#6EA8E0'));
+  b.rect(2, 2, 6, 6, bad ? _h('#5C5872') : _h('#6EA8E0'));
   if (bad) {
     b.line(3, 3, 6, 6, _h('#FFE070'));
     b.line(6, 3, 3, 6, _h('#FFE070'));

@@ -208,6 +208,32 @@ void main() {
       expect(mapLabel.style!.color, NocheColors.text);
       expect(mapLabel.style!.fontWeight, FontWeight.w700);
     });
+
+    testWidgets('itemKey(id) finds and taps every tab without text lookup', (
+      tester,
+    ) async {
+      final tapped = <String>[];
+      await tester.pumpWidget(
+        _wrap(
+          Align(
+            alignment: AlignmentDirectional.bottomCenter,
+            child: NocheTabBar(
+              selectedId: NocheTabs.map,
+              tabNames: _arabicTabs,
+              script: 'Arab',
+              onTap: tapped.add,
+            ),
+          ),
+        ),
+      );
+      for (final id in NocheTabs.order) {
+        final key = NocheTabBar.itemKey(id);
+        expect(key, ValueKey<String>('tab-item:$id'));
+        expect(find.byKey(key), findsOneWidget);
+        await tester.tap(find.byKey(key));
+      }
+      expect(tapped, equals(NocheTabs.order));
+    });
   });
 
   group('NochePill', () {
@@ -435,6 +461,63 @@ void main() {
         NocheColors.line,
       );
       final disabledText = tester.widget<Text>(find.text('Disabled'));
+      expect(disabledText.style!.color, NocheColors.label);
+    });
+
+    testWidgets('primary text-filled enabled and disabled states', (
+      tester,
+    ) async {
+      var taps = 0;
+      await tester.pumpWidget(
+        _wrap(
+          Column(
+            children: [
+              NochePrimaryButton.text(
+                label: 'Write my story',
+                onPressed: () => taps++,
+              ),
+              const NochePrimaryButton.text(
+                label: 'Write disabled',
+                onPressed: null,
+              ),
+            ],
+          ),
+        ),
+      );
+
+      final enabledFinder = find.byWidgetPredicate(
+        (w) => w is NochePrimaryButton && w.onPressed != null,
+      );
+      expect(tester.getSize(enabledFinder), const Size(390, 56));
+      final enabledBox = tester.widget<Container>(
+        find.descendant(of: enabledFinder, matching: find.byType(Container)),
+      );
+      final enabledDeco = enabledBox.decoration! as BoxDecoration;
+      expect(enabledDeco.color, NocheColors.text);
+      expect(
+        enabledDeco.borderRadius,
+        BorderRadius.circular(NocheSize.primaryRadius),
+      );
+      final enabledText = tester.widget<Text>(find.text('Write my story'));
+      expect(enabledText.style!.color, NocheColors.ground);
+      expect(enabledText.style!.fontSize, NocheType.primarySmall.fontSize);
+
+      await tester.tap(enabledFinder);
+      expect(taps, 1);
+
+      final disabledFinder = find.byWidgetPredicate(
+        (w) => w is NochePrimaryButton && w.onPressed == null,
+      );
+      await tester.tap(disabledFinder);
+      expect(taps, 1);
+      final disabledBox = tester.widget<Container>(
+        find.descendant(of: disabledFinder, matching: find.byType(Container)),
+      );
+      expect(
+        (disabledBox.decoration! as BoxDecoration).color,
+        NocheColors.line,
+      );
+      final disabledText = tester.widget<Text>(find.text('Write disabled'));
       expect(disabledText.style!.color, NocheColors.label);
     });
 
@@ -1002,6 +1085,9 @@ void main() {
       );
       expect(NocheIcons.play.shapes.first.d, 'M8 4v16l12-8z');
       expect(NocheIcons.back.shapes.first.d, 'M15 5l-7 7 7 7');
+      expect(NocheIcons.chevronUp.shapes.first.d, 'M6 15l6-6 6 6');
+      expect(NocheIcons.chevronUp.strokeWidth, 2.5);
+      expect(NocheIcons.all['chevronUp'], NocheIcons.chevronUp);
       expect(NocheIcons.close.shapes.first.d, 'M6 6l12 12M18 6 6 18');
       expect(NocheIcons.check.shapes.first.d, 'M4 12l6 6L20 6');
     });
@@ -1085,6 +1171,9 @@ void main() {
         NocheA11y.sentenceAgain,
         NocheA11y.listen,
         NocheA11y.speed,
+        NocheA11y.font,
+        NocheA11y.lineSpacing,
+        NocheA11y.pageColour,
       ]) {
         expect(NocheA11y.english[role], isNotNull, reason: 'missing $role');
         expect(
@@ -1092,6 +1181,9 @@ void main() {
           equals(NocheA11y.english[role]),
         );
       }
+      expect(NocheA11y.label(NocheA11y.font), 'Font');
+      expect(NocheA11y.label(NocheA11y.lineSpacing), 'Line spacing');
+      expect(NocheA11y.label(NocheA11y.pageColour), 'Page colour');
     });
 
     test('uses courseWords when lessonLabelsInCourseLanguage is true', () {
@@ -1155,7 +1247,7 @@ void main() {
       GlobalKey captureKey,
     ) async {
       // Wide 390 phone column, tall enough so every piece renders unclipped.
-      const height = 3120.0;
+      const height = 3640.0;
       tester.view.devicePixelRatio = 1;
       tester.view.physicalSize = const Size(390, height);
       addTearDown(tester.view.reset);
@@ -1288,7 +1380,7 @@ void main() {
       final key = GlobalKey();
       await pumpFullDevPage(tester, TextDirection.ltr, key);
       final count = auditTouchTargets(tester, 'LTR');
-      expect(count, 32);
+      expect(count, 36);
       await expectLater(
         find.byKey(key),
         matchesGoldenFile('goldens/noche_dev_ltr.png'),
@@ -1301,7 +1393,7 @@ void main() {
       final key = GlobalKey();
       await pumpFullDevPage(tester, TextDirection.rtl, key);
       final count = auditTouchTargets(tester, 'RTL');
-      expect(count, 32);
+      expect(count, 36);
       await expectLater(
         find.byKey(key),
         matchesGoldenFile('goldens/noche_dev_rtl.png'),

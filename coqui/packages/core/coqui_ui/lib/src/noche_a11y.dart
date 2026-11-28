@@ -37,6 +37,9 @@ abstract final class NocheA11y {
   static const String minutesRemaining = 'minutesRemaining';
   static const String smallerText = 'smallerText';
   static const String largerText = 'largerText';
+  static const String font = 'font';
+  static const String lineSpacing = 'lineSpacing';
+  static const String pageColour = 'pageColour';
   static const String lineSpacingTight = 'lineSpacingTight';
   static const String lineSpacingNormal = 'lineSpacingNormal';
   static const String lineSpacingLoose = 'lineSpacingLoose';
@@ -71,6 +74,9 @@ abstract final class NocheA11y {
     minutesRemaining: '{minutes} min remaining in chapter',
     smallerText: 'Smaller text',
     largerText: 'Larger text',
+    font: 'Font',
+    lineSpacing: 'Line spacing',
+    pageColour: 'Page colour',
     lineSpacingTight: 'Tight',
     lineSpacingNormal: 'Normal',
     lineSpacingLoose: 'Loose',

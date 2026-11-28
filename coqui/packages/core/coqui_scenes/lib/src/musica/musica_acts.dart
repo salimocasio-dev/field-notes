@@ -389,6 +389,14 @@ extension _MusicaActs on Musica {
       W['guitarraHeldBy'] = 'musico1';
       W['tamborHeldBy'] = 'musico2';
       W['notasFloat'] = 2;
+      for (final dk in _DANCER_KEYS) {
+        final dp = _personOf(dk);
+        if (dp != null &&
+            jsTruthy(dp['vis']) &&
+            !Musica._isSeat(dp['spot'] as String?)) {
+          dp['dance'] = 1;
+        }
+      }
       W['corazonFx'] = n == 3 ? 1 : 0;
       W['estrellaFx'] = n == 3 ? 1 : 0;
       await wait(260);

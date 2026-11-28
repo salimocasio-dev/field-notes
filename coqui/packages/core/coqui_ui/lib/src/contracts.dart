@@ -202,7 +202,7 @@ class Services {
     required this.pictures,
     required this.storage,
     this.reduceMotion = false,
-    this.entitlements = const AllowAllEntitlements(),
+    required this.entitlements,
     this.progressStores,
     this.availableCourses = const [],
   });

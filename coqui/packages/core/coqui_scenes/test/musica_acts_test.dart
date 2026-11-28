@@ -358,6 +358,17 @@ void main() {
         sc1.items(fr1.host.W, 0).any((i) => i.tag == 'cosa:guitarra'),
         isTrue,
       );
+
+      // Story 111 final111 animates surviving floor couples while leaving bench couples seated
+      await sc1.acts['parejas']!({'n': 2});
+      await sc1.acts['final111']!({'n': 2});
+      final g1 = fr1.host.W['gente'] as Map<String, dynamic>;
+      for (final dk in const ['mama', 'papa', 'mujer', 'hombre']) {
+        expect((g1[dk] as Map)['dance'], 1);
+      }
+      for (final dk in const ['senora', 'senor']) {
+        expect((g1[dk] as Map)['dance'], 0);
+      }
     },
   );
 
