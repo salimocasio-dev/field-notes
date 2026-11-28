@@ -11,9 +11,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  archive: ^4.7.1
   coqui_contracts: any
   coqui_ui: any
   material_ui: ^1.11.1
+  xml: ^7.1.0
 
 dev_dependencies:
   coqui_testing: any

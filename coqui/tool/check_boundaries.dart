@@ -197,6 +197,8 @@ const thirdPartyOnly = <String, Set<String>>{
   'shared_preferences': {'coqui_platform'},
   'web': {'coqui_platform'},
   'go_router': {'app'},
+  'archive': {'feature_library'},
+  'xml': {'feature_library'},
   // The Material widgets (Nov 19, 2026). In every Flutter package that draws
   // widgets: not in coqui_platform, and not in the pure Dart packages.
   'material_ui': {

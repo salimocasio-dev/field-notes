@@ -104,6 +104,32 @@ void main() {
       expect(problems.single, contains('only app may'));
     });
 
+    test('passes: feature_library lists archive and xml', () async {
+      package(
+        'feature_library',
+        deps: ['coqui_contracts', 'coqui_ui', 'archive', 'xml'],
+      );
+      expect(await check(), isEmpty);
+    });
+
+    test('fails: another feature lists archive', () async {
+      package('feature_words', deps: ['coqui_ui', 'archive']);
+      final problems = await check();
+      expect(problems, hasLength(1));
+      expect(problems.single, contains('[a]'));
+      expect(problems.single, contains('archive'));
+      expect(problems.single, contains('only feature_library may'));
+    });
+
+    test('fails: another package lists xml', () async {
+      package('coqui_content', deps: ['coqui_contracts', 'xml']);
+      final problems = await check();
+      expect(problems, hasLength(1));
+      expect(problems.single, contains('[a]'));
+      expect(problems.single, contains('xml'));
+      expect(problems.single, contains('only feature_library may'));
+    });
+
     test('passes: collection is allowed everywhere', () async {
       package('coqui_contracts', deps: ['collection']);
       package('feature_review', deps: ['coqui_ui', 'collection']);

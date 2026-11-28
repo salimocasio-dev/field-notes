@@ -3,12 +3,21 @@ import 'dart:typed_data';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:feature_library/src/book_coverage.dart';
+import 'package:feature_library/src/docx_parser.dart';
+import 'package:feature_library/src/epub_parser.dart';
 import 'package:feature_library/src/reader_model.dart';
 import 'package:feature_library/src/reading.dart';
 import 'package:feature_library/src/wording.dart';
 
-/// File formats accepted by the importer in N5.4.
-const List<String> supportedImportFormats = [LibraryWording.formatTxt];
+/// File formats accepted by the importer.
+const List<String> supportedImportFormats = [
+  LibraryWording.formatEpub,
+  LibraryWording.formatTxt,
+  LibraryWording.formatWord,
+];
+
+/// File extensions accepted by the importer.
+const List<String> supportedImportExtensions = ['epub', 'txt', 'docx'];
 
 const Set<String> _lockedStoreExtensions = {'azw', 'azw3', 'kfx', 'acsm'};
 
@@ -77,20 +86,24 @@ class ImportFailure implements Exception {
   final bool locked;
 }
 
-/// Plain-text book content parsed and ready to persist.
+/// Book or document content parsed and ready to persist.
 class ParsedBook {
   const ParsedBook({
     required this.title,
+    this.author,
     required this.paragraphs,
     required this.body,
+    this.chapters,
     required this.format,
     required this.byteSize,
     required this.estimatedPages,
   });
 
   final String title;
+  final String? author;
   final List<String> paragraphs;
   final String body;
+  final List<ReadingChapter>? chapters;
   final String format;
   final int byteSize;
   final int estimatedPages;
@@ -129,15 +142,19 @@ List<String> parsePlainTextParagraphs(String rawText) {
   return paragraphs;
 }
 
-/// Derives a display title from a `.txt` file name.
+/// Derives a display title from a `.txt`, `.epub`, or `.docx` file name.
 String deriveBookTitleFromFileName(String fileName) {
   var name = fileName.trim();
   final slash = name.lastIndexOf(_pathSeparatorRe);
   if (slash >= 0 && slash + 1 < name.length) {
     name = name.substring(slash + 1).trim();
   }
-  if (name.toLowerCase().endsWith('.txt')) {
-    name = name.substring(0, name.length - 4).trim();
+  final lower = name.toLowerCase();
+  for (final suffix in const ['.txt', '.epub', '.docx']) {
+    if (lower.endsWith(suffix)) {
+      name = name.substring(0, name.length - suffix.length).trim();
+      break;
+    }
   }
   return name.isEmpty ? LibraryWording.untitledBook : name;
 }
@@ -322,42 +339,98 @@ class BookImporter {
     );
     await _stepYield();
 
-    final decoded = decodeTxtBytes(file);
-
-    onProgress?.call(
-      ImportJobState(
-        id: jobId,
-        fileName: file.name,
-        byteSize: file.byteSize,
-        step: 2,
-        stepProgress: 0.5,
-      ),
-    );
-    await _stepYield();
-
-    final paragraphs = parsePlainTextParagraphs(decoded);
-    if (paragraphs.isEmpty) {
-      throw const ImportFailure(LibraryWording.errorEmptyText);
+    final ext = _extensionOf(file.name);
+    if (_lockedStoreExtensions.contains(ext)) {
+      throw const ImportFailure(LibraryWording.errorLockedBook, locked: true);
     }
-    final title = deriveBookTitleFromFileName(file.name);
-    final body = paragraphs.join('\n\n');
-    final estimatedPages = estimateBookPagesFromText(
-      ReadingText(
-        id: '${personalBookPrefix}preview',
-        title: title,
-        body: body,
-        generated: false,
-      ),
-      language,
-    );
-    final parsed = ParsedBook(
-      title: title,
-      paragraphs: paragraphs,
-      body: body,
-      format: LibraryWording.formatTxt,
-      byteSize: file.byteSize,
-      estimatedPages: estimatedPages,
-    );
+
+    final ParsedBook parsed;
+    switch (ext) {
+      case 'txt':
+        final decoded = decodeTxtBytes(file);
+        onProgress?.call(
+          ImportJobState(
+            id: jobId,
+            fileName: file.name,
+            byteSize: file.byteSize,
+            step: 2,
+            stepProgress: 0.5,
+          ),
+        );
+        await _stepYield();
+
+        final paragraphs = parsePlainTextParagraphs(decoded);
+        if (paragraphs.isEmpty) {
+          throw const ImportFailure(LibraryWording.errorEmptyText);
+        }
+        final title = deriveBookTitleFromFileName(file.name);
+        final body = paragraphs.join('\n\n');
+        final estimatedPages = estimateBookPagesFromText(
+          ReadingText(
+            id: '${personalBookPrefix}preview',
+            title: title,
+            body: body,
+            generated: false,
+          ),
+          language,
+        );
+        parsed = ParsedBook(
+          title: title,
+          paragraphs: paragraphs,
+          body: body,
+          format: LibraryWording.formatTxt,
+          byteSize: file.byteSize,
+          estimatedPages: estimatedPages,
+        );
+      case 'epub':
+        final opened = openEpubArchive(file);
+        onProgress?.call(
+          ImportJobState(
+            id: jobId,
+            fileName: file.name,
+            byteSize: file.byteSize,
+            step: 2,
+            stepProgress: 0.5,
+          ),
+        );
+        await _stepYield();
+
+        parsed = parseOpenedEpub(
+          opened,
+          language,
+          onPageProgress: (done, total) {
+            onProgress?.call(
+              ImportJobState(
+                id: jobId,
+                fileName: file.name,
+                byteSize: file.byteSize,
+                step: 2,
+                stepProgress: total > 0 ? done / total : 1.0,
+                pagesDone: done,
+                pagesTotal: total,
+              ),
+            );
+          },
+        );
+      case 'docx':
+        final opened = openDocxArchive(file);
+        onProgress?.call(
+          ImportJobState(
+            id: jobId,
+            fileName: file.name,
+            byteSize: file.byteSize,
+            step: 2,
+            stepProgress: 0.5,
+          ),
+        );
+        await _stepYield();
+
+        parsed = parseOpenedDocx(opened, language);
+      default:
+        throw ImportFailure(
+          LibraryWording.errorUnsupportedFormat(supportedImportFormats),
+        );
+    }
 
     return _checkAndSave(
       parsed: parsed,
@@ -435,7 +508,9 @@ class BookImporter {
       book = await store.add(
         now: now,
         title: parsed.title,
+        author: parsed.author,
         body: parsed.body,
+        chapters: parsed.chapters,
         generated: false,
         format: parsed.format,
         byteSize: parsed.byteSize,

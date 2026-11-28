@@ -185,7 +185,7 @@ class _ImportScreenState extends State<ImportScreen> {
     _picking = true;
     final PickedImportFile? picked;
     try {
-      picked = await picker.pick(allowedExtensions: const ['txt']);
+      picked = await picker.pick(allowedExtensions: supportedImportExtensions);
     } on Object {
       _picking = false;
       if (!mounted) return;
