@@ -1,0 +1,649 @@
+{
+ "id": "por-la-tarde",
+ "title": "Por la tarde",
+ "place": "La casa, un día entero",
+ "scene": "sala_dia",
+ "next": "prende-y-apaga",
+ "goal": "Stick each photo Carmen holds on the album's page for the time of day she says (the morning, the afternoon or the night) so that her three gold stars stay in the box for the cover, round the frog's photo: a photo on the wrong page is peeled off, its corner tears, and a star goes on the tear.",
+ "stake": {
+  "thing": "estrellas",
+  "steps": 3
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "estudia",
+  "computadora",
+  "la tarde",
+  "a veces"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "la mañana",
+  "noche",
+  "son las",
+  "tres",
+  "lee",
+  "escribe",
+  "libro",
+  "juega",
+  "bola",
+  "día",
+  "me gusta",
+  "aquí",
+  "pone",
+  "mira",
+  "con",
+  "mi",
+  "yo",
+  "no",
+  "sí"
+ ],
+ "also_heard": [],
+ "names": {
+  "abuela": "abuela",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "tarde": "la tarde",
+  "manana": "la mañana",
+  "noche": "noche"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c104_ab_tres": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Son las tres de la tarde. Luis estudia."
+  },
+  "c104_donde_compu": {
+   "who": "narr",
+   "text": "Luis estudia en la computadora. ¿Dónde está?"
+  },
+  "c104_ca_mira": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Mira, Coquí: mi día. La mañana, la tarde y la noche."
+  },
+  "c104_donde_tarde": {
+   "who": "narr",
+   "text": "¿Dónde está la tarde?"
+  },
+  "c104_ca_tarde_luis": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Por la tarde, Luis estudia."
+  },
+  "c104_ca_noche_abuela": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Por la noche, abuela lee."
+  },
+  "c104_ca_aveces": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: A veces Luis estudia en la computadora. A veces estudia con un libro."
+  },
+  "c104_ab_aveces": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: A veces, Luis. Ahora no."
+  },
+  "c104_ca_estrellas": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Coquí, ¿dónde están mis estrellas?"
+  },
+  "c59_cq_aqui": {
+   "who": "tu",
+   "text": "¡Aquí!",
+   "tu_turno": [
+    {
+     "palabra": "aquí",
+     "formas": [
+      "aquí",
+      "aqui",
+      "aquí están",
+      "aqui estan"
+     ]
+    }
+   ]
+  },
+  "c104_ca_dia": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Este es mi día. ¿Te gusta, Coquí?"
+  },
+  "c43_cq_me_gusta": {
+   "who": "tu",
+   "text": "¡Sí, me gusta!",
+   "tu_turno": [
+    {
+     "palabra": "me gusta",
+     "formas": [
+      "me gusta",
+      "sí me gusta",
+      "si me gusta"
+     ]
+    }
+   ]
+  },
+  "c104_fin": {
+   "who": "narr",
+   "text": "Por la tarde Luis estudia. A veces en la computadora, a veces con un libro."
+  },
+  "c104_no_tarde": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: No, Coquí. Por la tarde."
+  },
+  "c104_tarde_abuelo_lee": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Por la tarde, abuelo lee."
+  },
+  "c104_tarde_abuela_escribe": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Por la tarde, abuela escribe."
+  },
+  "c104_tarde_carmen_juega": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Por la tarde, Carmen juega."
+  },
+  "c104_tarde_luis_lee": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Por la tarde, Luis lee."
+  },
+  "c104_tarde_abuela_juega": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Por la tarde, abuela juega."
+  },
+  "c104_no_manana": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: No, Coquí. Por la mañana."
+  },
+  "c104_manana_abuelo_lee": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Por la mañana, abuelo lee."
+  },
+  "c104_manana_abuela_escribe": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Por la mañana, abuela escribe."
+  },
+  "c104_manana_carmen_juega": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Por la mañana, Carmen juega."
+  },
+  "c104_manana_luis_lee": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Por la mañana, Luis lee."
+  },
+  "c104_manana_abuela_juega": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Por la mañana, abuela juega."
+  },
+  "c104_no_noche": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: No, Coquí. Por la noche."
+  },
+  "c104_noche_abuelo_lee": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Por la noche, abuelo lee."
+  },
+  "c104_noche_abuela_escribe": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Por la noche, abuela escribe."
+  },
+  "c104_noche_carmen_juega": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Por la noche, Carmen juega."
+  },
+  "c104_noche_luis_lee": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Por la noche, Luis lee."
+  },
+  "c104_noche_abuela_juega": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Por la noche, abuela juega."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "tarde"
+   }
+  },
+  {
+   "act": "estrellas",
+   "n": 3
+  },
+  {
+   "act": "llega",
+   "quien": "luis",
+   "a": "escritorio",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "carmen",
+   "a": "cojin2",
+   "suelto": 1
+  },
+  {
+   "act": "ir",
+   "a": "mesa_coqui",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c104_ab_tres",
+  {
+   "ask": "computadora",
+   "lead": [],
+   "line": "c104_donde_compu",
+   "then": [],
+   "after": [
+    {
+     "act": "pantalla104"
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "pagina104",
+   "n": 1
+  },
+  {
+   "act": "pagina104",
+   "n": 2
+  },
+  {
+   "act": "pagina104",
+   "n": 3
+  },
+  "c104_ca_mira",
+  {
+   "ask": "pagina2",
+   "lead": [],
+   "line": "c104_donde_tarde",
+   "then": [],
+   "after": [
+    {
+     "act": "pagina104",
+     "n": 2
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "foto104",
+   "que": "luis_computadora"
+  },
+  {
+   "ask": "pagina2",
+   "lead": [],
+   "line": "c104_ca_tarde_luis",
+   "then": [],
+   "after": [
+    {
+     "act": "pega104",
+     "pagina": "pagina2",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "act": "foto104",
+   "que": "abuela_libro"
+  },
+  "c104_ca_noche_abuela",
+  {
+   "act": "pega104",
+   "pagina": "pagina3",
+   "ok": 1
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "aveces104",
+   "suelto": 1
+  },
+  "c104_ca_aveces",
+  {
+   "act": "ya"
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "mira",
+   "a": "abuela"
+  },
+  "c104_ab_aveces",
+  "c104_ca_estrellas",
+  "c59_cq_aqui",
+  {
+   "dots": 5
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "draw": "ra",
+   "options": [
+    "a",
+    "b"
+   ]
+  },
+  {
+   "draw": "om",
+   "options": [
+    "manana",
+    "noche"
+   ]
+  },
+  {
+   "calc": "ta",
+   "cond": "ra=a",
+   "then": "tarde",
+   "else": "$om"
+  },
+  {
+   "calc": "tb",
+   "cond": "ra=a",
+   "then": "$om",
+   "else": "tarde"
+  },
+  {
+   "reparte": [
+    "fa",
+    "fb"
+   ],
+   "options": [
+    "abuelo_lee",
+    "abuela_escribe",
+    "carmen_juega",
+    "luis_lee",
+    "abuela_juega"
+   ]
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "calc": "pa",
+   "cond": "ta=tarde",
+   "then": "pagina2",
+   "else": "pagina1"
+  },
+  {
+   "calc": "pa",
+   "cond": "ta=noche",
+   "then": "pagina3",
+   "else": "$pa"
+  },
+  {
+   "act": "foto104",
+   "que": "$fa"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "pagina1",
+    "pagina2",
+    "pagina3"
+   ],
+   "pick": "$pa",
+   "tests": "$ta",
+   "lock": true,
+   "lead": [],
+   "line": "c104_$ta_$fa",
+   "right": [
+    {
+     "act": "pega104",
+     "pagina": "$pa",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "pega104",
+     "pagina": "$x",
+     "ok": 0,
+     "suelto": 1
+    },
+    "c104_no_$ta",
+    {
+     "act": "ya"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "estrellas",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "estrellas",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "calc": "pb",
+   "cond": "tb=tarde",
+   "then": "pagina2",
+   "else": "pagina1"
+  },
+  {
+   "calc": "pb",
+   "cond": "tb=noche",
+   "then": "pagina3",
+   "else": "$pb"
+  },
+  {
+   "act": "foto104",
+   "que": "$fb"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "pagina1",
+    "pagina2",
+    "pagina3"
+   ],
+   "pick": "$pb",
+   "tests": "$tb",
+   "lock": true,
+   "lead": [],
+   "line": "c104_$tb_$fb",
+   "right": [
+    {
+     "act": "pega104",
+     "pagina": "$pb",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "pega104",
+     "pagina": "$x",
+     "ok": 0,
+     "suelto": 1
+    },
+    "c104_no_$tb",
+    {
+     "act": "ya"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "estrellas",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "estrellas",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final104",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final104",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final104",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 9
+  },
+  "c104_ca_dia",
+  "c43_cq_me_gusta",
+  "c104_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c104_ab_tres",
+  "c104_donde_compu",
+  "c104_ca_mira",
+  "c104_donde_tarde",
+  "c104_ca_tarde_luis",
+  "c104_ca_noche_abuela",
+  "c104_ca_aveces",
+  "c104_ab_aveces",
+  "c104_ca_estrellas",
+  "c59_cq_aqui",
+  "c104_tarde_abuelo_lee",
+  "c104_manana_abuela_escribe",
+  "c104_ca_dia",
+  "c43_cq_me_gusta",
+  "c104_fin"
+ ]
+}

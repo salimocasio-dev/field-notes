@@ -1,0 +1,606 @@
+{
+ "id": "el-telefono",
+ "title": "El teléfono",
+ "place": "La casa, un día entero",
+ "scene": "sala_dia",
+ "next": "por-la-tarde",
+ "goal": "Hold the telephone to abuelo's ear when carmen says he listens and before his mouth when she says he talks, so that its battery keeps its three bars for the frog's song at the end: held the wrong way the call runs on and nobody hears anybody, and a bar blinks and goes.",
+ "stake": {
+  "thing": "bateria",
+  "steps": 3
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "teléfono",
+  "llama",
+  "habla",
+  "escucha"
+ ],
+ "formas_foco": {
+  "escucha": [
+   "escucho"
+  ]
+ },
+ "back_again": [
+  "mamá",
+  "abuelo",
+  "oreja",
+  "boca",
+  "hola",
+  "bien",
+  "¿cómo estás?",
+  "hablo",
+  "hasta luego",
+  "hasta mañana",
+  "pone",
+  "ahora",
+  "yo",
+  "con",
+  "por favor",
+  "gracias",
+  "no",
+  "sí"
+ ],
+ "also_heard": [
+  "quién"
+ ],
+ "names": {
+  "abuela": "abuela",
+  "abuelo": "n_abuelo",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {},
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c103_ab_telefono": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡El teléfono! Coquí, por favor."
+  },
+  "c103_ab_llama": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Llama mamá. ¡Hola!"
+  },
+  "c103_ma_hola": {
+   "who": "narr",
+   "habla": "mama",
+   "text": "Mamá dice: ¡Hola! ¿Cómo estás?"
+  },
+  "c103_ab_escucho": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Yo escucho... y ahora hablo. Bien, gracias."
+  },
+  "c103_abo_quien": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¿Quién llama?"
+  },
+  "c103_ab_oreja": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Llama mamá por teléfono. Abuelo escucha."
+  },
+  "c103_l_escucha_mama": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Abuelo escucha a mamá."
+  },
+  "c103_ahora_habla": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Ahora abuelo habla."
+  },
+  "c103_abo_hola": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¡Hola! Yo estoy bien."
+  },
+  "c103_ab_habla_con": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Abuelo habla con mamá."
+  },
+  "c103_ma_coqui": {
+   "who": "narr",
+   "habla": "mama",
+   "text": "Mamá dice: ¿Y Coquí? ¿Cómo estás, Coquí?"
+  },
+  "bien_gracias": {
+   "who": "tu",
+   "text": "¡Bien, gracias!",
+   "tu_turno": [
+    {
+     "palabra": "bien",
+     "formas": [
+      "bien",
+      "muy bien",
+      "bien gracias"
+     ]
+    }
+   ]
+  },
+  "c103_ahora_escucha": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Ahora abuelo escucha."
+  },
+  "c103_no_escucha": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No, Coquí! Abuelo escucha."
+  },
+  "c103_no_habla": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No, Coquí! Abuelo habla."
+  },
+  "c103_ma_hola_hola": {
+   "who": "narr",
+   "habla": "mama",
+   "text": "¿Hola? ¿Hola?"
+  },
+  "c103_ma_hasta_luego": {
+   "who": "narr",
+   "habla": "mama",
+   "text": "Mamá dice: ¡Hasta luego, Coquí!"
+  },
+  "p_cq_hm": {
+   "who": "tu",
+   "text": "¡Hasta mañana!",
+   "tu_turno": [
+    {
+     "palabra": "hasta mañana",
+     "formas": [
+      "hasta mañana",
+      "hasta manana"
+     ]
+    }
+   ]
+  },
+  "c103_fin": {
+   "who": "narr",
+   "text": "Mamá llama por teléfono. Abuelo escucha, y habla. Y Coquí también."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "tarde"
+   }
+  },
+  {
+   "act": "bateria",
+   "n": 3
+  },
+  {
+   "act": "llega",
+   "quien": "abuelo",
+   "a": "butaca",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "luis",
+   "a": "cojin1",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "carmen",
+   "a": "cojin2",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "abuela",
+   "a": "ventana_abuela",
+   "suelto": 1
+  },
+  {
+   "act": "ir",
+   "a": "brazo_coqui",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "suena103"
+  },
+  {
+   "ask": "telefono",
+   "lead": [],
+   "line": "c103_ab_telefono",
+   "then": [],
+   "after": []
+  },
+  "c103_ab_llama",
+  {
+   "dots": 2
+  },
+  "c103_ma_hola",
+  {
+   "act": "oido103",
+   "quien": "abuela"
+  },
+  {
+   "act": "boca103",
+   "quien": "abuela"
+  },
+  "c103_ab_escucho",
+  {
+   "dots": 3
+  },
+  {
+   "act": "gesto",
+   "quien": "abuelo",
+   "que": "oreja"
+  },
+  "c103_abo_quien",
+  {
+   "ask": "oreja_abuelo",
+   "lead": [],
+   "line": "c103_ab_oreja",
+   "then": [],
+   "after": [
+    {
+     "act": "pone103",
+     "donde": "oreja_abuelo",
+     "ok": 1
+    }
+   ]
+  },
+  "c103_l_escucha_mama",
+  {
+   "ask": "boca_abuelo",
+   "lead": [],
+   "line": "c103_ahora_habla",
+   "then": [],
+   "after": [
+    {
+     "act": "pone103",
+     "donde": "boca_abuelo",
+     "ok": 1
+    }
+   ]
+  },
+  "c103_abo_hola",
+  "c103_ab_habla_con",
+  {
+   "dots": 4
+  },
+  "c103_ma_coqui",
+  "bien_gracias",
+  {
+   "act": "anillos103"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "silencio"
+  },
+  {
+   "act": "bateria",
+   "n": 3
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "llega",
+   "quien": "abuela",
+   "a": "cocina"
+  },
+  {
+   "act": "ir",
+   "a": "brazo_coqui"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "wa",
+   "options": [
+    "escucha",
+    "habla"
+   ]
+  },
+  {
+   "calc": "pa",
+   "cond": "wa=escucha",
+   "then": "oreja_abuelo",
+   "else": "boca_abuelo"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "oreja_abuelo",
+    "boca_abuelo"
+   ],
+   "pick": "$pa",
+   "tests": "$wa",
+   "lock": true,
+   "lead": [],
+   "line": "c103_ahora_$wa",
+   "right": [
+    {
+     "act": "pone103",
+     "donde": "$pa",
+     "ok": 1
+    },
+    {
+     "if": "wa=escucha",
+     "then": [
+      {
+       "act": "gesto",
+       "quien": "abuelo",
+       "que": "si"
+      }
+     ]
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "if": "wa=habla",
+     "then": [
+      {
+       "act": "pone103",
+       "donde": "$x",
+       "ok": 0,
+       "suelto": 1
+      },
+      "c103_ma_hola_hola",
+      {
+       "act": "ya"
+      }
+     ],
+     "else": [
+      {
+       "act": "pone103",
+       "donde": "$x",
+       "ok": 0
+      }
+     ]
+    },
+    "c103_no_$wa",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "bateria",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "bateria",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "wb",
+   "options": [
+    "escucha",
+    "habla"
+   ]
+  },
+  {
+   "calc": "pb",
+   "cond": "wb=escucha",
+   "then": "oreja_abuelo",
+   "else": "boca_abuelo"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "oreja_abuelo",
+    "boca_abuelo"
+   ],
+   "pick": "$pb",
+   "tests": "$wb",
+   "lock": true,
+   "lead": [],
+   "line": "c103_ahora_$wb",
+   "right": [
+    {
+     "act": "pone103",
+     "donde": "$pb",
+     "ok": 1
+    },
+    {
+     "if": "wb=escucha",
+     "then": [
+      {
+       "act": "gesto",
+       "quien": "abuelo",
+       "que": "si"
+      }
+     ]
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "if": "wb=habla",
+     "then": [
+      {
+       "act": "pone103",
+       "donde": "$x",
+       "ok": 0,
+       "suelto": 1
+      },
+      "c103_ma_hola_hola",
+      {
+       "act": "ya"
+      }
+     ],
+     "else": [
+      {
+       "act": "pone103",
+       "donde": "$x",
+       "ok": 0
+      }
+     ]
+    },
+    "c103_no_$wb",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "bateria",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "bateria",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  "c103_ma_hasta_luego",
+  "p_cq_hm",
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final103",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final103",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final103",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 9
+  },
+  "c103_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c103_ab_telefono",
+  "c103_ab_llama",
+  "c103_ma_hola",
+  "c103_ab_escucho",
+  "c103_abo_quien",
+  "c103_ab_oreja",
+  "c103_l_escucha_mama",
+  "c103_ahora_habla",
+  "c103_abo_hola",
+  "c103_ab_habla_con",
+  "c103_ma_coqui",
+  "bien_gracias",
+  "c103_ahora_escucha",
+  "c103_ahora_habla",
+  "c103_ma_hasta_luego",
+  "p_cq_hm",
+  "c103_fin"
+ ]
+}
